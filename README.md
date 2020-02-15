@@ -1,7 +1,6 @@
 ## Welcome to Group 5
 ![](https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg)
 <br></br>
-<br></br>
 ## Group Members
 * [Kayacan Vesek (Communicator)]
 * [Sertay Akpınar]
