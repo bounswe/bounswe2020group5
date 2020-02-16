@@ -4,7 +4,7 @@
 ## Group Members
 * [Kayacan Vesek (Communicator)]
 * [Sertay Akpınar]
-* [Muhammed Halas]
+* [Muhammed Halas](https://github.com/bounswe/bounswe2020group5/wiki/Muhammed-Halas)
 * [Emre Hoşer](https://github.com/bounswe/bounswe2020group5/wiki/Emre-Hoser)
 * [İsmet Sarı](https://github.com/bounswe/bounswe2020group5/wiki/sarismet)
 * [Volkan Bulca](https://github.com/bounswe/bounswe2020group5/wiki/Volkan-Bulca)
