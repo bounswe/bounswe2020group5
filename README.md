@@ -8,7 +8,7 @@
 * [Emre Hoşer](https://github.com/bounswe/bounswe2020group5/wiki/Emre-Hoser)
 * [İsmet Sarı](https://github.com/bounswe/bounswe2020group5/wiki/sarismet)
 * [Volkan Bulca](https://github.com/bounswe/bounswe2020group5/wiki/Volkan-Bulca)
-* [Mısra Yavuz]
+* [Mısra Yavuz](https://github.com/bounswe/bounswe2020group5/wiki/M%C4%B1sra-Yavuz)
 * [Yaşar Selçuk Çalışkan]
 * [M. Zeynep Çayırçimen](https://github.com/bounswe/bounswe2020group5/wiki/M.-Zeynep-%C3%87ay%C4%B1r%C3%A7imen)
 * [Umut Kocasarı]
