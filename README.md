@@ -2,7 +2,7 @@
 ![](https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg)
 <br></br>
 ## Group Members
-* [Kayacan Vesek (Communicator)]
+* [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
 * [Sertay Akpınar]
 * [Muhammed Halas](https://github.com/bounswe/bounswe2020group5/wiki/Muhammed-Halas)
 * [Emre Hoşer](https://github.com/bounswe/bounswe2020group5/wiki/Emre-Hoser)
