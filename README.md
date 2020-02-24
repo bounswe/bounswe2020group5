@@ -1,5 +1,5 @@
 
-<p style="text-align: center">
+<p align="center">
 
 ## Welcome to Team 5
 Others are groups but we are a TEAM.
