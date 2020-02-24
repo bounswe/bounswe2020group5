@@ -1,5 +1,6 @@
 ## Welcome to Team 5
 <p align="center">
+   <h1>Welcome to Team 5</h1>
 Others are groups but we are a TEAM.
    <img src="https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg">
   </p>
