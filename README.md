@@ -1,7 +1,7 @@
-                                                ## Welcome to Team 5
+## Welcome to Team 5
 <p align="center">
 
-<b>Others are groups but we are a TEAM.</b>
+<h1>                                  Others are groups but we are a TEAM.</h1>
 
    <img src="https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg">
   </p>
