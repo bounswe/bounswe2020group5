@@ -5,7 +5,7 @@ Others are groups but we are a TEAM.
   </p>
 
 <br></br>
-
+These are contributors of our grup and you can see our wiki page [here](https://github.com/bounswe/bounswe2020group5/wiki)
 ## Group Members
 * [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
 * [Sertay Akpınar](https://github.com/bounswe/bounswe2020group5/wiki/Sertay-Akp%C4%B1nar)
