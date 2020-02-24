@@ -7,7 +7,9 @@
   </p>
 
 <br></br>
-we are the group 5 gathered for the course CMPE352 Fundamentals of Software Engineering and you can see our wiki page [here](https://github.com/bounswe/bounswe2020group5/wiki).
+
+We are the group 5 gathered for the course CMPE352 Fundamentals of Software Engineering and you can see our wiki page [here](https://github.com/bounswe/bounswe2020group5/wiki).
+
 ## Project Description
 In this course, we will create a E-Commerce Platform in accordance with our customer's desires. This platform enables users
 to sell or buy all kind of products(e.g., electronic, home). More details can be found [here](https://github.com/bounswe/bounswe2020group5/blob/master/CMPE352_Spring20192020_ECommercePlatform.pdf).
