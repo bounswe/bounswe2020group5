@@ -1,7 +1,10 @@
 ## Welcome to Team 5
+<p align="center">
+Others are groups but we are a TEAM.
+  </p>
 ![](https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg)
 <br></br>
-Others are groups but we are a TEAM.
+
 ## Group Members
 * [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
 * [Sertay Akpınar](https://github.com/bounswe/bounswe2020group5/wiki/Sertay-Akp%C4%B1nar)
