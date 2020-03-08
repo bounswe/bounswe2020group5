@@ -3,7 +3,7 @@
 
 <h3>                                  Others are groups but we are a TEAM.</h3>
 
-   <img src="https://github.com/sarismet/personal-html-website/blob/master/project-ibabe/personal/group5.jpg">
+   <img src="https://github.com/bounswe/bounswe2020group5/blob/master/mockup-image/Group_Photo.jpg">
   </p>
 
 <br></br>
