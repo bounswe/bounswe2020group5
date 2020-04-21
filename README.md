@@ -19,6 +19,7 @@ to sell or buy all kind of products(e.g., electronic, home). More details can be
 * [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
 * [Sertay Akpınar](https://github.com/bounswe/bounswe2020group5/wiki/Sertay-Akp%C4%B1nar)
 * [Muhammed Halas](https://github.com/bounswe/bounswe2020group5/wiki/Muhammed-Halas)
+* [M.Emre Demir](https://github.com/bounswe/bounswe2020group5/wiki/M.-Emre-Demir)
 * [Emre Hoşer](https://github.com/bounswe/bounswe2020group5/wiki/Emre-Hoser)
 * [İsmet Sarı](https://github.com/bounswe/bounswe2020group5/wiki/sarismet)
 * [Volkan Bulca](https://github.com/bounswe/bounswe2020group5/wiki/Volkan-Bulca)
