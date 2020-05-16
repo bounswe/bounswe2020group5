@@ -9,7 +9,6 @@ router.get('/', function (req, res, next) {
   var key = require('./keys.js');
   //create new twitter object
   var client = new Twitter(key);
-  console.log("count is", req.query.count);
   //To specify searching parameters
   var params = {
     q: req.query.query,
