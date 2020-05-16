@@ -14,13 +14,13 @@ router.get('/', function (req, res, next) {
 
 
   var params = {
-    q: 'github',
+    q: 'vahşetin ortasında şafak vakti açan bir çicek gibi ısıldıyorum',
     result_type: 'popular',
     count: 100
   };
 
 
-  var dict = {};
+
   client.get('search/tweets/', params, function (error, data, response) {
     if (!error) {
       var tweets = data.statuses;
@@ -29,35 +29,10 @@ router.get('/', function (req, res, next) {
       for (var i = 0; i < tweets.length; i++) {
 
 
-        dict[tweets[i].text] = tweets[i].favorite_count;
-
-
-
+        word = word + tweets[i].text + "  ";
 
 
       }
-
-
-      var items = Object.keys(dict).map(function (key) {
-        return [key, dict[key]];
-      });
-
-      // Sort the array based on the second element
-      items.sort(function (first, second) {
-        return second[1] - first[1];
-      });
-
-      // Create a new array with only the first 5 items
-
-
-      N = items.slice(0, 5);
-
-      for (var key in dict) {
-
-
-        word = word + key + "  ";
-      }
-
       res.send(word);
 
     }
