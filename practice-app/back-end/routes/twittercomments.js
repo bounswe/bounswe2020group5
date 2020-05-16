@@ -15,6 +15,7 @@ router.get('/', function (req, res, next) {
     q: 'github',
     count: 100
   };
+
   //defining dictiornary to store tweets
   var dict = {};
   //gets the tweets here
