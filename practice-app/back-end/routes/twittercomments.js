@@ -9,13 +9,13 @@ var key = require('./key.json');
 
 
   var params = {
-    q: 'vahşetin ortasında şafak vakti açan bir çicek gibi ısıldıyorum',
+    q: 'github',
     result_type: 'popular',
     count: 100
   };
 
 
-
+  var dict = {};
   client.get('search/tweets/', params, function (error, data, response) {
     if (!error) {
       var tweets = data.statuses;
@@ -24,10 +24,35 @@ var key = require('./key.json');
       for (var i = 0; i < tweets.length; i++) {
 
 
-        word = word + tweets[i].text + "  ";
+        dict[tweets[i].text] = tweets[i].favorite_count;
+
+
+
 
 
       }
+
+
+      var items = Object.keys(dict).map(function (key) {
+        return [key, dict[key]];
+      });
+
+      // Sort the array based on the second element
+      items.sort(function (first, second) {
+        return second[1] - first[1];
+      });
+
+      // Create a new array with only the first 5 items
+
+
+      N = items.slice(0, 5);
+
+      for (var key in dict) {
+
+
+        word = word + key + "  ";
+      }
+
       res.send(word);
 
     }
