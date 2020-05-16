@@ -6,14 +6,15 @@ router.get('/', function (req, res, next) {
   // import twitter
   var Twitter = require('twitter');
   //get the all access keys
-  var key = require('./key.json');
+  var key = require('./keys.js');
   //create new twitter object
   var client = new Twitter(key);
-
+  console.log("count is", req.query.count);
   //To specify searching parameters
   var params = {
-    q: 'github',
-    count: 100
+    q: req.query.query,
+    result_type: 'popular',
+    count: req.query.count
   };
 
   //defining dictiornary to store tweets
@@ -26,22 +27,12 @@ router.get('/', function (req, res, next) {
       for (var i = 0; i < tweets.length; i++) {
         dict[tweets[i].text] = tweets[i].favorite_count; //defining pairs for dictionary
       }
-      //this is will be used in sorting
-      var items = Object.keys(dict).map(function (key) {
-        return [key, dict[key]];
-      });
-      // Sort the array based on the second element
-      items.sort(function (first, second) {
-        return second[1] - first[1];
-      });
-      // Create a new array with only the first 10 items
-      N = items.slice(0, 10);
-      //then construct the line containing the top popular tweets
-      for (var key in dict) {
-        word = word + key + "  ->";
-      }
-      //print out all of them
-      res.send(word);
+      //get the all keys of our dictionary
+      const keys = Object.keys(dict);
+      //convert to a json style
+      var myJsonString = JSON.stringify(keys);
+      //and show them on screen
+      res.json(myJsonString);
     }
   });
 });
