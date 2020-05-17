@@ -10,9 +10,9 @@ router.get('/', function(req, res, next) {
     var client = new Twitter(key);
 
     //convert request parameters to get parameters
-    username = req.query.username;
-    keyword = req.query.keyword;
-    paramq = 'from:' + username + ' ' + keyword;
+    username = req.query.user;
+    vendor = req.query.mentioned;
+    paramq = 'from:' + username + ' @' + vendor;
 
     //paramater to be used in get method
     var params = {
