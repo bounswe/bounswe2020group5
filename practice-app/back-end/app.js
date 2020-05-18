@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var twittercommentsRouter = require('./routes/twittercomments');
 var ratingsRouter = require('./routes/ratings');
 var giveratingRouter = require('./routes/giverating');
+var searchTrendVendorRouter = require('./routes/searchtrendforvendor');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
 
 var app = express();
@@ -29,6 +30,7 @@ app.use('/twittercomments', twittercommentsRouter);
 app.use('/ratings', ratingsRouter);
 app.use('/giverating', giveratingRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
+app.use('/searchtrendforvendor', searchTrendVendorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
