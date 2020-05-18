@@ -9,24 +9,19 @@ router.get('/', function(req, res, next) {
     var key = require('./keys.js');
     var client = new Twitter(key);
 
-    //convert request parameters to get parameters
-    username = req.query.user;
-    vendor = req.query.mentioned;
-    paramq = 'from:' + username + ' @' + vendor;
-
     //paramater to be used in get method
     var params = {
-        q: paramq,
+        q: 'from:' + req.query.user + ' @' + req.query.mentioned,
         count: req.query.count
     }
-
-    //initialize empty list to collect data
-    tweetList = [];
 
     //use Twitter API to get tweets defined above
     client.get('search/tweets', params,  function(error, data, response){
         if(error) throw error;
         else {
+            //initialize empty list to collect data
+            tweetList = [];
+
             //interested in statuses part of data
             var tweets = data.statuses;
 
@@ -34,11 +29,8 @@ router.get('/', function(req, res, next) {
             for (var i = 0; i<tweets.length; i++)
                 tweetList.push(tweets[i].text)
 
-            //convert to json    
-            var res_str = JSON.stringify(tweetList);
-
             //send JSON response
-            res.json(res_str);
+            res.json(JSON.stringify(tweetList));
         }
     }); 
 });
