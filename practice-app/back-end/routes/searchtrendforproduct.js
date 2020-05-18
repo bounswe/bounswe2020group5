@@ -51,9 +51,8 @@ router.get('/', function(req, res, next) {
       
       var message = 'On average ' + avgTweet + ' tweets related to this product are posted in the last 24 hours.' //message to return
  
-      //convert message to JSON
-      var jsonStr = JSON.stringify(message); 
-      res.json(jsonStr);
+      //convert message to JSON and display
+      res.json(JSON.stringify(message));
     }
   });
 });
