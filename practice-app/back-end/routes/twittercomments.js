@@ -44,7 +44,6 @@ router.get('/', function (req, res, next) {
       //and show them on screen
       res.json(myJsonString);
 
-
     }
   });
 
