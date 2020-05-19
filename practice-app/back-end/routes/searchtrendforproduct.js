@@ -31,10 +31,10 @@ router.get('/', function(req, res, next) {
         var firstTweet = tweets[tweets.length-1].created_at; //get time of tweet
 
         //to calculate the time difference between lastTweet and firstTweet
-        var turnSecFirst = lastTweet.split(" ")[3].split(":");
-        var turnSecLast = firstTweet.split(" ")[3].split(":");
-        var totalLast = parseInt(turnSecFirst[2]) + parseInt(turnSecFirst[1]*60) + parseInt(turnSecFirst[0]*3600); //to turn time to seconds
-        var totalFirst = parseInt(turnSecLast[2]) + parseInt(turnSecLast[1]*60) + parseInt(turnSecLast[0]*3600); //to turn time to seconds
+        var turnLast = lastTweet.split(" ")[3].split(":");
+        var turnFirst = firstTweet.split(" ")[3].split(":");
+        var totalLast = parseInt(turnLast[2]) + parseInt(turnLast[1]*60) + parseInt(turnLast[0]*3600); //to turn time to seconds
+        var totalFirst = parseInt(turnFirst[2]) + parseInt(turnFirst[1]*60) + parseInt(turnFirst[0]*3600); //to turn time to seconds
         var avgTweet;
         if(tweets.length == 1){
           var ratioTime = 24 * 60 * 60 - totalFirst;
