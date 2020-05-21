@@ -38,35 +38,35 @@ extends layout
  
 block content
   h3= title
-  form#form_add_student(name="addstudent", method="post", action="/addstudent")
+  form#form_add_product(name="addproduct", method="post", action="/addproduct")
     span Name
     span &nbsp;
-    input#input_name(type="text", placeholder="student", name="student")
+    input#input_name(type="text", placeholder="name", name="name")
     br
     br
-    span Street
+    span Price
     span &nbsp;
-    input#input_street(type="text", placeholder="street", name="street")
+    input#input_street(type="text", placeholder="price", name="price")
     br
     br
-    span City
+    span Color
     span &nbsp;
-    input#input_city(type="text", placeholder="city", name="city")
+    input#input_city(type="text", placeholder="color", name="color")
     br
     br
-    span State
+    span Rating
     span &nbsp;
-    input#input_state(type="text", placeholder="state", name="state")
+    input#input_state(type="text", placeholder="rating", name="rating")
     br
     br
-    span Sex
+    span Size
     span &nbsp;
-    input#input_sex(type="text", placeholder="sex", name="sex")
+    input#input_sex(type="text", placeholder="size", name="size")
     br
     br
-    span GPA
+    span Comments
     span &nbsp;
-    input#input_gpa(type="text", placeholder="gpa", name="gpa")
+    input#input_gpa(type="text", placeholder="comments", name="comments")
     br
     br
-    button#submit_student(type="submit") submit
+    button#submit_product(type="submit") submit
