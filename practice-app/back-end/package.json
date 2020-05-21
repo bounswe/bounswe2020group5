@@ -10,8 +10,14 @@
     "debug": "~2.6.9",
     "express": "^4.16.4",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
+    "jade": "^1.11.0",
+    "mongodb": "^3.5.7",
     "morgan": "~1.9.1",
     "twit": "^2.2.11"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

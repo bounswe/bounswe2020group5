@@ -1,0 +1,72 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+extends layout
+ 
+block content
+  h3= title
+  form#form_add_student(name="addstudent", method="post", action="/addstudent")
+    span Name
+    span &nbsp;
+    input#input_name(type="text", placeholder="student", name="student")
+    br
+    br
+    span Street
+    span &nbsp;
+    input#input_street(type="text", placeholder="street", name="street")
+    br
+    br
+    span City
+    span &nbsp;
+    input#input_city(type="text", placeholder="city", name="city")
+    br
+    br
+    span State
+    span &nbsp;
+    input#input_state(type="text", placeholder="state", name="state")
+    br
+    br
+    span Sex
+    span &nbsp;
+    input#input_sex(type="text", placeholder="sex", name="sex")
+    br
+    br
+    span GPA
+    span &nbsp;
+    input#input_gpa(type="text", placeholder="gpa", name="gpa")
+    br
+    br
+    button#submit_student(type="submit") submit
