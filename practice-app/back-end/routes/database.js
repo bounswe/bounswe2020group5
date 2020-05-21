@@ -27,17 +27,17 @@ router.get('/thelist', function(req,res){
       console.log('Connection established to', url);
    
       // Get the documents collection
-      var collection = db.collection('students');
+      var collection = db.collection('products');
    
-      // Find all students
+      // Find all products
       collection.find({}).toArray(function (err, result) {
         if (err) {
           res.send(err);
         } else if (result.length) {
-          res.render('studentlist',{
+          res.render('productlist',{
    
             // Pass the returned database documents to Jade
-            "studentlist" : result
+            "productlist" : result
           });
         } else {
           res.send('No documents found');
@@ -49,11 +49,11 @@ router.get('/thelist', function(req,res){
     });
 });
 
-router.get('/newstudent', function(req, res){
-  res.render('newstudent', {title: 'Add Student' });
+router.get('/newproduct', function(req, res){
+  res.render('newproduct', {title: 'Add Product' });
 });
 
-router.post('/addstudent', function(req, res){
+router.post('/addproduct', function(req, res){
  
   // Get a Mongo client to work with the Mongo server
   var MongoClient = mongodb.MongoClient;
@@ -69,20 +69,20 @@ router.post('/addstudent', function(req, res){
       console.log('Connected to Server');
 
       // Get the documents collection
-      var collection = db.collection('students');
+      var collection = db.collection('products');
 
-      // Get the student data passed from the form
-      var student1 = {student: req.body.student, street: req.body.street,
-        city: req.body.city, state: req.body.state, sex: req.body.sex,
-        gpa: req.body.gpa};
+      // Get the product data passed from the form
+      var product1 = {name: req.body.name, price: req.body.price,
+        color: req.body.color, rating: req.body.rating, size: req.body.size,
+        comments: req.body.comments};
 
-      // Insert the student data into the database
-      collection.insert([student1], function (err, result){
+      // Insert the product data into the database
+      collection.insert([product1], function (err, result){
         if (err) {
           console.log(err);
         } else {
 
-          // Redirect to the updated student list
+          // Redirect to the updated product list
           res.redirect("thelist");
         }
 
