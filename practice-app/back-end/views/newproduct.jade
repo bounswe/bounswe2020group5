@@ -38,7 +38,7 @@ extends layout
  
 block content
   h3= title
-  form#form_add_product(name="addproduct", method="post", action="/addproduct")
+  form#form_add_product(name="addproduct", method="post", action="/database/addproduct")
     span Name
     span &nbsp;
     input#input_name(type="text", placeholder="name", name="name")

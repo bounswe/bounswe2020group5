@@ -3,15 +3,29 @@ var router = express.Router();
 var mongodb = require('mongodb')
 
 router.get('/', function(req, res, next) {
-  var MongoClient = require('mongodb').MongoClient;
-
-  // Connect to the db
-  MongoClient.connect("mongodb://localhost:27017/MyDb", function (err, db) {
-   
-     res.send(err.message)
-     //Write databse Insert/Update/Query code here..
-                
-});
+  const MongoClient = require('mongodb').MongoClient;
+  const assert = require('assert');
+  
+  // Connection URL
+  const url = 'mongodb://localhost:27017';
+  
+  // Database Name
+  const dbName = 'products';
+  
+  // Create a new MongoClient
+  const client = new MongoClient(url);
+  
+  // Use connect method to connect to the Server
+  client.connect(function(err) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+  
+    const db = client.db(dbName);
+  
+    client.close();
+    console.log("close")
+  })
+  res.send("ebenin amı")
 });
 
 router.get('/thelist', function(req,res){
@@ -54,7 +68,7 @@ router.get('/newproduct', function(req, res){
 });
 
 router.post('/addproduct', function(req, res){
- 
+  
   // Get a Mongo client to work with the Mongo server
   var MongoClient = mongodb.MongoClient;
 
@@ -62,14 +76,14 @@ router.post('/addproduct', function(req, res){
   var url = 'mongodb://localhost:27017/sampsite';
 
   // Connect to the server
-  MongoClient.connect(url, function(err, db){
+  MongoClient.connect(url, function(err, client){
     if (err) {
       console.log('Unable to connect to the Server:', err);
     } else {
       console.log('Connected to Server');
 
       // Get the documents collection
-      var collection = db.collection('products');
+      var collection = client.db('products');
 
       // Get the product data passed from the form
       var product1 = {name: req.body.name, price: req.body.price,
@@ -87,7 +101,7 @@ router.post('/addproduct', function(req, res){
         }
 
         // Close the database
-        db.close();
+        client.close();
       });
 
     }
