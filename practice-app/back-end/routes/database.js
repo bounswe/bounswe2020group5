@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var mongodb = require('mongodb')
+const express = require('express');
+const router = express.Router();
+const mongodb = require('mongodb');
 
 router.get('/', function(req, res, next) {
   const MongoClient = require('mongodb').MongoClient;
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     client.close();
     console.log("close")
   })
-  res.send("ebenin amı")
+  res.send("asdasdasd")
 });
 
 router.get('/thelist', function(req,res){
@@ -68,45 +68,40 @@ router.get('/newproduct', function(req, res){
 });
 
 router.post('/addproduct', function(req, res){
-  
-  // Get a Mongo client to work with the Mongo server
-  var MongoClient = mongodb.MongoClient;
 
-  // Define where the MongoDB server is
-  var url = 'mongodb://localhost:27017/sampsite';
+  const MongoClient = require('mongodb').MongoClient;
+  const assert = require('assert');
 
-  // Connect to the server
-  MongoClient.connect(url, function(err, client){
-    if (err) {
-      console.log('Unable to connect to the Server:', err);
-    } else {
-      console.log('Connected to Server');
+// Connection URL
+  const url = 'mongodb://localhost:27017';
 
-      // Get the documents collection
-      var collection = client.db('products');
+// Database Name
+  const dbName = 'products';
+  const client = new MongoClient(url, { useNewUrlParser: true });
 
-      // Get the product data passed from the form
-      var product1 = {name: req.body.name, price: req.body.price,
-        color: req.body.color, rating: req.body.rating, size: req.body.size,
-        comments: req.body.comments};
+// Use connect method to connect to the server
+  client.connect(function(err) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
 
-      // Insert the product data into the database
-      collection.insert([product1], function (err, result){
-        if (err) {
-          console.log(err);
-        } else {
+    const db = client.db(dbName);
 
-          // Redirect to the updated product list
-          res.redirect("thelist");
-        }
+    const product1 = {name: req.body.name, price: req.body.price,
+      color: req.body.color, rating: req.body.rating, size: req.body.size,
+      comments: req.body.comments};
 
-        // Close the database
-        client.close();
-      });
-
-    }
+    const collection = db.collection('products');
+    collection.insertOne(product1, function (err, result){
+      if (err) {
+        console.log(err);
+      } else {
+        // Redirect to the updated product list
+        res.send(result);
+      }
+      // Close the database
+      client.close();
+    });
   });
-
 });
 
 module.exports = router;
