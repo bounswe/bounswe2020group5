@@ -30,37 +30,37 @@ router.get('/', function(req, res, next) {
 
 router.get('/thelist', function(req,res){
   var MongoClient = mongodb.MongoClient
-  
-  var url = 'mongodb://localhost:27017/sampsite'
-  
-  MongoClient.connect(url, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to the Server', err);
-    } else {
-      // We are connected
-      console.log('Connection established to', url);
-   
-      // Get the documents collection
-      var collection = db.collection('products');
-   
-      // Find all products
-      collection.find({}).toArray(function (err, result) {
-        if (err) {
-          res.send(err);
-        } else if (result.length) {
-          res.render('productlist',{
-   
-            // Pass the returned database documents to Jade
-            "productlist" : result
-          });
-        } else {
-          res.send('No documents found');
-        }
-        //Close connection
-        db.close();
-      });
-    }
+  const assert = require('assert');
+
+  var url = 'mongodb://localhost:27017'
+  const dbName = 'products';
+
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  client.connect(function(err) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    const db = client.db(dbName);
+
+    const product1 = {name: req.body.name, price: req.body.price,
+      color: req.body.color, rating: req.body.rating, size: req.body.size,
+      comments: req.body.comments};
+
+    const collection = db.collection('products');
+    collection.find().sort({ rating: 1 }).limit(20).toArray(function (err, result) {
+      if (err) {
+        res.send(err);
+      } else if (result.length) {
+        res.send(result)
+      } else {
+        res.send('No documents found');
+      }
+      //Close connection
+      client.close();
     });
+  });
+  
+
 });
 
 router.get('/newproduct', function(req, res){
