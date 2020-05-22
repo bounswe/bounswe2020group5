@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
   //To specify searching parameters
   var params = {
     q: req.query.product_name, //get the product name
-    count: 10000,
+    count: 100,
     lang: req.query.lan //see which language the program search
   };
 
