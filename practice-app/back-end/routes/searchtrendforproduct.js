@@ -7,12 +7,12 @@ router.get('/', function(req, res, next) {
   //create a Twitter object with tokens
   var Twitter = require('twitter');
   var key = require('./keys.js');
-  var Twit = new Twitter(key);
+  var client = new Twitter(key);
 
   var today = new Date();
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(); //date of today
 
-  var product = req.query.product; //get product name from URL
+  var product = req.query.query; //get product name from URL
 
   //parameter declarations that are going to be used in search
   var params = {
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
     until : date
   };
   
-  Twit.get('search/tweets/', params, function (error, data, response) {
+  client.get('search/tweets/', params, function (error, data, response) {
     if (!error) { //if there is no error
       var tweets = data.statuses; // get statuses of tweets
       if(tweets.length != 0){

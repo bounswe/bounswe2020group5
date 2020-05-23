@@ -22,7 +22,6 @@ router.get('/', function (req, res, next) {
   client.get('search/tweets/', params, function (error, data, response) {
     if (!error) { //if there is no error
       var tweets = data.statuses; //take tweets status
-      var word = req.params.word; //this will be like one line
       for (var i = 0; i < tweets.length; i++) {
         dict[tweets[i].text] = tweets[i].favorite_count; //defining pairs for dictionary
       }
