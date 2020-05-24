@@ -11,27 +11,41 @@ router.get('/', function (req, res, next) {
   var client = new Twitter(key);
   //To specify searching parameters
   var params = {
-    q: req.query.query,
-    result_type: 'popular',
-    count: req.query.count
+    q: req.query.product_name, //get the product name
+    count: 100,
+    lang: req.query.lan //see which language the program search
   };
 
   //defining dictiornary to store tweets
   var dict = {};
   //gets the tweets here
-  client.get('search/tweets/', params, function (error, data, response) {
+  client.get('/search/tweets/', params, function (error, data, response) {
     if (!error) { //if there is no error
       var tweets = data.statuses; //take tweets status
       for (var i = 0; i < tweets.length; i++) {
         dict[tweets[i].text] = tweets[i].favorite_count; //defining pairs for dictionary
       }
-      //get the all keys of our dictionary
-      const keys = Object.keys(dict);
-      //convert to a json style
-      var myJsonString = JSON.stringify(keys);
+      //get the keys and mapp them with its regarding values
+      items = Object.keys(dict).map(function (key) {
+        return [key, dict[key]];
+      });
+      //sorted them one by one
+      items.sort(function (first, second) {
+        return second[1] - first[1];
+      });
+      //create array for sorted verision
+      sorted_array = [];
+      //fill this array with first 10 tweets
+      for (var i = 0; i < 10; i++) {
+        sorted_array.push(items[i][0]);
+      }
+      //create the json file
+      var myJsonString = JSON.stringify(sorted_array);
       //and show them on screen
       res.json(myJsonString);
+
     }
   });
+
 });
 module.exports = router;
