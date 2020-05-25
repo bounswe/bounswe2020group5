@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
         if(error) throw error;
         else {
             //initialize empty list to collect data
-            tweetList = [];
+            var tweetList = [];
 
             //interested in statuses part of data
             var tweets = data.statuses;

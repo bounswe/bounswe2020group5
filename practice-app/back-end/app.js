@@ -10,11 +10,19 @@ var usersRouter = require('./routes/users');
 var twittercommentsRouter = require('./routes/twittercomments');
 var ratingsRouter = require('./routes/ratings');
 var giveratingRouter = require('./routes/giverating');
+var searchTrendProductRouter = require('./routes/searchtrendforproduct');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
+var showfollowersRouter = require('./routes/showfollowers');
 var database = require("./routes/database")
 
 var app = express();
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
+app.use(express.static('./public'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,7 +38,9 @@ app.use('/users', usersRouter);
 app.use('/twittercomments', twittercommentsRouter);
 app.use('/ratings', ratingsRouter);
 app.use('/giverating', giveratingRouter);
+app.use('/searchtrendforproduct', searchTrendProductRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
+app.use('/showfollowers', showfollowersRouter);
 app.use('/database', database)
 
 // catch 404 and forward to error handler
