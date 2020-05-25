@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     client.close();
     console.log("close")
   })
-  res.send("asdasdasd")
+  res.send("Check console log")
 });
 
 router.get('/thelist', function(req,res){
