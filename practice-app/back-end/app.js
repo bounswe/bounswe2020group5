@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var twittercommentsRouter = require('./routes/twittercomments');
 var ratingsRouter = require('./routes/ratings');
 var giveratingRouter = require('./routes/giverating');
+var searchTrendVendorRouter = require('./routes/searchtrendforvendor');
 var searchTrendProductRouter = require('./routes/searchtrendforproduct');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
 var showfollowersRouter = require('./routes/showfollowers');
@@ -40,6 +41,7 @@ app.use('/ratings', ratingsRouter);
 app.use('/giverating', giveratingRouter);
 app.use('/searchtrendforproduct', searchTrendProductRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
+app.use('/searchtrendforvendor', searchTrendVendorRouter);
 app.use('/showfollowers', showfollowersRouter);
 app.use('/database', database)
 
