@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
   var client = new Twitter(key);
   //To specify searching parameters
   var params = {
-    q: req.query.product, //get the product name
+    q: req.query.product_name, //get the product name
     count: 100,
     lang: 'tr' //see which language the program search
   };
