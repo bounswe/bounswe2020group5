@@ -1,0 +1,72 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+extends layout
+ 
+block content
+  h3= title
+  form#form_add_product(name="addproduct", method="post", action="/database/addproduct")
+    span Name
+    span &nbsp;
+    input#input_name(type="text", placeholder="name", name="name")
+    br
+    br
+    span Price
+    span &nbsp;
+    input#input_street(type="text", placeholder="price", name="price")
+    br
+    br
+    span Color
+    span &nbsp;
+    input#input_city(type="text", placeholder="color", name="color")
+    br
+    br
+    span Rating
+    span &nbsp;
+    input#input_state(type="text", placeholder="rating", name="rating")
+    br
+    br
+    span Size
+    span &nbsp;
+    input#input_sex(type="text", placeholder="size", name="size")
+    br
+    br
+    span Comments
+    span &nbsp;
+    input#input_gpa(type="text", placeholder="comments", name="comments")
+    br
+    br
+    button#submit_product(type="submit") submit
