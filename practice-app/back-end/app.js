@@ -3,16 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongo = require('mongodb');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var twittercommentsRouter = require('./routes/twittercomments');
 var ratingsRouter = require('./routes/ratings');
 var giveratingRouter = require('./routes/giverating');
+var searchTrendVendorRouter = require('./routes/searchtrendforvendor');
 var searchTrendProductRouter = require('./routes/searchtrendforproduct');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
 var exchangeratesRouter = require('./routes/exchangerates');
 var showfollowersRouter = require('./routes/showfollowers');
+var database = require("./routes/database")
 
 var app = express();
 app.all('*', function(req, res, next) {
@@ -40,7 +43,9 @@ app.use('/giverating', giveratingRouter);
 app.use('/searchtrendforproduct', searchTrendProductRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
 app.use('/exchangerates', exchangeratesRouter);
+app.use('/searchtrendforvendor', searchTrendVendorRouter);
 app.use('/showfollowers', showfollowersRouter);
+app.use('/database', database)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

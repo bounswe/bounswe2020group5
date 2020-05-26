@@ -8,7 +8,7 @@ class GetComments extends React.Component {
   }
   GetTweets = (event) => {
 
-    fetch("http://localhost:3000/twittercomments?query="+event.target.value+"&count=10", {
+    fetch("http://localhost:3000/twittercomments?product_name="+event.target.value+"&count=10", {
         method: "GET",
       })
       .then((resp) => {

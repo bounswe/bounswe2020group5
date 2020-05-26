@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h3.
+    Students
+  ul
+    each product, i in productlist
+      li#product_list_item
+        a(href='#') #{product.product} lives at #{product.street} #{product.city}, #{product.state}
