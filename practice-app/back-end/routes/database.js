@@ -96,7 +96,7 @@ router.post('/addproduct', function(req, res){
         console.log(err);
       } else {
         // Redirect to the updated product list
-        res.json(result);
+        res.send(result);
       }
       // Close the database
       client.close();
