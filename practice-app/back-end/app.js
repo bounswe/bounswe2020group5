@@ -13,6 +13,7 @@ var giveratingRouter = require('./routes/giverating');
 var searchTrendVendorRouter = require('./routes/searchtrendforvendor');
 var searchTrendProductRouter = require('./routes/searchtrendforproduct');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
+var exchangeratesRouter = require('./routes/exchangerates');
 var showfollowersRouter = require('./routes/showfollowers');
 var database = require("./routes/database")
 
@@ -41,6 +42,7 @@ app.use('/ratings', ratingsRouter);
 app.use('/giverating', giveratingRouter);
 app.use('/searchtrendforproduct', searchTrendProductRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
+app.use('/exchangerates', exchangeratesRouter);
 app.use('/searchtrendforvendor', searchTrendVendorRouter);
 app.use('/showfollowers', showfollowersRouter);
 app.use('/database', database)
