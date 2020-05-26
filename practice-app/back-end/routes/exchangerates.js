@@ -3,9 +3,8 @@ var router = express.Router();
 const axios = require('axios');
 
 router.get('/', (req, res, next) => {
-  axios.get('https://api.exchangeratesapi.io/latest?base=USD')
+  axios.get('https://api.exchangeratesapi.io/latest?base=TRY')
   .then(response => {
-    console.log(res.json(response.data))
     res.send(response.data)
   })
   .catch(error => {
