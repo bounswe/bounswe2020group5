@@ -16,7 +16,12 @@ function App() {
             <ShowFollowers />
             <Searchtrendforvendor />
             <Vendortweets />
-
+            <div>
+            <a href="http://34.224.5.21:3000/database/newproduct">Add New Product to List</a>
+            </div>
+            <div>
+            <a href="http://34.224.5.21:3000/database/thelist">Show The Product List</a>
+            </div>
         </div>
     );
 }

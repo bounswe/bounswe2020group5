@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
+import Tweet from './Tweet';
 
 class Vendortweets extends React.Component {
     constructor(props) {
@@ -15,7 +16,13 @@ class Vendortweets extends React.Component {
                 return resp.json()
             })
             .then((data) => {
-                this.setState({ Results: data });
+                let result = '';
+                var array = JSON.parse(data);
+                for (let index = 0; index < array.length; index++) {
+                  const element = array[index];
+                  result+=element+"\n";
+                }
+                this.setState({Results: result});
             })
             .catch((error) => {
                 console.log(error, "catch the hoop")
@@ -30,8 +37,10 @@ class Vendortweets extends React.Component {
                     type='text'
                     onChange={this.GetTweets}
                 />
-                <div>
-                    {this.state.Results}
+                <div >
+                    {this.state.Results.split("\n").map((i,key) => {
+                    return <div key={key}> <Tweet tweet={i}></Tweet> </div>;
+                    })}
                 </div>
             </form>
         );
