@@ -5,16 +5,20 @@ import GetComments from './Components/GetComments';
 import SearchTrend from './Components/SearchTrend';
 import UserMentions from './Components/UserMentions';
 import ShowFollowers from './Components/ShowFollowers';
-
+import Searchtrendforvendor from './Components/searchtrendforvendor';
+import Vendortweets from './Components/Vendortweets'
 function App() {
-  return (
-    <div className="App">
-      <GetComments />
-      <SearchTrend />
-      <UserMentions />
-      <ShowFollowers />
-    </div>
-  );
+    return (
+        <div className="App">
+            <GetComments />
+            <SearchTrend />
+            <UserMentions />
+            <ShowFollowers />
+            <Searchtrendforvendor />
+            <Vendortweets />
+
+        </div>
+    );
 }
 
 export default App;

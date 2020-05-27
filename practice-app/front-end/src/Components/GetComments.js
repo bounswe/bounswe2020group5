@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Tweet from './Tweet';
 
 class GetComments extends React.Component {
   constructor(props) {
@@ -9,20 +8,14 @@ class GetComments extends React.Component {
   }
   GetTweets = (event) => {
 
-    fetch("http://localhost:3000/twittercomments?product="+event.target.value+"&count=10", {
+    fetch("http://localhost:3000/twittercomments?product_name="+event.target.value+"&count=10", {
         method: "GET",
       })
       .then((resp) => {
         return resp.json()
       }) 
       .then((data) => {
-        let result = '';
-        var array = JSON.parse(data);
-        for (let index = 0; index < array.length; index++) {
-          const element = array[index];
-          result+=element+"\n";
-        }
-        this.setState({Results: result});
+        this.setState({Results: data});
       })
       .catch((error) => {
         console.log(error, "catch the hoop")
@@ -37,10 +30,8 @@ class GetComments extends React.Component {
         type='text'
         onChange={this.GetTweets}
       />
-        <div >
-            {this.state.Results.split("\n").map((i,key) => {
-            return <div key={key}> <Tweet tweet={i}></Tweet> </div>;
-            })}
+          <div>
+            {this.state.Results}
           </div>
       </form>
     );
