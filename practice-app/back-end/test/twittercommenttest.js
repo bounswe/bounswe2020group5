@@ -8,7 +8,7 @@ chai.should();
 
 chai.use(chaiHttp);
 
-describe("db api", () => {
+describe("checttwit api", () => {
     // test root
     describe("GET /twittercomments", () => {
         it("Root should respond in time", (done) => {
