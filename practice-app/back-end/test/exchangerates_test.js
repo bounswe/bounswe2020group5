@@ -22,7 +22,7 @@ describe("Unit testing exchangerates", () => {
                     response.body.should.have.property('rates');
                     response.body.should.have.property('base');
                     response.body.should.have.property('date');
-                    chai.expect(response.body.status.code).to.equal(200);
+                    chai.expect(response.status).to.equal(200);
                 done();
                 });
         });

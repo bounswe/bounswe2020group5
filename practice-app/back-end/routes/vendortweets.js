@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
   var client = new Twitter(key);
   //To specify searching parameters
   var options = { screen_name: req.query.vendor_name,
-                count: 100 };
+                count: 10 };
 
 var dict = {};
 
@@ -21,7 +21,7 @@ if(!err){
     dict[data[i].text] = data[i].favorite_count; //defining pairs for dictionary
       }
       //get the keys and mapp them with its regarding values
-      items = Object.keys(dict).map(function (key) {
+      let items = Object.keys(dict).map(function (key) {
         return [key, dict[key]];
       });
       //sorted them one by one
@@ -29,9 +29,9 @@ if(!err){
         return second[1] - first[1];
       });
       //create array for sorted verision
-      sorted_array = [];
+      let sorted_array = [];
       //fill this array with first 10 tweets
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < Math.min(10,items.length); i++) {
         sorted_array.push(items[i][0]);
       }
       //create the json file
