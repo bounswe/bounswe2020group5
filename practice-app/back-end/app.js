@@ -6,11 +6,8 @@ var logger = require('morgan');
 const mongo = require('mongodb');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var twittercommentsRouter = require('./routes/twittercomments');
 var vendortweetsRouter = require('./routes/vendortweets');
-var ratingsRouter = require('./routes/ratings');
-var giveratingRouter = require('./routes/giverating');
 var searchTrendVendorRouter = require('./routes/searchtrendforvendor');
 var searchTrendProductRouter = require('./routes/searchtrendforproduct');
 var filterusertweetsRouter = require('./routes/filter_user_tweets');
@@ -37,11 +34,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/twittercomments', twittercommentsRouter);
 app.use('/vendortweets', vendortweetsRouter);
-app.use('/ratings', ratingsRouter);
-app.use('/giverating', giveratingRouter);
 app.use('/searchtrendforproduct', searchTrendProductRouter);
 app.use('/filter_user_tweets', filterusertweetsRouter);
 app.use('/exchangerates', exchangeratesRouter);
