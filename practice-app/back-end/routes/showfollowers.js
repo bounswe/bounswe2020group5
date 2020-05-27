@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   client.get('users/show/', params, function (error, data, response) {
       if (!error) { 
         var followers = data.followers_count; //get the follower count of the user
-        res.json(followers);
+        res.json(JSON.stringify(followers));
       }
   });
 });
