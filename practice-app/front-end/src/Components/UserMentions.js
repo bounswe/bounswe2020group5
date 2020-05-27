@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Tweet from './Tweet';
 
 class UserMentions extends React.Component {
   constructor(props) {
@@ -19,8 +20,14 @@ class UserMentions extends React.Component {
         return resp.json()
       }) 
       .then((data) => {
-        this.setState({Results: data});
-      })
+        let result = '';
+        var array = JSON.parse(data);
+        for (let index = 0; index < array.length; index++) {
+          const element = array[index];
+          result+=element+"\n";
+        }
+        this.setState({Results: result});
+        })
       .catch((error) => {
         console.log(error, "catch the hoop")
       })
@@ -44,9 +51,11 @@ class UserMentions extends React.Component {
                 />
             </form>
     
-            <div>
-            {this.state.Results}
-            </div>
+            <div >
+            {this.state.Results.split("\n").map((i,key) => {
+            return <div key={key}> <Tweet tweet={i}></Tweet> </div>;
+            })}
+          </div>
         </div>
     );
   }

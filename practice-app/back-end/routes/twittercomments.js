@@ -19,7 +19,7 @@ router.get('/', function (req, res, next) {
   //defining dictiornary to store tweets
   var dict = {};
 
-      sorted_array = [];
+  var    sorted_array = [];
   //gets the tweets here
   client.get('/search/tweets/', params, function (error, data, response) {
     if (!error) { //if there is no error
@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
       }
 	    try{
       //get the keys and mapp them with its regarding values
-      items = Object.keys(dict).map(function (key) {
+        var items = Object.keys(dict).map(function (key) {
         return [key, dict[key]];
       });
       //sorted them one by one

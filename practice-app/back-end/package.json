@@ -18,7 +18,6 @@
     "mocha": "^7.2.0",
     "mongodb": "^3.5.7",
     "morgan": "~1.9.1",
-    "twit": "^2.2.11",
     "twitter": "^1.7.1"
   },
   "main": "app.js",
