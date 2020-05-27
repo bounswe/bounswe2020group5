@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET twitter comments. */
 router.get('/', function (req, res, next) {
+
   // import twitter
   var Twitter = require('twitter');
   //get the all access keys
@@ -10,10 +11,12 @@ router.get('/', function (req, res, next) {
   //create new twitter object
   var client = new Twitter(key);
   //To specify searching parameters
-  var options = { screen_name: req.query.vendor_name,
-                count: 10 };
+  var options = {
+    screen_name: req.query.vendor_name,
+    count: 10 
+  };
 
-var dict = {};
+    var dict = {};
 
 client.get('statuses/user_timeline', options , function(err, data) {
 if(!err){
