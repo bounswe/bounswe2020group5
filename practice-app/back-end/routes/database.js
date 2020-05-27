@@ -25,7 +25,8 @@ router.get('/', function(req, res, next) {
     client.close();
     console.log("close")
   })
-  res.send("Check console log")
+  // res.send("Check console log")
+  res.render('dbhome', {title: 'DB Home' });
 });
 
 router.get('/thelist', function(req,res){
@@ -96,7 +97,7 @@ router.post('/addproduct', function(req, res){
         console.log(err);
       } else {
         // Redirect to the updated product list
-        res.send(result);
+        res.json(result);
       }
       // Close the database
       client.close();
