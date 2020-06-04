@@ -17,7 +17,7 @@ In this course, we will create a E-Commerce Platform in accordance with our cust
 to sell or buy all kind of products(e.g., electronic, home). More details can be found [here](https://github.com/bounswe/bounswe2020group5/blob/master/CMPE352_Spring20192020_ECommercePlatform.pdf).
 
 ## Practice App
-http://52.87.219.95:3001/?
+http://52.87.219.95:3001/
 
 ## Group Members
 * [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
