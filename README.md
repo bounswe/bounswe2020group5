@@ -30,4 +30,5 @@ http://134.122.58.157:3001
 * [Mısra Yavuz](https://github.com/bounswe/bounswe2020group5/wiki/M%C4%B1sra-Yavuz)
 * [Yaşar Selçuk Çalışkan](https://github.com/bounswe/bounswe2020group5/wiki/Yasar-Selcuk-Caliskan)
 * [M. Zeynep Çayırçimen](https://github.com/bounswe/bounswe2020group5/wiki/M.-Zeynep-%C3%87ay%C4%B1r%C3%A7imen)
+* [Yusuf Yüksel](https://github.com/bounswe/bounswe2020group5/wiki/Yusuf-Yuksel)
 
