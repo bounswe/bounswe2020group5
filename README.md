@@ -23,7 +23,6 @@ http://134.122.58.157:3001
 * [Kayacan Vesek (Communicator)](https://github.com/bounswe/bounswe2020group5/wiki/Kayacan-Vesek)
 * [Sertay Akpınar](https://github.com/bounswe/bounswe2020group5/wiki/Sertay-Akp%C4%B1nar)
 * [Muhammed Halas](https://github.com/bounswe/bounswe2020group5/wiki/Muhammed-Halas)
-* [M.Emre Demir](https://github.com/bounswe/bounswe2020group5/wiki/M.-Emre-Demir)
 * [Emre Hoşer](https://github.com/bounswe/bounswe2020group5/wiki/Emre-Hoser)
 * [İsmet Sarı](https://github.com/bounswe/bounswe2020group5/wiki/sarismet)
 * [Volkan Bulca](https://github.com/bounswe/bounswe2020group5/wiki/Volkan-Bulca)
@@ -32,4 +31,8 @@ http://134.122.58.157:3001
 * [M. Zeynep Çayırçimen](https://github.com/bounswe/bounswe2020group5/wiki/M.-Zeynep-%C3%87ay%C4%B1r%C3%A7imen)
 * [Yusuf Yüksel](https://github.com/bounswe/bounswe2020group5/wiki/Yusuf-Yuksel)
 * [Ramiz Dündar](https://github.com/bounswe/bounswe2020group5/wiki/Ramiz-Dündar)
+* Algı Kanar
+
+## Old Group Members
+* [M.Emre Demir](https://github.com/bounswe/bounswe2020group5/wiki/M.-Emre-Demir)
 
