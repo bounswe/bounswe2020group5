@@ -1,23 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import NoMatch from './common/NoMatch'
+import Home from "./home/Home";
+import Login from "./login/Login";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route path="/" exact component={Home} />
+        {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
+        <Route path="/login" component={Login} />
+        <Route path='/home' render={() => <Redirect to= "/" />} />
+        <Route component={NoMatch} />
+      </Switch>
     </div>
   );
 }
