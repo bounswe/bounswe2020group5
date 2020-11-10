@@ -1,7 +1,11 @@
 ## How to Prepare Development Environment?
 * Pull the code.
 * Type `cd /path/to/backend/`.
-* Type `source init.sh` to run bash script.
+* Type `virtualenv venv` to create virutal environment venv.
+* In order to activate virtual environment venv,
+    + In Linux and macOS, type `source venv/Scripts/activate`
+    + In Windows, type `venv\Scripts\activate`
+* Install required python packages via typing `pip install -r requirements.txt`
 * Virtual environment **venv** is created and activated with required python packages via running bash script **init.sh**.
 
 **Note:** If new python packages are added to **"requirements.txt"**, you have to `source init.sh` again to load these packages into virtual environment.  
