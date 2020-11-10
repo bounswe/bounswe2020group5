@@ -7,7 +7,7 @@
 **Note:** If new python packages are added to **"requirements.txt"**, you have to `source init.sh` again to load these packages into virtual environment.  
 ***
 ## How to Start Development Server?
-* `cd /path/to/backend/bupazar` 
+* `cd /path/to/backend/` 
 * `python manage.py runserver`
  
  Now that the server’s running, visit http://127.0.0.1:8000/ with your Web browser. 
