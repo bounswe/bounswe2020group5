@@ -5,6 +5,12 @@
     <color name="primary_maroon">#7A0010</color>
     <color name="secondary_blue">#0B3954</color>
     <color name="tertiary_yellow">#F3DE8A</color>
-    <color name="quaternary_pink">#F3DE8A</color>
+    <color name="quaternary_pink">#EB9486</color>
     <color name="quinary_purple">#7E7F9A</color>
+
+    <color name="colorTextDefault">#131313</color>
+    <color name="colorTextLabelDefault">#353535</color>
+    <color name="colorTextHintDefault">#434343</color>
+
+    <color name="colorTextWhite">#F3F3F3</color>
 </resources>
