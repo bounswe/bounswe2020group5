@@ -1,3 +1,5 @@
 djongo
 dnspython
 djangorestframework
+pyyaml
+uritemplate
