@@ -1,13 +1,17 @@
 ## How to Prepare Development Environment?
 * Pull the code.
 * Type `cd /path/to/backend/`.
-* Type `source init.sh` to run bash script.
-* Virtual environment **venv** is created and activated with required python packages via running bash script **init.sh**.
+* Type `virtualenv venv` to create virtual environment venv.
+* In order to activate virtual environment venv,
+    + In Linux and macOS, type `source venv/Scripts/activate`
+    + In Windows, type `venv\Scripts\activate`
+* Install required python packages via typing `pip install -r requirements.txt` 
+* Virtual environment **venv** is created and activated with required python packages.
 
-**Note:** If new python packages are added to **"requirements.txt"**, you have to `source init.sh` again to load these packages into virtual environment.  
+**Note:** If new python packages are added to **"requirements.txt"**, you have to type `pip install -r requirements.txt` after venv is activated.
 ***
 ## How to Start Development Server?
-* `cd /path/to/backend/bupazar` 
+* `cd /path/to/backend/` 
 * `python manage.py runserver`
  
  Now that the server’s running, visit http://127.0.0.1:8000/ with your Web browser. 
