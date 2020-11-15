@@ -23,9 +23,3 @@
 * [The Right Way to Use Virtual Environments](https://medium.com/@jtpaasch/the-right-way-to-use-virtual-environments-1bc255a0cba7)
 * [Is it bad to have my virtualenv directory inside my git repository?](https://stackoverflow.com/questions/6590688/is-it-bad-to-have-my-virtualenv-directory-inside-my-git-repository/12657803#12657803)
 * [gitignore](https://github.com/github/gitignore/blob/master/Python.gitignore)
-
-
-
-
-
-
