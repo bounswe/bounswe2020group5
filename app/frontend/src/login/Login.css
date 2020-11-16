@@ -40,3 +40,12 @@ body * {
     display: inline-block;
     text-align: right;
 }
+
+.social-login {
+    text-align: center;
+    justify-content: center;
+}
+
+.button-div2 {
+    padding: 16px 16px 0px 16px;
+}
