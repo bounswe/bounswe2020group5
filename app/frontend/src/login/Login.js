@@ -16,6 +16,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+function onChangeUsername(event) {
+  console.log(event.target.value)
+}
+
+
+function onChangePassword(event) {
+  console.log(event.target.value)
+}
+
+
 function Login() {
   const classes = useStyles();
   return (
@@ -27,7 +37,12 @@ function Login() {
         <h2 style={{textAlign: "center"}}>Log in</h2>
         <form className={classes.loginFormRoot}  noValidate autoComplete="off">
           <div className="username">
-            <TextField id="outlined-basic" label="E-mail or username" variant="outlined" />
+            <TextField 
+              id="outlined-basic" 
+              label="E-mail or username" 
+              variant="outlined" 
+              onChange={onChangeUsername}
+            />
           </div>
           <div className="password">
             <TextField 
@@ -36,6 +51,7 @@ function Login() {
               type="password"
               autoComplete="current-password"
               variant="outlined"
+              onChange={onChangePassword}
             />
           </div>
         </form>
