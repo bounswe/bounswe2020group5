@@ -2,8 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link'
-import GoogleButton from 'react-google-button'
-import DeleteIcon from '@material-ui/icons/Delete'
 import SvgIcon from '@material-ui/core/SvgIcon';
 import './Login.css'
 
