@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link'
 import './Login.css'
 
 
@@ -10,8 +12,15 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "& > div": {
-      margin: '24px',
-    }
+      margin: theme.spacing(2),
+    },
+  },
+  loginButtonRoot: {
+    '& > *': {
+      width: '100%',
+      height: '56px',
+    },
+    
   },
 }));
 
@@ -34,7 +43,7 @@ function Login() {
         <img src="/img/logo.png" alt="bupazar logo" width="100" height="100"/>
       </div>
       <div className="login-container">
-        <h2 style={{textAlign: "center"}}>Log in</h2>
+        <h2 style={{textAlign: "center"}}>Login</h2>
         <form className={classes.loginFormRoot}  noValidate autoComplete="off">
           <div className="username">
             <TextField 
@@ -55,6 +64,25 @@ function Login() {
             />
           </div>
         </form>
+        <div className="button-div">
+          <div className={classes.loginButtonRoot}>
+            <Button variant="contained" color="primary">
+              <b>Log In</b>
+            </Button>
+          </div>
+        </div>
+        <div >
+          <div className="forgot-password">
+            <Link href="/forgot">
+              <b>Forget password?</b>
+            </Link>
+          </div>
+          <div className="signup">
+            <Link href="/signup">
+              <b>Sign Up</b>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
