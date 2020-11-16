@@ -1,0 +1,28 @@
+body * {
+    box-sizing: border-box;
+}
+
+
+.login-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 36px 72px 72px 72px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    max-width: 472px;
+    width: 100%;
+    color: #484848;
+    margin: 0 auto;
+}
+
+
+.username {
+    margin: 0 auto;
+}
+
+
+.login-header {
+    text-align: center;
+    padding: 36px;
+}
