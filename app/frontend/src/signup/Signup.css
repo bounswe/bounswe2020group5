@@ -2,7 +2,7 @@ body * {
     box-sizing: border-box;
 }
 
-.login-container {
+.signup-container {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -13,6 +13,7 @@ body * {
     width: 100%;
     color: #484848;
     margin: 0 auto;
+    margin-bottom: 100px;
 }
 
 .username {

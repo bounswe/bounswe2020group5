@@ -49,3 +49,8 @@ body * {
 .button-div2 {
     padding: 16px 16px 0px 16px;
 }
+
+.h5-style {
+    padding: 16px 16px 8px 16px;
+    text-align: center;
+}

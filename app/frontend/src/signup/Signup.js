@@ -73,7 +73,7 @@ function Login() {
       <div className="login-header">
         <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
       </div>
-      <div className="login-container">
+      <div className="signup-container">
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
@@ -153,10 +153,10 @@ function Login() {
         </div>
 
         <div>
-          <div style={{ textAlign: 'center' }}>
-            <p>
+          <div style={{ textAlign: 'center', margin: '8px'}}>
+            <Typography variant="body1" gutterBottom>
               - or -
-            </p>
+            </Typography>
           </div>
           <div className="button-div2">
             <div className={classes.loginButtonRoot}>

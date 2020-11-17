@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link'
 import SvgIcon from '@material-ui/core/SvgIcon';
+import Typography from '@material-ui/core/Typography';
 import './Login.css'
 
 
@@ -44,7 +45,9 @@ function Login() {
         <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
       </div>
       <div className="login-container">
-        <h2 style={{ textAlign: "center" }}>Login</h2>
+      <Typography className="h5-style" variant="h5" gutterBottom>
+          Log In to bupazar
+        </Typography>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
             <TextField
@@ -74,22 +77,26 @@ function Login() {
         </div>
         <div>
           <div className="forgot-password">
-            <Link href="/forgot">
-              <b>Forgot password?</b>
-            </Link>
+            <Typography variant="body1" gutterBottom>
+              <Link href="/forgot">
+                <b>Forgot password?</b>
+              </Link>
+            </Typography>
           </div>
           <div className="signup">
-            <Link href="/signup">
-              <b>Sign Up</b>
-            </Link>
+            <Typography variant="body1" gutterBottom>
+              <Link href="/signup">
+                <b>Sign Up</b>
+              </Link>
+            </Typography>
           </div>
         </div>
 
         <div>
-          <div style={{ textAlign: 'center' }}>
-            <p>
+          <div style={{ textAlign: 'center', margin: '8px'}}>
+            <Typography variant="body1" gutterBottom>
               - or -
-            </p>
+            </Typography>
           </div>
           <div className="button-div2">
             <div className={classes.loginButtonRoot}>
