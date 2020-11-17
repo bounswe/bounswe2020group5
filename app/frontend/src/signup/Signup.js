@@ -87,21 +87,21 @@ function Signup() {
           </div>
           <div className="right">
             <TextField
-              id="standard-password-input"
+              id="standard-lname-input"
               label="Last Name"
               variant="outlined"
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-password-input"
+              id="standard-email-input"
               label="E-mail"
               variant="outlined"
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-password-input"
+              id="standard-uname-input"
               label="Username"
               variant="outlined"
               onChange={onChangeUsername}
@@ -119,7 +119,7 @@ function Signup() {
           </div>
           <div className="right2">
             <TextField
-              id="standard-password-input"
+              id="standard-password2-input"
               label="Confirm"
               type="password"
               autoComplete="current-password"
@@ -138,7 +138,7 @@ function Signup() {
         <div>
           <div className="forgot-password">
             <Typography variant="body1" gutterBottom>
-              <Link href="/forgot">
+              <Link href="/signup/vendor">
                 <b>Are you a vendor?</b>
               </Link>
             </Typography>
