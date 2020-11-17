@@ -2,16 +2,45 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link'
-import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
-import './Login.css'
+import SvgIcon from '@material-ui/core/SvgIcon';
+import './Signup.css'
 
 
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
+    "& .left ": {
+      display: 'inline',
+      float: 'left',
+      width: '223px',
+      margin: '16px 8px 16px 16px',
+    },
+
+    "& .right ": {
+      display: 'inline',
+      float: 'right',
+      width: '223px',
+      margin: '16px 16px 16px 8px',
+    },
+
+    "& .left2 ": {
+      display: 'inline',
+      float: 'left',
+      width: '223px',
+      margin: '0px 8px 16px 16px',
+    },
+
+    "& .right2 ": {
+      display: 'inline',
+      float: 'right',
+      width: '223px',
+      margin: '0px 16px 16px 8px',
+    },
+
     "& .MuiTextField-root": {
       width: '100%',
     },
+
 
     "& > div": {
       margin: theme.spacing(2),
@@ -37,30 +66,61 @@ function onChangePassword(event) {
 }
 
 
-function Login() {
+function Signup() {
   const classes = useStyles();
   return (
     <div className="login">
       <div className="login-header">
         <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
       </div>
-      <div className="login-container">
-      <Typography className="h5-style" variant="h5" gutterBottom>
-          Log In to bupazar
+      <div className="signup-container">
+        <Typography className="h5-style" variant="h5" gutterBottom>
+          Create your bupazar account
         </Typography>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
-          <div className="username">
+          <div className="left">
             <TextField
               id="outlined-basic"
-              label="E-mail or username"
+              label="First Name"
+              variant="outlined"
+            />
+          </div>
+          <div className="right">
+            <TextField
+              id="standard-lname-input"
+              label="Last Name"
+              variant="outlined"
+            />
+          </div>
+          <div className="username">
+            <TextField
+              id="standard-email-input"
+              label="E-mail"
+              variant="outlined"
+            />
+          </div>
+          <div className="username">
+            <TextField
+              id="standard-uname-input"
+              label="Username"
               variant="outlined"
               onChange={onChangeUsername}
             />
           </div>
-          <div className="password">
+          <div className="left2">
             <TextField
               id="standard-password-input"
               label="Password"
+              type="password"
+              autoComplete="current-password"
+              variant="outlined"
+              onChange={onChangePassword}
+            />
+          </div>
+          <div className="right2">
+            <TextField
+              id="standard-password2-input"
+              label="Confirm"
               type="password"
               autoComplete="current-password"
               variant="outlined"
@@ -71,22 +131,22 @@ function Login() {
         <div className="button-div">
           <div className={classes.loginButtonRoot}>
             <Button variant="contained" color="primary">
-              <b>Log In</b>
+              <b>Sign Up</b>
             </Button>
           </div>
         </div>
         <div>
           <div className="forgot-password">
             <Typography variant="body1" gutterBottom>
-              <Link href="/forgot">
-                <b>Forgot password?</b>
+              <Link href="/signup/vendor">
+                <b>Are you a vendor?</b>
               </Link>
             </Typography>
           </div>
           <div className="signup">
             <Typography variant="body1" gutterBottom>
-              <Link href="/signup">
-                <b>Sign Up</b>
+              <Link href="/login">
+                <b>Log In</b>
               </Link>
             </Typography>
           </div>
@@ -111,20 +171,21 @@ function Login() {
                   <path d="M17.64,9.20454545 C17.64,8.56636364 17.5827273,7.95272727 17.4763636,7.36363636 L9,7.36363636 L9,10.845 L13.8436364,10.845 C13.635,11.97 13.0009091,12.9231818 12.0477273,13.5613636 L12.0477273,15.8195455 L14.9563636,15.8195455 C16.6581818,14.2527273 17.64,11.9454545 17.64,9.20454545 L17.64,9.20454545 Z" id="Shape" fill="#4285F4"></path>
                 </SvgIcon>}
               >
-                Log in with google
+                                  Log in with google
               </Button>
             </div>
           </div>
           <div className="button-div2">
             <div className={classes.loginButtonRoot}>
               <Button
+                
                 variant="outlined"
                 color="primary"
                 //className={classes.button}
                 startIcon={
                   <SvgIcon>
-                    <rect fill="#3B5998" width="20" height="20"/>
-                    <path fill="#FFFFFF" d="M30.895,16.535l-0.553,5.23h-4.181v15.176h-6.28V21.766H16.75v-5.23h3.131v-3.149  c0-4.254,1.768-6.796,6.796-6.796h4.181v5.23h-2.615c-1.952,0-2.081,0.736-2.081,2.1v2.615H30.895z"/>
+                    <rect fill="#3B5998" width="20" height="20" />
+                    <path fill="#FFFFFF" d="M30.895,16.535l-0.553,5.23h-4.181v15.176h-6.28V21.766H16.75v-5.23h3.131v-3.149  c0-4.254,1.768-6.796,6.796-6.796h4.181v5.23h-2.615c-1.952,0-2.081,0.736-2.081,2.1v2.615H30.895z" />
                   </SvgIcon>}
               >
                 Log in with Facebook
@@ -138,4 +199,4 @@ function Login() {
 }
 
 
-export default Login;
+export default Signup;
