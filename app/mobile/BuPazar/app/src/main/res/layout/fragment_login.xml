@@ -86,6 +86,7 @@
 
     <Button
         android:id="@+id/buttonLogin"
+        android:backgroundTint="@color/secondary_blue"
         style="@style/ButtonPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,6 +102,7 @@
 
     <Button
         android:id="@+id/buttonRegister"
+        android:backgroundTint="@color/secondary_blue"
         style="@style/ButtonPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,6 +118,7 @@
 
     <Button
         android:id="@+id/buttonGuest"
+        android:backgroundTint="@color/secondary_blue"
         style="@style/ButtonPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
