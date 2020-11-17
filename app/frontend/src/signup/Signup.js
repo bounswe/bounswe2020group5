@@ -167,7 +167,7 @@ function Signup() {
               <Button
                 variant="outlined"
                 color="primary"
-                startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
+                startIcon={<img src="/img/google-icon.svg" alt="facebook icon" />}
                 style={{ textTransform: "none" }}
               >
                 Continue with Google
@@ -179,7 +179,7 @@ function Signup() {
               <Button
                 variant="outlined"
                 color="primary"
-                startIcon={<img src="/img/google-icon.svg" alt="google icon" />}
+                startIcon={<img src="/img/facebook-icon.svg" alt="google icon" />}
                 style={{ textTransform: "none" }}
               >
                 Continue with Facebook
