@@ -66,7 +66,7 @@ function onChangePassword(event) {
 }
 
 
-function Login() {
+function Signup() {
   const classes = useStyles();
   return (
     <div className="login">
@@ -199,4 +199,4 @@ function Login() {
 }
 
 
-export default Login;
+export default Signup;
