@@ -129,8 +129,8 @@ function Signup() {
         </form>
         <div className="button-div">
           <div className={classes.loginButtonRoot}>
-            <Button variant="contained" color="primary">
-              <b>Sign Up</b>
+            <Button variant="contained" color="primary" >
+              <b>Create account</b>
             </Button>
           </div>
         </div>
@@ -168,8 +168,9 @@ function Signup() {
                 variant="outlined"
                 color="primary"
                 startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
+                style={{ textTransform: "none" }}
               >
-                Log in with google
+                Continue with Google
               </Button>
             </div>
           </div>
@@ -179,8 +180,9 @@ function Signup() {
                 variant="outlined"
                 color="primary"
                 startIcon={<img src="/img/google-icon.svg" alt="google icon" />}
+                style={{ textTransform: "none" }}
               >
-                Log in with Facebook
+                Continue with Facebook
             </Button>
             </div>
           </div>
