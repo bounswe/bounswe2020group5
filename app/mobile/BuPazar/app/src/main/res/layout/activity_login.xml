@@ -7,4 +7,10 @@
     android:background="@color/white"
     tools:context=".page.activity.login.LoginActivity">
 
+    <FrameLayout
+        android:id="@+id/login_activity_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

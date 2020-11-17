@@ -15,7 +15,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
     }
-
+    //todo: check this function for any error(emre)
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if(currentFocus != null) {
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

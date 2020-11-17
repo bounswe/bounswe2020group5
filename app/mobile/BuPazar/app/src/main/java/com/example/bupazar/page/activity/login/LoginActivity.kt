@@ -3,10 +3,10 @@ package com.example.bupazar.page.activity.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.FirebaseApp
 import com.example.bupazar.R
 import com.example.bupazar.`interface`.ActivityChangeListener
 import com.example.bupazar.core.BaseActivity
+import com.example.bupazar.page.fragment.login.view.LoginFragment
 
 class LoginActivity : BaseActivity(), ActivityChangeListener {
 
@@ -15,7 +15,9 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        FirebaseApp.initializeApp(applicationContext)
+        supportFragmentManager.beginTransaction().replace(R.id.login_activity_navigation,LoginFragment()).commit()
+
+
     }
 
     override fun changeActivity(activity: AppCompatActivity) {
