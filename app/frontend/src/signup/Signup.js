@@ -66,6 +66,7 @@ function Signup() {
     fname: '',
     lname: '',
     email: '',
+    uname: '',
   });
 
   const [val, setVal] = useState({
@@ -74,6 +75,7 @@ function Signup() {
     fname: { error: false, message: '' },
     lname: { error: false, message: '' },
     email: { error: false, message: '' },
+    uname: { error: false, message: '' },
   });
 
   function onChange(event) {
@@ -137,7 +139,9 @@ function Signup() {
               id="uname"
               label="Username"
               variant="outlined"
-              
+              error={val.uname.error}
+              helperText={val.uname.message}
+              onChange={onChange}
             />
           </div>
           <div className="left2">

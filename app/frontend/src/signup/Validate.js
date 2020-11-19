@@ -1,12 +1,12 @@
 export default function validate(state) {
 
-
     var validation = {
         password: { error: false, message: '' },
         confirm: { error: false, message: '' },
         fname: { error: false, message: '' },
         lname: { error: false, message: '' },
         email: { error: false, message: '' },
+        uname: { error: false, message: '' },
     }
 
 
@@ -32,6 +32,10 @@ export default function validate(state) {
 
     if (!(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(state.email))) {
         validation.email = { error: true, message: 'Please enter a valid mail address' }
+    }
+
+    if (state.uname === '') {
+        validation.uname = { error: true, message: 'Required' }
     }
 
     return validation
