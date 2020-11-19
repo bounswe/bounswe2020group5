@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import './Signup.css'
-
+import { useState } from 'react';
+import validate from './Validate.js'
 
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
@@ -55,18 +56,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function onChangeUsername(event) {
-  console.log(event.target.value)
-}
-
-
-function onChangePassword(event) {
-  console.log(event.target.value)
-}
-
-
 function Signup() {
+
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    password: '',
+    confirm: '',
+  });
+
+  const [val, setVal] = useState({
+    password: { error: false, message: '' },
+  });
+
+  function onChangeUsername(event) {
+    console.log(event.target.value)
+  }
+
+  function onChangePassword(event) {
+    var mutableState = state
+    mutableState.password = event.target.value
+    setState(mutableState)
+  }
+
+  function onChangeConfirm(event) {
+    var mutableState = state
+    mutableState.confirm = event.target.value
+    setState(mutableState)
+  }
+
+  function handleOnClick() {
+    console.log(state)
+    setVal(validate(state))
+  }
+
+
+
+
   return (
     <div className="login">
       <div className="login-header">
@@ -76,6 +102,8 @@ function Signup() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
+
+
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="left">
             <TextField
@@ -108,32 +136,40 @@ function Signup() {
           </div>
           <div className="left2">
             <TextField
+              error={val.password.error}
               id="standard-password-input"
               label="Password"
               type="password"
               autoComplete="current-password"
               variant="outlined"
+              helperText={val.password.message}
               onChange={onChangePassword}
             />
           </div>
           <div className="right2">
             <TextField
-              id="standard-password2-input"
+              error={val.password.error}
+              id="standard-confirm-input"
               label="Confirm"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              onChange={onChangePassword}
+              helperText={val.password.message}
+              onChange={onChangeConfirm}
             />
           </div>
         </form>
+
+
         <div className="button-div">
           <div className={classes.loginButtonRoot}>
-            <Button variant="contained" color="primary" >
+            <Button variant="contained" color="primary" onClick={handleOnClick}>
               <b>Create account</b>
             </Button>
           </div>
         </div>
+
+
         <div>
           <div className="forgot-password">
             <Button
