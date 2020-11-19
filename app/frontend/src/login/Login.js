@@ -3,6 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import { useState } from 'react';
+import validate from './Validate.js'
 import './Login.css'
 
 
@@ -11,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTextField-root": {
       width: '100%',
     },
-
     "& > div": {
       margin: theme.spacing(2),
     },
@@ -21,23 +22,35 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       height: '56px',
     },
-
   },
 }));
 
 
-function onChangeUsername(event) {
-  console.log(event.target.value)
-}
-
-
-function onChangePassword(event) {
-  console.log(event.target.value)
-}
-
-
 function Login() {
+
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    password: '',
+    uid: '',
+  });
+
+  const [val, setVal] = useState({
+    password: { error: false, message: '' },
+    uid: { error: false, message: '' },
+  });
+
+  function onChange(event) {
+    var mutableState = state
+    mutableState[event.target.id] = event.target.value
+    setState(mutableState)
+  }
+
+  function handleOnClick() {
+    setVal(validate(state, val))
+  }
+
+
   return (
     <div className="login">
       <div className="login-header">
@@ -50,21 +63,23 @@ function Login() {
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
             <TextField
-              id="outlined-basic"
+              id="uid"
               label="E-mail or username"
               variant="outlined"
-              onChange={onChangeUsername}
-            />
+              error={val.uid.error}
+              helperText={val.uid.message}
+              onChange={onChange}            />
           </div>
           <div className="password">
             <TextField
-              id="standard-password-input"
+              id="password"
               label="Password"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              onChange={onChangePassword}
-            />
+              error={val.password.error}
+              helperText={val.password.message}
+              onChange={onChange}            />
           </div>
         </form>
         <div className="button-div">
@@ -73,6 +88,7 @@ function Login() {
               variant="contained"
               color="primary"
               className="button-style"
+              onClick={handleOnClick}
             >
               <b>Continue</b>
             </Button>
