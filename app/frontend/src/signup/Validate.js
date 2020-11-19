@@ -1,5 +1,3 @@
-import { string } from "prop-types"
-
 export default function validate(state) {
 
 
@@ -8,6 +6,7 @@ export default function validate(state) {
         confirm: { error: false, message: '' },
         fname: { error: false, message: '' },
         lname: { error: false, message: '' },
+        email: { error: false, message: '' },
     }
 
 
@@ -29,6 +28,10 @@ export default function validate(state) {
 
     if (state.lname === '') {
         validation.lname = { error: true, message: 'Required' }
+    }
+
+    if (!(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(state.email))) {
+        validation.email = { error: true, message: 'Please enter a valid mail address' }
     }
 
     return validation
