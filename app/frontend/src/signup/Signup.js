@@ -67,6 +67,7 @@ function Signup() {
 
   const [val, setVal] = useState({
     password: { error: false, message: '' },
+    confirm: { error: false, message: '' },
   });
 
   function onChangeUsername(event) {
@@ -87,7 +88,7 @@ function Signup() {
 
   function handleOnClick() {
     console.log(state)
-    setVal(validate(state))
+    setVal(validate(state, val))
   }
 
 
@@ -148,13 +149,13 @@ function Signup() {
           </div>
           <div className="right2">
             <TextField
-              error={val.password.error}
+              error={val.confirm.error}
               id="standard-confirm-input"
               label="Confirm"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              helperText={val.password.message}
+              helperText={val.confirm.message}
               onChange={onChangeConfirm}
             />
           </div>
