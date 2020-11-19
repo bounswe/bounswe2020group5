@@ -63,26 +63,20 @@ function Signup() {
   const [state, setState] = useState({
     password: '',
     confirm: '',
+    fname: '',
+    lname: '',
   });
 
   const [val, setVal] = useState({
     password: { error: false, message: '' },
     confirm: { error: false, message: '' },
+    fname: { error: false, message: '' },
+    lname: { error: false, message: '' },
   });
 
-  function onChangeUsername(event) {
-    console.log(event.target.value)
-  }
-
-  function onChangePassword(event) {
+  function onChange(event) {
     var mutableState = state
-    mutableState.password = event.target.value
-    setState(mutableState)
-  }
-
-  function onChangeConfirm(event) {
-    var mutableState = state
-    mutableState.confirm = event.target.value
+    mutableState[event.target.id] = event.target.value
     setState(mutableState)
   }
 
@@ -108,55 +102,61 @@ function Signup() {
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="left">
             <TextField
-              id="outlined-basic"
+              error={val.fname.error}
+              helperText={val.fname.message}
+              id="fname"
               label="First Name"
               variant="outlined"
+              onChange={onChange}
             />
           </div>
           <div className="right">
             <TextField
-              id="standard-lname-input"
+              error={val.lname.error}
+              helperText={val.lname.message}
+              id="lname"
               label="Last Name"
               variant="outlined"
+              onChange={onChange}
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-email-input"
+              id="email"
               label="E-mail"
               variant="outlined"
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-uname-input"
+              id="uname"
               label="Username"
               variant="outlined"
-              onChange={onChangeUsername}
+              
             />
           </div>
           <div className="left2">
             <TextField
               error={val.password.error}
-              id="standard-password-input"
+              helperText={val.password.message}
+              id="password"
               label="Password"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              helperText={val.password.message}
-              onChange={onChangePassword}
+              onChange={onChange}
             />
           </div>
           <div className="right2">
             <TextField
               error={val.confirm.error}
-              id="standard-confirm-input"
+              id="confirm"
               label="Confirm"
               type="password"
               autoComplete="current-password"
               variant="outlined"
               helperText={val.confirm.message}
-              onChange={onChangeConfirm}
+              onChange={onChange}
             />
           </div>
         </form>
