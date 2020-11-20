@@ -71,24 +71,24 @@ export default function SimpleTabs() {
 
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        Electronic
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Fashion
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Home & Kitchen
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Sports & Outdoors
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Personal Care
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Hobbies & Books
-      </TabPanel>
+      {/*<TabPanel value={value} index={0}>*/}
+      {/*  Electronic*/}
+      {/*</TabPanel>*/}
+      {/*<TabPanel value={value} index={1}>*/}
+      {/*  Fashion*/}
+      {/*</TabPanel>*/}
+      {/*<TabPanel value={value} index={2}>*/}
+      {/*  Home & Kitchen*/}
+      {/*</TabPanel>*/}
+      {/*<TabPanel value={value} index={3}>*/}
+      {/*  Sports & Outdoors*/}
+      {/*</TabPanel>*/}
+      {/*<TabPanel value={value} index={4}>*/}
+      {/*  Personal Care*/}
+      {/*</TabPanel>*/}
+      {/*<TabPanel value={value} index={5}>*/}
+      {/*  Hobbies & Books*/}
+      {/*</TabPanel>*/}
 
     </div>
   );

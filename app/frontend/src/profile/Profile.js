@@ -26,6 +26,7 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Footer from "../components/Footer";
 
 
 
@@ -34,19 +35,28 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    paddingLeft: "2rem",
   },
   nested: {
     paddingLeft: theme.spacing(4),
   },
   gridroot: {
     flexGrow: 1,
+    marginTop:"1rem",
+    marginLeft:"1rem",
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  txt:{
+    fontSize: 20,
+  },
+  grid2:{
+    marginBottom:"2.8rem",
+  },
+  ftr:{
+    marginTop:"2rem",
+  }
 }));
 
 function Profile() {
@@ -76,86 +86,133 @@ function Profile() {
           </Link>
         </Breadcrumbs>
       </div>
-      <div style={{marginLeft:"2.5rem"}}>
-        <IconButton>
-          <Badge>
-            <AccountCircleOutlinedIcon style={{fontSize:"2.5rem",color:"#525b60"}}/>
-          </Badge>
-        </IconButton>
-        <InputBase
-          style={{
-            color: "#525B60",
-            marginTop:"1.5rem",
-            marginBottom:"1rem"
-          }}
-          defaultValue="Zeynep Çayırçimen"
-          inputProps={{ 'aria-label': 'new-arrivals' }}
-          disabled={true}
-        />
+
+
+      <div className={classes.gridroot}>
+        <Grid container spacing={4}>
+          <Grid item xs={2.5}>
+            <Paper className={classes.paper}>
+              <div style={{marginLeft:"1rem"}}>
+                <IconButton>
+                  <Badge>
+                    <AccountCircleOutlinedIcon style={{fontSize:"2.5rem",color:"#525b60"}}/>
+                  </Badge>
+                </IconButton>
+                <InputBase
+                  style={{
+                    color: "#525B60",
+                    marginTop:"1.5rem",
+                    marginBottom:"1rem"
+                  }}
+                  defaultValue="Zeynep Çayırçimen"
+                  inputProps={{ 'aria-label': 'new-arrivals' }}
+                  disabled={true}
+                />
+              </div>
+              <div>
+                <List
+                  component="nav"
+                  className={classes.root}
+                >
+                  <ListItem button>
+                    <ListItemIcon>
+                      <LocalMallIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Orders" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <ListIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Lists" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <HomeIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Addresses" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PaymentIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Saved Credit Cards" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <StarBorderIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Assessments" />
+                  </ListItem>
+                  <ListItem button onClick={handleClick}>
+                    <ListItemIcon>
+                      <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" />
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      <ListItem button className={classes.nested}>
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Change Password" />
+                      </ListItem>
+                      <ListItem button className={classes.nested}>
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Personal Information" />
+                      </ListItem>
+                    </List>
+                  </Collapse>
+                </List>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={8}>
+            <Paper className={classes.paper}>
+              <div className={classes.grid2}>
+                <InputBase
+                  style={{
+                    color: "black",
+                    fontSize:30,
+                    fontWeight:"500",
+                    marginTop:"2rem",
+                    marginBottom:"1rem",
+                    marginLeft:"1rem",
+                  }}
+                  defaultValue="My Account"
+                  disabled={true}
+                />
+              </div>
+              <div>
+                <text className={classes.txt}>
+                  This page is here to guide you in your bupazar experience!
+                </text>
+              </div>
+              <div style={{marginTop:"1rem"}}>
+                <text className={classes.txt}>
+                  You can follow up your orders, edit your addresses, save or remove credit cards, revise  your assessments,
+                  and change your user settings.
+                </text>
+              </div>
+              <div style={{marginTop:"2rem"}}>
+                <text className={classes.txt}>
+                  If you have any request or complain and need to communicate, you can contact us via
+                  <br />
+                  <br />
+                  Phone: <span style={{paddingLeft: '20px'}}>(555)-123-45-67</span>
+                  <br />
+                  E-mail: <span style={{paddingLeft: '20px'}}>bupazar@contactus.com </span>
+                </text>
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
-
-
-      <div>
-        <List
-          component="nav"
-          className={classes.root}
-        >
-          <ListItem button>
-            <ListItemIcon>
-              <LocalMallIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <ListIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Lists" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <HomeIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Addresses" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <PaymentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Saved Credit Cards" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <StarBorderIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Assessments" />
-          </ListItem>
-          <ListItem button onClick={handleClick}>
-            <ListItemIcon>
-              <SettingsIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemIcon>
-                </ListItemIcon>
-                <ListItemText primary="Change Password" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemIcon>
-                </ListItemIcon>
-                <ListItemText primary="Personal Information" />
-              </ListItem>
-            </List>
-          </Collapse>
-        </List>
-
-        <text>dldldl</text>
+      <div className={classes.ftr}>
+        <Footer/>
       </div>
-
     </div>
 
   );
