@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import User
-from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer
+from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
 from ..utils import create_user_account
 from rest_framework import serializers
 from rest_framework.status import (
@@ -29,6 +29,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         'login': LoginSerializer,
         'logout': EmptySerializer,
         'register': RegisterSerializer, 
+        'password_change': PasswordChangeSerializer,
     }
 
     @action(methods=['POST', ], detail=False)
@@ -60,6 +61,14 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = create_user_account(**serializer.validated_data)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
+    
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    def password_change(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        request.user.set_password(serializer.validated_data['new_password'])
+        request.user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
