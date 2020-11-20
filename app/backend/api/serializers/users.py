@@ -11,7 +11,7 @@ usr = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'is_customer', 'is_vendor', 'is_active', 'is_staff', 'address']
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=200, required=True)

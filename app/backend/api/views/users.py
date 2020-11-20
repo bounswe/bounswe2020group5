@@ -30,6 +30,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         'logout': EmptySerializer,
         'register': RegisterSerializer, 
         'password_change': PasswordChangeSerializer,
+        'user_info' : EmptySerializer,
     }
 
     @action(methods=['POST', ], detail=False)
@@ -69,6 +70,11 @@ class AuthViewSet(viewsets.GenericViewSet):
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
         return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    def user_info(self, request):
+        data = UserSerializer(request.user).data
+        return Response(data=data, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
