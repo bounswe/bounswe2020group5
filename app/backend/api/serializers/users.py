@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from ..models.users import User
 from rest_framework.authtoken.models import Token
@@ -50,5 +51,19 @@ class RegisterSerializer(serializers.ModelSerializer):
         return AbstractBaseUser.normalize_username(value)
 
     def validate_password(self, value):
+        password_validation.validate_password(value)
+        return value
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_current_password(self, value):
+        if not self.context['request'].user.check_password(value):
+            raise serializers.ValidationError('Current password does not match')
+        return value
+
+    def validate_new_password(self, value):
         password_validation.validate_password(value)
         return value
