@@ -3,6 +3,7 @@ import NoMatch from './common/NoMatch'
 import Home from "./home/Home";
 import Login from "./login/Login";
 import Signup from "./signup/Signup";
+import Profile from "./profile/Profile";
 import { Vendor } from "./signup/Vendor";
 import { Route, Switch, Redirect } from "react-router-dom";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/signup/vendor" component={Vendor} />
+        <Route path="/profile" component={Profile} />
         <Route path='/home' render={() => <Redirect to= "/" />} />
         <Route component={NoMatch} />
       </Switch>
