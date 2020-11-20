@@ -26,6 +26,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'login': LoginSerializer,
+        'logout': EmptySerializer, 
     }
 
     @action(methods=['POST', ], detail=False)
