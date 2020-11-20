@@ -3,6 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
+import { useState } from 'react';
+import validate from './Validate.js'
 import './Signup.css'
 
 
@@ -55,18 +57,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function onChangeUsername(event) {
-  console.log(event.target.value)
-}
-
-
-function onChangePassword(event) {
-  console.log(event.target.value)
-}
-
-
 function Signup() {
+
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    password: '',
+    confirm: '',
+    fname: '',
+    lname: '',
+    email: '',
+    uname: '',
+  });
+
+  const [val, setVal] = useState({
+    password: { error: false, message: '' },
+    confirm: { error: false, message: '' },
+    fname: { error: false, message: '' },
+    lname: { error: false, message: '' },
+    email: { error: false, message: '' },
+    uname: { error: false, message: '' },
+  });
+
+  function onChange(event) {
+    var mutableState = state
+    mutableState[event.target.id] = event.target.value
+    setState(mutableState)
+  }
+
+  function handleOnClick() {
+    setVal(validate(state, val))
+  }
+
+
   return (
     <div className="login">
       <div className="login-header">
@@ -76,64 +99,85 @@ function Signup() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
+
+
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="left">
             <TextField
-              id="outlined-basic"
+              error={val.fname.error}
+              helperText={val.fname.message}
+              id="fname"
               label="First Name"
               variant="outlined"
+              onChange={onChange}
             />
           </div>
           <div className="right">
             <TextField
-              id="standard-lname-input"
+              error={val.lname.error}
+              helperText={val.lname.message}
+              id="lname"
               label="Last Name"
               variant="outlined"
+              onChange={onChange}
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-email-input"
+              id="email"
               label="E-mail"
               variant="outlined"
+              error={val.email.error}
+              helperText={val.email.message}
+              onChange={onChange}
             />
           </div>
           <div className="username">
             <TextField
-              id="standard-uname-input"
+              id="uname"
               label="Username"
               variant="outlined"
-              onChange={onChangeUsername}
+              error={val.uname.error}
+              helperText={val.uname.message}
+              onChange={onChange}
             />
           </div>
           <div className="left2">
             <TextField
-              id="standard-password-input"
+              error={val.password.error}
+              helperText={val.password.message}
+              id="password"
               label="Password"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              onChange={onChangePassword}
+              onChange={onChange}
             />
           </div>
           <div className="right2">
             <TextField
-              id="standard-password2-input"
+              error={val.confirm.error}
+              id="confirm"
               label="Confirm"
               type="password"
               autoComplete="current-password"
               variant="outlined"
-              onChange={onChangePassword}
+              helperText={val.confirm.message}
+              onChange={onChange}
             />
           </div>
         </form>
+
+
         <div className="button-div">
           <div className={classes.loginButtonRoot}>
-            <Button variant="contained" color="primary" >
+            <Button variant="contained" color="primary" onClick={handleOnClick}>
               <b>Create account</b>
             </Button>
           </div>
         </div>
+
+
         <div>
           <div className="forgot-password">
             <Button
