@@ -37,7 +37,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         email = request.data.get("email")
         password = request.data.get("password")
         if email is None or password is None:
-            return Response({'error': 'Please provide both username and password'},
+            return Response({'error': 'Please provide both email and password'},
                         status=HTTP_400_BAD_REQUEST)
         user = authenticate(request, username=email, password=password)
  
@@ -51,7 +51,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def logout(self, request):
         request.user.auth_token.delete()
-        data = {'success': 'Sucessfully logged out'}
+        data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
 
     @action(methods=['POST', ], detail=False)
@@ -68,7 +68,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_204_NO_CONTENT)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
