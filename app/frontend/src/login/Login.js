@@ -54,11 +54,13 @@ function Login() {
   return (
     <div className="login">
       <div className="login-header">
-        <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        <Link to="/home">
+          <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        </Link>
       </div>
       <div className="login-container">
         <Typography className="h5-style" variant="h5" gutterBottom>
-          Log In to bupazar
+          Welcome to bupazar
         </Typography>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
