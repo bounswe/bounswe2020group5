@@ -1,17 +1,13 @@
 import React from 'react';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
-import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MenuItem from "@material-ui/core/MenuItem";
 import InputBase from "@material-ui/core/InputBase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import List from "@material-ui/core/List";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -153,14 +149,10 @@ function Profile() {
                   </ListItem>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      <ListItem button className={classes.nested}>
-                        <ListItemIcon>
-                        </ListItemIcon>
+                      <ListItem button className={classes.nested} component={Link} to="/changepassword">
                         <ListItemText primary="Change Password" />
                       </ListItem>
                       <ListItem button className={classes.nested}>
-                        <ListItemIcon>
-                        </ListItemIcon>
                         <ListItemText primary="Personal Information" />
                       </ListItem>
                     </List>
