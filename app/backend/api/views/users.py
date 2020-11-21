@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model, authenticate
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import User
-from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
+from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, UpdateProfileSerializer
 from ..utils import create_user_account
 from rest_framework import serializers
 from rest_framework.status import (
@@ -31,6 +31,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         'register': RegisterSerializer, 
         'password_change': PasswordChangeSerializer,
         'user_info' : EmptySerializer,
+        'profile_update': UpdateProfileSerializer,  
     }
 
     @action(methods=['POST', ], detail=False)
@@ -69,7 +70,26 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
-        return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_200_OK)
+    
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    def profile_update(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        if len(data) == 0:
+            return Response(data={'success': 'Nothing to update'}, status=status.HTTP_200_OK)
+        if 'email' in data:
+            request.user.email = data['email']
+        if 'username' in data:
+            request.user.username = data['username']
+        if 'first_name' in data:
+            request.user.first_name = data['first_name']
+        if 'last_name' in data:
+            request.user.first_name = data['first_name']
+        request.user.save()
+        return Response(data={'success': 'Successfully updated profile'}, status=status.HTTP_200_OK)
 
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def user_info(self, request):

@@ -7,10 +7,10 @@ def create_user_account(email, username, first_name,
         email=email, username=username, first_name=first_name,
         last_name=last_name, password=password, is_customer= is_customer, is_vendor=is_vendor, address=address, **extra_fields)
     
-    if(is_customer):
+    if is_customer:
         customer = Customer(user=user)
         customer.save()
-    elif(is_vendor):
+    elif is_vendor:
         vendor = Vendor(user=user)
         vendor.save()
 

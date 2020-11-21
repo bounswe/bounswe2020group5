@@ -36,7 +36,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = usr
         fields = ['email', 'username', 'first_name', 'last_name', 'password', 'is_customer', 'is_vendor', 'address']
-        # fields = ['email', 'first_name', 'last_name', 'password']
     
     def validate_email(self, value):
         user = usr.objects.filter(email=value)
@@ -67,3 +66,21 @@ class PasswordChangeSerializer(serializers.Serializer):
     def validate_new_password(self, value):
         password_validation.validate_password(value)
         return value
+
+class UpdateProfileSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=200, required=False)
+    username = serializers.CharField(max_length=200, required=False)
+    first_name = serializers.CharField(max_length=200, required=False)
+    last_name = serializers.CharField(max_length=200, required=False)
+
+    def validate_email(self, value):
+        user = usr.objects.filter(email=value)
+        if user:
+            raise serializers.ValidationError("Email is already taken")
+        return BaseUserManager.normalize_email(value)
+
+    def validate_username(self, value):
+        user = usr.objects.filter(username=value)
+        if user:
+            raise serializers.ValidationError("Username is already taken")
+        return AbstractBaseUser.normalize_username(value)
