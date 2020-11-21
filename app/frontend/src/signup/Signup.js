@@ -1,11 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
 import validate from './Validate.js'
 import './Signup.css'
+import Alert from '@material-ui/lab/Alert';
+import { postData } from "../common/Requests";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +55,12 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       height: '56px',
     },
-
+    alertRoot: {
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+    },
   },
 }));
 
@@ -79,6 +87,10 @@ function Signup() {
     uname: { error: false, message: '' },
   });
 
+  const [logged, setLogged] = useState(false); 
+
+  const [alertMessage, setAlertMessage] = useState(''); 
+
   function onChange(event) {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
@@ -86,9 +98,56 @@ function Signup() {
   }
 
   function handleOnClick() {
-    setVal(validate(state, val))
+    const newVal = validate(state, val);
+    setVal(newVal)
+    let valCheck = true;
+
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error){
+          valCheck = false;
+        }
+      }
+    }
+
+    if (valCheck) {
+      const url = 'http://127.0.0.1:8000/api/auth/register/'
+      const data = {
+        email: state.email,
+        username: state.uname,
+        first_name: state.fname,
+        last_name: state.lname,
+        password: state.password,
+        is_customer: true,
+        is_vendor: false,
+        address: "empty"
+      }
+      
+      postData(url, data)
+        .then(handleResponse)
+        .catch(rej => console.log(rej))
+    }
   }
 
+  function handleResponse(res) {
+    try {
+      const token = res.auth_token;
+      if (token) {
+        console.log(token)
+        localStorage.setItem('token', token);
+        setLogged(true);
+      } else {
+        setAlertMessage('Invalid credentials');
+      }
+    } catch (error) {
+      setAlertMessage('Some error has occured');
+    }
+  }
+
+  if (logged) {
+    return <Redirect to='/' />
+  }
 
   return (
     <div className="login">
@@ -101,7 +160,9 @@ function Signup() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
-
+        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+          <Alert severity="error">{alertMessage}</Alert>
+        </div>
 
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="left">
