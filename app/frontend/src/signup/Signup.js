@@ -9,6 +9,7 @@ import './Signup.css'
 import Alert from '@material-ui/lab/Alert';
 import { postData } from "../common/Requests";
 import { serverUrl } from "../common/ServerUrl";
+import React from 'react';
 
 
 
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Signup() {
+function Signup(props) {
 
   const classes = useStyles();
 
@@ -77,6 +78,7 @@ function Signup() {
     lname: '',
     email: '',
     uname: '',
+    address: '',
   });
 
   const [val, setVal] = useState({
@@ -86,6 +88,7 @@ function Signup() {
     lname: { error: false, message: '' },
     email: { error: false, message: '' },
     uname: { error: false, message: '' },
+    address: { error: false, message: '' },
   });
 
   const [logged, setLogged] = useState(false); 
@@ -96,25 +99,30 @@ function Signup() {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
     setState(mutableState)
+    setAlertMessage('')
   }
 
   function handleOnClick() {
-    const newVal = validate(state, val);
+    let newVal = validate(state, val);
+    if (!props.type) {
+      newVal.address = { error: false, message: '' };
+    }
     setVal(newVal)
     let valCheck = true;
 
+    
     for (const key in newVal) {
       if (newVal.hasOwnProperty(key)) {
         const element = newVal[key];
-        if (element.error){
+        if (element.error) {
           valCheck = false;
         }
       }
     }
 
     if (valCheck) {
-      const url = serverUrl + 'api/auth/login/';
-      const data = {
+      const url = serverUrl + 'api/auth/register/';
+      let data = {
         email: state.email,
         username: state.uname,
         first_name: state.fname,
@@ -122,7 +130,10 @@ function Signup() {
         password: state.password,
         is_customer: true,
         is_vendor: false,
-        address: "empty"
+      }
+
+      if (props.type) {
+        data.address = state.address;
       }
       
       postData(url, data)
@@ -139,7 +150,7 @@ function Signup() {
         localStorage.setItem('token', token);
         setLogged(true);
       } else {
-        setAlertMessage('Invalid credentials');
+        setAlertMessage('User with this username already exists');
       }
     } catch (error) {
       setAlertMessage('Some error has occured');
@@ -230,6 +241,16 @@ function Signup() {
               onChange={onChange}
             />
           </div>
+          {props.type && <div className="username">
+            <TextField
+              id="address"
+              label="Address"
+              variant="outlined"
+              error={val.address.error}
+              helperText={val.address.message}
+              onChange={onChange}
+            />
+          </div>}
         </form>
 
 
@@ -243,7 +264,7 @@ function Signup() {
 
 
         <div>
-          <div className="forgot-password">
+          {!props.type && <div className="forgot-password">
             <Button
               color="primary"
               style={{ textTransform: "none" }}
@@ -252,7 +273,17 @@ function Signup() {
             >
               <b>Are you a vendor?</b>
             </Button>
-          </div>
+          </div>}
+          {props.type && <div className="forgot-password">
+            <Button
+              color="primary"
+              style={{ textTransform: "none" }}
+              to="/signup"
+              component={Link}
+            >
+              <b>Not a vendor?</b>
+            </Button>
+          </div>}
           <div className="signup">
             <Button
               color="primary"
