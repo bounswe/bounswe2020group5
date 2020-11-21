@@ -8,7 +8,7 @@ import validate from './Validate'
 import './Login.css'
 import { postData } from "../common/Requests";
 import Alert from '@material-ui/lab/Alert';
-
+import { serverUrl } from "../common/ServerUrl";
 //styles
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
@@ -76,7 +76,7 @@ function Login() {
     }
 
     if (valCheck) {
-      const url = 'http://127.0.0.1:8000/api/auth/login/'
+      const url = serverUrl + 'api/auth/login/';
       const data = {
         email: state.uid,
         password: state.password,

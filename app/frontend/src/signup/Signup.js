@@ -8,6 +8,7 @@ import validate from './Validate.js'
 import './Signup.css'
 import Alert from '@material-ui/lab/Alert';
 import { postData } from "../common/Requests";
+import { serverUrl } from "../common/ServerUrl";
 
 
 
@@ -112,7 +113,7 @@ function Signup() {
     }
 
     if (valCheck) {
-      const url = 'http://127.0.0.1:8000/api/auth/register/'
+      const url = serverUrl + 'api/auth/login/';
       const data = {
         email: state.email,
         username: state.uname,
