@@ -9,7 +9,7 @@ import './Login.css'
 import { postData } from "../common/Requests";
 import Alert from '@material-ui/lab/Alert';
 
-
+//styles
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
     "& .MuiTextField-root": {
@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Login() {
-
+  
+  //states
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -50,10 +51,14 @@ function Login() {
 
   const [logged, setLogged] = useState(false); 
 
+  const [alertMessage, setAlertMessage] = useState(''); 
+  
+  //handlers
   function onChange(event) {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
     setState(mutableState)
+    setAlertMessage('')
   }
 
   function handleOnClick() {
@@ -84,15 +89,20 @@ function Login() {
   }
 
   function handleResponse(res) {
-
-    console.log(res)
     try {
-      console.log(res.auth_token)
+      const token = res.auth_token;
+      if (token) {
+        console.log(token)
+        localStorage.setItem('token', token);
+        setLogged(true);
+      } else {
+        setAlertMessage('Invalid credentials');
+      }
     } catch (error) {
-      console.log(res)
+      setAlertMessage('Some error has occured');
     }
-    // setLogged(true);
   }
+
 
   if (logged) {
     return <Redirect to='/' />
@@ -109,8 +119,8 @@ function Login() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Welcome to bupazar
         </Typography>
-        <div className={classes.alertRoot}>
-          <Alert severity="error">This is an error alert — check it out!</Alert>
+        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+          <Alert severity="error">{alertMessage}</Alert>
         </div>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
