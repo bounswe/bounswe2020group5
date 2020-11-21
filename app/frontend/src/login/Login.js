@@ -1,11 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
-import validate from './Validate.js'
+import validate from './Validate'
 import './Login.css'
+import { postData } from "../common/Requests";
+import Alert from '@material-ui/lab/Alert';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       width: '100%',
       height: '56px',
+    },
+  },
+  alertRoot: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
     },
   },
 }));
@@ -40,6 +48,8 @@ function Login() {
     uid: { error: false, message: '' },
   });
 
+  const [logged, setLogged] = useState(false); 
+
   function onChange(event) {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
@@ -47,9 +57,46 @@ function Login() {
   }
 
   function handleOnClick() {
-    setVal(validate(state, val))
+    const newVal = validate(state, val);
+    setVal(newVal)
+    let valCheck = true;
+
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error){
+          valCheck = false;
+        }
+      }
+    }
+
+    if (valCheck) {
+      const url = 'http://127.0.0.1:8000/api/auth/login/'
+      const data = {
+        email: state.uid,
+        password: state.password,
+      }
+      
+      postData(url, data)
+        .then(handleResponse)
+        .catch(rej => console.log(rej))
+    }
   }
 
+  function handleResponse(res) {
+
+    console.log(res)
+    try {
+      console.log(res.auth_token)
+    } catch (error) {
+      console.log(res)
+    }
+    // setLogged(true);
+  }
+
+  if (logged) {
+    return <Redirect to='/' />
+  }
 
   return (
     <div className="login">
@@ -62,6 +109,9 @@ function Login() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Welcome to bupazar
         </Typography>
+        <div className={classes.alertRoot}>
+          <Alert severity="error">This is an error alert — check it out!</Alert>
+        </div>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
             <TextField
