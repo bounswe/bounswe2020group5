@@ -11,7 +11,9 @@
 **Note:** If new python packages are added to **"requirements.txt"**, you have to type `pip install -r requirements.txt` after venv is activated.
 ***
 ## How to Start Development Server?
-* `cd /path/to/backend/` 
+* `cd /path/to/backend/`
+* `python manage.py makemigrations`
+* `python manage.py migrate`
 * `python manage.py runserver`
  
  Now that the server’s running, visit http://127.0.0.1:8000/ with your Web browser. 
