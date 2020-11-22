@@ -15,9 +15,6 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportFragmentManager.beginTransaction().replace(R.id.login_activity_navigation,LoginFragment()).commit()
-
-
     }
 
     override fun changeActivity(activity: AppCompatActivity) {
@@ -25,6 +22,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         startActivity(intent)
         finish()
     }
+
 
 
 
