@@ -84,7 +84,7 @@ function Login() {
       
       postData(url, data)
         .then(handleResponse)
-        .catch(rej => console.log(rej))
+        .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
     }
   }
 

@@ -134,6 +134,8 @@ function Signup(props) {
 
       if (props.type) {
         data.address = state.address;
+        data.is_customer = false;
+        data.is_vendor = true;
       }
       
       postData(url, data)
