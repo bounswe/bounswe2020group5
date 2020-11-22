@@ -90,7 +90,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         if 'first_name' in data:
             request.user.first_name = data['first_name']
         if 'last_name' in data:
-            request.user.first_name = data['first_name']
+            request.user.last_name = data['last_name']
+        if 'address' in data:
+            request.user.address = data['address']
         request.user.save()
         return Response(data={'success': 'Successfully updated profile'}, status=status.HTTP_200_OK)
 
