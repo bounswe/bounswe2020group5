@@ -9,3 +9,4 @@ PyYAML==5.3.1
 sqlparse==0.2.4
 uritemplate==3.0.1
 django-cors-headers==3.5.0
+drf-yasg==1.20.0

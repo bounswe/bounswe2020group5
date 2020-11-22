@@ -85,3 +85,6 @@ class UpdateProfileSerializer(serializers.Serializer):
         if user:
             raise serializers.ValidationError("Username is already taken")
         return AbstractBaseUser.normalize_username(value)
+
+class SuccessSerializer(serializers.Serializer):
+    success = serializers.CharField(max_length=200)

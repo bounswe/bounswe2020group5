@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import User
-from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, UpdateProfileSerializer
+from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, UpdateProfileSerializer, SuccessSerializer
 from ..utils import create_user_account
 from rest_framework import serializers
 from rest_framework.status import (
@@ -12,6 +12,7 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
+from drf_yasg.utils import swagger_auto_schema
 
 usr = get_user_model()
 
@@ -34,6 +35,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         'profile_update': UpdateProfileSerializer,  
     }
 
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
     def login(self, request):
         email = request.data.get("email")
@@ -50,12 +52,14 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
     
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def logout(self, request):
         request.user.auth_token.delete()
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
-
+    
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -66,7 +70,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = create_user_account(**validated)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
-    
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})   
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def password_change(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -75,6 +80,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         request.user.save()
         return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_200_OK)
     
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def profile_update(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -96,6 +102,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         request.user.save()
         return Response(data={'success': 'Successfully updated profile'}, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: UserSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def user_info(self, request):
         data = UserSerializer(request.user).data
