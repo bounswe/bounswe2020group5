@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {fade, makeStyles, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -87,6 +88,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
+  let history = useHistory();
+
+  useEffect(() => {
+    const temp = localStorage.getItem('token')
+    if (temp) {
+      setIsLogged(true)
+    }
+  }, []);
 
   let [isLogged,setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -153,7 +162,9 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <StyledMenuItem>
-        <ListItemText primary="My Account" />
+        <Link to="/profile">
+          <ListItemText primary="My Account"/>
+       </Link>
       </StyledMenuItem>
       <StyledMenuItem>
         <ListItemText primary="My Orders" />

@@ -11,6 +11,9 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Snackbar from '@material-ui/core/Snackbar';
 import Link from "@material-ui/core/Link";
+import {Redirect} from "react-router-dom";
+import { serverUrl } from "../common/ServerUrl";
+import {postData} from "../common/Requests";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     password: {
         paddingTop: "1rem",
         paddingBottom: "1rem",
-},
+    },
     button: {
         color: "white",
         backgroundColor: "#0B3954",
@@ -43,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
 export default function ChangePassword() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [logged, setLogged] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
 
     const [state, setState] = useState({
         current_pw: '',
@@ -63,11 +69,61 @@ export default function ChangePassword() {
     }
 
     function handleOnClick() {
-        setVal(validate(state, val))
+        let validated = (validate(state, val))
+        setVal(validated)
+        let check = true;
 
-        //if validated ???????
-        setOpen(true)
+        const token = localStorage.getItem('token')
+        console.log(token)
+
+        for (const field in validated) {
+            if (validated.hasOwnProperty(field)) {
+                const temp = validated[field];
+                if (temp.error) {
+                    check = false;
+                }
+            }
+        }
+
+        if (check) {
+            const url = serverUrl + '/api/auth/password_change' //???????
+            let data = {
+                current_password: state.current_pw,
+                new_password: state.new_pw,
+            }
+
+              postData(url, data)
+                .then(handleResponse)
+                .catch(rej => console.log(rej))
+        }
+
+        function handleResponse(res) {
+            try {
+                const token = localStorage.getItem('token')
+                console.log(token)
+                } catch (error) {
+                setAlertMessage('Some error has occurred')
+            }
+        }
+        //setOpen(true)
+
     }
+/*
+    function handleResponse(res) {
+        try {
+            const token = res.auth_token;
+            if (token) {
+                console.log(token)
+                localStorage.setItem('token', token);
+                setLogged(true);
+            } else {
+                setAlertMessage('User with this username already exists');
+            }
+        } catch (error) {
+            setAlertMessage('Some error has occured');
+        }
+    }
+    */
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -76,6 +132,8 @@ export default function ChangePassword() {
 
         setOpen(false);
     };
+
+
 
     return(
         <div>
@@ -158,4 +216,5 @@ export default function ChangePassword() {
 
     );
 }
+
 
