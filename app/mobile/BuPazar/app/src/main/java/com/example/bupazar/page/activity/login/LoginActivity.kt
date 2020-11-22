@@ -27,6 +27,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
             var intent=Intent(this,RegisterActivity::class.java)
             startActivity(intent)
         }
+
     }
 
     override fun changeActivity(activity: AppCompatActivity) {
@@ -34,6 +35,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         startActivity(intent)
         finish()
     }
+
 
 
 
