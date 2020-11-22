@@ -1,7 +1,8 @@
 import Signup from './Signup.js'
+import React from 'react';
 
 export function Vendor() {
     return (
-        <Signup />
+        <Signup type="vendor"/>
     )
 }

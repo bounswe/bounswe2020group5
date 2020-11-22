@@ -1,11 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
 import validate from './Validate.js'
 import './Signup.css'
+import Alert from '@material-ui/lab/Alert';
+import { postData } from "../common/Requests";
+import { serverUrl } from "../common/ServerUrl";
+import React from 'react';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,12 +57,17 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       height: '56px',
     },
-
+    alertRoot: {
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+    },
   },
 }));
 
 
-function Signup() {
+function Signup(props) {
 
   const classes = useStyles();
 
@@ -68,6 +78,7 @@ function Signup() {
     lname: '',
     email: '',
     uname: '',
+    address: '',
   });
 
   const [val, setVal] = useState({
@@ -77,29 +88,95 @@ function Signup() {
     lname: { error: false, message: '' },
     email: { error: false, message: '' },
     uname: { error: false, message: '' },
+    address: { error: false, message: '' },
   });
+
+  const [logged, setLogged] = useState(false); 
+
+  const [alertMessage, setAlertMessage] = useState(''); 
 
   function onChange(event) {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
     setState(mutableState)
+    setAlertMessage('')
   }
 
   function handleOnClick() {
-    setVal(validate(state, val))
+    let newVal = validate(state, val);
+    if (!props.type) {
+      newVal.address = { error: false, message: '' };
+    }
+    setVal(newVal)
+    let valCheck = true;
+
+    
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error) {
+          valCheck = false;
+        }
+      }
+    }
+
+    if (valCheck) {
+      const url = serverUrl + 'api/auth/register/';
+      let data = {
+        email: state.email,
+        username: state.uname,
+        first_name: state.fname,
+        last_name: state.lname,
+        password: state.password,
+        is_customer: true,
+        is_vendor: false,
+      }
+
+      if (props.type) {
+        data.address = state.address;
+        data.is_customer = false;
+        data.is_vendor = true;
+      }
+      
+      postData(url, data)
+        .then(handleResponse)
+        .catch(rej => console.log(rej))
+    }
   }
 
+  function handleResponse(res) {
+    try {
+      const token = res.auth_token;
+      if (token) {
+        console.log(token)
+        localStorage.setItem('token', token);
+        setLogged(true);
+      } else {
+        setAlertMessage('User with this username already exists');
+      }
+    } catch (error) {
+      setAlertMessage('Some error has occured');
+    }
+  }
+
+  if (logged) {
+    return <Redirect to='/' />
+  }
 
   return (
     <div className="login">
       <div className="login-header">
-        <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        <Link to="/home">
+          <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        </Link>    
       </div>
       <div className="signup-container">
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
-
+        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+          <Alert severity="error">{alertMessage}</Alert>
+        </div>
 
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="left">
@@ -166,6 +243,16 @@ function Signup() {
               onChange={onChange}
             />
           </div>
+          {props.type && <div className="username">
+            <TextField
+              id="address"
+              label="Address"
+              variant="outlined"
+              error={val.address.error}
+              helperText={val.address.message}
+              onChange={onChange}
+            />
+          </div>}
         </form>
 
 
@@ -179,7 +266,7 @@ function Signup() {
 
 
         <div>
-          <div className="forgot-password">
+          {!props.type && <div className="forgot-password">
             <Button
               color="primary"
               style={{ textTransform: "none" }}
@@ -188,7 +275,17 @@ function Signup() {
             >
               <b>Are you a vendor?</b>
             </Button>
-          </div>
+          </div>}
+          {props.type && <div className="forgot-password">
+            <Button
+              color="primary"
+              style={{ textTransform: "none" }}
+              to="/signup"
+              component={Link}
+            >
+              <b>Not a vendor?</b>
+            </Button>
+          </div>}
           <div className="signup">
             <Button
               color="primary"

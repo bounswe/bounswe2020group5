@@ -15,7 +15,7 @@ function App() {
         <Route path="/" exact component={Home} />
         {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
         <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route path="/signup" exact component={Signup} />
         <Route path="/signup/vendor" component={Vendor} />
         <Route path="/profile" exact component={Profile} />
         <Route path="/profile/changepassword" component={ChangePassword} />
