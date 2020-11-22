@@ -1,13 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
-import validate from './Validate.js'
+import validate from './Validate'
 import './Login.css'
-
-
+import { postData } from "../common/Requests";
+import Alert from '@material-ui/lab/Alert';
+import { serverUrl } from "../common/ServerUrl";
+//styles
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
     "& .MuiTextField-root": {
@@ -23,11 +25,18 @@ const useStyles = makeStyles((theme) => ({
       height: '56px',
     },
   },
+  alertRoot: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 
 function Login() {
-
+  
+  //states
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -40,26 +49,79 @@ function Login() {
     uid: { error: false, message: '' },
   });
 
+  const [logged, setLogged] = useState(false); 
+
+  const [alertMessage, setAlertMessage] = useState(''); 
+  
+  //handlers
   function onChange(event) {
     var mutableState = state
     mutableState[event.target.id] = event.target.value
     setState(mutableState)
+    setAlertMessage('')
   }
 
   function handleOnClick() {
-    setVal(validate(state, val))
+    const newVal = validate(state, val);
+    setVal(newVal)
+    let valCheck = true;
+
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error){
+          valCheck = false;
+        }
+      }
+    }
+
+    if (valCheck) {
+      const url = serverUrl + 'api/auth/login/';
+      const data = {
+        email: state.uid,
+        password: state.password,
+      }
+      
+      postData(url, data)
+        .then(handleResponse)
+        .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+    }
   }
 
+  function handleResponse(res) {
+    try {
+      const token = res.auth_token;
+      if (token) {
+        console.log(token)
+        localStorage.setItem('token', token);
+        setLogged(true);
+      } else {
+        setAlertMessage('Invalid credentials');
+      }
+    } catch (error) {
+      setAlertMessage('Some error has occured');
+    }
+  }
+
+
+  if (logged) {
+    return <Redirect to='/' />
+  }
 
   return (
     <div className="login">
       <div className="login-header">
-        <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        <Link to="/home">
+          <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
+        </Link>
       </div>
       <div className="login-container">
         <Typography className="h5-style" variant="h5" gutterBottom>
-          Log In to bupazar
+          Welcome to bupazar
         </Typography>
+        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+          <Alert severity="error">{alertMessage}</Alert>
+        </div>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
           <div className="username">
             <TextField
