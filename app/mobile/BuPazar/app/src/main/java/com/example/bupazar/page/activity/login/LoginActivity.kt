@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.bupazar.R
 import com.example.bupazar.`interface`.ActivityChangeListener
 import com.example.bupazar.core.BaseActivity
-import com.example.bupazar.page.activity.home.HomepageActivity
-import com.example.bupazar.page.fragment.login.view.LoginFragment
-import kotlinx.android.synthetic.main.activity_login.*
+import com.example.bupazar.model.LoginRequest
+import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginActivity : BaseActivity(), ActivityChangeListener {
@@ -19,8 +18,17 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         setContentView(R.layout.fragment_login)
 
         buttonLogin.setOnClickListener() {
-            var intent=Intent(this,HomepageActivity::class.java)
-            startActivity(intent)
+//            var intent=Intent(this,HomepageActivity::class.java)
+//            startActivity(intent)
+            val apiService = RestApiService()
+            val userInfo = LoginRequest(
+                userEmail = usernameEditTextView.text.toString(),
+                userPassword = passwordEditTextView.text.toString()
+            )
+
+            apiService.addUser(userInfo) {
+                userInfo
+            }
         }
 
         buttonRegister.setOnClickListener() {
