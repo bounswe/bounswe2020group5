@@ -149,7 +149,7 @@ function Profile() {
                   </ListItem>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      <ListItem button className={classes.nested} component={Link} to="/changepassword">
+                      <ListItem button className={classes.nested} component={Link} to="/profile/changepassword">
                         <ListItemText primary="Change Password" />
                       </ListItem>
                       <ListItem button className={classes.nested}>

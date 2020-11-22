@@ -24,7 +24,7 @@ export default function validate(state) {
     }
 
     if (state.current_pw === state.new_pw) {
-        validation.confirm = { error: true, message: 'New password must be different from your current password' }
+        validation.new_pw = { error: true, message: 'New password must be different from your current password' }
     }
 
     if (state.confirm !== state.new_pw) {
