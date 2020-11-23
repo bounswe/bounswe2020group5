@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {fade, makeStyles, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,13 +7,18 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
+import Divider from "@material-ui/core/Divider";
+import Icon from "@material-ui/core/Icon";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -49,8 +54,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     color: '#7E7F9A',
   },
+
+
   inputRoot: {
     color: 'black',
+  },
+  logged:{
+    marginLeft:"17rem",
+  },
+  notlogged:{
+    marginLeft:"10rem",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -74,14 +87,34 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  menuBackground:{
+    backgroundColor: "white",
+  }
 }));
 
 export default function Navbar() {
   const classes = useStyles();
+  let history = useHistory();
+
+  useEffect(() => {
+    const temp = localStorage.getItem('token')
+    console.log(temp)
+    if (temp) {
+      setIsLogged(true)
+    }
+  }, []);
+
+  const text = {
+    color: "black"
+  };
+
+  let [isLogged,setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEljoint, setAnchorEljoint] = React.useState(null);
+
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
+ // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -99,6 +132,19 @@ export default function Navbar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLogged(false);
+    setAnchorEl(false);
+  }
+
+  const handlejointClose = () => {
+    setAnchorEljoint(null);
+  };
+  const handlejointclick = (event) => {
+    setAnchorEljoint(event.currentTarget);
   };
 
   const StyledMenu = withStyles({
@@ -141,23 +187,32 @@ export default function Navbar() {
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
-      <StyledMenuItem>
-        <ListItemText primary="My Orders" />
+      <StyledMenuItem style={{background:"white"}}>
+        <Link style={{textDecoration: 'none'}} to="/profile">
+          <ListItemText primaryTypographyProps={{ style: text }} primary="My Account"/>
+       </Link>
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="My Lists" />
+      <Divider/>
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="My Orders" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="Messages" />
+      <Divider/>
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="My Lists" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="My Profile" />
+      <Divider/>
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="Log out" />
+      <Divider/>
+      <StyledMenuItem style={{background:"white"}}>
+        <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
+          <ListItemText primaryTypographyProps={{ style: text }} primary="Log out" />
+        </Link>
       </StyledMenuItem>
     </StyledMenu>
   );
+
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -199,7 +254,30 @@ export default function Navbar() {
       </MenuItem>
     </Menu>
   );
+  const menujointId = 'login menu';
+  const renderjointMenu = (
+      <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEljoint}
+          keepMounted
+          open={Boolean(anchorEljoint)}
+          onClose={handlejointClose}
 
+      >
+        <StyledMenuItem style={{backgroundColor: 'white'}}>
+          <Link style={{textDecoration: 'none'}} to="/login">
+            <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{backgroundColor: 'white'}}>
+          <Link style={{textDecoration: 'none'}} to="/signup">
+            <ListItemText primaryTypographyProps={{ style: text }} primary="Sign Up" />
+          </Link>
+        </StyledMenuItem>
+
+      </StyledMenu>
+  );
   return (
     <div className={classes.grow}>
       <AppBar position="static" style={{ background: '#F3DE8A' }}>
@@ -223,44 +301,63 @@ export default function Navbar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="primary">
-                <MailIcon style={{ color: '#7E7F9A' }}/>
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="primary">
-                <NotificationsIcon style={{ color: '#7E7F9A' }} />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="primary"
-            >
-              <AccountCircle style={{ color: '#7E7F9A' }}/>
-            </IconButton>
+          {isLogged ? (
+            <div className={classes.logged}>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="primary">
+                    <MailIcon style={{ color: '#7E7F9A' }}/>
+                  </Badge>
+                </IconButton>
+                <IconButton aria-label="show 17 new notifications" color="inherit">
+                  <Badge badgeContent={17} color="primary">
+                    <NotificationsIcon style={{ color: '#7E7F9A' }} />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="primary"
+                >
+                  <AccountCircle style={{ color: '#7E7F9A' }}/>
+                </IconButton>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </div>
+          ):
+          <div className={classes.notlogged}>
+            <Button
+                style={{backgroundColor:"#0B3954"}}
+                variant="contained" color="primary"
+                onMouseOver={handlejointclick}
+                onClick={handlejointclick}
+                >
+           Log In
+          </Button>
+
+
+
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          }
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderjointMenu}
     </div>
   );
 }
