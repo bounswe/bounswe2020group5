@@ -5,3 +5,4 @@ from .users import EmptySerializer
 from .users import RegisterSerializer
 from .users import PasswordChangeSerializer
 from .users import UpdateProfileSerializer
+from .users import SuccessSerializer

@@ -72,6 +72,7 @@ class UpdateProfileSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=200, required=False)
     first_name = serializers.CharField(max_length=200, required=False)
     last_name = serializers.CharField(max_length=200, required=False)
+    address = serializers.CharField(max_length=500, required=False)
 
     def validate_email(self, value):
         user = usr.objects.filter(email=value)
@@ -84,3 +85,6 @@ class UpdateProfileSerializer(serializers.Serializer):
         if user:
             raise serializers.ValidationError("Username is already taken")
         return AbstractBaseUser.normalize_username(value)
+
+class SuccessSerializer(serializers.Serializer):
+    success = serializers.CharField(max_length=200)
