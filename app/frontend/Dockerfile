@@ -1,9 +1,11 @@
-FROM node:latest AS builder
+FROM node:15.2.1
 
-WORKDIR /frontend
+WORKDIR /frontapp
 
-COPY . /frontend
-#ENV PATH /app/node_modules/.bin:$PATH
-RUN npm install
+COPY . /frontapp
+
+RUN npm install --legacy-peer-deps
+
+CMD npm start
+
 EXPOSE 3000
-CMD ["npm", "start"]
