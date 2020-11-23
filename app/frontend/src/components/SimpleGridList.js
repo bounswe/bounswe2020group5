@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: "black"
   },
+  subtitle: {
+    color: "black",
+    fontSize:18,
+  },
   titleBar: {
     background: "white"
   },
@@ -37,9 +41,11 @@ export const SimpleGridList = ({tileData}) => {
             <img style={{width:"15rem",height:"15rem"}} src={tile.img} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
+              subtitle={tile.price}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
+                subtitle: classes.subtitle,
               }}
             />
           </GridListTile>
