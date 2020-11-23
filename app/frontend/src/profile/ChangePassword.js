@@ -9,12 +9,9 @@ import validate from "./Validate";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import Snackbar from '@material-ui/core/Snackbar';
 import Link from "@material-ui/core/Link";
-import {Redirect} from "react-router-dom";
 import { serverUrl } from "../common/ServerUrl";
-import {postData} from "../common/Requests";
-
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "1rem",
         fontSize: "18px"
     }
-
 }));
 
 export default function ChangePassword() {
@@ -48,6 +44,7 @@ export default function ChangePassword() {
     const [open, setOpen] = React.useState(false);
     const [logged, setLogged] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    let history = useHistory();
 
 
     const [state, setState] = useState({
@@ -92,48 +89,22 @@ export default function ChangePassword() {
                 new_password: state.new_pw,
             }
 
-              postData(url, data)
-                .then(handleResponse)
-                .catch(rej => console.log(rej))
-        }
+            const token = localStorage.getItem('token')
 
-        function handleResponse(res) {
-            try {
-                const token = localStorage.getItem('token')
-                console.log(token)
-                } catch (error) {
-                setAlertMessage('Some error has occurred')
-            }
-        }
-        //setOpen(true)
-
-    }
-/*
-    function handleResponse(res) {
-        try {
-            const token = res.auth_token;
-            if (token) {
-                console.log(token)
-                localStorage.setItem('token', token);
-                setLogged(true);
-            } else {
-                setAlertMessage('User with this username already exists');
-            }
-        } catch (error) {
-            setAlertMessage('Some error has occured');
+            fetch(serverUrl + 'api/auth/password_change/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }).then(res => res.json())
+                .then(json => {
+                    const success = json.success
+                    if (success) {
+                        history.push('/profile')
+                    }
+                })
+                .catch(err => console.log(err));
         }
     }
-    */
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-
 
     return(
         <div>
@@ -195,17 +166,6 @@ export default function ChangePassword() {
                                 to="/profile" >
                                 <b>SAVE</b>
                             </Button>
-
-                            <Snackbar
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'bottom',
-                                }}
-                                open={open}
-                                autoHideDuration={6000}
-                                onClose={handleClose}
-                                message="Password is changed successfully."
-                            />
 
                         </form>
 
