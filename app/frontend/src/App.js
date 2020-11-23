@@ -4,6 +4,7 @@ import Home from "./home/Home";
 import Login from "./login/Login";
 import Signup from "./signup/Signup";
 import Profile from "./profile/Profile";
+import ChangePassword from "./profile/ChangePassword";
 import { Vendor } from "./signup/Vendor";
 import { Route, Switch, Redirect } from "react-router-dom";
 
@@ -14,9 +15,10 @@ function App() {
         <Route path="/" exact component={Home} />
         {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
         <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route path="/signup" exact component={Signup} />
         <Route path="/signup/vendor" component={Vendor} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/profile" exact component={Profile} />
+        <Route path="/profile/changepassword" component={ChangePassword} />
         <Route path='/home' render={() => <Redirect to= "/" />} />
         <Route component={NoMatch} />
       </Switch>
