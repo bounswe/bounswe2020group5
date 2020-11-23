@@ -2,13 +2,14 @@ package com.example.bupazar.page.activity.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bupazar.R
 import com.example.bupazar.`interface`.ActivityChangeListener
 import com.example.bupazar.core.BaseActivity
+import com.example.bupazar.model.LoginRequest
 import com.example.bupazar.page.activity.home.HomepageActivity
-import com.example.bupazar.page.fragment.login.view.LoginFragment
-import kotlinx.android.synthetic.main.activity_login.*
+import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginActivity : BaseActivity(), ActivityChangeListener {
@@ -19,8 +20,27 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         setContentView(R.layout.fragment_login)
 
         buttonLogin.setOnClickListener() {
-            var intent=Intent(this,HomepageActivity::class.java)
-            startActivity(intent)
+
+            if (usernameEditTextView.text.isEmpty() || passwordEditTextView.text.isEmpty()){
+                Toast.makeText(this@LoginActivity,"Username and Password is required to login", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val apiService = RestApiService()
+                val userInfo = LoginRequest(
+                        userEmail = usernameEditTextView.text.toString(),
+                        userPassword = passwordEditTextView.text.toString()
+                )
+
+                apiService.addUser(userInfo) {
+                    if(it==null || it.userEmail == null){
+                        Toast.makeText(this@LoginActivity,"Wrong username or password", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        var intent = Intent(this, HomepageActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
         }
 
         buttonRegister.setOnClickListener() {
