@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  menuBackground:{
+    backgroundColor: "white",
+  }
 }));
 
 export default function Navbar() {
@@ -95,7 +98,13 @@ export default function Navbar() {
     if (temp) {
       setIsLogged(true)
     }
+    //bunu sil unutma
+    setIsLogged(true)
   }, []);
+
+  const text = {
+    color: "black"
+  };
 
   let [isLogged,setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -120,6 +129,12 @@ export default function Navbar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLogged(false);
+    setAnchorEl(false);
+  }
 
   const StyledMenu = withStyles({
     paper: {
@@ -161,22 +176,24 @@ export default function Navbar() {
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
-      <StyledMenuItem>
-        <Link to="/profile">
-          <ListItemText primary="My Account"/>
+      <StyledMenuItem style={{background:"white"}}>
+        <Link style={{textDecoration: 'none'}} to="/profile">
+          <ListItemText primaryTypographyProps={{ style: text }} primary="My Account"/>
        </Link>
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="My Orders" />
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="My Orders" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="My Lists" />
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="My Lists" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="Messages" />
+      <StyledMenuItem style={{background:"white"}}>
+        <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
       </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemText primary="Log out" />
+      <StyledMenuItem style={{background:"white"}}>
+        <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
+          <ListItemText primaryTypographyProps={{ style: text }} primary="Log out" />
+        </Link>
       </StyledMenuItem>
     </StyledMenu>
   );
