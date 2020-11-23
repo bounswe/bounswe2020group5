@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Paper from "@material-ui/core/Paper";
@@ -10,8 +10,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import { serverUrl } from "../common/ServerUrl";
+import {serverUrl} from "../common/ServerUrl";
 import {useHistory} from "react-router-dom";
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,9 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChangePassword() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const [logged, setLogged] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const [loadPage, setLoadPage] = React.useState(false);
     let history = useHistory();
 
 
@@ -54,9 +53,9 @@ export default function ChangePassword() {
     });
 
     const [val, setVal] = useState({
-        current_pw: { error: false, message: '' },
-        new_pw: { error: false, message: '' },
-        confirm: { error: false, message: '' },
+        current_pw: {error: false, message: ''},
+        new_pw: {error: false, message: ''},
+        confirm: {error: false, message: ''},
     });
 
     function onChange(event) {
@@ -70,9 +69,6 @@ export default function ChangePassword() {
         setVal(validated)
         let check = true;
 
-        const token = localStorage.getItem('token')
-        console.log(token)
-
         for (const field in validated) {
             if (validated.hasOwnProperty(field)) {
                 const temp = validated[field];
@@ -82,96 +78,114 @@ export default function ChangePassword() {
             }
         }
 
+        const token = localStorage.getItem('token')
+
         if (check) {
             const url = serverUrl + '/api/auth/password_change' //???????
             let data = {
                 current_password: state.current_pw,
                 new_password: state.new_pw,
             }
+                fetch(serverUrl + 'api/auth/password_change/', {
+                    method: 'POST',
+                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                }).then(res => res.json())
+                    .then(json => {
+                        const success = json.success
+                        if (success) {
+                            alert('Password is changed successfully!')
+                            history.push('/profile')
+                        }
+                    })
+                    .catch(err => console.log(err));
 
-            const token = localStorage.getItem('token')
-
-            fetch(serverUrl + 'api/auth/password_change/', {
-                method: 'POST',
-                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            }).then(res => res.json())
-                .then(json => {
-                    const success = json.success
-                    if (success) {
-                        history.push('/profile')
-                    }
-                })
-                .catch(err => console.log(err));
         }
     }
 
-    return(
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            setLoadPage(true)
+        } else {
+            alert("You need to login to change your password")
+            history.push('/login')
+        }
+
+    }, []);
+
+
+    return (
         <div>
-            <div className="Home">
-                <Navbar/>
-            </div>
-            <div>
-                <CategoryTab/>
-            </div>
-            <Grid container justify="center" spacing={3}>
-                <Grid item xs={6}>
-                    <Paper className={classes.paper} >
-                        <Typography align={"center"} variant="h4" gutterBottom>
-                            <Box color={"black"} fontWeight="fontWeightBold" m={1}>
-                                Change Password
-                            </Box>
-                        </Typography>
-                        <form className={classes.form} align={"center"} autoComplete="off">
-                            <div className={classes.password} >
-                                <TextField
-                                    id="current_pw"
-                                    label="Current Password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    variant="outlined"
-                                    style ={{width: '70%'}}
-                                    error={val.current_pw.error}
-                                    helperText={val.current_pw.message}
-                                    onChange={onChange}            />
-                            </div>
-                            <div className={classes.password} >
-                                <TextField
-                                    id="new_pw"
-                                    label="New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    style ={{width: '70%'}}
-                                    error={val.new_pw.error}
-                                    helperText={val.new_pw.message}
-                                    onChange={onChange}            />
-                            </div>
-                            <div className={classes.password} >
-                                <TextField
-                                    id="confirm"
-                                    label="Repeat New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    style ={{width: '70%'}}
-                                    error={val.confirm.error}
-                                    helperText={val.confirm.message}
-                                    onChange={onChange}            />
-                            </div>
-                            <Button
-                                className={classes.button}
-                                style={{align:"center"}}
-                                variant="contained"
-                                onClick={handleOnClick}
-                                component={Link}
-                                to="/profile" >
-                                <b>SAVE</b>
-                            </Button>
+            {loadPage ? (
+                <div>
+                    <div className="Home">
+                        <Navbar/>
+                    </div>
+                    <div>
+                        <CategoryTab/>
+                    </div>
+                    <Grid container justify="center" spacing={3}>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>
+                                <Typography align={"center"} variant="h4" gutterBottom>
+                                    <Box color={"black"} fontWeight="fontWeightBold" m={1}>
+                                        Change Password
+                                    </Box>
+                                </Typography>
+                                <form className={classes.form} align={"center"} autoComplete="off">
+                                    <div className={classes.password}>
+                                        <TextField
+                                            id="current_pw"
+                                            label="Current Password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            variant="outlined"
+                                            style={{width: '70%'}}
+                                            error={val.current_pw.error}
+                                            helperText={val.current_pw.message}
+                                            onChange={onChange}/>
+                                    </div>
+                                    <div className={classes.password}>
+                                        <TextField
+                                            id="new_pw"
+                                            label="New Password"
+                                            type="password"
+                                            variant="outlined"
+                                            style={{width: '70%'}}
+                                            error={val.new_pw.error}
+                                            helperText={val.new_pw.message}
+                                            onChange={onChange}/>
+                                    </div>
+                                    <div className={classes.password}>
+                                        <TextField
+                                            id="confirm"
+                                            label="Repeat New Password"
+                                            type="password"
+                                            variant="outlined"
+                                            style={{width: '70%'}}
+                                            error={val.confirm.error}
+                                            helperText={val.confirm.message}
+                                            onChange={onChange}/>
+                                    </div>
+                                    <Button
+                                        className={classes.button}
+                                        style={{align: "center"}}
+                                        variant="contained"
+                                        onClick={handleOnClick}
+                                        component={Link}
+                                        to="/profile">
+                                        <b>SAVE</b>
+                                    </Button>
 
-                        </form>
+                                </form>
 
-                    </Paper>
-                </Grid>
-            </Grid>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                    <Footer />
+                </div>
+            ) : null}
         </div>
 
     );

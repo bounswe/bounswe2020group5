@@ -24,6 +24,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
+import {useHistory} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +61,7 @@ function Profile() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [loadPage, setLoadPage] = React.useState(false);
+    let history = useHistory();
 
     const handleClick = () => {
         setOpen(!open);
@@ -75,20 +77,26 @@ function Profile() {
 
         console.log(token)
 
-        fetch(serverUrl + 'api/auth/user_info/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
-        }).then(res => res.json())
-            .then(json => {
-                setName({
-                        first_name: json.first_name,
-                        last_name: json.last_name
-                    }
-                )
-            }).then(() => {
-            setLoadPage(true)
-        })
-            .catch(err => console.log(err));
+        if (token) {
+            fetch(serverUrl + 'api/auth/user_info/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+            }).then(res => res.json())
+                .then(json => {
+                    setName({
+                            first_name: json.first_name,
+                            last_name: json.last_name
+                        }
+                    )
+                }).then(() => {
+                setLoadPage(true)
+            })
+                .catch(err => console.log(err));
+        } else {
+            alert('Please login to see profile page')
+            history.push('/login')
+        }
+
     }, []);
 
     console.log(name);

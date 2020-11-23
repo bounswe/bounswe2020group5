@@ -113,10 +113,6 @@ export default function Navbar() {
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const text = {
-    color: "black"
-  };
-
  // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -195,15 +191,19 @@ export default function Navbar() {
           <ListItemText primaryTypographyProps={{ style: text }} primary="My Account"/>
        </Link>
       </StyledMenuItem>
+      <Divider/>
       <StyledMenuItem style={{background:"white"}}>
         <ListItemText primaryTypographyProps={{ style: text }} primary="My Orders" />
       </StyledMenuItem>
+      <Divider/>
       <StyledMenuItem style={{background:"white"}}>
         <ListItemText primaryTypographyProps={{ style: text }} primary="My Lists" />
       </StyledMenuItem>
+      <Divider/>
       <StyledMenuItem style={{background:"white"}}>
         <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
       </StyledMenuItem>
+      <Divider/>
       <StyledMenuItem style={{background:"white"}}>
         <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
           <ListItemText primaryTypographyProps={{ style: text }} primary="Log out" />
@@ -264,13 +264,13 @@ export default function Navbar() {
 
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
-          <Link to="/login">
+          <Link style={{textDecoration: 'none'}} to="/login">
             <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
           </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{backgroundColor: 'white'}}>
-          <Link to="/signup">
+          <Link style={{textDecoration: 'none'}} to="/signup">
             <ListItemText primaryTypographyProps={{ style: text }} primary="Sign Up" />
           </Link>
         </StyledMenuItem>
