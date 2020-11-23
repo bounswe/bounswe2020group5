@@ -16,7 +16,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-
+import Divider from "@material-ui/core/Divider";
+import Icon from "@material-ui/core/Icon";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -52,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     color: '#7E7F9A',
   },
+
+
   inputRoot: {
     color: 'black',
   },
@@ -90,9 +93,15 @@ export default function Navbar() {
 
   let [isLogged,setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEljoint, setAnchorEljoint] = React.useState(null);
+
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
+  const text = {
+    color: "black"
+  };
+
+ // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -110,6 +119,14 @@ export default function Navbar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+
+  const handlejointClose = () => {
+    setAnchorEljoint(null);
+  };
+  const handlejointclick = (event) => {
+    setAnchorEljoint(event.currentTarget);
   };
 
   const StyledMenu = withStyles({
@@ -170,6 +187,7 @@ export default function Navbar() {
     </StyledMenu>
   );
 
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -210,7 +228,30 @@ export default function Navbar() {
       </MenuItem>
     </Menu>
   );
+  const menujointId = 'login menu';
+  const renderjointMenu = (
+      <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEljoint}
+          keepMounted
+          open={Boolean(anchorEljoint)}
+          onClose={handlejointClose}
 
+      >
+        <StyledMenuItem style={{backgroundColor: 'white'}}>
+          <Link to="/login">
+            <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{backgroundColor: 'white'}}>
+          <Link to="/signup">
+            <ListItemText primaryTypographyProps={{ style: text }} primary="Sign Up" />
+          </Link>
+        </StyledMenuItem>
+
+      </StyledMenu>
+  );
   return (
     <div className={classes.grow}>
       <AppBar position="static" style={{ background: '#F3DE8A' }}>
@@ -273,12 +314,16 @@ export default function Navbar() {
             </div>
           ):
           <div className={classes.notlogged}>
-              <Button style={{backgroundColor:"#0B3954"}} variant="contained" color="primary" to="/login" component={Link}>
-                Sign in
-              </Button>{' '}
-              <Button style={{backgroundColor:"#0B3954"}} variant="contained" color="primary" to="/signup" component={Link}>
-                Sign up
-              </Button>
+            <Button
+                style={{backgroundColor:"#0B3954"}}
+                variant="contained" color="primary"
+                onMouseOver={handlejointclick}
+                onClick={handlejointclick}
+                >
+           Log In
+          </Button>
+
+
 
           </div>
           }
@@ -286,6 +331,7 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderjointMenu}
     </div>
   );
 }

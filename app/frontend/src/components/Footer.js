@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3, 2),
     marginTop: 'auto',
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+    '#F3DE8A',
   },
 }));
 
@@ -43,13 +43,13 @@ export default function Footer() {
 
       <footer className={classes.footer}>
         <Container maxWidth="sm">
-          <Box display="flex" flexDirection="row" p={1} m={1}>
-            <Box p={1}>
+          <Box justifyContent="center" display="flex" flexDirection="row" p={1} m={1}>
+            <Box  p={0.20}>
               <a href="/">
-                <img style={{width:"5rem",height:"5rem"}} src="/img/logo.png" alt="BUPAZAR" />
+                <img  style={{width:"5rem",height:"5rem"}} src="/img/logo.png" alt="BUPAZAR" />
               </a>
             </Box>
-            <Box p={1} >
+            <Box p={2} >
               <Typography color="textSecondary" variant="body1">All rights reserved.</Typography>
               <Copyright/>
             </Box>
