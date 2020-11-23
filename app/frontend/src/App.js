@@ -14,7 +14,7 @@ function App() {
         <Route path="/" exact component={Home} />
         {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
         <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route path="/signup" exact component={Signup} />
         <Route path="/signup/vendor" component={Vendor} />
         <Route path="/profile" component={Profile} />
         <Route path='/home' render={() => <Redirect to= "/" />} />
