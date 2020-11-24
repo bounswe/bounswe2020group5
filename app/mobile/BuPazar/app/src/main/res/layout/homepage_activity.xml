@@ -43,7 +43,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoImageView"
@@ -52,7 +52,7 @@
         android:layout_width="0dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonLogOut"
         android:layout_width="88dp"
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
