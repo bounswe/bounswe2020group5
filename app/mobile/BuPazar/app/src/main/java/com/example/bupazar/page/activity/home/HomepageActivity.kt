@@ -30,7 +30,18 @@ class HomepageActivity : AppCompatActivity() {
 
     private fun createProducts(): List<Product> {
         val products = mutableListOf<Product>()
-        for (i in 1..150) products.add(Product(name = "Product #$i", description = "Description #$i", productNo = i))
+        val name = arrayOf("Holy book",
+            "Gore-tex  Jacket",
+            "Adosdas FreeRuning",
+            "Cafcafli Socks",
+            "MyPhone 2x+5")
+        val descs = arrayOf("$12.25",
+            "$89.99",
+            "$40.99",
+            "$5.99",
+            "$999.99",
+        )
+        for (i in 0..4) products.add(Product(name = name.get(i), description = descs.get(i), productNo = i))
         return products
     }
 
