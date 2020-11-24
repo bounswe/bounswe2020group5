@@ -68,7 +68,7 @@
         android:layout_marginRight="32dp"
         android:ems="10"
         android:hint="@string/password_hint"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
