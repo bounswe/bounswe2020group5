@@ -30,9 +30,8 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                         userEmail = usernameEditTextView.text.toString(),
                         userPassword = passwordEditTextView.text.toString()
                 )
-
-                apiService.addUser(userInfo) {
-                    if(it==null || it.userEmail == null){
+                apiService.userLogin(userInfo) {
+                    if(it?.userEmail == null){
                         Toast.makeText(this@LoginActivity,"Wrong username or password", Toast.LENGTH_SHORT).show()
                     }
                     else {

@@ -1,6 +1,5 @@
 package com.example.bupazar.model
 
-import android.text.Editable
 import com.google.gson.annotations.SerializedName
 
 
