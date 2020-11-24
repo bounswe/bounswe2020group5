@@ -47,6 +47,11 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
             startActivity(intent)
         }
 
+        buttonGuest.setOnClickListener() {
+            var intent=Intent(this,HomepageActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun changeActivity(activity: AppCompatActivity) {
