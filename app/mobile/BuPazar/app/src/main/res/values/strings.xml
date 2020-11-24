@@ -1,5 +1,69 @@
 <resources>
     <string name="app_name">BuPazar</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="appName">BuPazar!</string>
+    <string name="username">Username</string>
+    <string name="username_hint">Username or email address</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="guest">Guest</string>
+    <string name="search">Search</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_placeholder">Title</string>
+    <string name="news_placeholder">News</string>
+    <string name="sports_info_placeholder">Here is some news</string>
+    <string name="empty_screen">We do not have anything\nhere right now. Please Retry</string>
+    <string name="btn_retry">Retry</string>
+    <string-array name="sports_images">
+        <item>https://androidwave.com/media/images/img_baseball.jpg</item>
+        <item>https://androidwave.com/media/images/img_badminton.jpg</item>
+        <item>https://androidwave.com/media/images/img_basketball.jpg</item>
+        <item>https://androidwave.com/media/images/img_bowling.jpg</item>
+        <item>https://androidwave.com/media/images/img_cycling.jpg</item>
+        <item>https://androidwave.com/media/images/img_golf.jpg</item>
+        <item>https://androidwave.com/media/images/img_running.jpg</item>
+        <item>https://androidwave.com/media/images/img_soccer.jpg</item>
+        <item>https://androidwave.com/media/images/img_swimming.jpg</item>
+        <item>https://androidwave.com/media/images/img_tabletennis.jpg</item>
+        <item>https://androidwave.com/media/images/img_tennis.jpg</item>
+    </string-array>
+    <string-array name="sports_titles">
+        <item>Baseball</item>
+        <item>Badminton</item>
+        <item>Basketball</item>
+        <item>Bowling</item>
+        <item>Cycling</item>
+        <item>Golf</item>
+        <item>Running</item>
+        <item>Soccer</item>
+        <item>Swimming</item>
+        <item>Table Tennis</item>
+        <item>Tennis</item>
+    </string-array>
+    <string-array name="sports_info">
+        <item>Nike Enters 10-Year Partnership With Major League Baseball! </item>
+        <item>Indonesia Masters – Saina Nehwal sails into semifinals PV Sindhu, Kidambi Srikanth lose in quarters!</item>
+        <item>College Basketball 2018–19 Player of the Year Power Rankings Everyone is chasing Dukes Zion Williamson!</item>
+        <item>Local bowler lands 132 perfect games, shares his secret for success!</item>
+        <item>Sierra solos to win at womens Cadel Evans Great Ocean Road Race!</item>
+        <item>Tiger Woods Friday live blog: Woods overcomes mid-round hiccup to make the cut at Torrey Pines!</item>
+        <item>The 5km fun run was organised by Ironman England as part of its annual three-day triathlon festival in Bolton, Manchester in a bid to attract more female runners to the event!</item>
+        <item>Soccer insider notes: Liverpool not the only Premier League club eyeing Weston McKennie!</item>
+        <item>Chloe Grimme, a USA Swimming Scholastic All American from Land O Lakes, Florida, announced on social media that she has verbally committed to the University of Florida for 2020–21!</item>
+        <item>Table Tennis Federation Revokes Soumyajit Ghoshs Suspension, 9 Months After Rape Allegations!</item>
+        <item>2019 Australian Open odds, predictions for mens finals!</item>
+    </string-array>
+
+    <string-array name="product_images">
+        <item>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2VZX0397KBcVYrj7K4vbhZHj6zPkMQPqpJw&amp;usqp=CAU</item>
+        <item>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMcHcX5QR0TaJ5hYUvuFno4lfDUksgI-gPMA&amp;usqp=CAU</item>
+        <item>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2OEdAAT2mRuuVS51rmNY8_08SfL5ZQ30DYQ&amp;usqp=CAU</item>
+        <item>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMpQ6N7pKsyd4spN9lOmD_ND7yqvD1-I1RNw&amp;usqp=CAU</item>
+        <item>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLpR0nohEuF5_KKNkvpZdGo6gI_gm9rPzdqw&amp;usqp=CAU</item>
+    </string-array>
+
 </resources>
