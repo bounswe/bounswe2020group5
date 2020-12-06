@@ -50,18 +50,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ComplexGrid() {
     const classes = useStyles();
-    var count=0;
+
     let [clicked, setClicked] = useState(false);
     let [countclick, setcount] = useState(0);
 
-    const handlecount = () => {
-        if(countclick){
-            count=count++;
-        }else{
-
+    const handlecountplus = () => {
+        if(countclick<10) {
+            countclick = countclick + 1;
         }
+       setcount(countclick);
     };
-    const handleclick = () => {
+
+    const handlecountminus = () => {
+        if(countclick>0) {
+            countclick = countclick - 1;
+        }
+        setcount(countclick);
+    };
+
+    const handleclickheart = () => {
         if(clicked){
             setClicked(false);
         }else{
@@ -113,15 +120,15 @@ export default function ComplexGrid() {
                                 </div>
                                 <div>
                                     <IconButton style={{ marginLeft: "10rem"}}
-                                        onClick={handlecount}>
+                                        onClick={handlecountplus}>
                                     <AddIcon />
                                     </IconButton>
                                 <Button style={{ marginLeft: "10rem",marginRight:"7rem"}}size='small'id="outlined-basic" label="0" variant="outlined">
-                                    0
+                                    {countclick}
 
                                 </Button>
                                     <IconButton style={{ marginLeft: "10rem"}}
-                                                onClick={handlecount}>
+                                                onClick={handlecountminus}>
                                     <RemoveIcon/>
                                     </IconButton>
                                     </div>
@@ -129,7 +136,7 @@ export default function ComplexGrid() {
                         </Grid>
                         <Grid item>
                             <IconButton
-                                onClick={handleclick}>
+                                onClick={handleclickheart}>
                                 {clicked ? <Favorite /> : <FavoriteBorderIcon />}
                             </IconButton>
                         </Grid>

@@ -35,8 +35,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const SimpleGridList = ({tileData}) => {
-  const classes = useStyles();
 
+  const classes = useStyles();
+  const [id, setid] = React.useState();
     const [title, setTitle] = React.useState("");
     const [selected, setSelected] = React.useState();
 
@@ -51,10 +52,14 @@ export const SimpleGridList = ({tileData}) => {
       setSelected(index);
       setTitle(icon);
     }
+  function handleInputChange() {
+
+  }
   return (
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={5} >
         {tileData.map((tile,index) => (
+
           <GridListTile className={index === selected ? "selected" : ""}
                         key={`${index}${title.title}`} style={{height:"19rem"}}>
             <img style={{width:"15rem",height:"15rem"}} src={tile.img} alt={tile.title}
@@ -69,7 +74,8 @@ export const SimpleGridList = ({tileData}) => {
 
               }}
               actionIcon={
-                <Link style={{textDecoration: 'none'}} to="/product">
+
+                <Link params={{id:tile.title}} style={{textDecoration: 'none'}} to="/product">
                 <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={classes.icon}
