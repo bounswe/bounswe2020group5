@@ -74,8 +74,8 @@ export const SimpleGridList = ({tileData}) => {
 
               }}
               actionIcon={
-
-                <Link params={{id:tile.title}} style={{textDecoration: 'none'}} to="/product">
+                <Link onClick={() => localStorage.setItem("id",JSON.stringify(tile.title))}
+                      style={{textDecoration: 'none'}} to="/product">
                 <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={classes.icon}

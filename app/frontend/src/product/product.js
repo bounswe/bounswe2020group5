@@ -1,4 +1,5 @@
-import React , {useEffect, useState}from 'react';
+import React , {Component,useEffect, useState}from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -22,6 +23,8 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {Favorite} from "@material-ui/icons";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Divider from "@material-ui/core/Divider";
 
 
 
@@ -31,22 +34,32 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(2),
-        marginLeft:200,
+        marginLeft:250,
         marginTop:20,
         marginBottom:100,
-        maxWidth: 1100,
+        maxWidth: 1000,
+        maxHeight: 1500,
+
     },
     image: {
-        width: 600,
-        height: 600,
+        width: 460,
+        height: 480,
     },
     img: {
-        marginTop:100,
+        marginTop:50,
         display: 'block',
         maxWidth: '100%',
         maxHeight: '100%',
     },
 }));
+const styles = {
+
+    largeIcon: {
+        width: 60,
+        height: 60,
+    },
+
+};
 
 export default function ComplexGrid() {
     const classes = useStyles();
@@ -87,62 +100,72 @@ export default function ComplexGrid() {
                 </div>
             </div>
 
-            <Paper className={classes.paper}>
+            <Paper justifyContent={'center'} className={classes.paper}>
                 <Grid container spacing={2}>
-                    <Grid item>
+                    <Grid >
                         <ButtonBase className={classes.image}>
                             <img className={classes.img} alt="complex" src={image1}/>
                         </ButtonBase>
 
                     </Grid>
-                    <Grid item xs={1} sm container>
-                        <Grid item xs container direction="column" spacing={2}>
-                            <Grid item xs>
+                    <Grid sm container>
+                        <Grid >
+                            <Grid >
                                 <Typography gutterBottom variant="subtitle1">
-                                    Intellinet Smart Watch
+
+                                    {localStorage.getItem('id')}
                                 </Typography>
+                                <Divider/>
                                 <Typography style={{ marginTop: "5rem"}} variant="body2" gutterBottom>
                                     $19.00
                                 </Typography>
+                                <Divider/>
                                 <Typography style={{ marginTop: "5rem"}}variant="body2" color="textSecondary">
                                     SIZES
                                 </Typography>
+                                <Divider/>
                                 <Typography style={{ marginTop: "5rem"}} variant="body2" color="textSecondary">
                                     COLORS
                                 </Typography>
-                                <TextField style={{ marginTop: "5rem"}}id="filled-basic" label="Please leave a comment" variant="filled" />
+                                <Divider/>
+
                             </Grid>
-                            <Grid item>
-                                <div>
-                                <Button style={{ marginLeft: "15rem",marginTop: "5rem",cursor: 'pointer' }}>
-                                    SEPETE EKLE
-                                </Button>
-                                </div>
-                                <div>
-                                    <IconButton style={{ marginLeft: "10rem"}}
+                            <Grid style={{marginBottom: "3rem",marginLeft:"20rem"}}>
+
+
+
+                                    <Button  style={{ marginLeft: "1.25rem",marginTop: "5rem",marginBottom: "2rem",cursor: 'pointer' }}>
+                                        PURCHASE
+                                    </Button>
+                                <div >
+                                    <ButtonGroup variant="text" color="#FFFFFF" aria-label="text primary button group">
+                                    <IconButton
                                         onClick={handlecountplus}>
                                     <AddIcon />
                                     </IconButton>
-                                <Button style={{ marginLeft: "10rem",marginRight:"7rem"}}size='small'id="outlined-basic" label="0" variant="outlined">
+                                <Button size='small'id="outlined-basic" label="0" variant="outlined">
                                     {countclick}
 
                                 </Button>
-                                    <IconButton style={{ marginLeft: "10rem"}}
+                                    <IconButton
                                                 onClick={handlecountminus}>
                                     <RemoveIcon/>
                                     </IconButton>
+                                    </ButtonGroup>
                                     </div>
                             </Grid>
                         </Grid>
-                        <Grid item>
+                        <Grid >
                             <IconButton
+                                style={{ fontSize: '200%' }}
                                 onClick={handleclickheart}>
                                 {clicked ? <Favorite /> : <FavoriteBorderIcon />}
-                            </IconButton>
+                            </IconButton >
                         </Grid>
                     </Grid>
                 </Grid>
             </Paper>
+
             <div>
                 <Footer/>
             </div>
