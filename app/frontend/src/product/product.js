@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         marginLeft:250,
         marginTop:20,
-        marginBottom:100,
+        marginBottom:20,
         maxWidth: 1000,
         maxHeight: 1500,
 
@@ -101,7 +101,7 @@ export default function ComplexGrid() {
             </div>
 
             <Paper justifyContent={'center'} className={classes.paper}>
-                <Grid container spacing={2}>
+                <Grid container >
                     <Grid >
                         <ButtonBase className={classes.image}>
                             <img className={classes.img} alt="complex" src={image1}/>
@@ -127,7 +127,7 @@ export default function ComplexGrid() {
                                 <Typography style={{ marginTop: "5rem"}} variant="body2" color="textSecondary">
                                     COLORS
                                 </Typography>
-                                <Divider/>
+                                <Divider />
 
                             </Grid>
                             <Grid style={{marginBottom: "3rem",marginLeft:"20rem"}}>
@@ -165,7 +165,21 @@ export default function ComplexGrid() {
                     </Grid>
                 </Grid>
             </Paper>
-
+            <Paper justifyContent={'center'} className={classes.paper}>
+              <div  >
+                <TextField style={{"height" : "100%", "width" : "100%"}}
+                    id="outlined-multiline-static"
+                    label="Please write a comment"
+                    multiline
+                    rows={4}
+                    defaultValue=""
+                    variant="outlined"
+                />
+                </div>
+            </Paper>
+            <Paper justifyContent={'center'} className={classes.paper}>
+                COMMENT SECTION
+            </Paper>
             <div>
                 <Footer/>
             </div>
