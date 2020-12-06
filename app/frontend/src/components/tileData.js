@@ -6,10 +6,12 @@ import image5 from "../img/10364373860412.jpg";
 import image6 from "../img/10364373860413.jpg";
 
 export const tileData = [
+
   {
     img: image1,
     title: 'Intelinet Smartwatch',
     price: ' 352 TL',
+    icon:'icon1'
   },
   {
     img: image2,
