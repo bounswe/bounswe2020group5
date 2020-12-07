@@ -1,5 +1,6 @@
 import React , {Component,useEffect, useState}from 'react';
-
+import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
+import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -25,7 +26,8 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {Favorite} from "@material-ui/icons";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Divider from "@material-ui/core/Divider";
-
+import Box from "@material-ui/core/Box";
+import Rating from "@material-ui/lab/Rating";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(2),
-        marginLeft:250,
+        marginLeft:100,
+        marginRight:100,
         marginTop:20,
         marginBottom:20,
-        maxWidth: 1000,
+        maxWidth: 1500,
         maxHeight: 1500,
 
     },
@@ -63,29 +66,47 @@ const styles = {
 
 export default function ComplexGrid() {
     const classes = useStyles();
+    const [value, setValue] = React.useState(0);
 
-    let [clicked, setClicked] = useState(false);
-    let [countclick, setcount] = useState(0);
+    let [heartclick, setheartclick] = useState(false);
+    let [listclick, setlistclick] = useState(false);
+    let [countclickheart, setcount] = useState(0);
 
     const handlecountplus = () => {
-        if(countclick<10) {
-            countclick = countclick + 1;
+        if(countclickheart<10) {
+            countclickheart = countclickheart + 1;
         }
-       setcount(countclick);
+       setcount(countclickheart);
     };
 
     const handlecountminus = () => {
-        if(countclick>0) {
-            countclick = countclick - 1;
+        if(countclickheart>0) {
+            countclickheart = countclickheart - 1;
         }
-        setcount(countclick);
+        setcount(countclickheart);
+    };
+    const handlelistcount = () => {
+        if(listclick) {
+            listclick = false;
+        }else{
+            listclick=true;
+        }
+        setlistclick(listclick);
     };
 
+
     const handleclickheart = () => {
-        if(clicked){
-            setClicked(false);
+        if(heartclick){
+            setheartclick(false);
         }else{
-            setClicked(true);
+            setheartclick(true);
+        }
+    };
+    const handleclicklist = () => {
+        if(heartclick){
+            setlistclick(false);
+        }else{
+            setlistclick(true);
         }
     };
     return (
@@ -116,35 +137,46 @@ export default function ComplexGrid() {
                                     {localStorage.getItem('id')}
                                 </Typography>
                                 <Divider/>
-                                <Typography style={{ marginTop: "5rem"}} variant="body2" gutterBottom>
+                                <Typography style={{ marginTop: "4rem",marginBottom: "2rem"}} variant="body2" gutterBottom>
                                     $19.00
                                 </Typography>
-                                <Divider/>
-                                <Typography style={{ marginTop: "5rem"}}variant="body2" color="textSecondary">
+                                <Divider />
+                                <Typography style={{ marginTop: "4rem",marginBottom: "2rem"}}variant="body2" color="textSecondary">
                                     SIZES
                                 </Typography>
                                 <Divider/>
-                                <Typography style={{ marginTop: "5rem"}} variant="body2" color="textSecondary">
+                                <Typography style={{ marginTop: "4rem",marginBottom: "2rem"}} variant="body2" color="textSecondary">
                                     COLORS
                                 </Typography>
                                 <Divider />
+                                <IconButton style={{marginTop: "2rem"}}
+                                    onClick={handlelistcount}>
+                                    {listclick ? <TurnedInIcon fontSize={"large"} /> : <TurnedInNotIcon fontSize={"large"} />}
+                                </IconButton >
+                                <IconButton style={{marginTop: "2rem"}}
+                                    onClick={handleclickheart}>
+                                    {heartclick ? <Favorite fontSize={"large"} /> : <FavoriteBorderIcon fontSize={"large"} />}
+                                </IconButton >
 
                             </Grid>
-                            <Grid style={{marginBottom: "3rem",marginLeft:"20rem"}}>
+                            <Grid style={{marginBottom: "1rem",marginLeft:"20rem"}}>
 
 
-
-                                    <Button  style={{ marginLeft: "1.25rem",marginTop: "5rem",marginBottom: "2rem",cursor: 'pointer' }}>
+                                    <Button size="large" variant="contained" style={{ marginLeft: "9.1rem",marginTop: "1rem",marginBottom: "1rem",cursor: 'pointer' }}>
                                         PURCHASE
                                     </Button>
+
                                 <div >
-                                    <ButtonGroup variant="text" color="#FFFFFF" aria-label="text primary button group">
+
+
+                                    <ButtonGroup style={{ marginLeft: "9rem"}} variant="text" color="#FFFFFF" aria-label="text primary button group">
+
                                     <IconButton
                                         onClick={handlecountplus}>
                                     <AddIcon />
                                     </IconButton>
                                 <Button size='small'id="outlined-basic" label="0" variant="outlined">
-                                    {countclick}
+                                    {countclickheart}
 
                                 </Button>
                                     <IconButton
@@ -155,12 +187,18 @@ export default function ComplexGrid() {
                                     </div>
                             </Grid>
                         </Grid>
-                        <Grid >
-                            <IconButton
-                                style={{ fontSize: '200%' }}
-                                onClick={handleclickheart}>
-                                {clicked ? <Favorite /> : <FavoriteBorderIcon />}
-                            </IconButton >
+                        <Grid style={{marginLeft:"2rem"}} >
+                            <Box component="fieldset" mb={3} borderColor="transparent">
+                                <Typography component="legend"></Typography>
+                                <Rating
+                                    name="simple-controlled"
+                                    value={value}
+                                    onChange={(event, newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                />
+                            </Box>
+
                         </Grid>
                     </Grid>
                 </Grid>
