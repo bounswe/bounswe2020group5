@@ -3,6 +3,7 @@ import NoMatch from './common/NoMatch'
 import Home from "./home/Home";
 import Login from "./login/Login";
 import Signup from "./signup/Signup";
+import EmailVerification from "./signup/EmailVerification";
 import Profile from "./profile/Profile";
 import ChangePassword from "./profile/ChangePassword";
 import { Vendor } from "./signup/Vendor";
@@ -16,6 +17,7 @@ function App() {
         {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
         <Route path="/login" component={Login} />
         <Route path="/signup" exact component={Signup} />
+        <Route path="/email-verification" exact component={EmailVerification} />
         <Route path="/signup/vendor" component={Vendor} />
         <Route path="/profile" exact component={Profile} />
         <Route path="/profile/changepassword" component={ChangePassword} />
