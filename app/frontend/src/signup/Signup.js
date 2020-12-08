@@ -152,7 +152,14 @@ function Signup(props) {
         localStorage.setItem('token', token);
         setLogged(true);
       } else {
-        setAlertMessage('User with this username already exists');
+        if (res.email) {
+          setAlertMessage('User with this email already exists');
+        } else if (res.username) {
+          setAlertMessage('User with this username already exists');
+        } else {
+          setAlertMessage('Some error has occured');
+          console.log(res)
+        }
       }
     } catch (error) {
       setAlertMessage('Some error has occured');
