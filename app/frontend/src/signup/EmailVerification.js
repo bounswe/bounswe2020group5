@@ -10,8 +10,7 @@ import {
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-  },
+  container: {},
   paper: {
     marginTop: theme.spacing(10),
     padding: theme.spacing(10),
@@ -20,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "100%",
     marginTop: theme.spacing(1),
     minHeight: "100%",
-    fontWeight: "bold",
   },
   field: {
     minWidth: "100%",
@@ -43,8 +41,8 @@ export default function EmailVerification(props) {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
-              We have sent the verification mail to {props.email}. Please enter the code
-              below.
+              We have sent the verification mail to {props.email}. Please enter
+              the code below.
             </Typography>
           </Grid>
           <Grid item xs={2} />
