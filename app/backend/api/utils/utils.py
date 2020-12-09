@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from ..models import Customer, Vendor
+from ..models import Product
 
 def create_user_account(email, username, first_name,
                         last_name, password, is_customer, is_vendor, address, **extra_fields):
@@ -15,3 +16,7 @@ def create_user_account(email, username, first_name,
         vendor.save()
 
     return user
+
+def create_product(name, price, stock, description, image_url, category, vendor, **extra_fields):
+    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, category=category, vendor=vendor)
+    product.save()

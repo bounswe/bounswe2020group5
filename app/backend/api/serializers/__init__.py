@@ -6,3 +6,5 @@ from .users import RegisterSerializer
 from .users import PasswordChangeSerializer
 from .users import UpdateProfileSerializer
 from .users import SuccessSerializer
+from .products import ProductSerializer
+from .products import AddProductSerializer
