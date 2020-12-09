@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Category
+from ..models import Product, Vendor, Category, Document
 from ..serializers import ProductSerializer, AddProductSerializer, SuccessSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
@@ -15,7 +15,6 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-
 class ProductOptViewSet(viewsets.GenericViewSet):
     parser_classes = (MultiPartParser,)
     permission_classes = [AllowAny, ]
@@ -30,12 +29,16 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         price = request.data.get("price")
         stock = request.data.get("stock")
         description = request.data.get("description")
-        image_file = request.data.get("image_file")
+        document = Document(upload=request.data.get("image_file"))
+        document.save()
+        image_file = document.upload
         category_name = request.data.get("category_name")
-        category = Category.objects.filter(name=category_name)
+        category = Category.objects.get(name=category_name)
         vendor = Vendor(user=request.user)
 
-        create_product(name=name, price=price, stock=stock, description=description, category=category, vendor=vendor)
+        create_product(name=name, price=price, stock=stock, description=description, 
+                        image_url = image_file.url ,category=category, vendor=vendor)
+
         return Response(data={'success': 'Successfully created product'}, status=status.HTTP_201_CREATED)
 
     def get_serializer_class(self):

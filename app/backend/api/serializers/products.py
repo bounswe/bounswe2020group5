@@ -8,9 +8,9 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AddProductSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=250)
-    price = serializers.DecimalField(max_digits=10, decimal_places=2)
-    stock = serializers.IntegerField()
-    description = serializers.CharField(max_length=500)
-    image_file = serializers.FileField()
-    category_name = serializers.CharField(max_length=250)
+    name = serializers.CharField(max_length=250, required=True)
+    price = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    stock = serializers.IntegerField(required=True)
+    description = serializers.CharField(max_length=500, required=True)
+    image_file = serializers.FileField(required=True)
+    category_name = serializers.CharField(max_length=250, required=True)

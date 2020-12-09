@@ -2,6 +2,10 @@ from django.db import models
 from .users import Vendor
 import json
 
+class Document(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = models.FileField()
+
 class Category(models.Model):
     name = models.CharField(max_length=250)
 

@@ -17,6 +17,6 @@ def create_user_account(email, username, first_name,
 
     return user
 
-def create_product(name, price, stock, description, category, vendor, **extra_fields):
-    product = Product(name=name, price=price, stock=stock, description=description, category=category, vendor=vendor)
+def create_product(name, price, stock, description, image_url, category, vendor, **extra_fields):
+    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, category=category, vendor=vendor)
     product.save()
