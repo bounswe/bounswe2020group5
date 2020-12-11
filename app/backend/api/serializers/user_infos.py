@@ -3,12 +3,12 @@ from ..models import Info
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 #Info Serializer
-class InfoSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Info
         fields = '__all__'
 
-class RegisterInfoCheckSerializer(serializers.Serializer):
+class RegisterUSerInfoCheckSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     number = serializers.CharField(required=True)
 
