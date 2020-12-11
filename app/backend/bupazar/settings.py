@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 from db_config import HOST
 from pathlib import Path
-from aws_s3_config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +28,14 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "bupazar451@gmail.com"
+EMAIL_HOST_PASSWORD = "bupazar123"
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,7 +50,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
-    'storages',
 ]
 
 AUTH_USER_MODEL = 'api.User'
@@ -139,17 +145,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-#STATIC_URL = '/static/'
-
-AWS_ACCESS_KEY_ID = ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY = SECRET_ACCESS_KEY
-AWS_STORAGE_BUCKET_NAME = STORAGE_BUCKET_NAME
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-
-AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-DEFAULT_FILE_STORAGE = 'bupazar.storage_backends.MediaStorage'
+STATIC_URL = '/static/'
