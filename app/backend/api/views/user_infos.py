@@ -3,7 +3,7 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import Info
+from ..models import UserInfo
 from ..serializers import UserInfoSerializer, RegisterSerializer, RegisterUserInfoCheckSerializer, AuthUserSerializer
 from ..utils import create_user_info, create_user_account
 from rest_framework import serializers
@@ -19,7 +19,7 @@ from rest_framework.status import (
 from drf_yasg.utils import swagger_auto_schema
 
 class UserInfoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Info.objects.all()
+    queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
 
 
@@ -43,8 +43,9 @@ class UserInfoOptViewSet(viewsets.GenericViewSet):
         template = render_to_string('email_template.html',{'name':validated['username'],'number':str(number)})
         
         try:
-            send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
-        except BadHeaderError:
+            #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
+            send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
+        except:
             return Response(data="The parameters are in wrong format or typed inaccurate", status=HTTP_400_BAD_REQUEST)
         
         user_info = create_user_info(**validated,number=number)
@@ -61,7 +62,7 @@ class UserInfoOptViewSet(viewsets.GenericViewSet):
         
         number = request.data.get("number")
 
-        datas = Info.objects.filter(email=validated_user_email,number=number)
+        datas = UserInfo.objects.filter(email=validated_user_email,number=number)
 
         validated_user_account = datas.values()[0]
 

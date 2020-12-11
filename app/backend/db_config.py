@@ -1,0 +1,1 @@
+HOST = 'mongodb+srv://bupazarAdmin:bupazar1234@yusufcluster.jdz8p.mongodb.net/bupazarDB'

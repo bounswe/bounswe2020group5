@@ -8,5 +8,5 @@ from .users import UpdateProfileSerializer
 from .users import SuccessSerializer
 from .products import ProductSerializer
 from .products import AddProductSerializer
-from .user_infos import RegisterUSerInfoCheckSerializer
+from .user_infos import RegisterUserInfoCheckSerializer
 from .user_infos import UserInfoSerializer

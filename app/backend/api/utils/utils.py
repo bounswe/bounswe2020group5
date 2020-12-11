@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from ..models import Customer, Vendor
 from ..models import Product
-from ..models import Info
+from ..models import UserInfo
 
 def create_user_account(email, username, first_name,
                         last_name, password, is_customer, is_vendor, address, **extra_fields):
@@ -24,7 +24,7 @@ def create_product(name, price, stock, description, category, vendor, **extra_fi
 
 def create_user_info(email, number, username, first_name,
                         last_name, password, is_customer, is_vendor, address, **extra_fields):
-    info = Info(
+    user_info = UserInfo(
         email=email, number = number , username=username, first_name=first_name,
         last_name=last_name, password=password, is_customer= is_customer, is_vendor=is_vendor, address=address, **extra_fields)
-    info.save()
+    user_info.save()
