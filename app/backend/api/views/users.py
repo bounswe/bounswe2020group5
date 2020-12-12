@@ -70,7 +70,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
     
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: RegisterSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -82,18 +82,23 @@ class AuthViewSet(viewsets.GenericViewSet):
         number = randint(10000, 99999)
 
         template = render_to_string('email_template.html',{'name':validated['username'],'number':str(number)})
+        index = 0
+        while index < 3:
+            try:
+                #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
+                send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
+                break;
+            except:
+                index = index + 1
         
-        try:
-            #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
-            send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
-        except:
+        if index == 3:
             return Response(data="The parameters are in wrong format or typed inaccurate", status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
         
         data = {"user_info":"user_info is created"}
         return Response(data=data, status=status.HTTP_201_CREATED)
-
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
     def register_activate(self, request):
         serializer = self.get_serializer(data=request.data)
