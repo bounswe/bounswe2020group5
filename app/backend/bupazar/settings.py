@@ -9,10 +9,8 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-from db_config import HOST
 from pathlib import Path
-from aws_s3_config import *
-from email_config import *
+from bupazar_config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,7 +33,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = PORT
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = EMAIL
-EMAIL_HOST_PASSWORD = PASSWORD
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 
 
 # Application definition

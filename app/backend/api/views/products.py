@@ -8,6 +8,7 @@ from ..utils import create_product
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
+from api.custom_permissions import IsAuthCustomer, IsAuthVendor
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
@@ -26,7 +27,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
     def add(self, request):
         name = request.data.get("name")
         price = request.data.get("price")
@@ -66,7 +67,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ResponseSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def add(self, request):
         name = request.data.get("name")
         user = Customer(user=request.user)
@@ -75,7 +76,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         return Response(data={'ok': True}, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def delete(self, request):
         list_id = request.data.get("list_id")
         try:
@@ -92,7 +93,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         return Response(data={'ok': True}, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def add_product(self, request):
         list_id = request.data.get("list_id")
         product_id = request.data.get("product_id")
@@ -113,7 +114,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         if product_list is None or product is None:
             return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = Customer(user=request.user)
+        user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
             return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -123,7 +124,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         return Response(data={'ok': True}, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def remove_product(self, request):
         list_id = request.data.get("list_id")
         product_id = request.data.get("product_id")
@@ -139,7 +140,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
             product = None
         if product_list is None or product is None:
             return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
-        user = Customer(user=request.user)
+        user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
             return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
         product_list.products.remove(product)

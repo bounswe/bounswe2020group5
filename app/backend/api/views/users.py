@@ -76,22 +76,23 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         number = randint(10000, 99999)
 
-        template = render_to_string('email_template.html',{'name':validated['username'],'number':str(number)})
+        template = render_to_string('email_template.html', {'name': validated['username'], 'number': str(number)})
         index = 0
-        while index < 3:
+        while index < 5:
             try:
                 #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
                 send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
-                break;
+                break
             except:
-                index = index + 1
+                index+=1
         
-        if index == 3:
-            return Response(data="The parameters are in wrong format or typed inaccurate", status=HTTP_400_BAD_REQUEST)
+        if index == 5:
+            return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
         
-        return Response(data = {"success":"user_info is created"}, status=status.HTTP_201_CREATED)
+        return Response(data = {"success": "user_info is created"}, status=status.HTTP_201_CREATED)
+
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
     def register_activate(self, request):
@@ -106,7 +107,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         validated_user_account = datas.values()[0]
 
         if (validated_user_account.pop('number') != number):
-            return Response(data="The number does not match ", status=HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'The number does not match'}, status=HTTP_400_BAD_REQUEST)
 
         datas.delete()
         
