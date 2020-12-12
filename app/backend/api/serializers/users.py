@@ -34,11 +34,6 @@ class EmptySerializer(serializers.Serializer):
     pass
 
 
-class TempUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TempUser
-        fields = '__all__'
-
 class RegisterActivateSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     number = serializers.CharField(required=True)

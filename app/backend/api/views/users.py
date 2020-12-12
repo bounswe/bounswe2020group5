@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import User, TempUser
-from ..serializers import UserSerializer, TempUserSerializer, AuthUserSerializer
+from ..serializers import UserSerializer, AuthUserSerializer
 from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
 from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer
 from ..utils import create_user_account, create_temp_user_account
@@ -28,11 +28,6 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-class TempUserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = TempUser.objects.all()
-    serializer_class = TempUserSerializer
-
 
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]

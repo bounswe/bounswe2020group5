@@ -19,7 +19,6 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 router.register(r'auth', AuthViewSet, basename='auth')
-router.register(r'temp_users', TempUserViewSet, basename='temp_users')
 router.register(r'products', ProductViewSet, basename='products')
 router.register(r'products/opts', ProductOptViewSet, basename='products/opts')
 
