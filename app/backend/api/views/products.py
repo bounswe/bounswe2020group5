@@ -37,8 +37,8 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         image_file = document.upload
         category_name = request.data.get("category_name")
         category = Category.objects.get(name=category_name)
-        vendor = Vendor(user=request.user)
-
+        vendor = Vendor.objects.filter(user=request.user).first()
+        
         create_product(name=name, price=price, stock=stock, description=description,
                        image_url=image_file.url, category=category, vendor=vendor)
 
@@ -85,7 +85,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
 
         if product_list is None:
             return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
-        user = Customer(user=request.user)
+        user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
             return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
         product_list.delete()
