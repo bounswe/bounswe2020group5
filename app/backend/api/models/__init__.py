@@ -4,4 +4,6 @@ from .users import Vendor
 from .products import Product
 from .products import Category
 from .products import Document
+from .products import ProductList
 from .temp_users import TempUser
+

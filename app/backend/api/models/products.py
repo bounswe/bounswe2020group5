@@ -1,5 +1,5 @@
 from django.db import models
-from .users import Vendor
+from .users import Vendor, Customer
 import json
 
 class Document(models.Model):
@@ -34,3 +34,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+        
+class ProductList(models.Model):
+    name = models.CharField(max_length=250)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    
+    def __str__(self):
+        return self.name
+
