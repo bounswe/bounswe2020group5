@@ -3,10 +3,16 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import User
-from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, UpdateProfileSerializer, SuccessSerializer
-from ..utils import create_user_account
+from ..models import User, TempUser
+from ..serializers import UserSerializer, TempUserSerializer, AuthUserSerializer
+from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
+from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer
+from ..utils import create_user_account, create_temp_user_account
 from rest_framework import serializers
+from django.core.mail import BadHeaderError, send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from random import randint
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
@@ -23,6 +29,10 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class TempUserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = TempUser.objects.all()
+    serializer_class = TempUserSerializer
+
 
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
@@ -32,7 +42,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         'register': RegisterSerializer, 
         'password_change': PasswordChangeSerializer,
         'user_info' : EmptySerializer,
-        'profile_update': UpdateProfileSerializer,  
+        'profile_update': UpdateProfileSerializer, 
+        'register_activate': RegisterActivateSerializer, 
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -67,8 +78,42 @@ class AuthViewSet(viewsets.GenericViewSet):
         validated = serializer.validated_data
         if 'address' not in validated:
             validated['address'] = ""
-        user = create_user_account(**validated)
+        
+        number = randint(10000, 99999)
+
+        template = render_to_string('email_template.html',{'name':validated['username'],'number':str(number)})
+        
+        try:
+            #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
+            send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
+        except:
+            return Response(data="The parameters are in wrong format or typed inaccurate", status=HTTP_400_BAD_REQUEST)
+        
+        user_info = create_temp_user_account(**validated,number=number)
+        
+        data = {"user_info":"user_info is created"}
+        return Response(data=data, status=status.HTTP_201_CREATED)
+
+    @action(methods=['POST', ], detail=False)
+    def register_activate(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_user_email = serializer.validated_data['email']
+        
+        number = request.data.get("number")
+
+        datas = TempUser.objects.filter(email=validated_user_email,number=number)
+
+        validated_user_account = datas.values()[0]
+
+        if (validated_user_account.pop('number') != number):
+            return Response(data="The number does not match ", status=HTTP_400_BAD_REQUEST)
+
+        datas.delete()
+        
+        user = create_user_account(**validated_user_account)
         data = AuthUserSerializer(user).data
+
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})   

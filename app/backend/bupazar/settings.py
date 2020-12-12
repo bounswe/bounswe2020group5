@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 from db_config import HOST
 from pathlib import Path
+from aws_s3_config import *
+from email_config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,10 +32,10 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
+EMAIL_PORT = PORT
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "bupazar451@gmail.com"
-EMAIL_HOST_PASSWORD = "bupazar123"
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = PASSWORD
 
 
 # Application definition
@@ -145,7 +147,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 
 AWS_ACCESS_KEY_ID = ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY = SECRET_ACCESS_KEY

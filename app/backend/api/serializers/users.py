@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from ..models.users import User
+from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 
@@ -31,6 +32,22 @@ class AuthUserSerializer(serializers.ModelSerializer):
     
 class EmptySerializer(serializers.Serializer):
     pass
+
+
+class TempUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempUser
+        fields = '__all__'
+
+class RegisterActivateSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    number = serializers.CharField(required=True)
+
+    def validate_email(self,value):
+        user = TempUser.objects.filter(email=value)
+        if not user:
+            raise serializers.ValidationError("Email is not found")
+        return BaseUserManager.normalize_email(value)
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

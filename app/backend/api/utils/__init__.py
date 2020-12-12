@@ -1,1 +1,1 @@
-from .utils import create_user_account, create_product, create_user_info
+from .utils import create_user_account, create_product, create_temp_user_account
