@@ -138,7 +138,10 @@ dmypy.json
 cython_debug/
 
 # Databse configuration
-.db_config
+db_config.py
 
 # AWS S3 configuration
-.aws_s3_config
+aws_s3_config.py
+
+# Email configurations
+email_config.py
