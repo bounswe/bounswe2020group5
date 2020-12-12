@@ -70,7 +70,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
     
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: RegisterSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -96,8 +96,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         user_info = create_temp_user_account(**validated,number=number)
         
-        data = {"user_info":"user_info is created"}
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        return Response(data = {"success":"user_info is created"}, status=status.HTTP_201_CREATED)
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
     def register_activate(self, request):
