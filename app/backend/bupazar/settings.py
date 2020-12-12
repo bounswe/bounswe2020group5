@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
+    'storages'
 ]
 
 AUTH_USER_MODEL = 'api.User'
