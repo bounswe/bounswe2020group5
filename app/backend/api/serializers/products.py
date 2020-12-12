@@ -16,6 +16,9 @@ class AddProductSerializer(serializers.Serializer):
     image_file = serializers.FileField(required=True)
     category_name = serializers.CharField(max_length=250, required=True)
 
+class DeleteProductSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+
 #ProductList Serializer
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:

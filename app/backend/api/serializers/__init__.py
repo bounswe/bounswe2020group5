@@ -9,6 +9,7 @@ from .users import SuccessSerializer
 from .users import RegisterActivateSerializer
 from .products import ProductSerializer
 from .products import AddProductSerializer
+from .products import DeleteProductSerializer
 from .products import ProductListSerializer
 from .products import CreateProductListSerializer
 from .products import DeleteProductListSerializer

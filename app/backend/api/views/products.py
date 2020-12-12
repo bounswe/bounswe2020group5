@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList
-from ..serializers import ProductSerializer, AddProductSerializer, SuccessSerializer
+from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
@@ -23,7 +23,8 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     parser_classes = (MultiPartParser,)
     permission_classes = [AllowAny, ]
     serializer_classes = {
-        'add': AddProductSerializer
+        'add': AddProductSerializer,
+        'delete': DeleteProductSerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
@@ -38,12 +39,27 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         image_file = document.upload
         category_name = request.data.get("category_name")
         category = Category.objects.get(name=category_name)
-        vendor = Vendor.objects.filter(user=request.user).first()
+        vendor = Vendor.objects.get(user=request.user)
         
         create_product(name=name, price=price, stock=stock, description=description,
                        image_url=image_file.url, category=category, vendor=vendor)
 
         return Response(data={'success': 'Successfully created product'}, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
+    def delete(self, request):
+        product_id = request.data.get("product_id")
+        product = Product.objects.get(id=product_id)
+        vendor =  Vendor.objects.get(user=request.user)
+        vendor_products = Product.objects.filter(vendor=vendor)
+
+        if product in vendor_products:
+            product.delete()
+        else:
+            return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(data={'success': 'Successfully deleted product'}, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
