@@ -21,6 +21,8 @@ router.register(r'users', UserViewSet, basename='users')
 router.register(r'auth', AuthViewSet, basename='auth')
 router.register(r'products', ProductViewSet, basename='products')
 router.register(r'products/opts', ProductOptViewSet, basename='products/opts')
+router.register(r'product-lists', ProductListViewSet, basename='product-lists')
+router.register(r'product-lists/opts', ProductListOptViewSet, basename='product-lists/opts')
 
 urlpatterns = [
     path('', include(router.urls)),
