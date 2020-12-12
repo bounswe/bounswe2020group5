@@ -8,6 +8,7 @@ import ChangePassword from "./profile/ChangePassword";
 import { Vendor } from "./signup/Vendor";
 import product from "./product/product";
 import { Route, Switch, Redirect } from "react-router-dom";
+import search from "./search/search"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
         <Route path="/login" component={Login} />
         <Route path="/product" component={product} />
+        <Route path="/search" component={search} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/signup/vendor" component={Vendor} />
         <Route path="/profile" exact component={Profile} />

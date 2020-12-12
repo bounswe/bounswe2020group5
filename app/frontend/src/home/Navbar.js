@@ -19,6 +19,8 @@ import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
+import SearchBar from "material-ui-search-bar";
+// *snip*
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -109,6 +111,7 @@ export default function Navbar() {
   };
 
   let [isLogged,setIsLogged] = useState(false);
+  let [state,setState] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
@@ -265,7 +268,7 @@ export default function Navbar() {
 
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
-          <Link style={{textDecoration: 'none'}} to="/login">
+          <Link style={{textDecoration: 'none'}} to="/search">
             <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
           </Link>
         </StyledMenuItem>
@@ -293,12 +296,12 @@ export default function Navbar() {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
             />
           </div>
           {isLogged ? (

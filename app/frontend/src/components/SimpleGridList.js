@@ -57,7 +57,7 @@ export const SimpleGridList = ({tileData}) => {
   }
   return (
     <div className={classes.root}>
-      <GridList className={classes.gridList} cols={5} >
+      <GridList className={classes.gridList} cols={7} >
         {tileData.map((tile,index) => (
 
           <GridListTile className={index === selected ? "selected" : ""}
