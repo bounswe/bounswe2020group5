@@ -165,7 +165,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             token = PasswordResetTokenGenerator().make_token(user)
             current_site = get_current_site(
                 request=request).domain
-                
+
             relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
             
             link = 'http://'+current_site +"/"+ relativeLink
@@ -173,6 +173,42 @@ class AuthViewSet(viewsets.GenericViewSet):
             send_email(template,"sarismet2825@gmail.com")
             
         return Response(data={'success': 'Email is sent'}, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
+    @action(methods=['POST'], detail=False)
+    def password_reset_confirm(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated = serializer.validated_data
+
+        uidb64 = request.query_params['uidb64']
+        token = request.query_params['token']
+        password = validated['new_password']
+
+        try:
+            id = smart_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+
+            if user.password == password:
+                return Response({'error': 'new password is the same as the older version. Please enter different password from the pervious one.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(password)
+            user.save()
+            data = AuthUserSerializer(user).data
+
+            return Response(data=data, status=status.HTTP_200_OK)
+
+        except DjangoUnicodeDecodeError as identifier:
+            try:
+                if not PasswordResetTokenGenerator().check_token(user):
+                    return Response({'error': 'user does not have this token'}, status=status.HTTP_400_BAD_REQUEST)
+            except UnboundLocalError as e:
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+                
+        return Response(data=data, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
