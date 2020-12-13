@@ -13,8 +13,6 @@ class Category(models.Model):
         return self.name
 
 class Comment(models.Model):
-    # Product durmalı mı?
-    #product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     comment_text = models.CharField(max_length=250)
     is_anonymous = models.BooleanField(default=False)
@@ -31,7 +29,6 @@ class Product(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     total_rating_score = models.IntegerField(default=0)
     rating_count = models.IntegerField(default=0)
-    #comments = models.TextField(default='[]')
     comments = models.ManyToManyField(Comment)
 
     def set_comments(self, value):

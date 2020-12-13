@@ -65,7 +65,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         return Response(data={'success': 'Successfully deleted product'}, status=status.HTTP_200_OK)
     
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST',], detail=False, permission_classes=[IsAuthCustomer, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
     def add_comment(self, request):
         product_id = request.data.get("product_id")
         product = Product.objects.get(id=product_id)
@@ -81,6 +81,21 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         product.comments.add(comment)
         product.save()
         return Response(data={'success': 'Comment added'}, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    def add_rating(self, request):
+        product_id = request.data.get("product_id")
+        product = Product.objects.get(id=product_id)
+        if product is None:
+            return Response(data={'error': 'No product found'}, status=status.HTTP_400_BAD_REQUEST)
+        user = Customer(user=request.user)
+        if user is None:
+            return Response(data={'error': 'Unauthorized user'}, status=status.HTTP_401_UNAUTHORIZED)
+        product.rating_count += 1
+        product.total_rating_score += request.data.get("rating_score")
+        product.save()
+        return Response(data={'success': 'Rating is given'}, status=status.HTTP_201_CREATED)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
