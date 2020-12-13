@@ -139,3 +139,8 @@ cython_debug/
 
 # bupazar configurations
 bupazar_config.py
+
+# Only for Development only
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
