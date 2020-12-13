@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     flexWrap: 'nowrap',
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
   title: {
@@ -33,54 +32,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export const SimpleGridList = ({tileData}) => {
 
   const classes = useStyles();
-  const [id, setid] = React.useState();
-    const [title, setTitle] = React.useState("");
-    const [selected, setSelected] = React.useState();
 
-    function handleClick(index, title) {
-      console.log("title", title);
-      setSelected(index);
-      setTitle(title);
-    }
-
-    function handleIconClick(index, icon) {
-      console.log("icon", icon);
-      setSelected(index);
-      setTitle(icon);
-    }
-  function handleInputChange() {
-
-  }
   return (
+
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={5} >
         {tileData.map((tile,index) => (
-
-          <GridListTile className={index === selected ? "selected" : ""}
-                        key={`${index}${title.title}`} style={{height:"19rem"}}>
-            <img style={{width:"15rem",height:"15rem"}} src={tile.img} alt={tile.title}
-                 onClick={() => handleClick(index, tile.title)} />
+          <GridListTile style={{height:"19rem"}}>
+            <img style={{width:"15rem",height:"15rem"}} src={tile.image_url} alt={tile.name} />
             <GridListTileBar
-              title={tile.title}
+              title={tile.name}
               subtitle={tile.price}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
                 subtitle: classes.subtitle,
-
               }}
               actionIcon={
-                <Link onClick={() => localStorage.setItem("id",JSON.stringify(tile.title))}
-                      style={{textDecoration: 'none'}} to="/product">
+                <Link style={{textDecoration: 'none'}} to={{
+                        pathname: "/product",
+                        id: tile.id,
+                }}>
                 <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={classes.icon}
-                    onClick={() => handleIconClick(index, tile.icon)}
-
                 >
                   <InfoIcon />
                 </IconButton>
