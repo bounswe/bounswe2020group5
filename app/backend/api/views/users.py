@@ -4,19 +4,24 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import User, TempUser
-from ..serializers import UserSerializer, AuthUserSerializer
+from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer
 from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
-from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer
-from ..utils import create_user_account, create_temp_user_account
+from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
+from ..utils import create_user_account, create_temp_user_account, send_email
 from rest_framework import serializers
-from django.core.mail import BadHeaderError, send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from random import randint
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
-    HTTP_200_OK
+    HTTP_200_OK,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 from drf_yasg.utils import swagger_auto_schema
 
@@ -38,7 +43,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         'password_change': PasswordChangeSerializer,
         'user_info' : EmptySerializer,
         'profile_update': UpdateProfileSerializer, 
-        'register_activate': RegisterActivateSerializer, 
+        'register_activate': RegisterActivateSerializer,
+        'password_reset_request' : PasswordResetRequestEmailSerializer,
+        'password_reset_confirm' : PasswordResetConfirmSerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -76,17 +83,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         number = randint(10000, 99999)
 
-        template = render_to_string('email_template.html', {'name': validated['username'], 'number': str(number)})
-        index = 0
-        while index < 5:
-            try:
-                #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
-                send_mail("Complete your signing up", template , "bupazar451@gmail.com", ["sarismet2825@gmail.com"])
-                break
-            except:
-                index+=1
+        template = render_to_string('email_password_template.html', {'name': validated['username'], 'number': str(number)})
         
-        if index == 5:
+        if send_mail(template , "sarismet2825@gmail.com") == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
@@ -152,7 +151,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     def user_info(self, request):
         data = UserSerializer(request.user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: UserSerializer})
+    
     @action(methods=['POST'], detail=False)
     def password_reset_request(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -165,14 +164,24 @@ class AuthViewSet(viewsets.GenericViewSet):
             token = PasswordResetTokenGenerator().make_token(user)
             current_site = get_current_site(
                 request=request).domain
-
             relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
             
             link = 'http://'+current_site +"/"+ relativeLink
+
+
             template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
+
             send_email(template,"sarismet2825@gmail.com")
+            data = {
+                "uidb64" : uidb64,
+                "token" : token,
+                "current_site" : current_site,
+                "relativeLink" : relativeLink,
+                "template" : template
+            } 
             
-        return Response(data={'success': 'Email is sent'}, status=status.HTTP_200_OK)
+            
+        return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
     @action(methods=['POST'], detail=False)
@@ -205,6 +214,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             try:
                 if not PasswordResetTokenGenerator().check_token(user):
                     return Response({'error': 'user does not have this token'}, status=status.HTTP_400_BAD_REQUEST)
+                    
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
                 
