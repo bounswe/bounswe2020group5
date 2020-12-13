@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/email-verification" exact component={EmailVerification} />
+          <Route path="/product" component={product} />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
