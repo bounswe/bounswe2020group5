@@ -7,6 +7,7 @@ import EmailVerification from "./signup/EmailVerification";
 import Profile from "./profile/Profile";
 import ChangePassword from "./profile/ChangePassword";
 import { Vendor } from "./signup/Vendor";
+import product from "./product/product";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
 

@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from "@material-ui/core/IconButton";
+import InfoIcon from "@material-ui/icons/Info";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     flexWrap: 'nowrap',
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
   title: {
@@ -31,22 +33,37 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const SimpleGridList = ({tileData}) => {
+
   const classes = useStyles();
 
   return (
+
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={5} >
-        {tileData.map((tile) => (
-          <GridListTile key={tile.img} style={{height:"19rem"}}>
-            <img style={{width:"15rem",height:"15rem"}} src={tile.img} alt={tile.title} />
+        {tileData.map((tile,index) => (
+          <GridListTile style={{height:"19rem"}}>
+            <img style={{width:"15rem",height:"15rem"}} src={tile.image_url} alt={tile.name} />
             <GridListTileBar
-              title={tile.title}
+              title={tile.name}
               subtitle={tile.price}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
                 subtitle: classes.subtitle,
               }}
+              actionIcon={
+                <Link style={{textDecoration: 'none'}} to={{
+                        pathname: "/product",
+                        id: tile.id,
+                }}>
+                <IconButton
+                    aria-label={`info about ${tile.title}`}
+                    className={classes.icon}
+                >
+                  <InfoIcon />
+                </IconButton>
+                </Link>
+              }
             />
           </GridListTile>
         ))}
