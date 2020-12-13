@@ -7,6 +7,7 @@ from .users import PasswordChangeSerializer
 from .users import UpdateProfileSerializer
 from .users import SuccessSerializer
 from .users import RegisterActivateSerializer
+from .users import PasswordResetRequestEmailSerializer
 from .products import ProductSerializer
 from .products import AddProductSerializer
 from .products import DeleteProductSerializer

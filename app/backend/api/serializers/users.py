@@ -98,5 +98,17 @@ class UpdateProfileSerializer(serializers.Serializer):
             raise serializers.ValidationError("Username is already taken")
         return AbstractBaseUser.normalize_username(value)
 
+class PasswordResetRequestEmailSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=200, required=False)
+
+    class Meta:
+        fields = ['email']
+
+    def validate_email(self, value):
+        user = usr.objects.filter(email=value)
+        if not user:
+            raise serializers.ValidationError("Email is not registered")
+        return BaseUserManager.normalize_email(value)
+        
 class SuccessSerializer(serializers.Serializer):
     success = serializers.CharField(max_length=200)
