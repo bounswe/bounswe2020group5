@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Product, ProductList, Customer
+from ..models import Product, ProductList, Customer, Comment
 
 
 #Product Serializer
@@ -42,3 +42,17 @@ class ProductListRemoveProductSerializer(serializers.Serializer):
 class ResponseSerializer(serializers.Serializer):
     ok = serializers.CharField(max_length=200)
   
+#Comment Serializer
+class CommentSerializer(serializers.Serializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class ProductAddCommentSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+    comment_text = serializers.CharField(max_length=250, required=True)
+    is_anonymous = serializers.BooleanField(required=True)
+
+class ProductAddRatingSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+    rating_score = serializers.IntegerField(max_value=5, min_value=0, required=True)
