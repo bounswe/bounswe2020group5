@@ -43,7 +43,7 @@ class ResponseSerializer(serializers.Serializer):
     ok = serializers.CharField(max_length=200)
   
 #Comment Serializer
-class CommentSerializer(serializers.Serializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
