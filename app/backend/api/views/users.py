@@ -152,6 +152,27 @@ class AuthViewSet(viewsets.GenericViewSet):
     def user_info(self, request):
         data = UserSerializer(request.user).data
         return Response(data=data, status=status.HTTP_200_OK)
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: UserSerializer})
+    @action(methods=['POST'], detail=False)
+    def password_reset_request(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            current_site = get_current_site(
+                request=request).domain
+                
+            relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
+            
+            link = 'http://'+current_site +"/"+ relativeLink
+            template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
+            send_email(template,"sarismet2825@gmail.com")
+            
+        return Response(data={'success': 'Email is sent'}, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
