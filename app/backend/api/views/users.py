@@ -83,9 +83,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         number = randint(10000, 99999)
 
-        template = render_to_string('email_password_template.html', {'name': validated['username'], 'number': str(number)})
+        template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
         
-        if send_mail(template , "sarismet2825@gmail.com") == 5:
+        if send_email(template , "sarismet2825@gmail.com") == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
