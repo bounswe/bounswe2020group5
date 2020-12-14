@@ -85,6 +85,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
         
+
         if send_email(template , "bupazar451@gmail.com") == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         

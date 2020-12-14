@@ -130,4 +130,3 @@ class SuccessSerializer(serializers.Serializer):
 
 class ErrorSerializer(serializers.Serializer):
     error = serializers.CharField(max_length=200)
-    
