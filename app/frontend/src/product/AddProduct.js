@@ -18,6 +18,7 @@ import {
 import { TextField } from "formik-material-ui";
 import { serverUrl } from "../common/ServerUrl";
 import { postDataToken } from "../common/Requests";
+import Alert from "@material-ui/lab/Alert";
 
 const theme = createMuiTheme({
   palette: {
@@ -47,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(10),
     paddingTop: theme.spacing(2),
     paddingRight: theme.spacing(2),
+    alignItems: "center",
+    flexDirection: "column",
+    display: "flex",
   },
   text: {
     margin: theme.spacing(1),
@@ -63,108 +67,111 @@ const useStyles = makeStyles((theme) => ({
     width: "50ch",
     margin: theme.spacing(2),
   },
+  alert1: {
+    display: "flex",
+    width: "50ch",
+    margin: theme.spacing(2),
+  },
 }));
-
-const initialValues = {
-  name: "",
-  price: "",
-  stock: "",
-  desc: "",
-  image: undefined,
-  category: undefined,
-};
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "Required";
-  } else if (values.name.length < 3) {
-    errors.name = "Name is too short";
-  }
-
-  // if (!values.image) {
-  //   errors.image = "Required";
-  //   console.log(errors);
-  //   console.log(values);
-  // }
-  return errors;
-};
-
-function handleResponse(res) {
-  try {
-    const token = true;
-    if (token) {
-      console.log("Response: ");
-      console.log(res);
-    } else {
-      console.log("Invalid credentials");
-    }
-  } catch (error) {
-    console.log("Some error has occured");
-  }
-}
-
-const onSubmit = (values, image, { setSubmitting }) => {
-  const url = serverUrl + "api/products/opts/add/";
-  const data = {
-    name: values.name,
-    price: values.price,
-    stock: values.stock,
-    description: values.desc,
-    image_file: image,
-    category_name: values.category,
-  };
-
-  postDataToken(url, data, localStorage.getItem("token"))
-    .then(handleResponse)
-    .catch((rej) => {
-      console.log("Some error has occured");
-      console.log(rej);
-    });
-
-  setTimeout(() => {
-    setSubmitting(false);
-    // alert(JSON.stringify(values, null, 2));
-    values.image = image;
-    //console.log(values);
-  }, 500);
-};
-
-const categories = [
-  {
-    value: "Electronics",
-    label: "Electronics",
-  },
-  {
-    value: "Fashion",
-    label: "Fashion",
-  },
-  {
-    value: "Home&Kitchen",
-    label: "Home&Kitchen",
-  },
-  {
-    value: "Personal Care",
-    label: "Personal Care",
-  },
-  {
-    value: "Sports&Outdoors",
-    label: "Sports&Outdoors",
-  },
-  {
-    value: "Hobbies&Books",
-    label: "Hobbies&Books",
-  },
-];
-
-const upload = (event, setImage) => {
-  setImage(event.target.files[0]);
-};
 
 function AddProduct() {
   const classes = useStyles();
 
   const [image, setImage] = useState(undefined);
+  const [alertMessage, setAlertMessage] = useState("some");
+
+  const initialValues = {
+    name: "",
+    price: "",
+    stock: "",
+    desc: "",
+    image: undefined,
+    category: undefined,
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = "Required";
+    } else if (values.name.length < 3) {
+      errors.name = "Name is too short";
+    }
+
+    // if (!values.image) {
+    //   errors.image = "Required";
+    //   console.log(errors);
+    //   console.log(values);
+    // }
+    return errors;
+  };
+
+  function handleResponse(res) {
+    try {
+      const token = true;
+      if (token) {
+        console.log("Response: ");
+        console.log(res);
+      } else {
+        console.log("Invalid credentials");
+      }
+    } catch (error) {
+      console.log("Some error has occured");
+    }
+  }
+
+  const onSubmit = (values, image, { setSubmitting }) => {
+    const url = serverUrl + "api/products/opts/add/";
+    const data = {
+      name: values.name,
+      price: values.price,
+      stock: values.stock,
+      description: values.desc,
+      image_file: image,
+      category_name: values.category,
+    };
+
+    postDataToken(url, data, localStorage.getItem("token"))
+      .then(handleResponse)
+      .catch((rej) => {
+        console.log("Some error has occured");
+        console.log(rej);
+      });
+
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 500);
+  };
+
+  const categories = [
+    {
+      value: "Electronics",
+      label: "Electronics",
+    },
+    {
+      value: "Fashion",
+      label: "Fashion",
+    },
+    {
+      value: "Home&Kitchen",
+      label: "Home&Kitchen",
+    },
+    {
+      value: "Personal Care",
+      label: "Personal Care",
+    },
+    {
+      value: "Sports&Outdoors",
+      label: "Sports&Outdoors",
+    },
+    {
+      value: "Hobbies&Books",
+      label: "Hobbies&Books",
+    },
+  ];
+
+  const upload = (event, setImage) => {
+    setImage(event.target.files[0]);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -174,6 +181,11 @@ function AddProduct() {
         <Grid container direction="row" justify="center">
           <Grid item xs={8}>
             <Paper className={classes.paper}>
+              {alertMessage && (
+                <Alert className={classes.alert1} severity="error">
+                  {alertMessage}
+                </Alert>
+              )}
               <Formik
                 initialValues={initialValues}
                 validate={validate}
@@ -239,7 +251,7 @@ function AddProduct() {
                       name="category"
                       label="Category"
                       select
-                      variant="standard"
+                      variant="filled"
                       helperText="Please select category"
                       InputLabelProps={{
                         shrink: true,
