@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
+from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 from ..utils import create_product
@@ -20,11 +21,13 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProductOptViewSet(viewsets.GenericViewSet):
-    parser_classes = (MultiPartParser,)
+    parser_classes = (MultiPartParser, JSONParser, )
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'add': AddProductSerializer,
-        'delete': DeleteProductSerializer
+        'delete': DeleteProductSerializer,
+        'add_comment': ProductAddCommentSerializer,
+        'add_rating': ProductAddRatingSerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
@@ -60,6 +63,39 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data={'success': 'Successfully deleted product'}, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    def add_comment(self, request):
+        product_id = request.data.get("product_id")
+        product = Product.objects.get(id=product_id)
+        if product is None:
+            return Response(data={'error': 'No product found'}, status=status.HTTP_400_BAD_REQUEST)
+        user = Customer(user=request.user)
+        if user is None:
+            return Response(data={'error': 'Unauthorized user'}, status=status.HTTP_401_UNAUTHORIZED)
+        comment_text = request.data.get("comment_text")
+        is_anonymous = request.data.get("is_anonymous")
+        comment = Comment(user=user, comment_text=comment_text, is_anonymous=is_anonymous)
+        comment.save()
+        product.comments.add(comment)
+        product.save()
+        return Response(data={'success': 'Comment added'}, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    def add_rating(self, request):
+        product_id = request.data.get("product_id")
+        product = Product.objects.get(id=product_id)
+        if product is None:
+            return Response(data={'error': 'No product found'}, status=status.HTTP_400_BAD_REQUEST)
+        user = Customer(user=request.user)
+        if user is None:
+            return Response(data={'error': 'Unauthorized user'}, status=status.HTTP_401_UNAUTHORIZED)
+        product.rating_count += 1
+        product.total_rating_score += request.data.get("rating_score")
+        product.save()
+        return Response(data={'success': 'Rating is given'}, status=status.HTTP_201_CREATED)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
@@ -166,3 +202,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]
         return super().get_serializer_class()
+
+class CommentViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

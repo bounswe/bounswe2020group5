@@ -41,4 +41,4 @@ def send_email(template,to):
             break
         except:
             index+=1  
-    return index  
+    return index
