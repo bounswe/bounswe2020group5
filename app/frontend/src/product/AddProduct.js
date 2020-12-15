@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Footer from "../components/Footer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, isInteger } from "formik";
 import {
   Button,
   createMuiTheme,
@@ -97,6 +97,32 @@ function AddProduct() {
       errors.name = "Name is too short";
     }
 
+    if (!values.price) {
+      errors.price = "Required";
+    } else if (!isInteger(values.price)) {
+      errors.price = "Price must be a number";
+    } else if (values.price < 1) {
+      errors.price = "Products must have a positive price";
+    }
+
+    if (!values.stock) {
+      errors.stock = "Required";
+    } else if (!isInteger(values.stock)) {
+      errors.stock = "This field must be a number";
+    } else if (values.stock < 1) {
+      errors.stock = "This field must have a positive value";
+    }
+
+    if (!values.desc) {
+      errors.desc = "Required";
+    } else if (values.desc.length < 10) {
+      errors.desc = "Description is too short";
+    }
+
+    if (!values.category) {
+      errors.category = "Required";
+    }
+
     // if (!values.image) {
     //   errors.image = "Required";
     // }
@@ -110,6 +136,7 @@ function AddProduct() {
       if (success) {
         console.log(res);
         setSuccessMessage("Product successfully created");
+        setAlertMessage("");
       } else {
         setAlertMessage("Some error has occured");
       }
