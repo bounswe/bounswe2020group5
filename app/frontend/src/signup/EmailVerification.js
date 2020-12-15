@@ -57,7 +57,10 @@ export default function EmailVerification() {
         localStorage.setItem("token", token);
         setLogged(true);
       } else {
-        if (res.email) {
+        if (res.user) {
+          setLogged(true);
+          localStorage.removeItem("mail-for-register");
+        } else if (res.email) {
           setAlertMessage("Email is not found");
         } else if (res.number) {
           setAlertMessage("Incorrect verification number");
