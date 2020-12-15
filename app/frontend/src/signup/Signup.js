@@ -143,7 +143,7 @@ function Signup(props) {
       const success = res.success;
       if (success) {
         // console.log(token)
-        // localStorage.setItem('token', token);
+        localStorage.setItem("mail-for-register", state.email);
         setLogged(true);
       } else {
         if (res.email) {
