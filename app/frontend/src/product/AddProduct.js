@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     width: "50ch",
   },
   paper: {
-    // display: "flex",
     marginTop: theme.spacing(10),
     marginBottom: theme.spacing(10),
     paddingTop: theme.spacing(2),
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     width: "50ch",
     margin: theme.spacing(2),
   },
-  alert1: {
+  alert: {
     display: "flex",
     width: "50ch",
     margin: theme.spacing(2),
@@ -78,7 +77,8 @@ function AddProduct() {
   const classes = useStyles();
 
   const [image, setImage] = useState(undefined);
-  const [alertMessage, setAlertMessage] = useState("some");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const initialValues = {
     name: "",
@@ -99,27 +99,32 @@ function AddProduct() {
 
     // if (!values.image) {
     //   errors.image = "Required";
-    //   console.log(errors);
-    //   console.log(values);
     // }
     return errors;
   };
 
-  function handleResponse(res) {
+  function handleResponse(res, setSubmitting) {
     try {
-      const token = true;
-      if (token) {
-        console.log("Response: ");
+      const success = res.success;
+      console.log(res);
+      if (success) {
         console.log(res);
+        setSuccessMessage("Product successfully created");
       } else {
-        console.log("Invalid credentials");
+        setAlertMessage("Some error has occured");
       }
     } catch (error) {
-      console.log("Some error has occured");
+      setAlertMessage("Connection problem");
     }
+    setSubmitting(false);
   }
 
-  const onSubmit = (values, image, { setSubmitting }) => {
+  const onSubmit = (values, { setSubmitting }) => {
+    if (!image) {
+      setAlertMessage("Image Required");
+      setSubmitting(false);
+      return;
+    }
     const url = serverUrl + "api/products/opts/add/";
     const data = {
       name: values.name,
@@ -131,15 +136,14 @@ function AddProduct() {
     };
 
     postDataToken(url, data, localStorage.getItem("token"))
-      .then(handleResponse)
+      .then((res) => handleResponse(res, setSubmitting))
       .catch((rej) => {
-        console.log("Some error has occured");
+        setAlertMessage("Some error has occured");
         console.log(rej);
+        setSubmitting(false);
       });
 
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 500);
+    setTimeout(() => {}, 500);
   };
 
   const categories = [
@@ -182,16 +186,14 @@ function AddProduct() {
           <Grid item xs={8}>
             <Paper className={classes.paper}>
               {alertMessage && (
-                <Alert className={classes.alert1} severity="error">
+                <Alert className={classes.alert} severity="error">
                   {alertMessage}
                 </Alert>
               )}
               <Formik
                 initialValues={initialValues}
                 validate={validate}
-                onSubmit={(values, { setSubmitting }) =>
-                  onSubmit(values, image, { setSubmitting })
-                }
+                onSubmit={onSubmit}
               >
                 {({ submitForm, isSubmitting }) => (
                   <Form className={classes.formRoot} autoComplete="off">
@@ -278,6 +280,11 @@ function AddProduct() {
                   </Form>
                 )}
               </Formik>
+              {successMessage && (
+                <Alert className={classes.alert} severity="success">
+                  {successMessage}
+                </Alert>
+              )}
             </Paper>
           </Grid>
         </Grid>
