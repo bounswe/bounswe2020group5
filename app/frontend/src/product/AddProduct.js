@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Footer from "../components/Footer";
@@ -57,9 +58,12 @@ const useStyles = makeStyles((theme) => ({
   progress: {
     width: "50ch",
   },
+  image: {
+    width: "50ch",
+    margin: theme.spacing(2),
+  },
 }));
 
-let image = undefined;
 const initialValues = {
   name: "",
   price: "",
@@ -99,7 +103,7 @@ function handleResponse(res) {
   }
 }
 
-const onSubmit = (values, { setSubmitting }) => {
+const onSubmit = (values, image, { setSubmitting }) => {
   const url = serverUrl + "api/products/opts/add/";
   const data = {
     name: values.name,
@@ -125,7 +129,7 @@ const onSubmit = (values, { setSubmitting }) => {
   }, 500);
 };
 
-const ranges = [
+const categories = [
   {
     value: "Electronics",
     label: "Electronics",
@@ -144,15 +148,14 @@ const ranges = [
   },
 ];
 
-const upload = (event) => {
-  console.log(event.target.files[0]);
-  image = event.target.files[0];
-  console.log(event.target.files[0]);
-  console.log(image);
+const upload = (event, setImage) => {
+  setImage(event.target.files[0]);
 };
 
 function AddProduct() {
   const classes = useStyles();
+
+  const [image, setImage] = useState(undefined);
 
   return (
     <ThemeProvider theme={theme}>
@@ -165,9 +168,11 @@ function AddProduct() {
               <Formik
                 initialValues={initialValues}
                 validate={validate}
-                onSubmit={onSubmit}
+                onSubmit={(values, { setSubmitting }) =>
+                  onSubmit(values, image, { setSubmitting })
+                }
               >
-                {({ submitForm, isSubmitting, setFieldValue }) => (
+                {({ submitForm, isSubmitting }) => (
                   <Form className={classes.formRoot} autoComplete="off">
                     <Field
                       component={TextField}
@@ -191,11 +196,17 @@ function AddProduct() {
                       variant="contained"
                       component="label"
                       className={classes.Button}
-                      onChange={upload}
+                      onChange={(event) => upload(event, setImage)}
                     >
-                      Upload File
+                      Upload Image
                       <input type="file" hidden />
                     </Button>
+                    {image && (
+                      <img
+                        className={classes.image}
+                        src={image ? URL.createObjectURL(image) : null}
+                      />
+                    )}
                     <Field
                       component={TextField}
                       label="Description"
@@ -215,7 +226,7 @@ function AddProduct() {
                         shrink: true,
                       }}
                     >
-                      {ranges.map((option) => (
+                      {categories.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
