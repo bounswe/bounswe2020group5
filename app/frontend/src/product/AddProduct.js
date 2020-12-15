@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let image = undefined;
 const initialValues = {
   name: "",
   price: "",
@@ -73,13 +74,21 @@ const validate = (values) => {
   } else if (values.name.length < 3) {
     errors.name = "Name is too short";
   }
+
+  // if (!values.image) {
+  //   errors.image = "Required";
+  //   console.log(errors);
+  //   console.log(values);
+  // }
   return errors;
 };
 
 const onSubmit = (values, { setSubmitting }) => {
   setTimeout(() => {
     setSubmitting(false);
-    alert(JSON.stringify(values, null, 2));
+    // alert(JSON.stringify(values, null, 2));
+    values.image = image;
+    console.log(values);
   }, 500);
 };
 
@@ -102,6 +111,13 @@ const ranges = [
   },
 ];
 
+const upload = (event) => {
+  console.log(event.target.files[0]);
+  image = event.target.files[0];
+  console.log(event.target.files[0]);
+  console.log(image);
+};
+
 function AddProduct() {
   const classes = useStyles();
 
@@ -118,7 +134,7 @@ function AddProduct() {
                 validate={validate}
                 onSubmit={onSubmit}
               >
-                {({ submitForm, isSubmitting }) => (
+                {({ submitForm, isSubmitting, setFieldValue }) => (
                   <Form className={classes.formRoot} autoComplete="off">
                     <Field
                       component={TextField}
@@ -142,6 +158,7 @@ function AddProduct() {
                       variant="contained"
                       component="label"
                       className={classes.Button}
+                      onChange={upload}
                     >
                       Upload File
                       <input type="file" hidden />
