@@ -14,6 +14,8 @@ import {
   ThemeProvider,
 } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
+import { serverUrl } from "../common/ServerUrl";
+import { postDataToken } from "../common/Requests";
 
 const theme = createMuiTheme({
   palette: {
@@ -83,18 +85,49 @@ const validate = (values) => {
   return errors;
 };
 
+function handleResponse(res) {
+  try {
+    const token = true;
+    if (token) {
+      console.log("Response: ");
+      console.log(res);
+    } else {
+      console.log("Invalid credentials");
+    }
+  } catch (error) {
+    console.log("Some error has occured");
+  }
+}
+
 const onSubmit = (values, { setSubmitting }) => {
+  const url = serverUrl + "api/products/opts/add/";
+  const data = {
+    name: values.name,
+    price: values.price,
+    stock: values.stock,
+    description: values.desc,
+    image_file: image,
+    category_name: values.category,
+  };
+
+  postDataToken(url, data, localStorage.getItem("token"))
+    .then(handleResponse)
+    .catch((rej) => {
+      console.log("Some error has occured");
+      console.log(rej);
+    });
+
   setTimeout(() => {
     setSubmitting(false);
     // alert(JSON.stringify(values, null, 2));
     values.image = image;
-    console.log(values);
+    //console.log(values);
   }, 500);
 };
 
 const ranges = [
   {
-    value: "Electornics",
+    value: "Electronics",
     label: "Electronics",
   },
   {
@@ -173,11 +206,11 @@ function AddProduct() {
                     />
                     <Field
                       component={TextField}
-                      name="select"
+                      name="category"
                       label="Category"
                       select
                       variant="standard"
-                      helperText="Please select Range"
+                      helperText="Please select category"
                       InputLabelProps={{
                         shrink: true,
                       }}
