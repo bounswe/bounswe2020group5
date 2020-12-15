@@ -8,6 +8,7 @@ import {
   Button,
   createMuiTheme,
   Grid,
+  InputAdornment,
   LinearProgress,
   makeStyles,
   MenuItem,
@@ -135,16 +136,24 @@ const categories = [
     label: "Electronics",
   },
   {
-    value: "0-20",
-    label: "0 to 20",
+    value: "Fashion",
+    label: "Fashion",
   },
   {
-    value: "21-50",
-    label: "21 to 50",
+    value: "Home&Kitchen",
+    label: "Home&Kitchen",
   },
   {
-    value: "51-100",
-    label: "51 to 100",
+    value: "Personal Care",
+    label: "Personal Care",
+  },
+  {
+    value: "Sports&Outdoors",
+    label: "Sports&Outdoors",
+  },
+  {
+    value: "Hobbies&Books",
+    label: "Hobbies&Books",
   },
 ];
 
@@ -185,12 +194,22 @@ function AddProduct() {
                       label="Price"
                       name="price"
                       variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">$</InputAdornment>
+                        ),
+                      }}
                     />
                     <Field
                       component={TextField}
                       label="Number of available products"
                       name="stock"
                       variant="filled"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">Piece</InputAdornment>
+                        ),
+                      }}
                     />
                     <Button
                       variant="contained"
