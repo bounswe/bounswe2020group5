@@ -33,7 +33,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: docker build
         run: |
-          docker build ./app/backend -t django_app 
+          docker build ./app/backend -t django_app --build-arg KEY=${{ secrets.SECRET_KEY_C }}
           echo build is completed.
           
       - name: docker tag
@@ -46,21 +46,16 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker tag django_app $DOCKER_USER/django_app
+          docker push $DOCKER_USER/django_app
           echo push is completed.
       
       - name: executing remote ssh commands using password
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-          AWS_HOST: ${{ secrets.AWS_HOST }}
-          AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
-          AWS_PORT: ${{ secrets.AWS_PORT }}
         uses: appleboy/ssh-action@master
         with:
-          host: 35.156.242.139
+          host: 18.195.107.160
           username: ec2-user
           key: ${{ secrets.OMG_SECRET }}
           port: 22
           script: |
-            docker rm $(docker stop $(docker ps | grep "bupazar/bupazar_backend" | cut -d ' ' -f1))
-            docker run -d -p 8000:8000 $DOCKER_USER/django_app
+            docker rm $(docker stop $(docker ps | grep ${{ secrets.DOCKER_USERNAME }}"/django_app" | cut -d ' ' -f1))
+            docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django_app
