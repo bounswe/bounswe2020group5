@@ -38,12 +38,6 @@ class RegisterActivateSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     number = serializers.CharField(required=True)
 
-    def validate_email(self,value):
-        user = TempUser.objects.filter(email=value)
-        if not user:
-            raise serializers.ValidationError("Email is not found")
-        return BaseUserManager.normalize_email(value)
-
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = usr

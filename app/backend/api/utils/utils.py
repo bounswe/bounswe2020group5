@@ -16,6 +16,7 @@ def create_user_account(email, username, first_name,
     elif is_vendor:
         vendor = Vendor(user=user)
         vendor.save()
+        
 
     return user
 
