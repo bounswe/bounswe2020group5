@@ -32,7 +32,6 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -41,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
   gridroot: {
     flexGrow: 1,
     marginTop: "1rem",
-    marginLeft: "1rem",
+    marginLeft: "2rem",
   },
   paper: {
-    height:"30rem",
+    height: "30rem",
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
   },
@@ -53,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   grid2: {
     marginBottom: "1.5rem",
+    marginLeft: "6rem",
   },
   ftr: {
     marginTop: "2rem",
@@ -235,7 +235,7 @@ function Profile() {
 
 
           <div className={classes.gridroot}>
-            <Grid container spacing={2}>
+            <Grid container>
               <Grid item xs={3}>
                 <Paper className={classes.paper}>
                   <div style={{marginLeft: "1rem"}}>
@@ -313,7 +313,7 @@ function Profile() {
                   </div>
                 </Paper>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={7} style={{marginLeft: "2rem"}}>
                 <Paper className={classes.paper}>
                   <div className={classes.grid2}>
                     <InputBase
@@ -328,7 +328,7 @@ function Profile() {
                       disabled={true}
                     />
                   </div>
-                  <div>
+                  <div style={{marginLeft: "6rem"}}>
                     <div>
                       <TextField
                         className={classes.txtfield}
@@ -411,46 +411,6 @@ function Profile() {
                         </Button>
                       }
                     </div>
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper className={classes.paper}>
-                  <div className={classes.grid2}>
-                    <InputBase
-                      style={{
-                        color: "black",
-                        fontSize: 30,
-                        fontWeight: "500",
-                        marginLeft: "6rem",
-                      }}
-                      defaultValue="About Us"
-                      disabled={true}
-                    />
-                  </div>
-
-                  <div>
-                    <text className={classes.txt}>
-                      This page is here to guide you in your bupazar experience!
-                    </text>
-                  </div>
-                  <div style={{marginTop: "1rem"}}>
-                    <text className={classes.txt}>
-                      You can follow up your orders, edit your addresses, save or remove credit
-                      cards, revise your assessments,
-                      and change your user settings.
-                    </text>
-                  </div>
-                  <div style={{marginTop: "2rem"}}>
-                    <text className={classes.txt}>
-                      If you have any request or complain and need to communicate, you can contact
-                      us via
-                      <br/>
-                      <br/>
-                      Phone: <span style={{paddingLeft: '20px'}}>(555)-123-45-67</span>
-                      <br/>
-                      E-mail: <span style={{paddingLeft: '20px'}}>bupazar@contactus.com </span>
-                    </text>
                   </div>
                 </Paper>
               </Grid>
