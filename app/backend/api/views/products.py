@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
 from api.custom_permissions import IsAuthCustomer, IsAuthVendor
-from rest_framework.decorators import parser_classes
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -30,8 +29,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @parser_classes([MultiPartParser])
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ], parser_classes=(MultiPartParser,))
     def add(self, request):
         name = request.data.get("name")
         price = request.data.get("price")
