@@ -37,7 +37,7 @@ class Product(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     total_rating_score = models.IntegerField(default=0)
     rating_count = models.IntegerField(default=0)
-    comments = models.ManyToManyField(Comment)
+    comments = models.ManyToManyField(Comment)  
 
     def __str__(self):
         return self.name

@@ -1,23 +1,36 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
-from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer
+from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer, ProductDetailSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from ..utils import create_product
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
 from api.custom_permissions import IsAuthCustomer, IsAuthVendor
 
-class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A simple ViewSet for viewing products.
-    """
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductDetailSerializer})
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+    if product is None:
+        return Response(data={'error': 'No product found'}, status=status.HTTP_400_BAD_REQUEST)
 
+    content = ProductSerializer(product).data
+    subcategory_id = product.subcategory_id
+    subcategory = SubCategory.objects.get(id=subcategory_id)
+    category_id = subcategory.category_id
+    category = Category.objects.get(id=category_id)
+    content['subcategory'] = subcategory.name
+    content['category'] = category.name
+    vendor_id = product.vendor_id 
+    user = User.objects.get(id=vendor_id)
+    content['vendor'] = user.username
+    
+    return Response(data=content, status=status.HTTP_200_OK)
 
 class ProductOptViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
@@ -38,8 +51,6 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         document = Document(upload=request.data.get("image_file"))
         document.save()
         image_file = document.upload
-        #category_name = request.data.get("category_name")
-        #category = Category.objects.get(name=category_name)
         subcategory_name = request.data.get("subcategory_name") 
         subcategory = SubCategory.objects.get(name=subcategory_name)
         vendor = Vendor.objects.get(user=request.user)
@@ -58,9 +69,10 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         vendor_products = Product.objects.filter(vendor=vendor)
 
         if product in vendor_products:
+            image_url = product.image_url
             product.delete()
             for document in Document.objects.all():
-                if document.upload.url == product.image_url:
+                if document.upload.url == image_url:
                     document.delete()
         else:
             return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
@@ -112,7 +124,7 @@ class ProductListViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProductListOptViewSet(viewsets.GenericViewSet):
-    parser_classes = (JSONParser,)
+    #parser_classes = (JSONParser,)
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'add': CreateProductListSerializer,
