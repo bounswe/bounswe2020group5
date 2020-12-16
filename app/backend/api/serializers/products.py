@@ -14,7 +14,8 @@ class AddProductSerializer(serializers.Serializer):
     stock = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=500, required=True)
     image_file = serializers.FileField(required=True)
-    category_name = serializers.CharField(max_length=250, required=True)
+    #category_name = serializers.CharField(max_length=250, required=True)
+    subcategory_name = serializers.CharField(max_length=250, required=True)
 
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)

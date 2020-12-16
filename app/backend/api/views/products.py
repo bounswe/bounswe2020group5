@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer
@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
 from api.custom_permissions import IsAuthCustomer, IsAuthVendor
-
+from rest_framework.decorators import parser_classes
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -21,7 +21,6 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProductOptViewSet(viewsets.GenericViewSet):
-    parser_classes = (MultiPartParser, JSONParser, )
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'add': AddProductSerializer,
@@ -31,6 +30,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @parser_classes([MultiPartParser])
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
     def add(self, request):
         name = request.data.get("name")
@@ -40,12 +40,14 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         document = Document(upload=request.data.get("image_file"))
         document.save()
         image_file = document.upload
-        category_name = request.data.get("category_name")
-        category = Category.objects.get(name=category_name)
+        #category_name = request.data.get("category_name")
+        #category = Category.objects.get(name=category_name)
+        subcategory_name = request.data.get("subcategory_name") 
+        subcategory = SubCategory.objects.get(name=subcategory_name)
         vendor = Vendor.objects.get(user=request.user)
         
         create_product(name=name, price=price, stock=stock, description=description,
-                       image_url=image_file.url, category=category, vendor=vendor)
+                       image_url=image_file.url, subcategory=subcategory, vendor=vendor)
 
         return Response(data={'success': 'Successfully created product'}, status=status.HTTP_201_CREATED)
 
@@ -59,6 +61,9 @@ class ProductOptViewSet(viewsets.GenericViewSet):
 
         if product in vendor_products:
             product.delete()
+            for document in Document.objects.all():
+                if document.upload.url == product.image_url:
+                    document.delete()
         else:
             return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
 
