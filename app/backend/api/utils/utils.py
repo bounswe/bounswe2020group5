@@ -16,12 +16,13 @@ def create_user_account(email, username, first_name,
     elif is_vendor:
         vendor = Vendor(user=user)
         vendor.save()
+        
 
     return user
 
 
-def create_product(name, price, stock, description, image_url, category, vendor, **extra_fields):
-    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, category=category, vendor=vendor)
+def create_product(name, price, stock, description, image_url, subcategory, vendor, **extra_fields):
+    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, subcategory=subcategory, vendor=vendor)
     product.save()
 
 def create_temp_user_account(email, number, username, first_name,

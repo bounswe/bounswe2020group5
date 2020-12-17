@@ -80,8 +80,13 @@ class AuthViewSet(viewsets.GenericViewSet):
         validated = serializer.validated_data
         if 'address' not in validated:
             validated['address'] = ""
+
+        is_found = TempUser.objects.filter(email=validated['email'])
+
+        if is_found:
+            is_found.delete()
         
-        number = randint(10000, 99999)
+        number = randint(100000, 999999)
 
         template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
         
@@ -102,16 +107,26 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         number = request.data.get("number")
 
-        datas = TempUser.objects.filter(email=validated_user_email,number=number)
+        is_found = User.objects.filter(email=validated_user_email)
+        
+        if is_found:
+            return Response(data={'user': 'user is already registered'}, status=HTTP_400_BAD_REQUEST)
 
-        validated_user_account = datas.values()[0]
+        the_user = TempUser.objects.filter(email=validated_user_email)
+        
+     
+        if not the_user:
+            return Response(data={'email': 'email is not found'}, status=HTTP_400_BAD_REQUEST)
+
+        validated_user_account = the_user.values()[0]
+
+        print(validated_user_account)
 
         if (validated_user_account.pop('number') != number):
-            return Response(data={'error': 'The number does not match'}, status=HTTP_400_BAD_REQUEST)
+            return Response(data={'number': 'The number does not match'}, status=HTTP_400_BAD_REQUEST)
 
-        datas.delete()
-        
         user = create_user_account(**validated_user_account)
+        the_user.delete()
         data = AuthUserSerializer(user).data
 
         return Response(data=data, status=status.HTTP_201_CREATED)

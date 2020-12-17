@@ -12,6 +12,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class SubCategory(models.Model):
+    name = models.CharField(max_length=250)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
 class Comment(models.Model):
     user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     comment_text = models.CharField(max_length=250)
@@ -25,17 +32,12 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     number_of_sales = models.IntegerField(default=0)
     image_url = models.TextField(default='')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    #category = models.ForeignKey(Category, on_delete=models.CASCADE) 
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     total_rating_score = models.IntegerField(default=0)
     rating_count = models.IntegerField(default=0)
-    comments = models.ManyToManyField(Comment)
-
-    def set_comments(self, value):
-        self.comments = json.dumps(value)
-
-    def get_comments(self):
-        return json.loads(self.comments)
+    comments = models.ManyToManyField(Comment)  
 
     def __str__(self):
         return self.name

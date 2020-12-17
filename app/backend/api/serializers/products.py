@@ -7,6 +7,21 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+        
+class ProductDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=250)
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    stock = serializers.IntegerField()
+    description = serializers.CharField(max_length=500)
+    date_added = serializers.DateTimeField()
+    number_of_sales = serializers.IntegerField()
+    image_url = serializers.CharField(max_length=250)
+    total_rating_score = serializers.IntegerField()
+    rating_count = serializers.IntegerField()
+    subcategory = serializers.CharField(max_length=250)
+    vendor = serializers.CharField(max_length=250)
+    category = serializers.CharField(max_length=250)
 
 class AddProductSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
@@ -14,7 +29,8 @@ class AddProductSerializer(serializers.Serializer):
     stock = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=500, required=True)
     image_file = serializers.FileField(required=True)
-    category_name = serializers.CharField(max_length=250, required=True)
+    #category_name = serializers.CharField(max_length=250, required=True)
+    subcategory_name = serializers.CharField(max_length=250, required=True)
 
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
