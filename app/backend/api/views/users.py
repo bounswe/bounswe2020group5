@@ -82,20 +82,16 @@ class AuthViewSet(viewsets.GenericViewSet):
             validated['address'] = ""
 
         is_found = TempUser.objects.filter(email=validated['email'])
-
         if is_found:
             is_found.delete()
         
         number = randint(100000, 999999)
 
         template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
-        
-
         if send_email(template , "bupazar451@gmail.com") == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
-        
         return Response(data = {"success": "user_info is created"}, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
@@ -104,24 +100,17 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_user_email = serializer.validated_data['email']
-        
         number = request.data.get("number")
 
         is_found = User.objects.filter(email=validated_user_email)
-        
         if is_found:
             return Response(data={'user': 'user is already registered'}, status=HTTP_400_BAD_REQUEST)
 
         the_user = TempUser.objects.filter(email=validated_user_email)
-        
-     
         if not the_user:
             return Response(data={'email': 'email is not found'}, status=HTTP_400_BAD_REQUEST)
 
         validated_user_account = the_user.values()[0]
-
-        print(validated_user_account)
-
         if (validated_user_account.pop('number') != number):
             return Response(data={'number': 'The number does not match'}, status=HTTP_400_BAD_REQUEST)
 
@@ -181,12 +170,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             current_site = get_current_site(
                 request=request).domain
             relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
-            
             link = 'http://'+current_site +"/"+ relativeLink
-
-
             template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
-
             send_email(template,"sarismet2825@gmail.com")
             data = {
                 "uidb64" : uidb64,
@@ -195,8 +180,7 @@ class AuthViewSet(viewsets.GenericViewSet):
                 "relativeLink" : relativeLink,
                 "template" : template
             } 
-            
-            
+    
         return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -209,21 +193,17 @@ class AuthViewSet(viewsets.GenericViewSet):
         uidb64 = request.query_params['uidb64']
         token = request.query_params['token']
         password = validated['new_password']
-
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(id=id)
-
             if user.password == password:
                 return Response({'error': 'new password is the same as the older version. Please enter different password from the pervious one.'}, status=status.HTTP_400_BAD_REQUEST)
-
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
             
             user.set_password(password)
             user.save()
             data = AuthUserSerializer(user).data
-
             return Response(data=data, status=status.HTTP_200_OK)
 
         except DjangoUnicodeDecodeError as identifier:
