@@ -2,9 +2,9 @@ from cryptography.fernet import Fernet
 import sys
 import json
 
-key = sys.argv[1]
+key = (sys.argv[1]).encode()
 
-if key == "tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30=":
+if key == "btM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30=":
     print("KEY IS CORRECT")
 
 f = Fernet(key) 
