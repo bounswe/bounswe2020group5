@@ -1,27 +1,30 @@
 from rest_framework import serializers
-from ..models import Product, ProductList, Customer, Comment
-
+from ..models import Product, ProductList, Customer, Comment, Vendor, User, SubCategory, Category
 
 #Product Serializer
 class ProductSerializer(serializers.ModelSerializer):
+    vendor = serializers.SerializerMethodField('get_vendor')
+    category = serializers.SerializerMethodField('get_category')
+    subcategory = serializers.SerializerMethodField('get_subcategory')
+
     class Meta:
         model = Product
-        fields = '__all__'
-        
-class ProductDetailSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField(max_length=250)
-    price = serializers.DecimalField(max_digits=10, decimal_places=2)
-    stock = serializers.IntegerField()
-    description = serializers.CharField(max_length=500)
-    date_added = serializers.DateTimeField()
-    number_of_sales = serializers.IntegerField()
-    image_url = serializers.CharField(max_length=250)
-    total_rating_score = serializers.IntegerField()
-    rating_count = serializers.IntegerField()
-    subcategory = serializers.CharField(max_length=250)
-    vendor = serializers.CharField(max_length=250)
-    category = serializers.CharField(max_length=250)
+        fields = ('id', 'name', 'price', 'stock', 'description', 'date_added', 'number_of_sales', 
+                    'image_url', 'category', 'subcategory', 'vendor', 'total_rating_score', 'rating_count', 'comments')
+
+    def get_vendor(self, obj):
+        vendor = User.objects.get(id=obj.vendor_id)
+        return vendor.username
+
+    def get_subcategory(self, obj):
+        subcategory = SubCategory.objects.get(id=obj.subcategory_id)
+        return subcategory.name
+
+    def get_category(self, obj):
+        subcategory = SubCategory.objects.get(id=obj.subcategory_id)
+        category_id = subcategory.category_id
+        category = Category.objects.get(id=category_id)
+        return category.name    
 
 class AddProductSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
@@ -77,3 +80,4 @@ class CategoryProductsSeriazlier(serializers.Serializer):
 
 class SubCategoryProductsSeriazlier(serializers.Serializer):
     subcategory_name = serializers.CharField(max_length=250, required=True)
+    

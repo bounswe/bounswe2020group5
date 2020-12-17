@@ -21,6 +21,5 @@ from .products import ResponseSerializer
 from .products import CommentSerializer
 from .products import ProductAddCommentSerializer
 from .products import ProductAddRatingSerializer
-from .products import ProductDetailSerializer
 from .products import CategoryProductsSeriazlier
 from .products import SubCategoryProductsSeriazlier

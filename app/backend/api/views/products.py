@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
-from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer, ProductDetailSerializer, CategoryProductsSeriazlier
+from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer, CategoryProductsSeriazlier
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
 from ..utils import create_product
