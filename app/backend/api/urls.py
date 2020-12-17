@@ -28,5 +28,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('products/<int:pk>', product_detail),
+    path('products/<int:pk>/', product_detail),
+    path('products/', get_products),
+    path('products/category/', get_category_products),
+    path('products/subcategory/', get_subcategory_products),
 ]

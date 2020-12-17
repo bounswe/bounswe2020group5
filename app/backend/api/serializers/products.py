@@ -29,7 +29,6 @@ class AddProductSerializer(serializers.Serializer):
     stock = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=500, required=True)
     image_file = serializers.FileField(required=True)
-    #category_name = serializers.CharField(max_length=250, required=True)
     subcategory_name = serializers.CharField(max_length=250, required=True)
 
 class DeleteProductSerializer(serializers.Serializer):
@@ -72,3 +71,9 @@ class ProductAddCommentSerializer(serializers.Serializer):
 class ProductAddRatingSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
     rating_score = serializers.IntegerField(max_value=5, min_value=0, required=True)
+
+class CategoryProductsSeriazlier(serializers.Serializer):
+    category_name = serializers.CharField(max_length=250, required=True)
+
+class SubCategoryProductsSeriazlier(serializers.Serializer):
+    subcategory_name = serializers.CharField(max_length=250, required=True)
