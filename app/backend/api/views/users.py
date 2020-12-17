@@ -74,7 +74,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST', ], detail=False)
-    def register_try(self, request):
+    def register(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated = serializer.validated_data
@@ -96,7 +96,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
-    def register_activate_try(self, request):
+    def register_activate(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_user_email = serializer.validated_data['email']
