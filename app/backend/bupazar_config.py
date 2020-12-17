@@ -4,7 +4,7 @@ import json
 
 key = (sys.argv[1]).encode()
 
-if key == "btM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30=":
+if key == b"tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30=":
     print("KEY IS CORRECT")
 
 f = Fernet(key) 
