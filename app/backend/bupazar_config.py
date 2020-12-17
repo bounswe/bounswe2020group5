@@ -4,6 +4,8 @@ import json
 
 key = sys.argv[1]
 
+print("key is ->",key)
+
 f = Fernet(key) 
 
 shared_memory = {}
