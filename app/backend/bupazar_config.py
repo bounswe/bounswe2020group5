@@ -4,7 +4,8 @@ import json
 
 key = sys.argv[1]
 
-print("key is ->",key)
+if key == "tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30=":
+    print("KEY IS CORRECT")
 
 f = Fernet(key) 
 
