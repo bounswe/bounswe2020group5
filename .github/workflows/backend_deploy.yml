@@ -39,13 +39,13 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker tag django_app $DOCKER_USER/django_app
+          docker tag django_app $DOCKER_USER/django_app2
           echo tag is completed.
       - name: docker push
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker push $DOCKER_USER/django_app
+          docker push $DOCKER_USER/django_app2
           echo push is completed.
       
       - name: executing remote ssh commands using password
@@ -57,4 +57,4 @@ jobs:
           port: 22
           script: |
             docker rm $(docker stop $(docker ps | grep ${{ secrets.DOCKER_USERNAME }}"/django_app" | cut -d ' ' -f1))
-            docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django_app
+            docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django_app2
