@@ -27,6 +27,7 @@ import {serverUrl} from "../common/ServerUrl";
 import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import validate from "./ValidateEditProfile";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -97,44 +98,66 @@ function Profile() {
     address:'',
     username:'',
   });
+  const [val, setVal] = useState({
+    first_name: { error: false, message: '' },
+    last_name: { error: false, message: '' },
+    email: { error: false, message: '' },
+    address: { error: false, message: '' },
+    username: { error: false, message: '' },
+  });
 
 
   function handleOnClick() {
     let data;
     const token = localStorage.getItem('token')
 
-    if(!usernameChanged && !emailChanged){
-      data = {
-        first_name : name.first_name,
-        last_name : name.last_name,
-        address : name.address,
+    let newVal = (validate(name, val));
+    setVal(newVal)
+    let valCheck = true;
+
+
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error) {
+          console.log("error")
+          valCheck = false;
+        }
       }
     }
-    else if(usernameChanged && !emailChanged){
-      data = {
-        username : name.username,
-        first_name : name.first_name,
-        last_name : name.last_name,
-        address : name.address,
+    if(valCheck){
+      if(!usernameChanged && !emailChanged){
+        data = {
+          first_name : name.first_name,
+          last_name : name.last_name,
+          address : name.address,
+        }
       }
-    }
-    else if(!usernameChanged && emailChanged){
-      data = {
-        email : name.email,
-        first_name : name.first_name,
-        last_name : name.last_name,
-        address : name.address,
+      else if(usernameChanged && !emailChanged){
+        data = {
+          username : name.username,
+          first_name : name.first_name,
+          last_name : name.last_name,
+          address : name.address,
+        }
       }
-    }
-    else{
-      data = {
-        email : name.email,
-        username : name.username,
-        first_name : name.first_name,
-        last_name : name.last_name,
-        address : name.address,
+      else if(!usernameChanged && emailChanged){
+        data = {
+          email : name.email,
+          first_name : name.first_name,
+          last_name : name.last_name,
+          address : name.address,
+        }
       }
-    }
+      else{
+        data = {
+          email : name.email,
+          username : name.username,
+          first_name : name.first_name,
+          last_name : name.last_name,
+          address : name.address,
+        }
+      }
 
       fetch(serverUrl + 'api/auth/profile_update/', {
         method: 'POST',
@@ -149,31 +172,33 @@ function Profile() {
             window.location.reload();
             setEdit(false);
           }
+          else {
+            alert('User with this username or email already exists');
+          }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          alert('Some error has occurred')
+          console.log(err)
+        });
+    }
   }
 
   function onChange(event) {
 
     if(event.target.id === "first_name"){
       setNameChanged(true);
-      console.log(nameChanged)
     }
     if(event.target.id === "last_name"){
       setSurnameChanged(true);
-      console.log(surnameChanged)
     }
     if(event.target.id === "email"){
       setEmailChanged(true);
-      console.log(emailChanged)
     }
     if(event.target.id === "address"){
       setAddressChanged(true);
-      console.log(addressChanged)
     }
     if(event.target.id === "username"){
       setUsernameChanged(true);
-      console.log(usernameChanged)
     }
 
     let mutableState = name
@@ -332,6 +357,8 @@ function Profile() {
                     <div>
                       <TextField
                         className={classes.txtfield}
+                        error={val.first_name.error}
+                        helperText={val.first_name.message}
                         id="first_name"
                         label="Name"
                         variant="outlined"
@@ -350,6 +377,8 @@ function Profile() {
                       />
                       <TextField
                         className={classes.txtfield3}
+                        error={val.last_name.error}
+                        helperText={val.last_name.message}
                         id="last_name"
                         label="Surname"
                         variant="outlined"
@@ -361,6 +390,8 @@ function Profile() {
                     <div>
                       <TextField
                         className={classes.txtfield}
+                        error={val.username.error}
+                        helperText={val.username.message}
                         id="username"
                         label="Username"
                         variant="outlined"
@@ -370,6 +401,8 @@ function Profile() {
                       />
                       <TextField
                         className={classes.txtfield3}
+                        error={val.email.error}
+                        helperText={val.email.message}
                         id="email"
                         label="E-mail"
                         variant="outlined"
@@ -381,6 +414,8 @@ function Profile() {
                     <div>
                       <TextField
                         className={classes.txtfield2}
+                        error={val.address.error}
+                        helperText={val.address.message}
                         id="address"
                         label="Address"
                         variant="outlined"
