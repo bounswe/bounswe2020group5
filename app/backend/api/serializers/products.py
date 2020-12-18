@@ -11,7 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'price', 'stock', 'description', 'date_added', 'number_of_sales', 
                     'image_url', 'category', 'subcategory', 'vendor', 'total_rating_score', 'rating_count', 
-                    'comments', 'brand', 'discount')
+                    'comments', 'brand', 'discount', 'rating')
 
     def get_vendor(self, obj):
         vendor = User.objects.get(id=obj.vendor_id)
@@ -25,17 +25,17 @@ class ProductSerializer(serializers.ModelSerializer):
         subcategory = SubCategory.objects.get(id=obj.subcategory_id)
         category_id = subcategory.category_id
         category = Category.objects.get(id=category_id)
-        return category.name    
+        return category.name 
 
 class AddProductSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    price = serializers.FloatField(required=True)
     stock = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=500, required=True)
     image_file = serializers.FileField(required=True)
     subcategory_name = serializers.CharField(max_length=250, required=True)
     brand = serializers.CharField(max_length=250, required=True)
-    discount = serializers.DecimalField(max_digits=4, decimal_places=2, required=True)
+    discount = serializers.FloatField(required=True)
 
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
@@ -84,3 +84,6 @@ class CategoryProductsSeriazlier(serializers.Serializer):
 class SubCategoryProductsSeriazlier(serializers.Serializer):
     subcategory_name = serializers.CharField(max_length=250, required=True)
     
+class FilterProductSerializer(serializers.Serializer):
+    filter_by = serializers.CharField(max_length=250, required=True)
+    data = serializers.CharField(max_length=250, required=True)

@@ -26,7 +26,7 @@ class Comment(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=250)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.FloatField()
     stock = models.IntegerField()
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
@@ -38,7 +38,16 @@ class Product(models.Model):
     rating_count = models.IntegerField(default=0)
     comments = models.ManyToManyField(Comment)
     brand = models.CharField(max_length=250)
-    discount = models.DecimalField(max_digits=4, decimal_places=2, default=0.0)  
+    discount = models.FloatField(default=0)  
+    _rating = models.FloatField()
+
+    @property
+    def rating(self):
+        if self.rating_count == 0:
+            return 0
+        value = (self.total_rating_score / self.rating_count)
+        
+        return value
 
     def __str__(self):
         return self.name
@@ -50,4 +59,3 @@ class ProductList(models.Model):
     
     def __str__(self):
         return self.name
-

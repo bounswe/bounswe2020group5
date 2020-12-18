@@ -8,4 +8,4 @@ from .products_details import product_detail
 from .products_details import get_products
 from .products_details import get_category_products
 from .products_details import get_subcategory_products
-
+from .products_filter import filter_products

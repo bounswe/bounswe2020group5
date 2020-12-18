@@ -32,4 +32,5 @@ urlpatterns = [
     path('products/', get_products),
     path('products/category/', get_category_products),
     path('products/subcategory/', get_subcategory_products),
+    path('products/filter/', filter_products)
 ]

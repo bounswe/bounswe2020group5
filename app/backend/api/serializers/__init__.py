@@ -23,3 +23,4 @@ from .products import ProductAddCommentSerializer
 from .products import ProductAddRatingSerializer
 from .products import CategoryProductsSeriazlier
 from .products import SubCategoryProductsSeriazlier
+from .products import FilterProductSerializer

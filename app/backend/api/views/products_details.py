@@ -51,7 +51,7 @@ def get_category_products(request):
             return Response(data=content, status=status.HTTP_200_OK)
         
         for s in subcategory:
-            products = products | Product.objects.filter(subcategory_id=s.id)
+            products |= Product.objects.filter(subcategory_id=s.id)
             
         content = ProductSerializer(products, many=True).data
         return Response(data=content, status=status.HTTP_200_OK)
