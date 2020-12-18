@@ -8,25 +8,30 @@ import ChangePassword from "./profile/ChangePassword";
 import { Vendor } from "./signup/Vendor";
 import product from "./product/product";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { CssBaseline } from '@material-ui/core';
 import search from "./search/search"
+
 
 function App() {
   return (
-    <div className="App">
-      <Switch>
-        <Route path="/" exact component={Home} />
-        {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
-        <Route path="/login" component={Login} />
-        <Route path="/product" component={product} />
-        <Route path="/search" component={search} />
-        <Route path="/signup" exact component={Signup} />
-        <Route path="/signup/vendor" component={Vendor} />
-        <Route path="/profile" exact component={Profile} />
-        <Route path="/profile/changepassword" component={ChangePassword} />
-        <Route path='/home' render={() => <Redirect to= "/" />} />
-        <Route component={NoMatch} />
-      </Switch>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <div className="App">
+        <Switch>
+          <Route path="/" exact component={Home} />
+          {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
+          <Route path="/login" component={Login} />
+          <Route path="/signup" exact component={Signup} />
+                  <Route path="/product" component={product} />
+          <Route path="/search" component={search} />
+          <Route path="/signup/vendor" component={Vendor} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/profile/changepassword" component={ChangePassword} />
+          <Route path='/home' render={() => <Redirect to= "/" />} />
+          <Route component={NoMatch} />
+        </Switch>
+      </div>
+    </React.Fragment>
   );
 }
 

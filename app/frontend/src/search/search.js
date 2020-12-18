@@ -25,7 +25,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from "@material-ui/core/InputLabel";
-
+import {serverUrl} from "../common/ServerUrl";
+import Rating from "@material-ui/lab/Rating";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,6 +80,25 @@ const styles = {
 };
 
 export default function ComplexGrid() {
+    const [loadPage, setLoadPage] = React.useState(false);
+    const [statepro, setStatepro] = useState({
+        product_list: '',
+    });
+    useEffect(() => {
+
+
+            fetch(serverUrl + 'api/products', {
+                method: 'GET',
+            }).then(res => res.json())
+                .then(json => {
+                    statepro.product_list = json;
+                    setLoadPage(true);
+                    console.log(statepro.product_list)
+                })
+                .catch(err => console.log(err));
+
+
+                    }, []);
 
     const classes = useStyles();
 
@@ -97,6 +117,8 @@ export default function ComplexGrid() {
 
     var brandlist=['a', 'b', 'c', 'd', 'e', 'f'];
     var vendorlist=['a', 'b', 'c', 'd', 'e', 'f'];
+
+    const [starvalue, starsetValue] = React.useState(0);
 
 
 
@@ -120,14 +142,12 @@ export default function ComplexGrid() {
     const handleChangeDiscountleast = (event) => {
         discountleastsetName(event.target.value);
     };
-    const [discountmost, discountmostsetName] = React.useState(0);
-    const handleChangeDiscountmost = (event) => {
-        discountmostsetName(event.target.value);
-    };
 
 
     return (
 
+        <div>
+            {loadPage ? (
         <div className={classes.root}>
             <div>
                 <div className="Home">
@@ -211,32 +231,30 @@ export default function ComplexGrid() {
                     </div>
                     <Divider style={{marginTop:'2rem',marginBottom:'1rem'}}/>
                     <div className={classes.float} style={{marginLeft:'0.5rem'}}>
-                        <Typography component="legend"> {'Star Filter'} </Typography>
-                        <IconButton color="secondary" style={{marginLeft:'7rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <Typography className={classes.float} > {'Star Filter (Min.)'} </Typography>
+                        <IconButton color="secondary" style={{marginLeft:'4.5rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton></div>
                     <div >
-                    <StarList />
+                        <Rating style={{marginLeft:'0.5rem'}}
+                            name="simple-controlled"
+                            value={starvalue}
+                            precision={0.5}
+                            onChange={(event, newValue) => {
+                                starsetValue(newValue);
+                            }}
+                        />
                     </div>
-                    <Divider style={{marginTop:'16rem',marginBottom:'1rem'}}/>
+                    <Divider style={{marginTop:'1rem',marginBottom:'1rem'}}/>
                     <div style={{marginTop:'1rem',marginLeft:'0.5rem'}}>
-                        Discount Range (%)
+                        Discount (%Min.)
                     <div className={classes.float} style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
 
-                        <TextField
+                        <TextField style={{marginRight:'5rem'}}
                             id="filled-name"
 
                             value={discountleast}
                             onChange={handleChangeDiscountleast}
-                            variant="outlined"
-                            size="small"
-                        />
-                        <Typography component="legend">  <bd>-</bd> </Typography>
-                        <TextField style={{marginRight:'0.5rem'}}
-                            id="filled-name"
-
-                            value={discountmost}
-                            onChange={handleChangeDiscountmost}
                             variant="outlined"
                             size="small"
                         />
@@ -275,7 +293,7 @@ export default function ComplexGrid() {
                             <FilterListIcon  style={{fontSize: 18 }}/>
                         </IconButton>
                         </div>
-                <TitlebarGridList tileData={tileData}/>
+                <TitlebarGridList tileData={statepro.product_list}/>
                     </Grid>
 
 
@@ -287,6 +305,7 @@ export default function ComplexGrid() {
             <div style={{ marginTop: "5rem"}}>
                 <Footer />
             </div>
+        </div>):null}
         </div>
     );
 }
