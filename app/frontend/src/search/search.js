@@ -1,6 +1,4 @@
 import React , {Component,useEffect, useState}from 'react';
-import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
-import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -14,25 +12,41 @@ import {tileData} from "../components/tileData";
 import {tileData2} from "../components/tileData2";
 import Footer from "../components/Footer";
 import gridlistforsearch, {TitlebarGridList} from "../components/gridlistforsearch";
-import filterlists from "../components/filterlists";
-import VirtualizedList from "../components/filterlists";
 import CheckboxListSecondary from "../components/filterlists";
 import TextField from "@material-ui/core/TextField";
-import {Divider} from "@material-ui/core";
+import {Button, Divider} from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Box from "@material-ui/core/Box";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import StarList from "../components/starlist";
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
-
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import InputLabel from "@material-ui/core/InputLabel";
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        overflow: 'hidden',
+
     },
+    formControl: {
+        margin: theme.spacing(1),
+        width:200,
+        marginLeft:1000,
+    },
+
+    float:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+       justifyContent:'space-between',
+
+    },
+
     paper: {
         padding: theme.spacing(2),
         marginLeft:100,
@@ -65,7 +79,22 @@ const styles = {
 };
 
 export default function ComplexGrid() {
+
     const classes = useStyles();
+
+    const [state, setState] = React.useState({
+        sort: '',
+
+    });
+
+    const handleChange = (event) => {
+        const sort = event.target.sort;
+        setState({
+            ...state,
+            [sort]: event.target.value,
+        });
+    };
+
     var brandlist=['a', 'b', 'c', 'd', 'e', 'f'];
     var vendorlist=['a', 'b', 'c', 'd', 'e', 'f'];
 
@@ -112,10 +141,15 @@ export default function ComplexGrid() {
             <Grid
                 container spacing={2}>
                 <Grid  item style={{marginTop: '2rem'}} xs={12} sm={2}>
-                    <div>
-                        <ButtonGroup style={{marginTop:'1rem'}}  variant="text" aria-label="text primary button group">
 
-                        <TextField
+                    <Button style={{marginLeft:'3rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
+                        APPLY ALL
+                    </Button>
+
+                    <div>
+                        <div className={classes.float} style={{marginTop:'1rem'}}  variant="text" aria-label="text primary button group">
+
+                        <TextField style={{marginLeft:'0.3rem',marginRight:'0.5rem'}}
                         id="filled-name"
                         label="Brand Name"
                         value={brandname}
@@ -127,14 +161,14 @@ export default function ComplexGrid() {
                     <IconButton style={{ background: '#F3DE8A' }} color="secondary" aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton>
-                        </ButtonGroup>
+                        </div>
 
                     <CheckboxListSecondary list={brandlist} filterkey={brandname}/>
                     </div>
                     <Divider/>
                     <div style={{marginTop:'1rem'}}>
-                        <ButtonGroup style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
-                        <TextField
+                        <div className={classes.float} style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
+                        <TextField style={{marginLeft:'0.3rem',marginRight:'0.5rem'}}
                             id="filled-name"
                             label="Vendor Name"
                             value={vendorname}
@@ -145,13 +179,13 @@ export default function ComplexGrid() {
                         <IconButton style={{ background: '#F3DE8A' }}color="secondary" aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
-                    </ButtonGroup>
+                    </div>
                         <CheckboxListSecondary list={vendorlist} filterkey={vendorname}/>
                     </div>
                     <Divider style={{marginBottom:'1rem'}}/>
                     <Divider style={{marginBottom:'1rem'}}/>
-                    Price Range
-                    <ButtonGroup style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
+                    &nbsp;&nbsp;Price Range
+                    <div className={classes.float} style={{marginLeft:'0.5rem',marginTop:'1rem'}} variant="text" aria-label="text primary button group">
 
                         <TextField
                             id="filled-name"
@@ -161,8 +195,8 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <Typography component="legend"> &nbsp;____&nbsp; </Typography>
-                    <TextField
+                        <Typography component="legend"> <bd>-</bd> </Typography>
+                    <TextField style={{marginRight:'0.5rem'}}
                             id="filled-name"
 
                             value={pricemost}
@@ -174,9 +208,11 @@ export default function ComplexGrid() {
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
-                    </ButtonGroup>
+                    </div>
                     <Divider style={{marginTop:'2rem',marginBottom:'1rem'}}/>
-                    <div style={{marginLeft:'0.5rem'}}> Star Filter <IconButton color="secondary" style={{marginLeft:'7rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
+                    <div className={classes.float} style={{marginLeft:'0.5rem'}}>
+                        <Typography component="legend"> {'Star Filter'} </Typography>
+                        <IconButton color="secondary" style={{marginLeft:'7rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton></div>
                     <div >
@@ -185,7 +221,7 @@ export default function ComplexGrid() {
                     <Divider style={{marginTop:'16rem',marginBottom:'1rem'}}/>
                     <div style={{marginTop:'1rem',marginLeft:'0.5rem'}}>
                         Discount Range (%)
-                    <ButtonGroup style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
+                    <div className={classes.float} style={{marginTop:'1rem'}} variant="text" aria-label="text primary button group">
 
                         <TextField
                             id="filled-name"
@@ -195,8 +231,8 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <Typography component="legend"> &nbsp;____&nbsp; </Typography>
-                        <TextField
+                        <Typography component="legend">  <bd>-</bd> </Typography>
+                        <TextField style={{marginRight:'0.5rem'}}
                             id="filled-name"
 
                             value={discountmost}
@@ -208,13 +244,37 @@ export default function ComplexGrid() {
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
-                    </ButtonGroup>
+                    </div>
                         <Divider style={{marginTop:'1rem',marginBottom:'1rem'}}/>
                     </div>
 
 
                     </Grid>
                 <Grid item xs={12} sm={10}>
+                    <div className={classes.float}>
+                    <FormControl   size={'medium'} color={"primary"} className={classes.formControl}>
+                        <InputLabel htmlFor="sort-native-simple">SORT</InputLabel>
+                        <Select
+                            native
+                            value={state.age}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: 'age',
+                                id: 'sort-native-simple',
+                            }}
+                        >
+                            <option aria-label="None" value="" />
+                            <option value='bestseller'>Best-sellers</option>
+                            <option value='newarrivals'>New-arrivals</option>
+                            <option value='price'>Price</option>
+                            <option value='review'>Reviews</option>
+                            <option value='rating'>Rating</option>
+                        </Select>
+                    </FormControl>
+                        <IconButton size="medium"  style={{ marginRight:'5rem',marginTop:'1.25rem',color:"#0B3954" }} >
+                            <FilterListIcon  style={{fontSize: 18 }}/>
+                        </IconButton>
+                        </div>
                 <TitlebarGridList tileData={tileData}/>
                     </Grid>
 

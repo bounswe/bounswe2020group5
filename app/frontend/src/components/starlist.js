@@ -16,6 +16,13 @@ const useStyles = makeStyles((theme) => ({
         weight:10,
         backgroundColor: theme.palette.background.paper,
     },
+    float:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+
+    },
 }));
 
 export default function StarList() {
@@ -41,7 +48,7 @@ export default function StarList() {
             {[ 1, 2, 3,4,5].map((value) => {
                 const labelId = `checkbox-list-secondary-label-${value}`;
                 return (
-                    <ListItem key={value} button>
+                    <ListItem className={classes.float} key={value} button>
                         <Box component="fieldset"  borderColor="transparent">
                             <Rating size="small"
                                     name="read-only" value={value} readOnly

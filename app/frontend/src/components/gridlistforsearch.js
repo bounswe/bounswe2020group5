@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import tileData from './tileData';
 import Rating from '@material-ui/lab/Rating';
+import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,25 +38,26 @@ export const TitlebarGridList= ({tileData}) =>  {
 
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
-            <GridList cellHeight={350}  className={classes.gridList}>
+            <GridList cellHeight={400}  className={classes.gridList}>
                 <GridListTile  cols={2} style={{ height: 'auto' }}>
-                    <ListSubheader component="div">Search Result For{''}</ListSubheader>
+                    <ListSubheader style={{ marginBottom:'1rem'}}component="div"><Button>Search Result For : {''}</Button></ListSubheader>
                 </GridListTile>
                 {tileData.map((tile) => (
                     <GridListTile key={tile.img} cols={tile.cols || 2/3} >
-                        <img  style={{width:"22rem",height:"20rem"}} src={tile.img} alt={tile.title} />
+                        <img  style={{width:"21rem",height:"20rem"}} src={tile.img} alt={tile.title} />
 
-                        <GridListTileBar
+                        <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
 
-                            title={<span style={{fontSize:"1rem", width:"max-component"}}>{tile.title}&nbsp;&nbsp;&nbsp;
-                                </span>}
-                            subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>Price: {tile.price}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By: {tile.author}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                          title={<span style={{fontSize:"1rem", width:"max-component"}}>{tile.title}
+                                <Divider/> <br></br></span>}
+                            subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
+                                <br></br><br></br>BY: {tile.author}
+                                <br></br><br></br>
                                 <Rating name="size-small" defaultValue={tile.star} size="small" /> </span>}
 
 
                             actionIcon={
-                                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                                <IconButton style={{color: "white"}} aria-label={`info about ${tile.title}`} className={classes.icon}>
                                     <InfoIcon />
                                 </IconButton>
                             }

@@ -11,14 +11,26 @@ import Avatar from '@material-ui/core/Avatar';
 import {render} from 'react-dom';
 import SimpleGridList from "./SimpleGridList";
 const useStyles = makeStyles((theme) => ({
-    root: {
-        height:200,
-
-        overflowY:'scroll',
-
+    list: {
+        overflowY: "scroll",
         overflow: 'hidden',
+        height:200,
         backgroundColor: theme.palette.background.paper,
+        '&::-webkit-scrollbar': {
+            width: '0.4em'
+        },
+        '&::-webkit-scrollbar-track': {
+            '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+            'border-radius': '10px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
+            'border-radius': '10px',
+        }
     },
+
+
+
 }));
 
 export const CheckboxListSecondary  = ({list,filterkey}) => {
@@ -43,7 +55,7 @@ export const CheckboxListSecondary  = ({list,filterkey}) => {
 
         return (
 
-            <List  dense className={classes.root}>
+            <List  dense className={classes.list}>
                 {list.filter(list => list.includes(filterkey)).map((value) => {
                     const labelId = `checkbox-list-secondary-label-${value}`;
 

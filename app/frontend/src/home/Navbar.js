@@ -25,6 +25,7 @@ import SearchBar from "material-ui-search-bar";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -172,6 +173,7 @@ export default function Navbar() {
 
   const StyledMenuItem = withStyles((theme) => ({
     root: {
+
       '&:focus': {
         backgroundColor: theme.palette.primary.main,
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
