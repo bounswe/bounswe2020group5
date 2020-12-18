@@ -38,6 +38,8 @@ def get_category_products(request):
         category = Category.objects.get(name=category_name)
         subcategory = SubCategory.objects.filter(category_id=category.id)
         s_0 = subcategory[0]
+        if s_0 is None:
+            return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
         products = Product.objects.filter(subcategory_id=s_0.id)
 
         if products.exists() is False:

@@ -33,9 +33,11 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         subcategory_name = request.data.get("subcategory_name") 
         subcategory = SubCategory.objects.get(name=subcategory_name)
         vendor = Vendor.objects.get(user=request.user)
+        brand = request.data.get("brand")
+        discount = request.data.get("discount")
         
         create_product(name=name, price=price, stock=stock, description=description,
-                       image_url=image_file.url, subcategory=subcategory, vendor=vendor)
+                       image_url=image_file.url, subcategory=subcategory, vendor=vendor, brand=brand, discount=discount)
 
         return Response(data={'success': 'Successfully created product'}, status=status.HTTP_201_CREATED)
 

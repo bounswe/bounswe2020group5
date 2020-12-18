@@ -10,7 +10,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id', 'name', 'price', 'stock', 'description', 'date_added', 'number_of_sales', 
-                    'image_url', 'category', 'subcategory', 'vendor', 'total_rating_score', 'rating_count', 'comments')
+                    'image_url', 'category', 'subcategory', 'vendor', 'total_rating_score', 'rating_count', 
+                    'comments', 'brand', 'discount')
 
     def get_vendor(self, obj):
         vendor = User.objects.get(id=obj.vendor_id)
@@ -33,6 +34,8 @@ class AddProductSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=500, required=True)
     image_file = serializers.FileField(required=True)
     subcategory_name = serializers.CharField(max_length=250, required=True)
+    brand = serializers.CharField(max_length=250, required=True)
+    discount = serializers.DecimalField(max_digits=4, decimal_places=2, required=True)
 
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)

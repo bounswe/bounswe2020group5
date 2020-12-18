@@ -21,8 +21,9 @@ def create_user_account(email, username, first_name,
     return user
 
 
-def create_product(name, price, stock, description, image_url, subcategory, vendor, **extra_fields):
-    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, subcategory=subcategory, vendor=vendor)
+def create_product(name, price, stock, description, image_url, subcategory, vendor, brand, discount, **extra_fields):
+    product = Product(name=name, price=price, stock=stock, description=description, image_url=image_url, 
+                        subcategory=subcategory, vendor=vendor, brand=brand, discount=discount)
     product.save()
 
 def create_temp_user_account(email, number, username, first_name,
