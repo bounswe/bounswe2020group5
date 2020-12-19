@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
-from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer
+from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAddRatingSerializer, CategoryProductsSeriazlier
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -103,7 +103,6 @@ class ProductListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductList.objects.all()
     serializer_class = ProductListSerializer
 
-
 class ProductListOptViewSet(viewsets.GenericViewSet):
     #parser_classes = (JSONParser,)
     permission_classes = [AllowAny, ]
@@ -112,7 +111,16 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         'delete': DeleteProductListSerializer,
         'add_product': ProductListAddProductSerializer,
         'remove_product': ProductListRemoveProductSerializer,
+        'my': EmptySerializer,
     }
+
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductListSerializer})
+    @action(methods=['GET', ], detail=False, permission_classes=[ ])
+    def my(self, request):
+        user = Customer.objects.filter(user=request.user).first()
+        product_lists = ProductList.objects.filter(user=user)
+        content = ProductListSerializer(product_lists, many=True)
+        return Response(data=content.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ResponseSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
