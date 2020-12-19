@@ -10,9 +10,10 @@ from drf_yasg.utils import swagger_auto_schema
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def product_detail(request, pk):
-    product = Product.objects.get(id=pk)
-    if product is None:
-        return Response(data={'error': 'No product found'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        product = Product.objects.get(id=pk)
+    except:
+        return Response(data={'error': 'Product id is wrong'}, status=status.HTTP_400_BAD_REQUEST)
 
     content = ProductSerializer(product).data
     return Response(data=content, status=status.HTTP_200_OK)
@@ -22,9 +23,6 @@ def product_detail(request, pk):
 @permission_classes([AllowAny])
 def get_products(request):
     products = Product.objects.all()
-    if products.exists() is False:
-        return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
-
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
@@ -32,19 +30,21 @@ def get_products(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_category_products(request):
+    products = Product.objects.none()
     serializer = CategoryProductsSeriazlier(data=request.data)
     if serializer.is_valid():
         category_name = serializer.validated_data['category_name']
-        category = Category.objects.get(name=category_name)
-        subcategory = SubCategory.objects.filter(category_id=category.id)
-        s_0 = subcategory[0]
-        if s_0 is None:
-            return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
-        products = Product.objects.filter(subcategory_id=s_0.id)
+        try:
+            category = Category.objects.get(name=category_name)
+        except:
+            return Response(data={'error': 'Category does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if products.exists() is False:
-            return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
-        
+        subcategory = SubCategory.objects.filter(category_id=category.id)
+        if subcategory.exists() is False:
+            return Response(data={'error': 'Subcategory does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        s_0 = subcategory[0]
+        products = Product.objects.filter(subcategory_id=s_0.id)        
         subcategory = subcategory[1:]
         if subcategory.exists() is False:
             content = ProductSerializer(products, many=True).data
@@ -65,12 +65,12 @@ def get_subcategory_products(request):
     serializer = SubCategoryProductsSeriazlier(data=request.data)
     if serializer.is_valid():
         subcategory_name = serializer.validated_data['subcategory_name']
-        subcategory = SubCategory.objects.get(name=subcategory_name)
-        products = Product.objects.filter(subcategory_id=subcategory.id)
-        
-        if products.exists() is False:
-            return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            subcategory = SubCategory.objects.get(name=subcategory_name)
+        except:
+            return Response(data={'error': 'Subcategory does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
+        products = Product.objects.filter(subcategory_id=subcategory.id)
         content = ProductSerializer(products, many=True).data
         return Response(data=content, status=status.HTTP_200_OK) 
 

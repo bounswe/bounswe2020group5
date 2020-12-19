@@ -22,7 +22,10 @@ def filter_products(request):
         products = Product.objects.filter(brand=data)
 
     elif filter_by == 'vendor':
-        user = User.objects.get(username=data)
+        try:
+            user = User.objects.get(username=data)
+        except:
+            return Response(data={'error': 'Vendor does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         products = Product.objects.filter(vendor_id=user.id)
 
     elif filter_by == 'price_range':
@@ -41,9 +44,6 @@ def filter_products(request):
         lower_limit = data
         upper_limit = Product.objects.all().aggregate(Max('discount'))
         products = Product.objects.filter(discount__range=(lower_limit, upper_limit['discount__max']))
-    
-    if products.exists() is False:
-        return Response(data={'error': 'No products found'}, status=status.HTTP_400_BAD_REQUEST)
             
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
