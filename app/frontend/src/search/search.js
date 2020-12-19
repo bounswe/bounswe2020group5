@@ -3,11 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
-import InputBase from "@material-ui/core/InputBase";
-import SimpleGridList from "../components/SimpleGridList";
 import {tileData} from "../components/tileData";
 import {tileData2} from "../components/tileData2";
 import Footer from "../components/Footer";
@@ -15,8 +12,6 @@ import gridlistforsearch, {TitlebarGridList} from "../components/gridlistforsear
 import CheckboxListSecondary from "../components/filterlists";
 import TextField from "@material-ui/core/TextField";
 import {Button, Divider} from "@material-ui/core";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Box from "@material-ui/core/Box";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
@@ -27,6 +22,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from "@material-ui/core/InputLabel";
 import {serverUrl} from "../common/ServerUrl";
 import Rating from "@material-ui/lab/Rating";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,26 +77,185 @@ const styles = {
 
 export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
-    const [statepro, setStatepro] = useState({
-        product_list: '',
-    });
+    let [statepro, setStatepro] = React.useState("");
     useEffect(() => {
 
 
-            fetch(serverUrl + 'api/products', {
-                method: 'GET',
-            }).then(res => res.json())
-                .then(json => {
-                    statepro.product_list = json;
-                    setLoadPage(true);
-                    console.log(statepro.product_list)
-                })
-                .catch(err => console.log(err));
+        fetch(serverUrl + 'api/products', {
+            method: 'GET',
+        }).then(res => res.json())
+            .then(json => {
+                setStatepro ( json);
+
+                setLoadPage(true);
+                console.log(statepro)
+            })
+            .catch(err => console.log(err));
 
 
-                    }, []);
+    }, []);
 
     const classes = useStyles();
+
+    const vendorfilterclick = () => {
+        let datavendor;
+        let error;
+        datavendor = {
+            "filter_by": "vendor",
+            "data": "vendor.test",
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datavendor)
+        }).then(res => res.json())
+            .then(json => {
+                console.log(json)
+                error=json.error
+
+                if(error=='No products found'){
+                    setStatepro([])}
+                else{
+                    setStatepro(json)
+                }
+                setLoadPage(true);
+
+            })
+            .catch(err => {
+                alert('Some error has occurred')
+                console.log(err)
+            });
+
+    };
+    const pricefilterclick = () => {
+        let dataprice;
+        let error;
+        dataprice = {
+            "filter_by": "price_range",
+            "data": {
+                "lower_limit":priceleast,
+                "upper_limit":pricemost,
+
+            }
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(dataprice)
+        }).then(res => res.json())
+            .then(json => {
+                error=json.error
+                console.log(json.error)
+                console.log(json)
+                console.log('ooooooo')
+
+                if(error=='No products found'){
+                    console.log('bbb')
+                    setStatepro([])}
+                else{
+                    setStatepro(json)
+                }
+                    setLoadPage(true);
+
+
+            })
+            .catch(err => {
+                alert('Some error has occurred')
+                console.log(err)
+            });
+
+    };
+    const starfilterclick = () => {
+        let datastar;
+        let error;
+        datastar = {
+            "filter_by": "rating",
+            "data":starvalue,
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datastar)
+        }).then(res => res.json())
+            .then(json => {
+                error=json.error
+
+                if(error=='No products found'){
+                    setStatepro([])}
+                else{
+                    setStatepro(json)
+                }
+                setLoadPage(true);
+
+
+            })
+            .catch(err => {
+                alert('Some error has occurred')
+                console.log(err)
+            });
+
+    };
+
+    const discountfilterclick = () => {
+        let datadiscount;
+        let error;
+        datadiscount = {
+            "filter_by": "discount_rate",
+            "data":discountleast,
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datadiscount)
+
+        }).then(res => res.json())
+            .then(json => {
+                error=json.error
+
+                if(error=='No products found'){
+                    setStatepro([])}
+                    else{
+                    setStatepro(json)
+                }
+
+                setLoadPage(true);
+
+
+            })
+            .catch(err => {
+
+                    alert('Some error has occurred')
+                    console.log(err)
+
+            });
+
+    };
+
+    const brandfilterclick = () => {
+        let databrand;
+        databrand = {
+            "filter_by": "brand",
+            "data": "MSI",
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(databrand)
+        }).then(res => res.json())
+            .then(json => {
+                console.log(json)
+                console.log('jjjj')
+
+               setStatepro(json)
+                setLoadPage(true);
+
+            })
+            .catch(err => {
+                alert('Some error has occurred')
+                console.log(err)
+            });
+
+    };
 
     const [state, setState] = React.useState({
         sort: '',
@@ -119,8 +274,9 @@ export default function ComplexGrid() {
     var vendorlist=['a', 'b', 'c', 'd', 'e', 'f'];
 
     const [starvalue, starsetValue] = React.useState(0);
-
-
+    const resetstar = (event) => {
+        starsetValue(0);
+    };
 
     const [brandname, brandsetName] = React.useState('');
     const handleChangeBrand = (event) => {
@@ -178,12 +334,12 @@ export default function ComplexGrid() {
                         size="small"
                     />
 
-                    <IconButton style={{ background: '#F3DE8A' }} color="secondary" aria-label="add to shopping cart">
+                    <IconButton onClick={brandfilterclick} style={{ background: '#F3DE8A' }} color="secondary" aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton>
                         </div>
 
-                    <CheckboxListSecondary list={brandlist} filterkey={brandname}/>
+                    <CheckboxListSecondary list={brandlist} filterkey={brandname} isbrand={true}/>
                     </div>
                     <Divider/>
                     <div style={{marginTop:'1rem'}}>
@@ -196,11 +352,11 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton style={{ background: '#F3DE8A' }}color="secondary" aria-label="add to shopping cart">
+                        <IconButton onClick={vendorfilterclick}  style={{ background: '#F3DE8A' }}color="secondary" aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
                     </div>
-                        <CheckboxListSecondary list={vendorlist} filterkey={vendorname}/>
+                        <CheckboxListSecondary list={vendorlist} filterkey={vendorname} isbrand={false}/>
                     </div>
                     <Divider style={{marginBottom:'1rem'}}/>
                     <Divider style={{marginBottom:'1rem'}}/>
@@ -224,7 +380,7 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={pricefilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
@@ -232,18 +388,23 @@ export default function ComplexGrid() {
                     <Divider style={{marginTop:'2rem',marginBottom:'1rem'}}/>
                     <div className={classes.float} style={{marginLeft:'0.5rem'}}>
                         <Typography className={classes.float} > {'Star Filter (Min.)'} </Typography>
-                        <IconButton color="secondary" style={{marginLeft:'4.5rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={starfilterclick} color="secondary" style={{marginLeft:'4.5rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton></div>
-                    <div >
-                        <Rating style={{marginLeft:'0.5rem'}}
+                    <div className={classes.float}>
+                        <Rating style={{marginTop:'1.5rem',marginLeft:'0.5rem'}}
                             name="simple-controlled"
                             value={starvalue}
-                            precision={0.5}
+                            //precision={0.5}
                             onChange={(event, newValue) => {
                                 starsetValue(newValue);
                             }}
+
                         />
+                        <IconButton onClick={resetstar} color="secondary" style={{marginTop:'1.8rem',marginLeft:'4.5rem' }}>
+                            <CancelIcon  style={{ fontSize: 18 }}/>
+                        </IconButton>
+
                     </div>
                     <Divider style={{marginTop:'1rem',marginBottom:'1rem'}}/>
                     <div style={{marginTop:'1rem',marginLeft:'0.5rem'}}>
@@ -258,7 +419,7 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={discountfilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
@@ -293,7 +454,8 @@ export default function ComplexGrid() {
                             <FilterListIcon  style={{fontSize: 18 }}/>
                         </IconButton>
                         </div>
-                <TitlebarGridList tileData={statepro.product_list}/>
+                    <TitlebarGridList tileData={statepro}/>
+
                     </Grid>
 
 

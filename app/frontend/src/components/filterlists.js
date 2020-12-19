@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const CheckboxListSecondary  = ({list,filterkey}) => {
-    var list=['ab', 'b', 'c', 'd', 'e', 'f'];
+export const CheckboxListSecondary  = ({list,filterkey,isbrand}) => {
+    var list=['MSI', 'b', 'c', 'd', 'e', 'f'];
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([1]);
+    const [checked, setChecked] = React.useState([]);
 
 
     const handleToggle = (value) => () => {
@@ -50,6 +50,11 @@ export const CheckboxListSecondary  = ({list,filterkey}) => {
         }
 
         setChecked(newChecked);
+        console.log(newChecked)
+        {isbrand ?  localStorage.setItem('brandlist', newChecked) :
+            localStorage.setItem('vendorlist', newChecked)}
+
+
     };
 
 
@@ -62,7 +67,7 @@ export const CheckboxListSecondary  = ({list,filterkey}) => {
                     return (
                         <ListItem key={value} button>
 
-                            <ListItemText id={labelId} primary={`Line item ${value}`}/>
+                            <ListItemText id={labelId} primary={`${value}`}/>
                             <ListItemSecondaryAction>
                                 <Checkbox
                                     edge="end"
