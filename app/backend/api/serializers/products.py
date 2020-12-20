@@ -96,5 +96,9 @@ class SubCategoryProductsSeriazlier(serializers.Serializer):
     subcategory_name = serializers.CharField(max_length=250, required=True)
     
 class FilterProductSerializer(serializers.Serializer):
-    filter_by = serializers.CharField(max_length=250, required=True)
-    data = serializers.CharField(max_length=250, required=True)
+    product_ids = serializers.CharField(max_length=250, required=True)
+    filter_data = serializers.CharField(max_length=250, required=True)
+
+class ProductSearchSerializer(serializers.Serializer):
+    query = serializers.CharField(max_length=250, required=True)
+    

@@ -55,6 +55,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             for document in Document.objects.all():
                 if document.upload.url == image_url:
                     document.delete()
+                    break
         else:
             return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
 

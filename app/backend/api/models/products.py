@@ -41,7 +41,7 @@ class Product(models.Model):
             return 0
         value = (self.total_rating_score / self.rating_count)
         
-        return value
+        return round(value, 1)
 
     def __str__(self):
         return self.name
