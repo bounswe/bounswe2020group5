@@ -1,68 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".page.activity.home.HomepageActivity">
 
-
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="130dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/bupazar_logo"
-        app:layout_constraintEnd_toStartOf="@+id/searchBarSearchView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <SearchView
-        android:id="@+id/searchBarSearchView"
-        android:layout_width="214dp"
-        android:layout_height="73dp"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/background"
-        android:fadeScrollbars="false"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toEndOf="@+id/logoImageView"
+    <FrameLayout
+        android:id="@+id/fl_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
+    </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView"
-        app:layout_constraintVertical_bias="0.6"
-        android:layout_height="0dp"
-        android:layout_width="0dp" />
-
-    <Button
-        android:id="@+id/buttonLogOut"
-        android:layout_width="88dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/secondary_blue"
-        android:text="Log Out"
-        android:textColor="@color/white"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        app:itemBackground="@color/secondary_blue"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvProducts" />
+        app:layout_constraintVertical_bias="0.998"
+        app:menu="@menu/nav_menu" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
