@@ -100,7 +100,6 @@ class ProductListViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductListSerializer
 
 class ProductListOptViewSet(viewsets.GenericViewSet):
-    #parser_classes = (JSONParser,)
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'add': CreateProductListSerializer,
@@ -111,7 +110,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
     }
 
     @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductListSerializer})
-    @action(methods=['GET', ], detail=False, permission_classes=[ ])
+    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthCustomer,])
     def my(self, request):
         user = Customer.objects.filter(user=request.user).first()
         product_lists = ProductList.objects.filter(user=user)
