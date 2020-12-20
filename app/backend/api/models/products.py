@@ -19,11 +19,6 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.name
 
-class Comment(models.Model):
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    comment_text = models.CharField(max_length=250)
-    is_anonymous = models.BooleanField(default=False)
-
 class Product(models.Model):
     name = models.CharField(max_length=250)
     price = models.FloatField()
@@ -36,7 +31,6 @@ class Product(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     total_rating_score = models.IntegerField(default=0)
     rating_count = models.IntegerField(default=0)
-    comments = models.ManyToManyField(Comment)
     brand = models.CharField(max_length=250)
     discount = models.FloatField(default=0)  
     _rating = models.FloatField()
@@ -51,7 +45,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-        
+
+class Comment(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    comment_text = models.CharField(max_length=250)
+    is_anonymous = models.BooleanField(default=False)
+
 class ProductList(models.Model):
     name = models.CharField(max_length=250)
     user = models.ForeignKey(Customer, on_delete=models.CASCADE)
