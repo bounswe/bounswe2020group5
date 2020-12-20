@@ -1,6 +1,7 @@
 package com.example.bupazar.`interface`
 
 import com.example.bupazar.model.LoginRequest
+import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.RegisterRequest
 import retrofit2.Call
 import retrofit2.http.Body
@@ -11,7 +12,7 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("/api/auth/login/")
-    fun userLogin(@Body userData: LoginRequest): Call<LoginRequest>
+    fun userLogin(@Body userData: LoginRequest): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/api/auth/register/")
