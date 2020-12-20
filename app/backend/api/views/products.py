@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
-from ..serializers import CommentSerializer, ProductAddCommentSerializer, CategoryProductsSeriazlier
+from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
 from ..utils import create_product
@@ -16,7 +16,8 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     serializer_classes = {
         'add': AddProductSerializer,
         'delete': DeleteProductSerializer,
-        'add_comment': ProductAddCommentSerializer
+        'add_comment': ProductAddCommentSerializer,
+        'get_all_comments': ProductAllCommentsSerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
@@ -80,11 +81,18 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         product.save()
         return Response(data={'success': 'Comment added, Rating is given'}, status=status.HTTP_201_CREATED)
 
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @action(methods=['POST'], detail=False, queryset = "", permission_classes=[])
+    def get_all_comments(self, request):
+        product_id = request.data.get("product_id")
+        comments = Comment.objects.filter(product_id=product_id)
+        comment_contents = CommentSerializer(comments, many=True)
+        return Response(data=comment_contents.data, status=status.HTTP_200_OK)
+        
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]
         return super().get_serializer_class()
-
 
 class ProductListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductList.objects.all()

@@ -86,6 +86,9 @@ class ProductAddCommentSerializer(serializers.Serializer):
     is_anonymous = serializers.BooleanField(required=True)
     rating_score = serializers.IntegerField(max_value=5, min_value=0, required=True)
 
+class ProductAllCommentsSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+
 class CategoryProductsSeriazlier(serializers.Serializer):
     category_name = serializers.CharField(max_length=250, required=True)
 
