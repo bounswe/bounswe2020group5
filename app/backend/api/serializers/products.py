@@ -11,7 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'price', 'stock', 'description', 'date_added', 'number_of_sales', 
                     'image_url', 'category', 'subcategory', 'vendor', 'total_rating_score', 'rating_count', 
-                    'comments', 'brand', 'discount', 'rating')
+                    'brand', 'discount', 'rating')
 
     def get_vendor(self, obj):
         vendor = User.objects.get(id=obj.vendor_id)
@@ -65,17 +65,25 @@ class ResponseSerializer(serializers.Serializer):
   
 #Comment Serializer
 class CommentSerializer(serializers.ModelSerializer):
+    customer = serializers.SerializerMethodField('get_customer')
+    
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('id', 'customer', 'product', 'comment_text', 'is_anonymous')
+
+    def get_customer(self, obj):
+        customer = User.objects.get(id=obj.customer_id)
+        first_name, last_name = customer.first_name, customer.last_name
+        if obj.is_anonymous:
+            first_name = customer.first_name[0] + "*"*len(customer.first_name[1:])
+            last_name = customer.last_name[0] + "*"*len(customer.last_name[1:])
+            
+        return first_name + " " + last_name
 
 class ProductAddCommentSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
     comment_text = serializers.CharField(max_length=250, required=True)
     is_anonymous = serializers.BooleanField(required=True)
-
-class ProductAddRatingSerializer(serializers.Serializer):
-    product_id = serializers.IntegerField(required=True)
     rating_score = serializers.IntegerField(max_value=5, min_value=0, required=True)
 
 class CategoryProductsSeriazlier(serializers.Serializer):

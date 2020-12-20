@@ -20,7 +20,6 @@ from .products import ProductListRemoveProductSerializer
 from .products import ResponseSerializer
 from .products import CommentSerializer
 from .products import ProductAddCommentSerializer
-from .products import ProductAddRatingSerializer
 from .products import CategoryProductsSeriazlier
 from .products import SubCategoryProductsSeriazlier
 from .products import FilterProductSerializer
