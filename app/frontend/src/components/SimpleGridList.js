@@ -38,38 +38,38 @@ export const SimpleGridList = ({tileData}) => {
 
   return (
 
-    <div className={classes.root}>
-      <GridList className={classes.gridList} cols={5} >
-        {tileData.map((tile,index) => (
-          <GridListTile style={{height:"19rem"}}>
-            <img style={{width:"15rem",height:"15rem"}} src={tile.image_url} alt={tile.name} />
-            <GridListTileBar
-              title={tile.name}
-              subtitle={tile.price}
-              classes={{
-                root: classes.titleBar,
-                title: classes.title,
-                subtitle: classes.subtitle,
-              }}
-              actionIcon={
-                <Link style={{textDecoration: 'none'}} to={{
-                        pathname: "/product",
-                        id: tile.id,
-                }}>
-                <IconButton
-                    aria-label={`info about ${tile.title}`}
-                    className={classes.icon}
-                >
-                  <InfoIcon />
-                </IconButton>
+      <div className={classes.root}>
+        <GridList className={classes.gridList} cols={3} >
+          {tileData.map((tile,index) => (
+              <GridListTile style={{height:"19rem"}}>
+                <Link to={{ pathname: `product/${tile.id}`, id: tile.id}}>
+                  <img style={{width:"15rem",height:"15rem"}} src={tile.image_url} alt={tile.name} />
                 </Link>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-    </div>
+                <GridListTileBar
+                    title={tile.name}
+                    subtitle={tile.price}
+                    classes={{
+                      root: classes.titleBar,
+                      title: classes.title,
+                      subtitle: classes.subtitle,
+                    }}
+                    actionIcon={
+                      <Link to={{ pathname: `product/${tile.id}`, id: tile.id}}>
+                        <IconButton
+                            aria-label={`info about ${tile.title}`}
+                            className={classes.icon}
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </Link>
+                    }
+                />
+              </GridListTile>
+          ))}
+        </GridList>
+      </div>
   );
 }
 
 export default SimpleGridList;
+

@@ -23,16 +23,14 @@ function Home() {
     }).then(res => res.json())
         .then(json => {
             state.product_list = json;
-            state.first = state.product_list.slice(1, 7);
-            state.second = state.product_list.slice(5);
+            state.first = state.product_list;
+            state.second = state.product_list;
             setLoadPage(true);
         })
         .catch(err => console.log(err));
 
     return (
         <div>
-            {loadPage ? (
-
                 <div>
                     <div className="Home">
                         <Navbar/>
@@ -55,9 +53,11 @@ function Home() {
                             disabled={true}
                         />
                     </div>
-                    <div>
+                    {loadPage ? (
+
+                            <div>
                         <SimpleGridList tileData={state.first}/>
-                    </div>
+                    </div>) : null}
                     <div>
                         <InputBase
                             style={{
@@ -73,13 +73,14 @@ function Home() {
                             disabled={true}
                         />
                     </div>
-                    <div>
+                    {loadPage ? (
+                        <div>
                         <SimpleGridList tileData={state.second}/>
-                    </div>
+                    </div>) : null}
                     <div>
                         <Footer/>
                     </div>
-                </div>) : null}
+                </div>
 
         </div>
 

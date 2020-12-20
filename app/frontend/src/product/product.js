@@ -50,14 +50,7 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
     },
 }));
-const styles = {
 
-    largeIcon: {
-        width: 60,
-        height: 60,
-    },
-
-};
 
 export default function ComplexGrid() {
     const classes = useStyles();
@@ -65,9 +58,12 @@ export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
-    let [countclickamount, setcount] = useState(0);
+    let [countclickamount, setcount] = useState(1);
     let product = useLocation();
-    let random = [{author: "a1", text: "comment1",},{author: "a2", text: "comment2",},{author: "a3", text: "comment3",}];
+    let random = [{author: "a1", text: "comment1",}, {author: "a2", text: "comment2",}, {
+        author: "a3",
+        text: "comment3",
+    }];
 
     const [state, setState] = useState({
         name: '',
@@ -83,6 +79,8 @@ export default function ComplexGrid() {
         .then(json => {
             state.name = json.name;
             state.price = json.price;
+            state.brand = json.brand;
+            state.discount = json.discount;
             state.description = json.description;
             state.imgsrc = json.image_url;
             state.rating = json.total_rating_score;
@@ -100,7 +98,7 @@ export default function ComplexGrid() {
     };
 
     const handlecountminus = () => {
-        if (countclickamount > 0) {
+        if (countclickamount > 1) {
             countclickamount = countclickamount - 1;
         }
         setcount(countclickamount);
@@ -127,139 +125,180 @@ export default function ComplexGrid() {
     return (
 
         <div>
-            {loadPage ? (
 
-
-                <div className={classes.root}>
-                    <div>
-                        <div className="Home">
-                            <Navbar/>
-                        </div>
-                        <div>
-                            <CategoryTab/>
-                        </div>
+            <div className={classes.root}>
+                <div>
+                    <div className="Home">
+                        <Navbar/>
                     </div>
+                    <div>
+                        <CategoryTab/>
+                    </div>
+                </div>
+            </div>
 
-                    <Paper justifyContent={'center'} className={classes.paper}>
-                        <Grid container>
-                            <Grid>
+                {loadPage ? (
+                    <div>
+
+                        <Paper justifyContent={'center'} className={classes.paper}>
+                            <Grid container>
                                 <Grid>
-                                    <ButtonBase className={classes.image}>
-                                        <img className={classes.img} alt="complex" src={state.imgsrc}/>
-                                    </ButtonBase>
+                                    <Grid>
+                                        <ButtonBase className={classes.image}>
+                                            <img className={classes.img} alt="complex" src={state.imgsrc}/>
+                                        </ButtonBase>
 
+                                    </Grid>
+
+                                    <Grid container alignItems={"center"} justify="center">
+                                        <Box component="fieldset" mb={3} borderColor="transparent">
+                                            <Typography component="legend"></Typography>
+                                            <Rating style={{marginLeft: "2rem", justify: 'center'}}
+                                            name="read-only" value={value} readOnly />
+                                        </Box>
+
+                                    </Grid>
                                 </Grid>
 
-                                <Grid container alignItems={"center"} justify="center">
-                                    <Box component="fieldset" mb={3} borderColor="transparent" >
-                                        <Typography component="legend"></Typography>
-                                        <Rating style={{marginLeft:"2rem",justify:'center'}}
+
+                                <Grid sm container>
+                                    <Grid>
+                                        <Grid style={{marginTop:"2rem"}}>
+                                            <Typography gutterBottom variant="subtitle1">
+                                                {state.name}
+                                            </Typography>
+                                            <Divider/>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
+                                                        gutterBottom>
+                                                Brand:
+                                            </Typography>
+                                            <Typography style={{marginBottom: "2rem", display: 'inline-block'}} variant="body2"
+                                                        color="textSecondary">
+                                                 {state.brand}
+                                            </Typography>
+                                            <Divider/>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
+                                                        gutterBottom>
+                                                Price:
+                                            </Typography>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
+                                                        variant="body2" color="textSecondary">
+                                                {state.price}
+                                            </Typography>
+                                            <Divider/>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
+                                                        gutterBottom>
+                                                Product Description:
+                                            </Typography>
+                                            <Typography style={{marginBottom: "2rem"}} variant="body2"
+                                                        color="textSecondary">
+                                                {state.description}
+                                            </Typography>
+                                            <Divider/>
+
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
+                                                        variant="body2"
+                                                        color="textSecondary">
+                                                SIZES
+                                            </Typography>
+                                            <Divider/>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
+                                                        variant="body2"
+                                                        color="textSecondary">
+                                                COLORS
+                                            </Typography>
+                                            <Divider/>
+                                            <IconButton style={{marginTop: "2rem"}}
+                                                        onClick={handlelistcount}>
+                                                {listclick ? <TurnedInIcon fontSize={"large"}/> :
+                                                    <TurnedInNotIcon fontSize={"large"}/>}
+                                            </IconButton>
+                                            <IconButton style={{marginTop: "2rem"}}
+                                                        onClick={handleclickheart}>
+                                                {heartclick ? <Favorite fontSize={"large"}/> :
+                                                    <FavoriteBorderIcon fontSize={"large"}/>}
+                                            </IconButton>
+
+                                        </Grid>
+                                        <Grid style={{marginBottom: "1rem", marginLeft: "20rem"}}>
+                                            <div>
+                                                <ButtonGroup style={{marginLeft: "9rem"}} variant="text" color="#FFFFFF" aria-label="text primary button group">
+                                                    <IconButton
+                                                        onClick={handlecountplus}>
+                                                        <AddIcon/>
+                                                    </IconButton>
+                                                    <Button size='small' id="outlined-basic" label="0" variant="outlined">
+                                                        {countclickamount}
+                                                    </Button>
+                                                    <IconButton
+                                                        onClick={handlecountminus}>
+                                                        <RemoveIcon/>
+                                                    </IconButton>
+                                                </ButtonGroup>
+                                                <Button size="large" variant="contained" style={{
+                                                    marginLeft: "9.1rem",
+                                                    marginTop: "1rem",
+                                                    marginBottom: "1rem",
+                                                    cursor: 'pointer',
+                                                    background: '#0B3954',
+                                                    color: 'white'
+                                                }}>
+                                                    PURCHASE
+                                                </Button>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                        <Paper justifyContent={'center'} className={classes.paper}>
+                            <Grid >
+                                <Box component="fieldset" mb={3} borderColor="transparent" >
+                                    <div>
+                                        <Typography >Please give a rating</Typography>
+                                        <Rating
                                             name="simple-controlled"
                                             value={value}
                                             onChange={(event, newValue) => {
                                                 setValue(newValue);
                                             }}
                                         />
-                                    </Box>
 
-                                </Grid>
+                                    </div>
+                                </Box>
+
                             </Grid>
+                            <div>
+                                <TextField style={{"height": "100%", "width": "100%"}}
+                                           id="outlined-multiline-static"
+                                           label="Please write a comment"
+                                           multiline
+                                           rows={4}
+                                           defaultValue=""
+                                           variant="outlined"
+                                />
+                            </div>
 
+                            <Button size="large" variant="contained" style={{
+                                marginRight: "9.1rem",
+                                marginTop: "1rem",
+                                marginBottom: "1rem",
+                                cursor: 'pointer',
+                                background: '#0B3954',
+                                color: 'white'
+                            }}>
+                                ADD REVIEW
+                            </Button>
 
-                            <Grid sm container>
-                                <Grid>
-                                    <Grid>
-                                        <Typography gutterBottom variant="subtitle1">
-                                            {state.name}
-                                        </Typography>
-                                        <Divider/>
-                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
-                                                    gutterBottom>
-                                            {state.price}
-                                        </Typography>
-                                        <Divider/>
-                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
-                                                    color="textSecondary">
-                                            DESCRIPTION: {state.description}
-                                        </Typography>
-
-                                        <Divider/>
-                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
-                                                    color="textSecondary">
-                                            SIZES
-                                        </Typography>
-                                        <Divider/>
-                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
-                                                    color="textSecondary">
-                                            COLORS
-                                        </Typography>
-                                        <Divider/>
-                                        <IconButton style={{marginTop: "2rem"}}
-                                                    onClick={handlelistcount}>
-                                            {listclick ? <TurnedInIcon fontSize={"large"}/> :
-                                                <TurnedInNotIcon fontSize={"large"}/>}
-                                        </IconButton>
-                                        <IconButton style={{marginTop: "2rem"}}
-                                                    onClick={handleclickheart}>
-                                            {heartclick ? <Favorite fontSize={"large"}/> :
-                                                <FavoriteBorderIcon fontSize={"large"}/>}
-                                        </IconButton>
-
-                                    </Grid>
-                                    <Grid style={{marginBottom: "1rem", marginLeft: "20rem"}}>
-
-
-                                        <Button size="large" variant="contained" style={{
-                                            marginLeft: "9.1rem",
-                                            marginTop: "1rem",
-                                            marginBottom: "1rem",
-                                            cursor: 'pointer'
-                                        }}>
-                                            PURCHASE
-                                        </Button>
-
-                                        <div>
-                                            <ButtonGroup style={{marginLeft: "9rem"}} variant="text" color="#FFFFFF"
-                                                         aria-label="text primary button group">
-
-                                                <IconButton
-                                                    onClick={handlecountplus}>
-                                                    <AddIcon/>
-                                                </IconButton>
-                                                <Button size='small' id="outlined-basic" label="0" variant="outlined">
-                                                    {countclickamount}
-                                                </Button>
-                                                <IconButton
-                                                    onClick={handlecountminus}>
-                                                    <RemoveIcon/>
-                                                </IconButton>
-                                            </ButtonGroup>
-                                        </div>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                    <Paper justifyContent={'center'} className={classes.paper}>
+                        </Paper>
+                        <Paper justifyContent={'center'} className={classes.paper}>
+                            COMMENT SECTION ({state.comments.length})
+                            <CommentList commentList={state.comments}/>
+                        </Paper>
                         <div>
-                            <TextField style={{"height": "100%", "width": "100%"}}
-                                       id="outlined-multiline-static"
-                                       label="Please write a comment"
-                                       multiline
-                                       rows={4}
-                                       defaultValue=""
-                                       variant="outlined"
-                            />
+                            <Footer/>
                         </div>
-                    </Paper>
-                    <Paper justifyContent={'center'} className={classes.paper}>
-                        COMMENT SECTION ({state.comments.length})
-                        <CommentList commentList={state.comments} />
-                    </Paper>
-                    <div>
-                        <Footer/>
-                    </div>
-                </div>) : null}
-        </div>
-    );
+                    </div>) : null}
+            </div>
+            );
 }
