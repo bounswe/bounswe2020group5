@@ -4,6 +4,7 @@ import com.example.bupazar.`interface`.RestApi
 import com.example.bupazar.model.LoginRequest
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.RegisterRequest
+import com.example.bupazar.model.Success
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,14 +25,14 @@ class RestApiService {
             }
         )
     }
-    fun userRegister(userData: RegisterRequest, onResult: (RegisterRequest?) -> Unit){
+    fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userRegister(userData).enqueue(
-            object : Callback<RegisterRequest> {
-                override fun onFailure(call: Call<RegisterRequest>, t: Throwable) {
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
                     onResult(null)
                 }
-                override fun onResponse( call: Call<RegisterRequest>, response: Response<RegisterRequest>) {
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val user = response.body()
                     onResult(user)
                 }
