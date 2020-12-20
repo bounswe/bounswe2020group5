@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import NoMatch from './common/NoMatch'
+import Home from "./home/Home";
+import Login from "./login/Login";
+import Signup from "./signup/Signup";
+import EmailVerification from "./signup/EmailVerification";
+import Profile from "./profile/Profile";
+import ChangePassword from "./profile/ChangePassword";
+import { Vendor } from "./signup/Vendor";
+import product from "./product/product";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { CssBaseline } from '@material-ui/core';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <CssBaseline />    
+      <div className="App">
+        <Switch>
+          <Route path="/" exact component={Home} />
+          {/* <Route path="/sample" render={routerProps => <Sample {...routerProps} sampleProp={"sample"}/>} /> */}
+          <Route path="/login" component={Login} />
+          <Route path="/signup" exact component={Signup} />
+          <Route path="/email-verification" exact component={EmailVerification} />
+          <Route path="/product" component={product} />
+          <Route path="/signup/vendor" component={Vendor} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/profile/changepassword" component={ChangePassword} />
+          <Route path='/home' render={() => <Redirect to= "/" />} />
+          <Route component={NoMatch} />
+        </Switch>
+      </div>
+    </React.Fragment>
   );
 }
 

@@ -1,8 +1,9 @@
-name: CI_backend
+
+name: CI_backend_in_master
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the backend branch
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ backend ]
   pull_request:
