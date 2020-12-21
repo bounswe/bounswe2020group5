@@ -23,7 +23,6 @@ import Rating from "@material-ui/lab/Rating";
 import {Link, useLocation} from "react-router-dom";
 import {serverUrl} from "../common/ServerUrl";
 import CommentList from "./CommentList";
-import validate from "../profile/Validate";
 import Checkbox from "@material-ui/core/Checkbox";
 
 
@@ -227,6 +226,15 @@ export default function ComplexGrid() {
                                                 {state.price}
                                             </Typography>
                                             <Divider/>
+                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
+                                                        gutterBottom>
+                                                Vendor:
+                                            </Typography>
+                                            <Typography style={{marginBottom: "2rem", display: 'inline-block'}} variant="body2"
+                                                        color="textSecondary">
+                                                {state.vendor}
+                                            </Typography>
+                                            <Divider/>
                                             <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
                                                         gutterBottom>
                                                 Product Description:
@@ -237,18 +245,6 @@ export default function ComplexGrid() {
                                             </Typography>
                                             <Divider/>
 
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
-                                                        variant="body2"
-                                                        color="textSecondary">
-                                                SIZES
-                                            </Typography>
-                                            <Divider/>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
-                                                        variant="body2"
-                                                        color="textSecondary">
-                                                COLORS
-                                            </Typography>
-                                            <Divider/>
                                             <IconButton style={{marginTop: "2rem"}}
                                                         onClick={handlelistcount}>
                                                 {listclick ? <TurnedInIcon fontSize={"large"}/> :
