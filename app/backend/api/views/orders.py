@@ -34,7 +34,7 @@ class CreditCardOptsViewSet(viewsets.GenericViewSet):
         credit_card.save()
         return Response(data={'success': 'Credit card is successfully added'}, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_CREATED: SuccessSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
     def delete(self, request):
         creditcard_id = request.data.get("creditcard_id")
