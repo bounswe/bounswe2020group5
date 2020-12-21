@@ -22,6 +22,7 @@ private const val ARG_PARAM2 = "param2"
 class MyAccountFragment : Fragment() {
     var userData : LoginResponse? = null
     lateinit var userNameTextView: TextView
+    lateinit var mailTextView: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +35,8 @@ class MyAccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userNameTextView = view.findViewById(R.id.accountPageUserNameTextView)
         userNameTextView.text = "${userData?.firstName} ${userData?.lastName}"
+        mailTextView = view.findViewById(R.id.accountPageUserEmail)
+        mailTextView.text = "${userData?.userEmail}"
     }
 
 
