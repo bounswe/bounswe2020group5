@@ -12,7 +12,7 @@ class AddCreditCardSerializer(serializers.Serializer):
     card_owner = serializers.charField(max_length=250, required=True)
     card_number = serializers.charField(max_length=16, required=True)
     expiration_date = serializers.charField(max_length=5, required=True)
-    cvc_security_number = serializers.IntegerField(max_value=999, min_value=100, required=True)
+    cvc_security_number = serializers.IntegerField(required=True)
 
 class DeleteCreditCardSerializer(serializers.Serializer):
     creditcard_id = serializers.IntegerField(required=True)
