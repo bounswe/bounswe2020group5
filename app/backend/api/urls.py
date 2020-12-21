@@ -36,5 +36,6 @@ urlpatterns = [
     path('products/subcategory/', get_subcategory_products),
     path('products/filter/', filter_products),
     path('products/search/', search_products),
-    path('products/sort/', sort_products)
+    path('products/sort/', sort_products),
+    path('products/homepage/', get_homepage_products)
 ]

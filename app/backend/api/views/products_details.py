@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from ..serializers import ProductSerializer, CategoryProductsSeriazlier, SubCategoryProductsSeriazlier
+from ..serializers import HomePageRequestSerializer, HomePageResponseSerializer
 from ..models import Product, Vendor, Category, SubCategory, User
 from rest_framework import viewsets, status
 from drf_yasg.utils import swagger_auto_schema
@@ -73,5 +74,22 @@ def get_subcategory_products(request):
         products = Product.objects.filter(subcategory_id=subcategory.id)
         content = ProductSerializer(products, many=True).data
         return Response(data=content, status=status.HTTP_200_OK) 
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: HomePageResponseSerializer}, request_body=HomePageRequestSerializer)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def get_homepage_products(request):
+    serializer = HomePageRequestSerializer(data=request.data)
+    if serializer.is_valid():
+        number_of_products = serializer.validated_data['number_of_products']
+        response = {}
+        newest_arrivals = Product.objects.order_by('-date_added')[:number_of_products]
+        best_sellers = Product.objects.order_by('-number_of_sales')[:number_of_products]
+        response['newest_arrivals'] = ProductSerializer(newest_arrivals, many=True).data
+        response['best_sellers'] = ProductSerializer(best_sellers, many=True).data
+
+        return Response(data=response, status=status.HTTP_200_OK)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -106,3 +106,10 @@ class SortProductSerializer(serializers.Serializer):
     product_ids = serializers.ListField(child = serializers.IntegerField()) 
     sort_by = serializers.CharField(max_length=250, required=True)
     order = serializers.CharField(max_length=250, required=True)
+
+class HomePageRequestSerializer(serializers.Serializer):
+    number_of_products = serializers.IntegerField()
+
+class HomePageResponseSerializer(serializers.Serializer):
+    newest_arrivals = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
+    best_sellers = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
