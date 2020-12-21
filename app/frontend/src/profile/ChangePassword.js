@@ -45,7 +45,6 @@ export default function ChangePassword() {
     const [loadPage, setLoadPage] = React.useState(false);
     let history = useHistory();
 
-
     const [state, setState] = useState({
         current_pw: '',
         new_pw: '',
@@ -81,7 +80,6 @@ export default function ChangePassword() {
         const token = localStorage.getItem('token')
 
         if (check) {
-            const url = serverUrl + '/api/auth/password_change' //???????
             let data = {
                 current_password: state.current_pw,
                 new_password: state.new_pw,

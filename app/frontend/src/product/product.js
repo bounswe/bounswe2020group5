@@ -23,6 +23,8 @@ import Rating from "@material-ui/lab/Rating";
 import {Link, useLocation} from "react-router-dom";
 import {serverUrl} from "../common/ServerUrl";
 import CommentList from "./CommentList";
+import validate from "../profile/Validate";
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,8 +56,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ComplexGrid() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-    const [loadPage, setLoadPage] = React.useState(false);
+    const [loadPage1, setLoadPage1] = React.useState(false);
+    const [loadPage2, setLoadPage2] = React.useState(false);
+    const [checked, setChecked] = React.useState(false);
+    const [stars, setStars] = React.useState(0);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
@@ -70,8 +74,10 @@ export default function ComplexGrid() {
         price: '',
         imgsrc: '',
         rating: '',
+        temp_comment: '',
         comments: [],
     });
+
 
     fetch(serverUrl + 'api/products/' + product.id, {
         method: 'GET',
@@ -80,13 +86,23 @@ export default function ComplexGrid() {
             state.name = json.name;
             state.price = json.price;
             state.brand = json.brand;
+            state.vendor = json.vendor;
             state.discount = json.discount;
             state.description = json.description;
             state.imgsrc = json.image_url;
-            state.rating = json.total_rating_score;
-            setValue(state.rating);
-            state.comments = random;   //commentler yok diye simdilik böyle. normalde json.comments
-            setLoadPage(true)
+            state.rating = json.rating;
+            setLoadPage1(true);
+        })
+        .catch(err => console.log(err));
+
+    fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+        method: 'POST',
+        body: JSON.stringify({ product_id : product.id }),
+        headers: {'Content-Type': 'application/json'},
+    }).then(res => res.json())
+        .then(json => {
+            state.comments = json;
+            setLoadPage2(true);
         })
         .catch(err => console.log(err));
 
@@ -121,11 +137,40 @@ export default function ComplexGrid() {
         }
     };
 
+    function onChange(event) {
+        var mutableState = state
+        mutableState[event.target.id] = event.target.value
+        setState(mutableState)
+    }
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
+
+    function handleOnButtonClick() {
+        const token = localStorage.getItem('token')
+
+        let data = {
+            product_id: product.id,
+            comment_text: state.temp_comment,
+            is_anonymous: checked,
+            rating_score: stars,
+        }
+        fetch(serverUrl + 'api/products/opts/add_comment/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(res => res.json())
+            .then(json => {
+                const success = json.success
+                if (success) {
+                    alert('Your review is posted!')
+                } else alert('Unsuccesful review!')})
+            .catch(err => console.log(err));
+    }
 
     return (
-
         <div>
-
             <div className={classes.root}>
                 <div>
                     <div className="Home">
@@ -137,31 +182,27 @@ export default function ComplexGrid() {
                 </div>
             </div>
 
-                {loadPage ? (
+                {loadPage1 && loadPage2  ? (
                     <div>
 
                         <Paper justifyContent={'center'} className={classes.paper}>
-                            <Grid container>
+                            <Grid container >
                                 <Grid>
                                     <Grid>
                                         <ButtonBase className={classes.image}>
                                             <img className={classes.img} alt="complex" src={state.imgsrc}/>
                                         </ButtonBase>
-
                                     </Grid>
-
                                     <Grid container alignItems={"center"} justify="center">
                                         <Box component="fieldset" mb={3} borderColor="transparent">
-                                            <Typography component="legend"></Typography>
                                             <Rating style={{marginLeft: "2rem", justify: 'center'}}
-                                            name="read-only" value={value} readOnly />
+                                            name="read-only" value={state.rating} precision={0.1} readOnly />
                                         </Box>
-
                                     </Grid>
                                 </Grid>
 
 
-                                <Grid sm container>
+                                <Grid sm container style={{marginLeft: "2rem"}}>
                                     <Grid>
                                         <Grid style={{marginTop:"2rem"}}>
                                             <Typography gutterBottom variant="subtitle1">
@@ -255,12 +296,13 @@ export default function ComplexGrid() {
                             <Grid >
                                 <Box component="fieldset" mb={3} borderColor="transparent" >
                                     <div>
-                                        <Typography >Please give a rating</Typography>
+                                        <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please give a rating</Typography>
                                         <Rating
-                                            name="simple-controlled"
-                                            value={value}
+                                            id="temp_rating"
+                                            name="temp_rating"
+                                            value={stars}
                                             onChange={(event, newValue) => {
-                                                setValue(newValue);
+                                                setStars(newValue);
                                             }}
                                         />
 
@@ -270,27 +312,35 @@ export default function ComplexGrid() {
                             </Grid>
                             <div>
                                 <TextField style={{"height": "100%", "width": "100%"}}
-                                           id="outlined-multiline-static"
+                                           id="temp_comment"
                                            label="Please write a comment"
                                            multiline
                                            rows={4}
                                            defaultValue=""
                                            variant="outlined"
+                                           onChange={onChange}
                                 />
                             </div>
-
                             <Button size="large" variant="contained" style={{
-                                marginRight: "9.1rem",
                                 marginTop: "1rem",
                                 marginBottom: "1rem",
                                 cursor: 'pointer',
                                 background: '#0B3954',
                                 color: 'white'
-                            }}>
+                            }} onClick={handleOnButtonClick}>
                                 ADD REVIEW
                             </Button>
+                            <Checkbox
+                                id="checked"
+                                checked={checked}
+                                color="primary"
+                                onChange={handleChange}
+                                inputProps={{ 'aria-label': 'primary checkbox'}}
+                            />
+                            <Typography style={{display: 'inline-block'}}  >Review as anonymous</Typography>
 
                         </Paper>
+
                         <Paper justifyContent={'center'} className={classes.paper}>
                             COMMENT SECTION ({state.comments.length})
                             <CommentList commentList={state.comments}/>

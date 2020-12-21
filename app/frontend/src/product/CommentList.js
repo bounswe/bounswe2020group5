@@ -39,10 +39,10 @@ export const CommentList = ({commentList}) =>  {
 
                         <ListItem key={index}>
                             <div>
-                            <ListItemText primary={comment.author+": "} className={classes.author} />
+                            <ListItemText primary={comment.customer+": "} className={classes.author} />
                             </div>
                             <div>
-                            <ListItemText primary={comment.text} className={classes.text} />
+                            <ListItemText primary={comment.comment_text} className={classes.text} />
                             </div>
                         </ListItem>
                         ))}
