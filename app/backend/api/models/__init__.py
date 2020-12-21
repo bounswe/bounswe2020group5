@@ -8,3 +8,4 @@ from .products import ProductList
 from .products import Comment
 from .products import SubCategory
 from .temp_users import TempUser
+from .orders import CreditCard
