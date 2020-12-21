@@ -1,6 +1,8 @@
 package com.example.bupazar.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class LoginResponse(
@@ -15,4 +17,4 @@ data class LoginResponse(
     @SerializedName("is_staff") val isStaff: Boolean?,
     @SerializedName("address") val address: String?,
     @SerializedName("auth_token") val authToken: String?,
-)
+) : Serializable
