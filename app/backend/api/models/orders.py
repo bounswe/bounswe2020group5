@@ -7,4 +7,4 @@ class CreditCard(models.Model):
     card_owner = models.CharField(max_length=250)
     card_number = models.CharField(max_length=16)
     expiration_date = models.CharField(max_length=5)
-    cvc_security_number = models.IntegerField(max_value=999, min_value=100)
+    cvc_security_number = models.IntegerField()
