@@ -25,3 +25,4 @@ from .products import CategoryProductsSeriazlier
 from .products import SubCategoryProductsSeriazlier
 from .products import FilterProductSerializer
 from .products import ProductSearchSerializer
+from .products import SortProductSerializer

@@ -96,9 +96,13 @@ class SubCategoryProductsSeriazlier(serializers.Serializer):
     subcategory_name = serializers.CharField(max_length=250, required=True)
     
 class FilterProductSerializer(serializers.Serializer):
-    product_ids = serializers.CharField(max_length=250, required=True)
-    filter_data = serializers.CharField(max_length=250, required=True)
+    product_ids = serializers.ListField(child = serializers.IntegerField()) 
+    filter_data = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
 
 class ProductSearchSerializer(serializers.Serializer):
     query = serializers.CharField(max_length=250, required=True)
-    
+
+class SortProductSerializer(serializers.Serializer):
+    product_ids = serializers.ListField(child = serializers.IntegerField()) 
+    sort_by = serializers.CharField(max_length=250, required=True)
+    order = serializers.CharField(max_length=250, required=True)
