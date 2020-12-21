@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.model.Product
@@ -38,7 +39,7 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val products = createProducts()
         rvProducts.adapter = this.context?.let { ProductAdapter(it, products) }
-        rvProducts.layoutManager = LinearLayoutManager(this.context)
+        rvProducts.layoutManager = GridLayoutManager(this.context, 2)
     }
 
     private fun createProducts(): List<Product> {
@@ -59,7 +60,7 @@ class HomepageFragment : Fragment() {
             "$999.99",
             "$999.99",
             "$5.99")
-        for (i in 0..7) products.add(Product(name = name.get(i), description = descs.get(i), productNo = i))
+        for (i in 0..7) products.add(Product(name = name.get(i), price = descs.get(i), productNo = i))
         return products
     }
 

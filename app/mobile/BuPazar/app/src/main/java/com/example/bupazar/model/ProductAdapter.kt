@@ -28,7 +28,7 @@ class ProductAdapter(private val context: Context, private val products: List<Pr
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(product: Product) {
             itemView.product_name.text = product.name
-            itemView.product_description.text = product.description
+            itemView.product_price.text = product.price
             Glide.with(context).load(product.imageUrl).into(itemView.ivProduct)
         }
     }
