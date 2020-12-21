@@ -9,15 +9,17 @@ from django.db.models import Max
 from nltk.stem import PorterStemmer
 from django.db.models import Q
 import operator
+from datamuse import datamuse
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def search_products(request):
-    products = Product.objects.none()
-    products_m = Product.objects.none()
-    dic = request.data
-    query = dic['query']
+    products = []
+
+    serializer = ProductSearchSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    query = serializer.validated_data['query']
     if not query:
         return Response(data={'error': 'Query is not valid'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -27,18 +29,43 @@ def search_products(request):
     
     Q_strict = Q()
     for index in range(len(query_list)):
-        Q_strict &= Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_product = Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_vendor = Q(vendor__user__username__icontains=query_list[index])
+        Q_strict &= Q_product | Q_vendor
 
     if bool(Q_strict):
-        products = Product.objects.filter(Q_strict)
+        products_strict = Product.objects.filter(Q_strict)
+        for product in products_strict:
+            if product not in products:
+                products.append(product)
 
     Q_soft = Q()
     for index in range(len(query_list)):
-        Q_soft |= Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_product = Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_category = Q(subcategory__name__icontains=query_list[index]) | Q(subcategory__category__name__icontains=query_list[index])
+        Q_vendor = Q(vendor__user__username__icontains=query_list[index])
+        Q_soft |= Q_product | Q_category | Q_vendor
 
     if bool(Q_soft):
-        products_m = Product.objects.filter(Q_soft)
-        products |= products_m
+        products_soft = Product.objects.filter(Q_soft)
+        for product in products_soft:
+            if product not in products:
+                products.append(product)
+
+    datamuse_api = api = datamuse.Datamuse()
+    keyword_list = datamuse_api.words(ml=query, max=5)
+    Q_datamuse = Q()
+    for keyword in keyword_list:
+        word = keyword['word']
+        Q_product = Q(name__icontains=word) | Q(description__icontains=word) | Q(subcategory__name__icontains=word) | Q(subcategory__category__name__icontains=word)
+        Q_vendor = Q(vendor__user__username__icontains=word)
+        Q_datamuse |= Q_product | Q_vendor
+    
+    if bool(Q_datamuse):
+        products_datamuse = Product.objects.filter(Q_datamuse)
+        for product in products_datamuse:
+            if product not in products:
+                products.append(product)
 
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
