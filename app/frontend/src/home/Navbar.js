@@ -20,7 +20,8 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
-// *snip*
+
+import { navigate } from "@reach/router"
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -117,6 +118,11 @@ export default function Navbar() {
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [value, setValue] = React.useState()
+
+
+
+
 
  // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -303,7 +309,18 @@ export default function Navbar() {
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                onChange={event=>{
+                  setValue(event.target.value)
+                }}
                 inputProps={{ 'aria-label': 'search' }}
+                onKeyPress={(ev) => {
+                  console.log(`Pressed keyCode ${ev.key}`);
+                  if (ev.key === 'Enter') {
+                    localStorage.setItem('searchkey',value)
+                    window.location.replace('/search')
+                    
+                  }
+                }}
             />
           </div>
           {isLogged ? (

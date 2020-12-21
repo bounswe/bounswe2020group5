@@ -5,8 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
-import {tileData} from "../components/tileData";
-import {tileData2} from "../components/tileData2";
 import Footer from "../components/Footer";
 import gridlistforsearch, {TitlebarGridList} from "../components/gridlistforsearch";
 import CheckboxListSecondary from "../components/filterlists";
@@ -34,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         width:200,
         marginLeft:1000,
+    },
+
+    helperText:{
+    color:'red'
     },
 
     float:{
@@ -78,17 +80,55 @@ const styles = {
 export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
     let [statepro, setStatepro] = React.useState("");
+    let [selectbrand, setselectbrand] = React.useState([]);
+    let [selectvendor, setselectvendor] = React.useState([]);
+    let [selectid,setselectid]=React.useState([]);
+    let [branddata,setbranddata]=React.useState(true);
+
+
+
+    let filledids;
+    let filledidproducts;
+    let filledbrand;
+    let filledbrandlist;
+    let uniquebrand=new Set();
+    let filledvendor;
+    let filledvendorlist;
+    let uniquevendor=new Set();
     useEffect(() => {
 
+        let searchproductdata;
 
-        fetch(serverUrl + 'api/products', {
-            method: 'GET',
+
+        searchproductdata = {
+            "query": localStorage.getItem('searchkey'),
+        }
+        fetch(serverUrl + 'api/products/search/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(searchproductdata),
+
         }).then(res => res.json())
             .then(json => {
                 setStatepro ( json);
 
                 setLoadPage(true);
-                console.log(statepro)
+                filledids = new Array(statepro.length);
+                filledidproducts = json.map((product) => (product.id));
+                setselectid(filledidproducts)
+                filledbrand=new Array(statepro.length);
+                filledbrandlist=json.map((product) => (product.brand));
+                filledbrandlist.forEach(b => uniquebrand.add(b));
+                filledbrandlist=Array.from(uniquebrand);
+                setselectbrand(filledbrandlist);
+
+                filledvendor=new Array(statepro.length);
+                filledvendorlist=json.map((product) => (product.vendor));
+                filledvendorlist.forEach(v => uniquevendor.add(v));
+                filledvendorlist=Array.from(uniquevendor);
+                setselectvendor(filledvendorlist);
+
+
             })
             .catch(err => console.log(err));
 
@@ -101,8 +141,11 @@ export default function ComplexGrid() {
         let datavendor;
         let error;
         datavendor = {
-            "filter_by": "vendor",
-            "data": "vendor.test",
+            "product_ids": filledidproducts,
+            "filter_data":{
+                "filter_by":"vendor",
+                "data":["vendor.test"]
+            },
         }
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -232,10 +275,27 @@ export default function ComplexGrid() {
     };
 
     const brandfilterclick = () => {
+        let error;
         let databrand;
+        var brandkeys;
+        brandkeys=localStorage.getItem('brandlist');
+        console.log(brandkeys)
+        console.log(brandkeys.length)
+
+        if (brandkeys.length==2){
+            setbranddata(false);
+        }else{
+            setbranddata(true);
+        }
+        var brand=JSON.parse(brandkeys);
+
         databrand = {
-            "filter_by": "brand",
-            "data": "MSI",
+            "product_ids": selectid,
+            "filter_data":[{
+                "filter_by":"brand",
+                "data":brand,
+            },
+            ]
         }
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -243,10 +303,14 @@ export default function ComplexGrid() {
             body: JSON.stringify(databrand)
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
-                console.log('jjjj')
-
-               setStatepro(json)
+                error=json.error
+                if(error=='No products found'){
+               setStatepro([])
+                }else{
+                    if(brand.length!=0) {
+                        setStatepro(json)
+                    }
+                }
                 setLoadPage(true);
 
             })
@@ -270,8 +334,6 @@ export default function ComplexGrid() {
         });
     };
 
-    var brandlist=['a', 'b', 'c', 'd', 'e', 'f'];
-    var vendorlist=['a', 'b', 'c', 'd', 'e', 'f'];
 
     const [starvalue, starsetValue] = React.useState(0);
     const resetstar = (event) => {
@@ -329,6 +391,10 @@ export default function ComplexGrid() {
                         id="filled-name"
                         label="Brand Name"
                         value={brandname}
+                        FormHelperTextProps={{
+                          className: classes.helperText
+                          }}
+                        helperText={branddata ? '':'Please select brands.'}
                         onChange={handleChangeBrand}
                         variant="outlined"
                         size="small"
@@ -339,7 +405,7 @@ export default function ComplexGrid() {
                     </IconButton>
                         </div>
 
-                    <CheckboxListSecondary list={brandlist} filterkey={brandname} isbrand={true}/>
+                        <CheckboxListSecondary listof={selectbrand} filterkey={brandname} isbrand={true}/>
                     </div>
                     <Divider/>
                     <div style={{marginTop:'1rem'}}>
@@ -356,7 +422,7 @@ export default function ComplexGrid() {
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
                     </div>
-                        <CheckboxListSecondary list={vendorlist} filterkey={vendorname} isbrand={false}/>
+                         <CheckboxListSecondary listof={selectvendor} filterkey={vendorname} isbrand={false}/>
                     </div>
                     <Divider style={{marginBottom:'1rem'}}/>
                     <Divider style={{marginBottom:'1rem'}}/>

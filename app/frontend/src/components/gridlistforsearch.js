@@ -33,14 +33,18 @@ const useStyles = makeStyles((theme) => ({
 
 export const TitlebarGridList= ({tileData}) =>  {
     const classes = useStyles();
+   // const [value, setValue] = React.useState(0);
+
 
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
             <GridList cellHeight={400}  className={classes.gridList}>
                 <GridListTile  cols={2} style={{ height: 'auto' }}>
-                    <ListSubheader style={{ marginBottom:'1rem'}}component="div"><Button>Search Result For : {''}</Button></ListSubheader>
+                    <ListSubheader style={{ marginBottom:'1rem'}}component="div"><Button>Search Result For :
+                        {localStorage.getItem('searchkey')}</Button></ListSubheader>
                 </GridListTile>
                 {tileData.map((tile) => (
+
                     <GridListTile key={tile.img} cols={tile.cols || 2/3} >
                         <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} />
 
@@ -51,7 +55,7 @@ export const TitlebarGridList= ({tileData}) =>  {
                             subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
                                 <br></br><br></br>BY: {tile.vendor}
                                 <br></br><br></br>
-                                <Rating name="size-small" defaultValue={tile.total_rating_score} size="small" /> </span>}
+                                <Rating name="size-small" value={tile.total_rating_score}   readOnly size="small" /> </span>}
 
 
                             actionIcon={

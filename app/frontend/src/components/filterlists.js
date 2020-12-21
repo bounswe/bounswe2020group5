@@ -33,10 +33,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const CheckboxListSecondary  = ({list,filterkey,isbrand}) => {
-    var list=['MSI', 'b', 'c', 'd', 'e', 'f'];
+export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
+
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
+    localStorage.setItem('brandlist',JSON.stringify([]))
+    localStorage.setItem('vendorlist',JSON.stringify([]))
 
 
     const handleToggle = (value) => () => {
@@ -50,9 +52,10 @@ export const CheckboxListSecondary  = ({list,filterkey,isbrand}) => {
         }
 
         setChecked(newChecked);
-        console.log(newChecked)
-        {isbrand ?  localStorage.setItem('brandlist', newChecked) :
-            localStorage.setItem('vendorlist', newChecked)}
+
+        {isbrand ?  localStorage.setItem('brandlist', JSON.stringify(newChecked)) :
+            localStorage.setItem('vendorlist', JSON.stringify(newChecked))}
+
 
 
     };
@@ -61,7 +64,7 @@ export const CheckboxListSecondary  = ({list,filterkey,isbrand}) => {
         return (
 
             <List  dense className={classes.list}>
-                {list.filter(list => list.includes(filterkey)).map((value) => {
+                {listof.filter(listof => listof.includes(filterkey)).map((value) => {
                     const labelId = `checkbox-list-secondary-label-${value}`;
 
                     return (
