@@ -69,7 +69,7 @@ class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Comment
-        fields = ('id', 'customer', 'product', 'comment_text', 'is_anonymous')
+        fields = ('id', 'customer', 'product', 'comment_text', 'rating_score', 'is_anonymous')
 
     def get_customer(self, obj):
         customer = User.objects.get(id=obj.customer_id)
