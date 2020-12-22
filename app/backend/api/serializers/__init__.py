@@ -18,6 +18,7 @@ from .products import DeleteProductListSerializer
 from .products import ProductListAddProductSerializer
 from .products import ProductListRemoveProductSerializer
 from .products import ResponseSerializer
+from .products import ProductListResponseSerializer
 from .products import CommentSerializer
 from .products import ProductAddCommentSerializer
 from .products import ProductAllCommentsSerializer

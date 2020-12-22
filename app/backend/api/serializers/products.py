@@ -55,7 +55,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductList
-        fields = ('name', 'user', 'products')
+        fields = ('id', 'name', 'user', 'products')
     
     def get_user(self, obj):
         user = User.objects.get(id=obj.user_id)
@@ -81,7 +81,11 @@ class ProductListRemoveProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
 
 class ResponseSerializer(serializers.Serializer):
-    ok = serializers.CharField(max_length=200)
+    ok = serializers.BooleanField()
+    message = serializers.CharField(max_length=250)
+
+class ProductListResponseSerializer(ResponseSerializer):
+    data = ProductListSerializer()
   
 #Comment Serializer
 class CommentSerializer(serializers.ModelSerializer):

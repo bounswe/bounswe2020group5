@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
-from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
+from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer, ProductListResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
@@ -140,7 +140,7 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         'my': EmptySerializer,
     }
 
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductListSerializer})
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductListSerializer(many=True)})
     @action(methods=['GET', ], detail=False, permission_classes=[IsAuthCustomer,])
     def my(self, request):
         user = Customer.objects.filter(user=request.user).first()
@@ -148,16 +148,20 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         content = ProductListSerializer(product_lists, many=True)
         return Response(data=content.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ResponseSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ProductListResponseSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def add(self, request):
         name = request.data.get("name")
-        user = Customer(user=request.user)
+        user = Customer.objects.filter(user=request.user).first()
+        existing_list = ProductList.objects.filter(user=user, name=name)
+        if existing_list:
+            return Response(data={'ok': False, 'message': "list with same name exists"}, status=status.HTTP_400_BAD_REQUEST)
         product_list = ProductList(name=name, user=user)
         product_list.save()
-        return Response(data={'ok': True}, status=status.HTTP_201_CREATED)
+        content = ProductListSerializer(product_list)
+        return Response(data={'ok': True, 'data': content.data, 'message': "created"}, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
+    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ProductListResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def delete(self, request):
         list_id = request.data.get("list_id")
@@ -167,45 +171,49 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
             product_list = None
 
         if product_list is None:
-            return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'ok': False, 'message': "bad request"}, status=status.HTTP_400_BAD_REQUEST)
         user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
-            return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(data={'ok': False, 'message': "auth error"}, status=status.HTTP_401_UNAUTHORIZED)
         product_list.delete()
-        return Response(data={'ok': True}, status=status.HTTP_200_OK)
+        return Response(data={'ok': True, 'data': {'id': list_id}, 'message': "removed"}, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
+    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ProductListResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def add_product(self, request):
         list_id = request.data.get("list_id")
         product_id = request.data.get("product_id")
-
+        
         try:
             product_list = ProductList.objects.get(id=list_id)
         except ProductList.DoesNotExist:
             product_list = None
 
         if product_list is None:
-            return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'ok': False, 'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
             product = None
 
-        if product_list is None or product is None:
-            return Response(data={'ok': False}, status=status.HTTP_400_BAD_REQUEST)
+        if product is None:
+            return Response(data={'ok': False, 'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
         user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
-            return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
-
+            return Response(data={'ok': False, 'message': 'auth error'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        message = "product added"
         if product not in product_list.products.all():
-            product_list.products.add(product)
+            product_list.products.add(product) 
+        else:
+            message = "product already in list"
+        
+        content = ProductListSerializer(product_list)
+        return Response(data={'ok': True, 'data': content.data, "message": message}, status=status.HTTP_200_OK)
 
-        return Response(data={'ok': True}, status=status.HTTP_200_OK)
-
-    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
+    @swagger_auto_schema(method='POST', responses={status.HTTP_200_OK: ProductListResponseSerializer, status.HTTP_401_UNAUTHORIZED: ResponseSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthCustomer, ])
     def remove_product(self, request):
         list_id = request.data.get("list_id")
@@ -225,8 +233,15 @@ class ProductListOptViewSet(viewsets.GenericViewSet):
         user = Customer.objects.filter(user=request.user).first()
         if user is None or user != product_list.user:
             return Response(data={'ok': False}, status=status.HTTP_401_UNAUTHORIZED)
-        product_list.products.remove(product)
-        return Response(data={'ok': True}, status=status.HTTP_200_OK)
+        
+        message = 'product removed from list'
+        if product in product_list.products.all():
+            product_list.products.remove(product)
+        else:
+            message = 'product already not in list'
+
+        content = ProductListSerializer(product_list)
+        return Response(data={'ok': True, 'data': content.data, 'message': message }, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
