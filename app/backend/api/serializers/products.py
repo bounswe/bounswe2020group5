@@ -43,7 +43,7 @@ class DeleteProductSerializer(serializers.Serializer):
 class UpdateProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
     name = serializers.CharField(max_length=250, required=False)
-    price = price = serializers.FloatField(required=False)
+    price = serializers.FloatField(required=False)
     stock = serializers.IntegerField(required=False)
     description = serializers.CharField(max_length=500, required=False)
     discount = serializers.FloatField(required=False)
