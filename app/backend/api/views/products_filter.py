@@ -134,8 +134,8 @@ def filter_products(request):
 
         elif filter_by == 'discount_rate':
             lower_limit = data
-            upper_limit = Products.aggregate(Max('discount'))
-            P_discount_rate = P_discount_rate.objects.filter(discount__range=(lower_limit, upper_limit['discount__max']))
+            upper_limit = P_discount_rate.aggregate(Max('discount'))
+            P_discount_rate = P_discount_rate.filter(discount__range=(lower_limit, upper_limit['discount__max']))
 
     Products = set(P_brand) & set(P_vendor) & set(P_price_range) & set(P_rating) & set(P_discount_rate)
     content = ProductSerializer(Products, many=True)
