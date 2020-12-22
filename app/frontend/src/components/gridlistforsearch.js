@@ -41,7 +41,7 @@ export const TitlebarGridList= ({tileData}) =>  {
             <GridList cellHeight={400}  className={classes.gridList}>
                 <GridListTile  cols={2} style={{ height: 'auto' }}>
                     <ListSubheader style={{ marginBottom:'1rem'}}component="div"><Button>Search Result For :
-                        {localStorage.getItem('searchkey')}</Button></ListSubheader>
+                        &nbsp; {localStorage.getItem('searchkey')}</Button></ListSubheader>
                 </GridListTile>
                 {tileData.map((tile) => (
 

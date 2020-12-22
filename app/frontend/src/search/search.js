@@ -84,8 +84,7 @@ export default function ComplexGrid() {
     let [selectvendor, setselectvendor] = React.useState([]);
     let [selectid,setselectid]=React.useState([]);
     let [branddata,setbranddata]=React.useState(true);
-
-
+    let [vendordata,setvendordata]=React.useState(true);
 
     let filledids;
     let filledidproducts;
@@ -95,6 +94,7 @@ export default function ComplexGrid() {
     let filledvendor;
     let filledvendorlist;
     let uniquevendor=new Set();
+
     useEffect(() => {
 
         let searchproductdata;
@@ -138,15 +138,26 @@ export default function ComplexGrid() {
     const classes = useStyles();
 
     const vendorfilterclick = () => {
-        let datavendor;
         let error;
-        datavendor = {
-            "product_ids": filledidproducts,
-            "filter_data":{
-                "filter_by":"vendor",
-                "data":["vendor.test"]
-            },
+        let datavendor;
+        var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
+
+        if (vendorkeys.length==0){
+            setvendordata(false);
+        }else{
+            setvendordata(true);
         }
+
+
+        datavendor = {
+            "product_ids": selectid,
+            "filter_data":[{
+                "filter_by":"vendor",
+                "data":vendorkeys,
+            },
+            ]
+        }
+
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -159,9 +170,12 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                 else{
-                    setStatepro(json)
+                    if(vendorkeys.length!=0) {
+                        setStatepro(json)
+                    }
                 }
                 setLoadPage(true);
+                sessionStorage.setItem('vendorlist',JSON.stringify([]))
 
             })
             .catch(err => {
@@ -174,12 +188,15 @@ export default function ComplexGrid() {
         let dataprice;
         let error;
         dataprice = {
-            "filter_by": "price_range",
-            "data": {
-                "lower_limit":priceleast,
-                "upper_limit":pricemost,
-
-            }
+            "product_ids": selectid,
+            "filter_data":[{
+                "filter_by":"price_range",
+                "data":{
+                    "lower_limit":priceleast,
+                    "upper_limit":pricemost,
+                }
+            },
+            ]
         }
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -190,7 +207,6 @@ export default function ComplexGrid() {
                 error=json.error
                 console.log(json.error)
                 console.log(json)
-                console.log('ooooooo')
 
                 if(error=='No products found'){
                     console.log('bbb')
@@ -212,8 +228,12 @@ export default function ComplexGrid() {
         let datastar;
         let error;
         datastar = {
-            "filter_by": "rating",
-            "data":starvalue,
+            "product_ids": selectid,
+            "filter_data":[{
+                "filter_by":"rating",
+                "data":starvalue,
+            },
+            ]
         }
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -243,8 +263,12 @@ export default function ComplexGrid() {
         let datadiscount;
         let error;
         datadiscount = {
-            "filter_by": "discount_rate",
-            "data":discountleast,
+            "product_ids": selectid,
+            "filter_data":[{
+                "filter_by":"discount_rate",
+                "data":discountleast,
+            },
+            ]
         }
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -258,8 +282,10 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                     else{
+                    console.log('aaaaaaaa')
                     setStatepro(json)
                 }
+                    console.log(statepro)
 
                 setLoadPage(true);
 
@@ -277,23 +303,21 @@ export default function ComplexGrid() {
     const brandfilterclick = () => {
         let error;
         let databrand;
-        var brandkeys;
-        brandkeys=localStorage.getItem('brandlist');
+        var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
         console.log(brandkeys)
-        console.log(brandkeys.length)
 
-        if (brandkeys.length==2){
+        if (brandkeys.length==0){
             setbranddata(false);
         }else{
             setbranddata(true);
         }
-        var brand=JSON.parse(brandkeys);
+
 
         databrand = {
             "product_ids": selectid,
             "filter_data":[{
                 "filter_by":"brand",
-                "data":brand,
+                "data":brandkeys,
             },
             ]
         }
@@ -307,9 +331,113 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                setStatepro([])
                 }else{
-                    if(brand.length!=0) {
+                    if(brandkeys.length!=0) {
                         setStatepro(json)
                     }
+                }
+                setLoadPage(true);
+                sessionStorage.setItem('brandlist',JSON.stringify([]))
+
+            })
+            .catch(err => {
+                alert('Some error has occurred')
+                console.log(err)
+            });
+
+    };
+
+    const Applyallfilter = () => {
+        let applyallvendor=true;
+        let applyallbrand=true;
+        let applyallprice=true;
+        let error;
+        let dataall;
+        let filterdata=[];
+        var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
+        console.log(brandkeys)
+
+        var vendorkeys=JSON.parse(localStorage.getItem('vendorlist'));
+
+        setvendordata(true);
+        setbranddata(true);
+
+        if(brandkeys.length==0){
+            applyallbrand=false
+            console.log('nnnnn')
+        }else{
+            applyallbrand=true
+        }
+        if(vendorkeys.length==0){
+            console.log('llll')
+            applyallvendor=false
+
+        }else{
+            applyallvendor=true
+        }
+
+        if(priceleast==pricemost){
+            console.log('kkkkk')
+            applyallprice=false
+        }else{
+            applyallprice=true
+        }
+
+
+        if(applyallbrand==true){
+            filterdata.push(    {
+                "filter_by":"brand",
+                "data":brandkeys,
+            })
+        }
+
+        if(applyallvendor==true){
+            console.log('mmmm')
+            filterdata.push(    {
+                "filter_by":"vendor",
+                "data":vendorkeys,
+            })
+        }
+
+        if(applyallprice==true){
+            filterdata.push(    {
+                "filter_by":"price_range",
+                "data":{
+                    "lower_limit":priceleast,
+                    "upper_limit":pricemost,
+                },
+            })
+        }
+
+
+        filterdata.push( {
+            "filter_by":"rating",
+            "data":starvalue,
+        })
+
+        filterdata.push({
+            "filter_by":"discount_rate",
+            "data":discountleast,
+            })
+
+        console.log(filterdata)
+
+        dataall = {
+            "product_ids": selectid,
+            "filter_data":filterdata,
+        }
+        fetch(serverUrl + 'api/products/filter/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(dataall)
+        }).then(res => res.json())
+            .then(json => {
+                error=json.error
+                if(error=='No products found'){
+                    setStatepro([])
+                }else{
+
+                    setStatepro(json)
+
                 }
                 setLoadPage(true);
 
@@ -320,6 +448,7 @@ export default function ComplexGrid() {
             });
 
     };
+
 
     const [state, setState] = React.useState({
         sort: '',
@@ -380,8 +509,8 @@ export default function ComplexGrid() {
                 container spacing={2}>
                 <Grid  item style={{marginTop: '2rem'}} xs={12} sm={2}>
 
-                    <Button style={{marginLeft:'3rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
-                        APPLY ALL
+                    <Button onClick={Applyallfilter} style={{marginLeft:'1.2rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
+                        APPLY ALL SELECTED
                     </Button>
 
                     <div>
@@ -414,6 +543,10 @@ export default function ComplexGrid() {
                             id="filled-name"
                             label="Vendor Name"
                             value={vendorname}
+                            FormHelperTextProps={{
+                               className: classes.helperText
+                               }}
+                            helperText={vendordata ? '':'Please select vendors.'}
                             onChange={handleChangeVendor}
                             variant="outlined"
                             size="small"

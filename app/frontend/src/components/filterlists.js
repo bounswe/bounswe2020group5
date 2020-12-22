@@ -37,8 +37,6 @@ export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
 
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
-    localStorage.setItem('brandlist',JSON.stringify([]))
-    localStorage.setItem('vendorlist',JSON.stringify([]))
 
 
     const handleToggle = (value) => () => {
@@ -52,10 +50,12 @@ export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
         }
 
         setChecked(newChecked);
+        console.log(newChecked)
 
-        {isbrand ?  localStorage.setItem('brandlist', JSON.stringify(newChecked)) :
-            localStorage.setItem('vendorlist', JSON.stringify(newChecked))}
+        {isbrand ?  sessionStorage.setItem('brandlist', JSON.stringify(newChecked)) :
+            sessionStorage.setItem('vendorlist', JSON.stringify(newChecked))}
 
+        console.log(sessionStorage.getItem('brandlist'))
 
 
     };
