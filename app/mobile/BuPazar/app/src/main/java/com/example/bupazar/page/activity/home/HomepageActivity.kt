@@ -1,14 +1,9 @@
 package com.example.bupazar.page.activity.home
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
-import com.example.bupazar.model.Product
-import com.example.bupazar.model.ProductAdapter
-import com.example.bupazar.page.activity.login.LoginActivity
 import com.example.bupazar.page.fragment.*
 import kotlinx.android.synthetic.main.homepage_activity.*
 

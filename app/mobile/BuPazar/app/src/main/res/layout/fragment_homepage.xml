@@ -6,39 +6,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".page.fragment.HomepageFragment">
 
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/bupazar_logo"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/topBar"
+        android:background="@drawable/rectangle_border"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/bupazar_logo"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
+
+        <SearchView
+            android:id="@+id/searchBarSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="26dp"
+            android:layout_toEndOf="@id/logoImageView"
+            android:background="@drawable/background"
+            android:fadeScrollbars="false"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search for a product" />
+
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="108dp"
-        android:layout_below="@id/logoImageView"
+        android:layout_below="@id/topBar"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/homepage_banner"/>
-
-    <SearchView
-        android:id="@+id/searchBarSearchView"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="34dp"
-        android:layout_toEndOf="@id/logoImageView"
-        android:background="@drawable/background"
-        android:fadeScrollbars="false"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search for a product" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"

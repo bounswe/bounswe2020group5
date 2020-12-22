@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductAdapter(private val context: Context, private val products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(private val context: Context, private val products: Array<ProductDetails>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false)
@@ -26,9 +26,9 @@ class ProductAdapter(private val context: Context, private val products: List<Pr
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(product: Product) {
+        fun bind(product: ProductDetails) {
             itemView.product_name.text = product.name
-            itemView.product_price.text = product.price
+            itemView.product_price.text = "$" + "%.2f".format(product.price)
             Glide.with(context).load(product.imageUrl).into(itemView.ivProduct)
         }
     }
