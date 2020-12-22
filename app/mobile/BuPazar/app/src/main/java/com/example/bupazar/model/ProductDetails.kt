@@ -11,4 +11,7 @@ data class ProductDetails (
     @SerializedName("category") val category: String?,
     @SerializedName("brand") val brand: String?,
     @SerializedName("vendor") val vendor: String?,
+    @SerializedName("stock") val stock: Long?,
+    @SerializedName("number_of_sales") val numberOfSales: Long?,
+    @SerializedName("rating") val rating: Number?
 )

@@ -23,6 +23,21 @@
     <string name="sports_info_placeholder">Here is some news</string>
     <string name="empty_screen">We do not have anything\nhere right now. Please Retry</string>
     <string name="btn_retry">Retry</string>
+    <string name="categories">Categories</string>
+    <string name="fashion">Fashion</string>
+    <string name="electronics">Electronics</string>
+    <string name="personal_care">Personal Care</string>
+    <string name="home_amp_kitchen"><![CDATA[Home & Kitchen]]></string>
+    <string name="sports_outdoors"><![CDATA[Sports & Outdoors]]></string>
+    <string name="hobbie_amp_books"><![CDATA[Hobbie & Books]]></string>
+    <string name="phone">Cell Phones</string>
+    <string name="computer">Computers</string>
+    <string name="headphones">Headphones</string>
+    <string name="cameras">Cameras</string>
+    <string name="television_amp_video"><![CDATA[Television & Video]]></string>
+    <string name="gps_navigation"><![CDATA[GPS & Navigation]]></string>
+    <string name="car_vehicle_electronics"><![CDATA[Car & Vehicle Electronics]]></string>
+    <string name="videogame_consoles_accessories"><![CDATA[Video Game Consoles]]></string>
     <string name="product_name_const">product name</string>
 
 
