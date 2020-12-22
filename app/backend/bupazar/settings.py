@@ -9,9 +9,23 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-from db_config import HOST
 from pathlib import Path
-from aws_s3_config import *
+import json
+shared_memory = {}
+with open("shared_memory.json", "r") as outfile: 
+    shared_memory = json.load(outfile)
+
+HOST = str(shared_memory["HOST"])
+
+
+ACCESS_KEY_ID = str(shared_memory["ACCESS_KEY_ID"])
+SECRET_ACCESS_KEY = str(shared_memory["SECRET_ACCESS_KEY"])
+STORAGE_BUCKET_NAME = str(shared_memory["STORAGE_BUCKET_NAME"])
+
+
+PORT = int(shared_memory["PORT"])
+EMAIL = str(shared_memory["EMAIL"])
+EMAIL_PASSWORD = str(shared_memory["EMAIL_PASSWORD"])
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +41,14 @@ SECRET_KEY = 'im6)mnyopl=j7vmc5++22o@*eo8qz$bnh#4uboid(i0gwcue=h'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = PORT
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 
 
 # Application definition
@@ -119,6 +141,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
 
 
