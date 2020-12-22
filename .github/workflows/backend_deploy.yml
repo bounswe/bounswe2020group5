@@ -1,5 +1,5 @@
 
-name: CI_backend_in_master
+name: CI_backend_in_backend
 
 # Controls when the action will run. 
 on:
@@ -56,7 +56,4 @@ jobs:
           username: ec2-user
           key: ${{ secrets.OMG_SECRET }}
           port: 22
-          script: |
-            docker rm $(docker stop $(docker ps | grep ${{ secrets.DOCKER_USERNAME }}"/django_app" | cut -d ' ' -f1))
-            docker pull ${{ secrets.DOCKER_USERNAME }}/django_app:latest
-            docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django_app:latest
+          script: ./bupazar_script.sh
