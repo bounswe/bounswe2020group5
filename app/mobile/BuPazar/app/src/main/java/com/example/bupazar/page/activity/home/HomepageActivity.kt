@@ -26,25 +26,32 @@ class HomepageActivity : AppCompatActivity() {
         val basketFragment = BasketFragment()
         val favoritesFragment = FavoritesFragment()
         val myAccountFragment = MyAccountFragment()
+        val guestUserAccountFragment = GuestUserAccountFragment()
 
         myAccountFragment.arguments = bundle
 
         makeCurrentFragment(homepageFragment)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.ic_home -> makeCurrentFragment(homepageFragment)
-                R.id.ic_categories -> makeCurrentFragment(categoriesFragment)
-                R.id.ic_basket -> makeCurrentFragment(basketFragment)
-                R.id.ic_favorites -> makeCurrentFragment(favoritesFragment)
-                R.id.ic_accounts -> makeCurrentFragment(myAccountFragment)
+            if (userData != null) {
+                when(it.itemId) {
+                    R.id.ic_home -> makeCurrentFragment(homepageFragment)
+                    R.id.ic_categories -> makeCurrentFragment(categoriesFragment)
+                    R.id.ic_basket -> makeCurrentFragment(basketFragment)
+                    R.id.ic_favorites -> makeCurrentFragment(favoritesFragment)
+                    R.id.ic_accounts -> makeCurrentFragment(myAccountFragment)
+                }
+            }else{
+                when(it.itemId) {
+                    R.id.ic_home -> makeCurrentFragment(homepageFragment)
+                    R.id.ic_categories -> makeCurrentFragment(categoriesFragment)
+                    R.id.ic_basket -> makeCurrentFragment(guestUserAccountFragment)
+                    R.id.ic_favorites -> makeCurrentFragment(guestUserAccountFragment)
+                    R.id.ic_accounts -> makeCurrentFragment(guestUserAccountFragment)
+                }
             }
             true
         }
-        //buttonLogOut.setOnClickListener(){
-        //    var intent= Intent(this,LoginActivity::class.java)
-        //    startActivity(intent)
-        //}
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_shadow_end_color"
+    tools:context=".page.fragment.GuestUserAccountFragment">
+
+    <TextView
+        android:id="@+id/ben_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="256dp"
+        android:textSize="24sp"
+        android:text="Please register or login!" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondary_blue"
+        style="@style/ButtonPrimary"
+        android:text="Login"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ben_text_view"
+        android:layout_marginTop="16dp"
+    />
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondary_blue"
+        style="@style/ButtonPrimary"
+        android:text="Register"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/buttonLogin"
+        android:layout_marginTop="16dp"
+        />
+
+
+</RelativeLayout>

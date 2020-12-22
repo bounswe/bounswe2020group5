@@ -48,8 +48,8 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     else {
                         progressBarHide()
-                        Toast.makeText(this@RegisterActivity,"Your registration is completed, login is being made" , Toast.LENGTH_SHORT).show()
-                        var intent = Intent(this, HomepageActivity::class.java)
+                        Toast.makeText(this@RegisterActivity,"Your registration is completed" , Toast.LENGTH_SHORT).show()
+                        var intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
                 }
