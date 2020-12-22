@@ -75,10 +75,11 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             return Response(data={'error': 'Unauthorized user'}, status=status.HTTP_401_UNAUTHORIZED)
         comment_text = request.data.get("comment_text")
         is_anonymous = request.data.get("is_anonymous")
-        comment = Comment(customer=customer, product=product, comment_text=comment_text, is_anonymous=is_anonymous)
+        rating_score = request.data.get("rating_score")
+        comment = Comment(customer=customer, product=product, comment_text=comment_text, rating_score=rating_score, is_anonymous=is_anonymous)
         comment.save()
         product.rating_count += 1
-        product.total_rating_score += request.data.get("rating_score")
+        product.total_rating_score += rating_score
         product.save()
         return Response(data={'success': 'Comment added, Rating is given'}, status=status.HTTP_201_CREATED)
 
