@@ -61,8 +61,4 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         startActivity(intent)
         finish()
     }
-
-
-
-
 }

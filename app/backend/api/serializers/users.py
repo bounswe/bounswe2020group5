@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from ..models.users import User
+from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 
@@ -31,6 +32,11 @@ class AuthUserSerializer(serializers.ModelSerializer):
     
 class EmptySerializer(serializers.Serializer):
     pass
+
+
+class RegisterActivateSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    number = serializers.CharField(required=True)
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,5 +92,35 @@ class UpdateProfileSerializer(serializers.Serializer):
             raise serializers.ValidationError("Username is already taken")
         return AbstractBaseUser.normalize_username(value)
 
+
+class PasswordResetRequestEmailSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=200, required=False)
+
+    class Meta:
+        fields = ['email']
+
+    def validate_email(self, value):
+        user = usr.objects.filter(email=value)
+        if not user:
+            raise serializers.ValidationError("Email is not registered")
+        return BaseUserManager.normalize_email(value)
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(max_length=200, required=False)
+    new_password_again = serializers.CharField(max_length=200, required=False)
+
+    def validate(self, attrs):
+        new_password = attrs.get('new_password', '')
+        new_password_again = attrs.get('new_password_again', '')
+
+        if new_password != new_password_again:
+            raise serializers.ValidationError("passwords do not match")
+        password_validation.validate_password(new_password)
+        return super().validate(attrs)
+
+
 class SuccessSerializer(serializers.Serializer):
     success = serializers.CharField(max_length=200)
+
+class ErrorSerializer(serializers.Serializer):
+    error = serializers.CharField(max_length=200)
