@@ -13,16 +13,7 @@ import com.example.bupazar.page.activity.login.LoginActivity
 import com.example.bupazar.page.activity.login.RegisterActivity
 import kotlinx.android.synthetic.main.fragment_my_account.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyAccountFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyAccountFragment : Fragment() {
     var userData : LoginResponse? = null
     lateinit var userNameTextView: TextView
