@@ -21,7 +21,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/categories"
+            android:text="@string/electronics"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -53,7 +53,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_electrical_services_24" />
+            app:srcCompat="@drawable/ic_mobile_phone" />
 
         <TextView
             android:id="@+id/electronicstext"
@@ -65,7 +65,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/orderImage"
-            android:text="@string/electronics"
+            android:text="@string/phone"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -94,7 +94,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_clothes" />
+            app:srcCompat="@drawable/ic_headphones" />
 
         <TextView
             android:id="@+id/fashionText"
@@ -106,7 +106,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/fashionImage"
-            android:text="@string/fashion"
+            android:text="@string/headphones"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -136,7 +136,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_personal_care" />
+            app:srcCompat="@drawable/ic_computer" />
 
         <TextView
             android:id="@+id/personalCareText"
@@ -148,7 +148,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/personalCareImage"
-            android:text="@string/personal_care"
+            android:text="@string/computer"
             android:textColor="@color/black"
             android:textSize="18sp" />
         <ImageView
@@ -176,7 +176,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_living_room" />
+            app:srcCompat="@drawable/ic_camera" />
 
         <TextView
             android:id="@+id/homeText"
@@ -188,7 +188,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/homeKitchenImage"
-            android:text="@string/home_amp_kitchen"
+            android:text="@string/cameras"
             android:textColor="@color/black"
             android:textSize="18sp" />
         <ImageView
@@ -216,7 +216,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_running" />
+            app:srcCompat="@drawable/ic_television" />
 
         <TextView
             android:id="@+id/sportsText"
@@ -228,7 +228,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="14dp"
             android:layout_toEndOf="@+id/sportsImage"
-            android:text="@string/sports_outdoors"
+            android:text="@string/television_amp_video"
             android:textColor="@color/black"
             android:textSize="18sp" />
         <ImageView
@@ -256,7 +256,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_book" />
+            app:srcCompat="@drawable/ic_route" />
 
         <TextView
             android:id="@+id/hobbieText"
@@ -268,12 +268,94 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="14dp"
             android:layout_toEndOf="@+id/hobbieImage"
-            android:text="@string/hobbie_amp_books"
+            android:text="@string/gps_navigation"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/hobieArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="18dp"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/car"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/hobbie"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/carImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_electric_car" />
+
+        <TextView
+            android:id="@+id/carText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="14dp"
+            android:layout_toEndOf="@+id/carImage"
+            android:text="@string/car_vehicle_electronics"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/carArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="18dp"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/videoGame"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/car"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/videoGameImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_game_console" />
+
+        <TextView
+            android:id="@+id/videoGameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="14dp"
+            android:layout_toEndOf="@+id/videoGameImage"
+            android:text="@string/videogame_consoles_accessories"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/videoGameArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
