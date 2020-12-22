@@ -1,4 +1,4 @@
-name: CI_frontend
+name: CI_frontend_in_master_final
 
 # Controls when the action will run.
 on:
