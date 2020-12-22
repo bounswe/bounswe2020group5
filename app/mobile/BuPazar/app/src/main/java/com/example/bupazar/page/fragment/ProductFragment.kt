@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.example.bupazar.R
 import com.example.bupazar.service.RestApiService
@@ -39,7 +38,7 @@ class ProductFragment : Fragment() {
                 product_name_text.text = it.name
                 product_vendor_text.text = "Vendor: " + it.vendor
                 product_brand_text.text = it.brand
-                price_text.text =  "\$ " + it.price.toString()
+                price_text.text = "$" + "%.2f".format(it.price)
                 product_description_text.text = it.description
                 Picasso.with(context)
                     .load(it.imageUrl)
