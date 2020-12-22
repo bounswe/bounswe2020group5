@@ -14,3 +14,4 @@ from .products_filter import sort_products
 from .orders import CreditCardViewSet
 from .orders import CreditCardOptsViewSet
 from .products_details import get_homepage_products
+from .products_details import get_vendor_products

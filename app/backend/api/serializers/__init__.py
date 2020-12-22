@@ -31,3 +31,4 @@ from .orders import AddCreditCardSerializer
 from .orders import DeleteCreditCardSerializer
 from .products import HomePageRequestSerializer
 from .products import HomePageResponseSerializer
+from .products import UpdateProductSerializer

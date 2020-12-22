@@ -6,6 +6,7 @@ from ..serializers import HomePageRequestSerializer, HomePageResponseSerializer
 from ..models import Product, Vendor, Category, SubCategory, User
 from rest_framework import viewsets, status
 from drf_yasg.utils import swagger_auto_schema
+from ..custom_permissions import IsAuthVendor
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
 @api_view(['GET'])
@@ -93,3 +94,13 @@ def get_homepage_products(request):
         return Response(data=response, status=status.HTTP_200_OK)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
+@api_view(['GET'])
+@permission_classes([IsAuthVendor])
+def get_vendor_products(request):
+    vendor = request.user
+    products = Product.objects.filter(vendor_id=vendor.id)
+    products = ProductSerializer(products, many=True).data
+    
+    return Response(data=products, status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer
-from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier
+from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
 from ..utils import create_product
@@ -16,6 +16,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
     serializer_classes = {
         'add': AddProductSerializer,
         'delete': DeleteProductSerializer,
+        'update_product' : UpdateProductSerializer,
         'add_comment': ProductAddCommentSerializer,
         'get_all_comments': ProductAllCommentsSerializer
     }
@@ -57,10 +58,39 @@ class ProductOptViewSet(viewsets.GenericViewSet):
                     document.delete()
                     break
         else:
-            return Response(data={'error': 'Product does not belong to requested user'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'Product does not belong to requested vendor'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data={'success': 'Successfully deleted product'}, status=status.HTTP_200_OK)
-    
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
+    def update_product(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        product_id = data['product_id']
+        product = Product.objects.get(id=product_id)
+        vendor =  Vendor.objects.get(user=request.user)
+        vendor_products = Product.objects.filter(vendor=vendor)
+
+        if product in vendor_products:
+            if 'name' in data:
+                product.name = data['name']
+            if 'price' in data:
+                product.price = data['price']
+            if 'stock' in data:
+                product.stock = data['stock']
+            if 'description' in data:
+                product.description = data['description']
+            if 'discount' in data:
+                product.discount = data['discount']
+
+            product.save()
+            return Response(data={'success': 'Successfully updated product'}, status=status.HTTP_200_OK)
+        
+        else:
+            return Response(data={'error': 'Product does not belong to requested vendor'}, status=status.HTTP_400_BAD_REQUEST)
+
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
     def add_comment(self, request):

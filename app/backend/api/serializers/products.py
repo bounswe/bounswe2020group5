@@ -40,6 +40,14 @@ class AddProductSerializer(serializers.Serializer):
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
 
+class UpdateProductSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+    name = serializers.CharField(max_length=250, required=False)
+    price = price = serializers.FloatField(required=False)
+    stock = serializers.IntegerField(required=False)
+    description = serializers.CharField(max_length=500, required=False)
+    discount = serializers.FloatField(required=False)
+
 #ProductList Serializer
 class ProductListSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('get_user')
@@ -57,7 +65,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         products = obj.products.all()
         content = ProductSerializer(products, many=True).data
         return content
-        
+
 class CreateProductListSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
 
