@@ -1,5 +1,5 @@
 
-name: CI_backend_in_backend
+name: CI_backend_in_master
 
 # Controls when the action will run. 
 on:
