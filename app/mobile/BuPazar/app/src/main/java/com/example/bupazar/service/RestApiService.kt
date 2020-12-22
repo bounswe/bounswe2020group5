@@ -1,8 +1,7 @@
 package com.example.bupazar.service
 
 import com.example.bupazar.`interface`.RestApi
-import com.example.bupazar.model.LoginRequest
-import com.example.bupazar.model.RegisterRequest
+import com.example.bupazar.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,4 +35,20 @@ class RestApiService {
                 }
             }
         )
-    }}
+    }
+    fun allProducts(onResult: (Array<ProductDetails>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.allProducts().enqueue(
+            object : Callback<Array<ProductDetails>?> {
+                override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse( call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                    val all_products = response.body()
+                    onResult(all_products)
+                }
+            }
+        )
+    }
+}
+

@@ -1,4 +1,7 @@
 package com.example.bupazar.model
 
-class AllProductsRequest {
-}
+import com.google.gson.annotations.SerializedName
+
+data class AllProductsResponse (
+    @SerializedName("products") val all_products: Array<ProductDetails>?,
+)
