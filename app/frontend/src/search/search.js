@@ -13,10 +13,8 @@ import {Button, Divider} from "@material-ui/core";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
-import StarList from "../components/starlist";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from "@material-ui/core/InputLabel";
 import {serverUrl} from "../common/ServerUrl";
 import Rating from "@material-ui/lab/Rating";
@@ -30,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        width:200,
-        marginLeft:1000,
+        width:225,
+        marginLeft:850,
+        marginTop:25,
     },
 
     helperText:{
@@ -80,18 +79,17 @@ const styles = {
 export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
     let [statepro, setStatepro] = React.useState("");
+
     let [selectbrand, setselectbrand] = React.useState([]);
     let [selectvendor, setselectvendor] = React.useState([]);
     let [selectid,setselectid]=React.useState([]);
     let [branddata,setbranddata]=React.useState(true);
     let [vendordata,setvendordata]=React.useState(true);
 
-    let filledids;
+
     let filledidproducts;
-    let filledbrand;
     let filledbrandlist;
     let uniquebrand=new Set();
-    let filledvendor;
     let filledvendorlist;
     let uniquevendor=new Set();
 
@@ -111,18 +109,16 @@ export default function ComplexGrid() {
         }).then(res => res.json())
             .then(json => {
                 setStatepro ( json);
-
                 setLoadPage(true);
-                filledids = new Array(statepro.length);
+
                 filledidproducts = json.map((product) => (product.id));
                 setselectid(filledidproducts)
-                filledbrand=new Array(statepro.length);
+
                 filledbrandlist=json.map((product) => (product.brand));
                 filledbrandlist.forEach(b => uniquebrand.add(b));
                 filledbrandlist=Array.from(uniquebrand);
                 setselectbrand(filledbrandlist);
 
-                filledvendor=new Array(statepro.length);
                 filledvendorlist=json.map((product) => (product.vendor));
                 filledvendorlist.forEach(v => uniquevendor.add(v));
                 filledvendorlist=Array.from(uniquevendor);
@@ -333,6 +329,7 @@ export default function ComplexGrid() {
                 }else{
                     if(brandkeys.length!=0) {
                         setStatepro(json)
+
                     }
                 }
                 setLoadPage(true);
@@ -449,6 +446,7 @@ export default function ComplexGrid() {
 
     };
 
+    let[sortkey,setsortkey]=React.useState('')
 
     const [state, setState] = React.useState({
         sort: '',
@@ -461,6 +459,51 @@ export default function ComplexGrid() {
             ...state,
             [sort]: event.target.value,
         });
+
+        setsortkey(event.target.value)
+
+    };
+
+
+    const sorting = () => {
+        let error;
+        let datasort;
+        let sorting=statepro.map((product) => (product.id));
+        console.log('pppp')
+        console.log(sorting)
+
+        datasort = {
+            "product_ids": sorting,
+            "sort_by":sortkey.substring(0,sortkey.indexOf("-")),
+            "order":sortkey.substring(sortkey.indexOf("-")+1,sortkey.length),
+        }
+        fetch(serverUrl + 'api/products/sort/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datasort)
+
+        }).then(res => res.json())
+            .then(json => {
+                error=json.error
+
+                if(error=='No products found'){
+                    setStatepro([])}
+                else{
+                    setStatepro(json)
+                }
+                console.log(statepro)
+
+                setLoadPage(true);
+
+
+            })
+            .catch(err => {
+
+                alert('Some error has occurred')
+                console.log(err)
+
+            });
+
     };
 
 
@@ -642,14 +685,20 @@ export default function ComplexGrid() {
                             }}
                         >
                             <option aria-label="None" value="" />
-                            <option value='bestseller'>Best-sellers</option>
-                            <option value='newarrivals'>New-arrivals</option>
-                            <option value='price'>Price</option>
-                            <option value='review'>Reviews</option>
-                            <option value='rating'>Rating</option>
+                            <option value='best_sellers-ascending'>Best sellers Ascending</option>
+                            <option value='best_sellers-descending'>Best sellers Descending</option>
+                            <option value='new_arrivals-ascending'>New arrivals Ascending</option>
+                            <option value='new_arrivals-descending'>New arrivals Descending</option>
+                            <option value='price-ascending'>Price Ascending</option>
+                            <option value='price-descending'>Price Descending</option>
+                            <option value='comments-ascending'>Comments Ascending</option>
+                            <option value='comments-descending>'>Comments Descending</option>
+                            <option value='rating-ascending'>Rating Ascending</option>
+                            <option value='rating-descending'>Rating Descending</option>
+
                         </Select>
                     </FormControl>
-                        <IconButton size="medium"  style={{ marginRight:'5rem',marginTop:'1.25rem',color:"#0B3954" }} >
+                        <IconButton onClick={sorting} size="medium"  style={{ marginRight:'10rem',marginTop:'2rem',color:"#0B3954" }} >
                             <FilterListIcon  style={{fontSize: 18 }}/>
                         </IconButton>
                         </div>
@@ -659,9 +708,6 @@ export default function ComplexGrid() {
 
 
                 </Grid>
-
-
-
 
             <div style={{ marginTop: "5rem"}}>
                 <Footer />
