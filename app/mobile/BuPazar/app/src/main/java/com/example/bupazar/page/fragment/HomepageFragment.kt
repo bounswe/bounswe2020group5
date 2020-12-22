@@ -1,10 +1,10 @@
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.model.ProductAdapter
@@ -36,11 +36,18 @@ class HomepageFragment : Fragment() {
             }
             else {
                 val products: Array<ProductDetails> = it
-                rvProducts.adapter = this.context?.let { ProductAdapter(it, products) }
+                val productAdapter = this.context?.let { ProductAdapter(it, products) }
+                rvProducts.adapter = productAdapter
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
+                productAdapter!!.onItemClick = { product ->
+                        requireActivity().supportFragmentManager.beginTransaction().apply {
+                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(product.productId!!))
+                            commit()
+                    }
+                }
             }
-
         }
+
     }
 
     companion object {

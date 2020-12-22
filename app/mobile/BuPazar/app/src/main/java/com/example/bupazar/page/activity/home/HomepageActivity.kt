@@ -41,10 +41,6 @@ class HomepageActivity : AppCompatActivity() {
             }
             true
         }
-        //buttonLogOut.setOnClickListener(){
-        //    var intent= Intent(this,LoginActivity::class.java)
-        //    startActivity(intent)
-        //}
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =
