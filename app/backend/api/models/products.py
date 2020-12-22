@@ -50,6 +50,7 @@ class Comment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     comment_text = models.CharField(max_length=250)
+    rating_score = models.IntegerField()
     is_anonymous = models.BooleanField(default=False)
 
 class ProductList(models.Model):
