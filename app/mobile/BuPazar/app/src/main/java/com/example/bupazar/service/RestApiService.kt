@@ -5,7 +5,6 @@ import com.example.bupazar.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 class RestApiService {
     fun userLogin(userData: LoginRequest, onResult: (LoginResponse?) -> Unit){
@@ -31,6 +30,21 @@ class RestApiService {
                     onResult(null)
                 }
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
+
+    fun productDetails(id: Long, onResult: (ProductDetails?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.productDetails(id).enqueue(
+            object : Callback<ProductDetails> {
+                override fun onFailure(call: Call<ProductDetails>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse( call: Call<ProductDetails>, response: Response<ProductDetails>) {
                     val user = response.body()
                     onResult(user)
                 }
