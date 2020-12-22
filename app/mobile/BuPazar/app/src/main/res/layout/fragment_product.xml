@@ -63,10 +63,10 @@
                     />
 
                 <TextView
-                    android:id="@+id/product_vendor"
+                    android:id="@+id/product_brand_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vendor: BuPazar"
+                    android:text="Brand: BuPazar"
                     android:textColor="#ff5e5c"
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
@@ -84,20 +84,33 @@
                     />
 
                 <TextView
+                    android:id="@+id/product_vendor_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Brand: BuPazar"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="1dp"
+                    />
+
+
+                <TextView
+                    android:id="@+id/price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/price"
                     android:textColor="@color/text"
                     android:textSize="24dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="16dp"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Product Detail"
+                    android:text="Product Details"
                     android:textColor="@color/text"
                     android:textSize="16dp"
                     android:layout_marginLeft="16dp"

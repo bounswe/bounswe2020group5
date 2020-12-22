@@ -37,7 +37,9 @@ class ProductFragment : Fragment() {
             }
             else {
                 product_name_text.text = it.name
-
+                product_vendor_text.text = "Vendor: " + it.vendor
+                product_brand_text.text = it.brand
+                price_text.text =  "\$ " + it.price.toString()
                 product_description_text.text = it.description
                 Picasso.with(context)
                     .load(it.imageUrl)
