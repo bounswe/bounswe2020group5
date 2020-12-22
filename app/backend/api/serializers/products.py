@@ -42,10 +42,22 @@ class DeleteProductSerializer(serializers.Serializer):
 
 #ProductList Serializer
 class ProductListSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('get_user')
+    products = serializers.SerializerMethodField('get_products')
+
     class Meta:
         model = ProductList
-        fields = '__all__'
-
+        fields = ('name', 'user', 'products')
+    
+    def get_user(self, obj):
+        user = User.objects.get(id=obj.user_id)
+        return user.username
+    
+    def get_products(self, obj):
+        products = obj.products.all()
+        content = ProductSerializer(products, many=True).data
+        return content
+        
 class CreateProductListSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
 
