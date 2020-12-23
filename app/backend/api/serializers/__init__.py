@@ -19,6 +19,9 @@ from .products import ProductListAddProductSerializer
 from .products import ProductListRemoveProductSerializer
 from .products import ResponseSerializer
 from .products import ProductListResponseSerializer
+from .lists import FavoriteListSerializer
+from .lists import FavoritesAddOrRemoveProductSerializer
+from .lists import FavoritesResponseSerializer
 from .products import CommentSerializer
 from .products import ProductAddCommentSerializer
 from .products import ProductAllCommentsSerializer
