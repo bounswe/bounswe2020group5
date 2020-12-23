@@ -27,6 +27,8 @@ router.register(r'cart', CartViewSet, basename='cart')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'credit-cards', CreditCardViewSet, basename='credit-cards')
 router.register(r'credit-cards/opts', CreditCardOptsViewSet, basename='credit-cards/opts')
+router.register(r'purchases', PurchaseViewSet, basename='purchases')
+router.register(r'make-purchase', PurchaseOptsViewSet, basename='make-purchase')
 
 urlpatterns = [
     path('', include(router.urls)),

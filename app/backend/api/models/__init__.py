@@ -9,7 +9,8 @@ from .products import Comment
 from .products import SubCategory
 from .temp_users import TempUser
 from .orders import CreditCard
+from .orders import Order
+from .orders import Purchase
 from .lists import FavoriteList
 from .lists import Cart
 from .lists import ProductInCart
-from .orders import Order

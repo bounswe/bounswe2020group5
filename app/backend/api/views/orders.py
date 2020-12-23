@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
-from ..models import Customer, CreditCard
-from ..serializers import CreditCardSerializer, AddCreditCardSerializer, DeleteCreditCardSerializer, SuccessSerializer, EmptySerializer
+from ..models import Customer, CreditCard, Purchase, Cart, ProductInCart, Order
+from ..serializers import CreditCardSerializer, AddCreditCardSerializer, DeleteCreditCardSerializer, SuccessSerializer
+from .. serializers import PurchaseSerializer, EmptySerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -56,6 +57,42 @@ class CreditCardOptsViewSet(viewsets.GenericViewSet):
         credit_card_contents = CreditCardSerializer(credit_cards, many=True)
         return Response(data=credit_card_contents.data, status=status.HTTP_200_OK)
     
+    def get_serializer_class(self):
+        if self.action in self.serializer_classes.keys():
+            return self.serializer_classes[self.action]
+        return super().get_serializer_class()
+
+class PurchaseViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer
+
+class PurchaseOptsViewSet(viewsets.GenericViewSet):
+    permission_classes = [AllowAny, ]
+    serializer_classes = {
+        'make_purchase': EmptySerializer
+    }
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    def make_purchase(self, request):
+        customer = Customer.objects.get(user=request.user)
+        cart = Cart.objects.filter(user=customer)
+        cart_items = ProductInCart.objects.filter(cart=cart)
+        for cart_item in cart_items:
+            product = cart_item.product
+            amount = cart_item.count
+            vendor = product.vendor
+            unit_price = product.price * (1 - product.discount)
+            product.number_of_sales += 1
+            product.stock -= 1
+            product.save()
+            order = Order(customer=customer)
+            order.save()
+            purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
+                                    unit_price=unit_price, order=order, status='Order is recieved')
+            purchase.save()
+        ProductInCart.objects.filter(cart=cart).delete()
+        return Response(data={'success': 'Products in cart are successfully purchased'}, status=status.HTTP_201_CREATED)
+
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]

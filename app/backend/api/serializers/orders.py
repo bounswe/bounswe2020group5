@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from ..models import Customer, CreditCard
+from ..models import Customer, CreditCard, Purchase
 
-#Credit Card Serializer
+# CreditCard Serializer
 class CreditCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreditCard
@@ -22,3 +22,9 @@ class CancelOrderSerializer(serializers.Serializer):
 
 class CancelPurchaseSerializer(serializers.Serializer):
     purchase_id = serializers.IntegerField(required=True)
+
+# Purchase Serializer
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ('id', 'customer', 'vendor', 'product', 'amount', 'unit_price', 'order', 'status')
