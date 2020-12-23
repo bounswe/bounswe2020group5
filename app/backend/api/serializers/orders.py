@@ -32,5 +32,5 @@ class PurchaseSerializer(serializers.ModelSerializer):
         model = Purchase
         fields = ('id', 'customer', 'vendor', 'product', 'amount', 'unit_price', 'order', 'status')
     
-    def get_customer(self, obj):
+    def get_product(self, obj):
         return ProductSerializer(obj.product).data
