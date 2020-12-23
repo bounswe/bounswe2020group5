@@ -22,6 +22,9 @@ from .products import ProductListResponseSerializer
 from .lists import FavoriteListSerializer
 from .lists import FavoritesAddOrRemoveProductSerializer
 from .lists import FavoritesResponseSerializer
+from .lists import CartSerializer
+from .lists import CartUpdateSerializer
+from .lists import CartResponseSerializer
 from .products import CommentSerializer
 from .products import ProductAddCommentSerializer
 from .products import ProductAllCommentsSerializer
