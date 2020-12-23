@@ -40,5 +40,8 @@ urlpatterns = [
     path('products/search/', search_products),
     path('products/sort/', sort_products),
     path('products/homepage/', get_homepage_products),
-    path('products/vendor-products/', get_vendor_products)
+    path('products/vendor-products/', get_vendor_products),
+    path('orders/vendor-orders/', get_vendor_purchases),
+    path('orders/vendor-cancel/', vendor_cancel_purchase),
+    path('orders/customer-cancel/', customer_cancel_order)
 ]

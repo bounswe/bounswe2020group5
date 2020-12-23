@@ -8,3 +8,8 @@ class CreditCard(models.Model):
     card_number = models.CharField(max_length=16)
     expiration_date = models.CharField(max_length=5)
     cvc_security_number = models.IntegerField()
+
+class Order(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    

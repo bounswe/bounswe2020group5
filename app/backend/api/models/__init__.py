@@ -12,3 +12,4 @@ from .orders import CreditCard
 from .lists import FavoriteList
 from .lists import Cart
 from .lists import ProductInCart
+from .orders import Order

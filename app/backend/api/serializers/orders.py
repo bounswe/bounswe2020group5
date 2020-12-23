@@ -17,3 +17,8 @@ class AddCreditCardSerializer(serializers.Serializer):
 class DeleteCreditCardSerializer(serializers.Serializer):
     creditcard_id = serializers.IntegerField(required=True)
 
+class CancelOrderSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField(required=True)
+
+class CancelPurchaseSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
