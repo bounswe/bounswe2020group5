@@ -3,8 +3,6 @@ import Navbar from "./Navbar";
 import CategoryTab from "../components/CategoryTab";
 import SimpleGridList from "../components/SimpleGridList";
 import InputBase from "@material-ui/core/InputBase";
-import {tileData} from '../components/tileData';
-import {tileData2} from '../components/tileData2';
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
 

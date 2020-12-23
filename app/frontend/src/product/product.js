@@ -24,6 +24,8 @@ import {Link, useLocation} from "react-router-dom";
 import {serverUrl} from "../common/ServerUrl";
 import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 20,
         maxWidth: 1500,
         maxHeight: 1500,
-
     },
     image: {
         width: 460,
@@ -59,6 +60,8 @@ export default function ComplexGrid() {
     const [loadPage2, setLoadPage2] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
     const [stars, setStars] = React.useState(0);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [listChosen, setListChosen] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
@@ -96,7 +99,7 @@ export default function ComplexGrid() {
 
     fetch(serverUrl + 'api/products/opts/get_all_comments/', {
         method: 'POST',
-        body: JSON.stringify({ product_id : product.id }),
+        body: JSON.stringify({product_id: product.id}),
         headers: {'Content-Type': 'application/json'},
     }).then(res => res.json())
         .then(json => {
@@ -119,12 +122,16 @@ export default function ComplexGrid() {
         setcount(countclickamount);
     };
 
-    const handlelistcount = () => {
+    const handlelistcount = (event) => {
         if (listclick) {
             listclick = false;
-        } else {
-            listclick = true;
-        }
+            setlistclick(listclick);
+        } else setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        listclick = true;
         setlistclick(listclick);
     };
 
@@ -164,7 +171,8 @@ export default function ComplexGrid() {
                 const success = json.success
                 if (success) {
                     alert('Your review is posted!')
-                } else alert('Unsuccesful review!')})
+                } else alert('Unsuccesful review!')
+            })
             .catch(err => console.log(err));
     }
 
@@ -181,170 +189,249 @@ export default function ComplexGrid() {
                 </div>
             </div>
 
-                {loadPage1 && loadPage2  ? (
-                    <div>
+            {loadPage1 && loadPage2 ? (
+                <div>
+                    <Paper justifyContent={'center'} className={classes.paper}>
+                        <Grid lg container>
+                            <Grid sm container alignItems={"center"} justify="center">
+                                <Grid container alignItems={"center"} justify="center">
+                                    <ButtonBase className={classes.image}>
+                                        <img className={classes.img} alt="complex" src={state.imgsrc}/>
+                                    </ButtonBase>
+                                </Grid>
+                                <Grid container alignItems={"center"} justify="center">
+                                    <Box component="fieldset" mb={3} borderColor="transparent">
+                                        <Rating style={{justify: 'center'}} name="read-only" value={state.rating}
+                                                precision={0.1} readOnly/>
+                                    </Box>
+                                </Grid>
+                                <Grid container alignItems={"center"} justify="center">
+                                    <IconButton onClick={handlelistcount}>
+                                        {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
+                                            <TurnedInNotIcon fontSize={"large"}/>}
+                                    </IconButton>
+                                    <Menu
+                                        id="simple-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleClose}>
+                                        <MenuItem onClick={handleClose}>Create new list</MenuItem>
+                                        <MenuItem onClick={handleClose}>Mockup List 1</MenuItem>
+                                        <MenuItem onClick={handleClose}>Mockup List 2</MenuItem>
+                                        <MenuItem onClick={handleClose}>Mockup List 3</MenuItem>
+                                    </Menu>
+                                    <IconButton onClick={handleclickheart}>
+                                        {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
+                                            <FavoriteBorderIcon fontSize={"large"}/>}
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
 
-                        <Paper justifyContent={'center'} className={classes.paper}>
-                            <Grid container >
+                            <Grid sm container style={{marginLeft: "2rem"}}>
                                 <Grid>
-                                    <Grid>
-                                        <ButtonBase className={classes.image}>
-                                            <img className={classes.img} alt="complex" src={state.imgsrc}/>
-                                        </ButtonBase>
-                                    </Grid>
-                                    <Grid container alignItems={"center"} justify="center">
-                                        <Box component="fieldset" mb={3} borderColor="transparent">
-                                            <Rating style={{marginLeft: "2rem", justify: 'center'}}
-                                            name="read-only" value={state.rating} precision={0.1} readOnly />
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-
-                                <Grid sm container style={{marginLeft: "2rem"}}>
-                                    <Grid>
-                                        <Grid style={{marginTop:"2rem"}}>
-                                            <Typography gutterBottom variant="subtitle1">
-                                                {state.name}
-                                            </Typography>
-                                            <Divider/>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
-                                                        gutterBottom>
-                                                Brand:
-                                            </Typography>
-                                            <Typography style={{marginBottom: "2rem", display: 'inline-block'}} variant="body2"
-                                                        color="textSecondary">
-                                                 {state.brand}
-                                            </Typography>
-                                            <Divider/>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
-                                                        gutterBottom>
-                                                Price:
-                                            </Typography>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
-                                                        variant="body2" color="textSecondary">
-                                                {state.price}
-                                            </Typography>
-                                            <Divider/>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}} variant="body2"
-                                                        gutterBottom>
-                                                Vendor:
-                                            </Typography>
-                                            <Typography style={{marginBottom: "2rem", display: 'inline-block'}} variant="body2"
-                                                        color="textSecondary">
-                                                {state.vendor}
-                                            </Typography>
-                                            <Divider/>
-                                            <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
-                                                        gutterBottom>
-                                                Product Description:
-                                            </Typography>
-                                            <Typography style={{marginBottom: "2rem"}} variant="body2"
-                                                        color="textSecondary">
-                                                {state.description}
-                                            </Typography>
-                                            <Divider/>
-
-                                            <IconButton style={{marginTop: "2rem"}}
-                                                        onClick={handlelistcount}>
-                                                {listclick ? <TurnedInIcon fontSize={"large"}/> :
-                                                    <TurnedInNotIcon fontSize={"large"}/>}
-                                            </IconButton>
-                                            <IconButton style={{marginTop: "2rem"}}
-                                                        onClick={handleclickheart}>
-                                                {heartclick ? <Favorite fontSize={"large"}/> :
-                                                    <FavoriteBorderIcon fontSize={"large"}/>}
-                                            </IconButton>
-
-                                        </Grid>
-                                        <Grid style={{marginBottom: "1rem", marginLeft: "20rem"}}>
+                                    <Grid style={{marginTop: "2rem"}}>
+                                        <Typography gutterBottom variant="subtitle1">
+                                            {state.name}
+                                        </Typography>
+                                        <Divider/>
+                                        <Typography
+                                            style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
+                                            variant="body2"
+                                            gutterBottom>
+                                            Brand:
+                                        </Typography>
+                                        <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
+                                                    variant="body2"
+                                                    color="textSecondary">
+                                            {state.brand}
+                                        </Typography>
+                                        <Divider/>
+                                        {state.discount > 0 ? (
                                             <div>
-                                                <ButtonGroup style={{marginLeft: "9rem"}} variant="text" color="#FFFFFF" aria-label="text primary button group">
-                                                    <IconButton
-                                                        onClick={handlecountplus}>
-                                                        <AddIcon/>
-                                                    </IconButton>
-                                                    <Button size='small' id="outlined-basic" label="0" variant="outlined">
-                                                        {countclickamount}
-                                                    </Button>
-                                                    <IconButton
-                                                        onClick={handlecountminus}>
-                                                        <RemoveIcon/>
-                                                    </IconButton>
-                                                </ButtonGroup>
-                                                <Button size="large" variant="contained" style={{
-                                                    marginLeft: "9.1rem",
-                                                    marginTop: "1rem",
-                                                    marginBottom: "1rem",
-                                                    cursor: 'pointer',
-                                                    background: '#0B3954',
-                                                    color: 'white'
-                                                }}>
-                                                    PURCHASE
-                                                </Button>
+
+                                                <div>
+                                                    <Grid container direction="row" alignItems="center">
+                                                        <Grid item>
+                                                            <div>
+                                                                <Typography style={{
+                                                                    marginTop: "4rem",
+                                                                    marginBottom: "2rem",
+                                                                    display: 'inline-block'
+                                                                }} variant="body2"
+                                                                            gutterBottom>
+                                                                    Price: $
+                                                                </Typography>
+                                                                <Typography style={{
+                                                                    marginTop: "4rem",
+                                                                    marginBottom: "2rem",
+                                                                    display: 'inline-block'
+                                                                }}
+                                                                            variant="body2" color="textSecondary">
+                                                                    {state.price}
+                                                                </Typography>
+                                                            </div>
+                                                            <div>
+                                                                <Typography style={{
+                                                                    marginBottom: "2rem",
+                                                                    display: 'inline-block',
+                                                                    color: "red"
+                                                                }} variant="body2"
+                                                                            gutterBottom>
+                                                                    Discounted Price: $
+                                                                </Typography>
+                                                                <Typography style={{
+                                                                    marginBottom: "2rem",
+                                                                    display: 'inline-block',
+                                                                    color: "red"
+                                                                }}
+                                                                            variant="body2" color="textSecondary">
+                                                                    {state.price * state.discount / 100}
+                                                                </Typography>
+                                                            </div>
+
+                                                        </Grid>
+                                                        <Grid item>
+                                                            <img style={{width: "4rem", height: "4rem"}}
+                                                                 src="/img/discount.png" alt="discount icon"/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </div>
                                             </div>
-                                        </Grid>
+                                        ) : (
+                                            <div>
+                                                <Typography style={{
+                                                    marginTop: "4rem",
+                                                    marginBottom: "2rem",
+                                                    display: 'inline-block'
+                                                }} variant="body2"
+                                                            gutterBottom>
+                                                    Price: $
+                                                </Typography>
+                                                <Typography style={{
+                                                    marginTop: "4rem",
+                                                    marginBottom: "2rem",
+                                                    display: 'inline-block'
+                                                }}
+                                                            variant="body2" color="textSecondary">
+                                                    {state.price}
+                                                </Typography>
+                                            </div>)
+                                        }
+                                        <Divider/>
+                                        <Typography
+                                            style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
+                                            variant="body2"
+                                            gutterBottom>
+                                            Vendor:
+                                        </Typography>
+                                        <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
+                                                    variant="body2"
+                                                    color="textSecondary">
+                                            {state.vendor}
+                                        </Typography>
+                                        <Divider/>
+                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
+                                                    gutterBottom>
+                                            Product Description:
+                                        </Typography>
+                                        <Typography style={{marginBottom: "2rem"}} variant="body2"
+                                                    color="textSecondary">
+                                            {state.description}
+                                        </Typography>
+                                        <Divider/>
+
+                                    </Grid>
+                                    <Grid style={{marginBottom: "1rem", marginTop: "1rem", marginLeft: "20rem"}}>
+                                        <div>
+                                            <ButtonGroup style={{marginLeft: "9rem"}} variant="text" color="#FFFFFF"
+                                                         aria-label="text primary button group">
+                                                <IconButton
+                                                    onClick={handlecountplus}>
+                                                    <AddIcon/>
+                                                </IconButton>
+                                                <Button size='small' id="outlined-basic" label="0" variant="outlined">
+                                                    {countclickamount}
+                                                </Button>
+                                                <IconButton
+                                                    onClick={handlecountminus}>
+                                                    <RemoveIcon/>
+                                                </IconButton>
+                                            </ButtonGroup>
+                                            <Button size="large" variant="contained" style={{
+                                                marginLeft: "9.1rem",
+                                                marginTop: "1rem",
+                                                marginBottom: "1rem",
+                                                cursor: 'pointer',
+                                                background: '#0B3954',
+                                                color: 'white'
+                                            }}>
+                                                ADD TO CART
+                                            </Button>
+                                        </div>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Paper>
-                        <Paper justifyContent={'center'} className={classes.paper}>
-                            <Grid >
-                                <Box component="fieldset" mb={3} borderColor="transparent" >
-                                    <div>
-                                        <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please give a rating</Typography>
-                                        <Rating
-                                            id="temp_rating"
-                                            name="temp_rating"
-                                            value={stars}
-                                            onChange={(event, newValue) => {
-                                                setStars(newValue);
-                                            }}
-                                        />
+                        </Grid>
+                    </Paper>
+                    <Paper justifyContent={'center'} className={classes.paper}>
+                        <Grid>
+                            <Box component="fieldset" mb={3} borderColor="transparent">
+                                <div>
+                                    <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please give a
+                                        rating</Typography>
+                                    <Rating
+                                        id="temp_rating"
+                                        name="temp_rating"
+                                        value={stars}
+                                        onChange={(event, newValue) => {
+                                            setStars(newValue);
+                                        }}
+                                    />
 
-                                    </div>
-                                </Box>
+                                </div>
+                            </Box>
 
-                            </Grid>
-                            <div>
-                                <TextField style={{"height": "100%", "width": "100%"}}
-                                           id="temp_comment"
-                                           label="Please write a comment"
-                                           multiline
-                                           rows={4}
-                                           defaultValue=""
-                                           variant="outlined"
-                                           onChange={onChange}
-                                />
-                            </div>
-                            <Button size="large" variant="contained" style={{
-                                marginTop: "1rem",
-                                marginBottom: "1rem",
-                                cursor: 'pointer',
-                                background: '#0B3954',
-                                color: 'white'
-                            }} onClick={handleOnButtonClick}>
-                                ADD REVIEW
-                            </Button>
-                            <Checkbox
-                                id="checked"
-                                checked={checked}
-                                color="primary"
-                                onChange={handleChange}
-                                inputProps={{ 'aria-label': 'primary checkbox'}}
-                            />
-                            <Typography style={{display: 'inline-block'}}  >Review as anonymous</Typography>
-
-                        </Paper>
-
-                        <Paper justifyContent={'center'} className={classes.paper}>
-                            COMMENT SECTION ({state.comments.length})
-                            <CommentList commentList={state.comments}/>
-                        </Paper>
+                        </Grid>
                         <div>
-                            <Footer/>
+                            <TextField style={{"height": "100%", "width": "100%"}}
+                                       id="temp_comment"
+                                       label="Please write a comment"
+                                       multiline
+                                       rows={4}
+                                       defaultValue=""
+                                       variant="outlined"
+                                       onChange={onChange}
+                            />
                         </div>
-                    </div>) : null}
-            </div>
-            );
+                        <Button size="large" variant="contained" style={{
+                            marginTop: "1rem",
+                            marginBottom: "1rem",
+                            cursor: 'pointer',
+                            background: '#0B3954',
+                            color: 'white'
+                        }} onClick={handleOnButtonClick}>
+                            ADD REVIEW
+                        </Button>
+                        <Checkbox
+                            id="checked"
+                            checked={checked}
+                            color="primary"
+                            onChange={handleChange}
+                            inputProps={{'aria-label': 'primary checkbox'}}
+                        />
+                        <Typography style={{display: 'inline-block'}}>Review as anonymous</Typography>
+
+                    </Paper>
+
+                    <Paper justifyContent={'center'} className={classes.paper}>
+                        COMMENT SECTION ({state.comments.length})
+                        <CommentList commentList={state.comments}/>
+                    </Paper>
+                    <div>
+                        <Footer/>
+                    </div>
+                </div>) : null}
+        </div>
+    );
 }
