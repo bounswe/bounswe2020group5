@@ -77,16 +77,18 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
         customer = Customer.objects.get(user=request.user)
         cart = Cart.objects.get(user=customer)
         cart_items = ProductInCart.objects.filter(cart=cart)
+        if len(cart_items) == 0:
+            return Response(data={'error': 'The cart is empty, nothing to purchase'}, status=status.HTTP_400_BAD_REQUEST)
+        order = Order(customer=customer)
+        order.save()
         for cart_item in cart_items:
             product = cart_item.product
             amount = cart_item.count
             vendor = product.vendor
-            unit_price = product.price * (1 - product.discount)
-            product.number_of_sales += 1
-            product.stock -= 1
+            unit_price = product.price * (1 - product.discount/100)
+            product.number_of_sales += amount
+            product.stock -= amount
             product.save()
-            order = Order(customer=customer)
-            order.save()
             purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
                                     unit_price=unit_price, order=order, status='OrderTaken')
             purchase.save()
