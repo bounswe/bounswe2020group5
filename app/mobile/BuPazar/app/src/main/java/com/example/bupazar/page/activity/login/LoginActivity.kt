@@ -8,6 +8,7 @@ import com.example.bupazar.R
 import com.example.bupazar.`interface`.ActivityChangeListener
 import com.example.bupazar.core.BaseActivity
 import com.example.bupazar.model.LoginRequest
+import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.home.HomepageActivity
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -36,6 +37,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                     }
                     else {
                         var intent = Intent(this, HomepageActivity::class.java)
+                        intent.putExtra("USERDATA", it)
                         startActivity(intent)
                     }
                 }
@@ -59,8 +61,4 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
         startActivity(intent)
         finish()
     }
-
-
-
-
 }
