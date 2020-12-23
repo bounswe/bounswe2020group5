@@ -33,6 +33,29 @@
     <string name="gps_navigation"><![CDATA[GPS & Navigation]]></string>
     <string name="car_vehicle_electronics"><![CDATA[Car & Vehicle Electronics]]></string>
     <string name="videogame_consoles_accessories"><![CDATA[Video Game Consoles]]></string>
+    <string name="shoes_amp_bags"><![CDATA[Shoes & Bags]]></string>
+    <string name="man_clothing">Man Clothing</string>
+    <string name="sportswear">Sportswear</string>
+    <string name="accessory">Accessory</string>
+    <string name="woman_clothing">Woman Clothing</string>
+    <string name="hair_care">Hair Care</string>
+    <string name="oral_care">Oral Care</string>
+    <string name="skin_care">Skin Care</string>
+    <string name="makeup">Makeup</string>
+    <string name="perfume">Perfume</string>
+    <string name="fitness">Fitness</string>
+    <string name="sport_clothing">Sport Clothing</string>
+    <string name="book_magazine"><![CDATA[Book & Magazine]]></string>
+    <string name="films">Films</string>
+    <string name="office_furniture">Office Furniture</string>
+    <string name="decoration">Decoration</string>
+    <string name="beds">Beds</string>
+    <string name="kitchenware">Kitchenware</string>
+    <string name="furniture">Furniture</string>
+    <string name="art">Art</string>
+    <string name="computer_amp_tablet"><![CDATA[Computer & Tablet]]></string>
+    <string name="smartphone">Smartphone</string>
+    <string name="game_amp_game_consoles"><![CDATA[Game & Game Console]]></string>
     <string-array name="sports_images">
         <item>https://androidwave.com/media/images/img_baseball.jpg</item>
         <item>https://androidwave.com/media/images/img_badminton.jpg</item>
