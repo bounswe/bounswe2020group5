@@ -6,9 +6,9 @@ class CreditCard(models.Model):
     name = models.CharField(default='my credit card', max_length=50)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     card_owner = models.CharField(max_length=250)
-    card_number = models.CharField(max_length=16)
+    card_number = models.CharField(max_length=16, unique=True)
     expiration_date = models.CharField(max_length=5)
-    cvc_security_number = models.IntegerField()
+    cvc_security_number = models.CharField(max_length=3)
 
 class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)

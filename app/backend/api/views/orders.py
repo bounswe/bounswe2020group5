@@ -75,7 +75,7 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
     def make_purchase(self, request):
         customer = Customer.objects.get(user=request.user)
-        cart = Cart.objects.filter(user=customer)
+        cart = Cart.objects.get(user=customer)
         cart_items = ProductInCart.objects.filter(cart=cart)
         for cart_item in cart_items:
             product = cart_item.product
@@ -88,7 +88,7 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
             order = Order(customer=customer)
             order.save()
             purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
-                                    unit_price=unit_price, order=order, status='Order is recieved')
+                                    unit_price=unit_price, order=order, status='OrderTaken')
             purchase.save()
         ProductInCart.objects.filter(cart=cart).delete()
         return Response(data={'success': 'Products in cart are successfully purchased'}, status=status.HTTP_201_CREATED)
