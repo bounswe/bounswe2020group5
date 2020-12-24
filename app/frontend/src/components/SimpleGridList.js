@@ -39,7 +39,7 @@ export const SimpleGridList = ({tileData}) => {
   return (
 
     <div className={classes.root}>
-      <GridList className={classes.gridList} cols={5} >
+      <GridList className={classes.gridList} cols={7} >
         {tileData.map((tile,index) => (
           <GridListTile style={{height:"19rem"}}>
             <img style={{width:"15rem",height:"15rem"}} src={tile.image_url} alt={tile.name} />

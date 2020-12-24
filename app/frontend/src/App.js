@@ -10,7 +10,8 @@ import { Vendor } from "./signup/Vendor";
 import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline } from '@material-ui/core';
+import search from "./search/search"
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             component={EmailVerification}
           />
           <Route path="/product" component={product} />
+          <Route path="/search" component={search} />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
