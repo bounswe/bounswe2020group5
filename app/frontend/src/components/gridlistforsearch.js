@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const TitlebarGridList= ({tileData}) =>  {
     const classes = useStyles();
-   // const [value, setValue] = React.useState(0);
-
 
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
@@ -56,8 +54,6 @@ export const TitlebarGridList= ({tileData}) =>  {
                                 <br></br><br></br>BY: {tile.vendor}
                                 <br></br><br></br>
                                 <Rating name="size-small" value={tile.total_rating_score}   readOnly size="small" /> </span>}
-
-
                             actionIcon={
                                 <IconButton style={{color: "white"}} aria-label={`info about ${tile.title}`} className={classes.icon}>
                                     <InfoIcon />
