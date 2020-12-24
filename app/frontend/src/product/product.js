@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import {makeStyles} from '@material-ui/core/styles';
@@ -20,7 +20,6 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
-import {Link, useLocation} from "react-router-dom";
 import {serverUrl} from "../common/ServerUrl";
 import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -54,22 +53,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function ComplexGrid() {
+const Product = (props) => {
+    const {id} = props.match.params;
     const classes = useStyles();
     const [loadPage1, setLoadPage1] = React.useState(false);
     const [loadPage2, setLoadPage2] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
     const [stars, setStars] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [listChosen, setListChosen] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
-    let product = useLocation();
-    let random = [{author: "a1", text: "comment1",}, {author: "a2", text: "comment2",}, {
-        author: "a3",
-        text: "comment3",
-    }];
 
     const [state, setState] = useState({
         name: '',
@@ -80,33 +74,35 @@ export default function ComplexGrid() {
         comments: [],
     });
 
+    useEffect(() => {
+        fetch(serverUrl + 'api/products/' + id, {
+            method: 'GET',
+        }).then(res => res.json())
+            .then(json => {
+                state.name = json.name;
+                state.price = json.price;
+                state.brand = json.brand;
+                state.vendor = json.vendor;
+                state.discount = json.discount;
+                state.description = json.description;
+                state.imgsrc = json.image_url;
+                state.rating = json.rating;
+                setLoadPage1(true);
+            })
+            .catch(err => console.log(err));
 
-    fetch(serverUrl + 'api/products/' + product.id, {
-        method: 'GET',
-    }).then(res => res.json())
-        .then(json => {
-            state.name = json.name;
-            state.price = json.price;
-            state.brand = json.brand;
-            state.vendor = json.vendor;
-            state.discount = json.discount;
-            state.description = json.description;
-            state.imgsrc = json.image_url;
-            state.rating = json.rating;
-            setLoadPage1(true);
-        })
-        .catch(err => console.log(err));
+        fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+            method: 'POST',
+            body: JSON.stringify({product_id: id}),
+            headers: {'Content-Type': 'application/json'},
+        }).then(res => res.json())
+            .then(json => {
+                state.comments = json;
+                setLoadPage2(true);
+            })
+            .catch(err => console.log(err));
+    })
 
-    fetch(serverUrl + 'api/products/opts/get_all_comments/', {
-        method: 'POST',
-        body: JSON.stringify({product_id: product.id}),
-        headers: {'Content-Type': 'application/json'},
-    }).then(res => res.json())
-        .then(json => {
-            state.comments = json;
-            setLoadPage2(true);
-        })
-        .catch(err => console.log(err));
 
     const handlecountplus = () => {
         if (countclickamount < 10) {
@@ -157,7 +153,7 @@ export default function ComplexGrid() {
         const token = localStorage.getItem('token')
 
         let data = {
-            product_id: product.id,
+            product_id: id,
             comment_text: state.temp_comment,
             is_anonymous: checked,
             rating_score: stars,
@@ -191,9 +187,9 @@ export default function ComplexGrid() {
 
             {loadPage1 && loadPage2 ? (
                 <div>
-                    <Paper justifyContent={'center'} className={classes.paper}>
-                        <Grid lg container>
-                            <Grid sm container alignItems={"center"} justify="center">
+                    <Paper className={classes.paper}>
+                        <Grid lg item container>
+                            <Grid sm item container alignItems={"center"} justify="center">
                                 <Grid container alignItems={"center"} justify="center">
                                     <ButtonBase className={classes.image}>
                                         <img className={classes.img} alt="complex" src={state.imgsrc}/>
@@ -228,7 +224,7 @@ export default function ComplexGrid() {
                                 </Grid>
                             </Grid>
 
-                            <Grid sm container style={{marginLeft: "2rem"}}>
+                            <Grid sm item container style={{marginLeft: "2rem"}}>
                                 <Grid>
                                     <Grid style={{marginTop: "2rem"}}>
                                         <Typography gutterBottom variant="subtitle1">
@@ -286,7 +282,7 @@ export default function ComplexGrid() {
                                                                     color: "red"
                                                                 }}
                                                                             variant="body2" color="textSecondary">
-                                                                    {state.price * state.discount / 100}
+                                                                    {state.price - state.price * state.discount / 100}
                                                                 </Typography>
                                                             </div>
 
@@ -344,7 +340,7 @@ export default function ComplexGrid() {
                                     </Grid>
                                     <Grid style={{marginBottom: "1rem", marginTop: "1rem", marginLeft: "20rem"}}>
                                         <div>
-                                            <ButtonGroup style={{marginLeft: "9rem"}} variant="text" color="#FFFFFF"
+                                            <ButtonGroup style={{marginLeft: "9rem"}} variant="text"
                                                          aria-label="text primary button group">
                                                 <IconButton
                                                     onClick={handlecountplus}>
@@ -374,7 +370,7 @@ export default function ComplexGrid() {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <Paper justifyContent={'center'} className={classes.paper}>
+                    <Paper className={classes.paper}>
                         <Grid>
                             <Box component="fieldset" mb={3} borderColor="transparent">
                                 <div>
@@ -424,7 +420,7 @@ export default function ComplexGrid() {
 
                     </Paper>
 
-                    <Paper justifyContent={'center'} className={classes.paper}>
+                    <Paper className={classes.paper}>
                         COMMENT SECTION ({state.comments.length})
                         <CommentList commentList={state.comments}/>
                     </Paper>
@@ -435,3 +431,4 @@ export default function ComplexGrid() {
         </div>
     );
 }
+export default Product;
