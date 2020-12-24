@@ -11,7 +11,12 @@
     <string name="register">Register</string>
     <string name="guest">Guest</string>
     <string name="search">Search</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="higlights"><u><b>HIGHLIGHTS</b></u></string>
+    <string name="Wishlist"><u>Add to Wishlist</u></string>
+    <string name="Share"><u>Share</u></string>
+    <string name="price"><b>$ price</b></string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_placeholder">Title</string>
     <string name="news_placeholder">News</string>
@@ -56,6 +61,9 @@
     <string name="computer_amp_tablet"><![CDATA[Computer & Tablet]]></string>
     <string name="smartphone">Smartphone</string>
     <string name="game_amp_game_consoles"><![CDATA[Game & Game Console]]></string>
+    <string name="product_name_const">product name</string>
+
+
     <string-array name="sports_images">
         <item>https://androidwave.com/media/images/img_baseball.jpg</item>
         <item>https://androidwave.com/media/images/img_badminton.jpg</item>

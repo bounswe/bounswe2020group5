@@ -1,14 +1,12 @@
 package com.example.bupazar.page.activity.home
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+
+
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
-import com.example.bupazar.model.Product
-import com.example.bupazar.model.ProductAdapter
-import com.example.bupazar.page.activity.login.LoginActivity
+import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.fragment.*
 import kotlinx.android.synthetic.main.homepage_activity.*
 
@@ -18,12 +16,18 @@ class HomepageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.homepage_activity)
+        val userData = intent.getSerializableExtra("USERDATA") as? LoginResponse
+
+        val bundle = Bundle()
+        bundle.putSerializable("USERDATA",userData)
 
         val homepageFragment = HomepageFragment()
         val categoriesFragment = CategoriesFragment()
         val basketFragment = BasketFragment()
         val favoritesFragment = FavoritesFragment()
         val myAccountFragment = MyAccountFragment()
+
+        myAccountFragment.arguments = bundle
 
         makeCurrentFragment(homepageFragment)
 
@@ -37,10 +41,6 @@ class HomepageActivity : AppCompatActivity() {
             }
             true
         }
-        //buttonLogOut.setOnClickListener(){
-        //    var intent= Intent(this,LoginActivity::class.java)
-        //    startActivity(intent)
-        //}
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =

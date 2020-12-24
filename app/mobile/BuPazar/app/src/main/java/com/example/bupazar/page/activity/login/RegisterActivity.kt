@@ -42,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
                     userAddress = "address",
                 )
                 apiService.userRegister(userInfo) {
-                    if(it?.username == null){
+                    if(it?.success == null){
                         progressBarHide()
                         Toast.makeText(this@RegisterActivity,"Register credentials are not valid" , Toast.LENGTH_SHORT).show()
                     }
