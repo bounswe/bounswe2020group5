@@ -353,18 +353,28 @@ export default function ComplexGrid() {
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
         console.log(brandkeys)
 
-        var vendorkeys=JSON.parse(localStorage.getItem('vendorlist'));
+        var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
+        console.log('vvvvvvvvvv')
+        if(brandkeys==null){
+            brandkeys=0
+        }
+        if(vendorkeys==null){
+            vendorkeys=0
+            console.log("qqqqqqqqqq")
+        }
+
+        console.log(vendorkeys)
 
         setvendordata(true);
         setbranddata(true);
 
-        if(brandkeys.length==0){
+        if(brandkeys==0){
             applyallbrand=false
             console.log('nnnnn')
         }else{
             applyallbrand=true
         }
-        if(vendorkeys.length==0){
+        if(vendorkeys==0){
             console.log('llll')
             applyallvendor=false
 
