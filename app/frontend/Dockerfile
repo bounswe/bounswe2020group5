@@ -4,7 +4,7 @@ WORKDIR /frontapp
 
 COPY . /frontapp
 
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 CMD npm start
 
