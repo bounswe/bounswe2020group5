@@ -102,7 +102,6 @@ export default function Navbar() {
 
   useEffect(() => {
     const temp = localStorage.getItem('token')
-    console.log(temp)
     if (temp) {
       setIsLogged(true)
     }

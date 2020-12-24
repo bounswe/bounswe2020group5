@@ -31,7 +31,7 @@ http://134.122.58.157:3001
 * [M. Zeynep Çayırçimen](https://github.com/bounswe/bounswe2020group5/wiki/M.-Zeynep-%C3%87ay%C4%B1r%C3%A7imen)
 * [Yusuf Yüksel](https://github.com/bounswe/bounswe2020group5/wiki/Yusuf-Yuksel)
 * [Ramiz Dündar](https://github.com/bounswe/bounswe2020group5/wiki/Ramiz-Dündar)
-* Algı Kanar
+* [Algı Kanar](https://github.com/bounswe/bounswe2020group5/wiki/Alg%C4%B1-Kanar)
 
 ## Old Group Members
 * [M.Emre Demir](https://github.com/bounswe/bounswe2020group5/wiki/M.-Emre-Demir)

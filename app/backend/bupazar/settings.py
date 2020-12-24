@@ -9,8 +9,23 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-from db_config import HOST
 from pathlib import Path
+import json
+shared_memory = {}
+with open("shared_memory.json", "r") as outfile: 
+    shared_memory = json.load(outfile)
+
+HOST = str(shared_memory["HOST"])
+
+
+ACCESS_KEY_ID = str(shared_memory["ACCESS_KEY_ID"])
+SECRET_ACCESS_KEY = str(shared_memory["SECRET_ACCESS_KEY"])
+STORAGE_BUCKET_NAME = str(shared_memory["STORAGE_BUCKET_NAME"])
+
+
+PORT = int(shared_memory["PORT"])
+EMAIL = str(shared_memory["EMAIL"])
+EMAIL_PASSWORD = str(shared_memory["EMAIL_PASSWORD"])
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +43,14 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = PORT
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
+    'storages',
 ]
 
 AUTH_USER_MODEL = 'api.User'
@@ -119,6 +143,19 @@ REST_FRAMEWORK = {
     ]
 }
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -137,4 +174,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+
+AWS_ACCESS_KEY_ID = ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+DEFAULT_FILE_STORAGE = 'bupazar.storage_backends.MediaStorage'
