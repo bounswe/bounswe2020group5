@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const TitlebarGridList= ({tileData}) =>  {
     const classes = useStyles();
-   // const [value, setValue] = React.useState(0);
-
-
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
             <GridList cellHeight={400}  className={classes.gridList}>
