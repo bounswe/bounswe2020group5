@@ -34,3 +34,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
     
     def get_product(self, obj):
         return ProductSerializer(obj.product).data
+
+class UpdateStatusSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField(required=True)
+    status = serializers.CharField(max_length=100, required=True)
