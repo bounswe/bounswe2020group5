@@ -26,7 +26,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -158,6 +157,7 @@ const Product = (props) => {
             is_anonymous: checked,
             rating_score: stars,
         }
+
         fetch(serverUrl + 'api/products/opts/add_comment/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -166,10 +166,24 @@ const Product = (props) => {
             .then(json => {
                 const success = json.success
                 if (success) {
-                    alert('Your review is posted!')
-                } else alert('Unsuccesful review!')
+                    setLoadPage2(false);
+                    alert('Your review is posted!');
+                } else alert(json.error)
             })
             .catch(err => console.log(err));
+
+
+        fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+            method: 'POST',
+            body: JSON.stringify({product_id: id}),
+            headers: {'Content-Type': 'application/json'},
+        }).then(res => res.json())
+            .then(json => {
+                state.comments = json;
+                setLoadPage2(true);
+            })
+            .catch(err => console.log(err));
+
     }
 
     return (
