@@ -29,6 +29,8 @@ router.register(r'credit-cards', CreditCardViewSet, basename='credit-cards')
 router.register(r'credit-cards/opts', CreditCardOptsViewSet, basename='credit-cards/opts')
 router.register(r'purchases', PurchaseViewSet, basename='purchases')
 router.register(r'orders', PurchaseOptsViewSet, basename='orders')
+router.register(r'chats', ChatViewSet, basename='chats')
+
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -45,5 +47,5 @@ urlpatterns = [
     path('products/vendor-products/', get_vendor_products),
     path('orders/vendor-orders/', get_vendor_purchases),
     path('orders/vendor-cancel/', vendor_cancel_purchase),
-    path('orders/customer-cancel/', customer_cancel_order)
+    path('orders/customer-cancel/', customer_cancel_order),
 ]
