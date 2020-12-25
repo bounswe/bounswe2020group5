@@ -6,22 +6,23 @@ import {
   Paper,
   Tabs,
   Tab,
-  Link,
   Popper,
   MenuList,
   MenuItem,
   InputBase,
   withStyles
 } from "@material-ui/core";
+import {Link} from "react-router-dom";
+
 
 const styles = theme => {};
 
-const subElectronic = ["Computer/Tablet", "Smartphone", "White Appliances", "Photo/Camera", "Game/Game Console"];
+const subElectronic = ["PC & Tablet", "Smartphone", "White Appliances", "Photo & Camera", "Game&Game Console"];
 const subFashion = ["Woman Clothing", "Accessory", "Sportswear", "Man Clothing", "Shoes&Bags"];
-const subHome = ["Furniture", "Kitchenware", "Beds", "Decoration", "Office Furniture"];
+const subHome = ["Kitchenware", "Beds", "Decoration", "Office Furniture"];
 const subSport = ["Sport Clothing", "Fitness"];
 const subPersonal = ["Perfume", "Makeup", "Skin Care", "Oral Care", "Hair Care"];
-const subHobbies = ["Book/Magazine", "Musical Instrument", "Films"];
+const subHobbies = ["Book&Magazine", "Musical Instrument", "Art"];
 
 
 class AppBarTop extends React.Component {
@@ -181,55 +182,79 @@ class AppBarTop extends React.Component {
                 onMouseEnter={this.handleMenuOpen.bind(this, 0)}
                 data-key={0}
                 classes={{ root: classes.tabItem }}
+                component={Link}
+                to={"/category"}
                 label={"Electronics"}
                 aria-owns={open ? "menu-list-grow-electronic" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Electronics")}
+              </Tab>
               <Tab
                 key={1}
                 onMouseEnter={this.handleMenuOpen2.bind(this, 1)}
                 data-key={1}
                 classes={{ root: classes.tabItem }}
+                component={Link}
+                to={"/category"}
                 label={"Fashion"}
                 aria-owns={open2 ? "menu-list-grow-fashion" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Fashion")}
+              </Tab>
               <Tab
                 key={2}
                 onMouseEnter={this.handleMenuOpen3.bind(this, 2)}
                 data-key={2}
                 classes={{ root: classes.tabItem }}
-                label={"Home & Kitchen"}
+                component={Link}
+                to={"/category"}
+                label={"Home&Kitchen"}
                 aria-owns={open2 ? "menu-list-grow-home" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Home&Kitchen")}
+              </Tab>
               <Tab
                 key={3}
                 onMouseEnter={this.handleMenuOpen4.bind(this, 3)}
                 data-key={3}
                 classes={{ root: classes.tabItem }}
-                label={"Sports & Outdoors"}
+                component={Link}
+                to={"/category"}
+                label={"Sports&Outdoors"}
                 aria-owns={open2 ? "menu-list-grow-sport" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Sports&Outdoors")}
+              </Tab>
               <Tab
                 key={4}
                 onMouseEnter={this.handleMenuOpen5.bind(this, 4)}
                 data-key={4}
                 classes={{ root: classes.tabItem }}
-                label={"Personal Care"}
+                component={Link}
+                to={"/category"}
+                label={"Personal"}
                 aria-owns={open2 ? "menu-list-grow-personal" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Personal")}
+              </Tab>
               <Tab
                 key={5}
                 onMouseEnter={this.handleMenuOpen6.bind(this, 5)}
                 data-key={5}
                 classes={{ root: classes.tabItem }}
-                label={"Hobbies & Books"}
+                component={Link}
+                to={"/category"}
+                label={"Hobbies"}
                 aria-owns={open2 ? "menu-list-grow-hobbies" : undefined}
                 aria-haspopup={"true"}
-              />
+              >
+                {localStorage.setItem("category", "Hobbies")}
+              </Tab>
             </Tabs>
             <Popper open={open} anchorEl={anchorEl} id="menu-list-grow-electronic" >
               <Paper onMouseLeave={this.handleMenuClose.bind(this)}>
@@ -286,7 +311,7 @@ class AppBarTop extends React.Component {
                 </MenuList>
               </Paper>
             </Popper>
-            <Popper open={open6} anchorEl={anchorEl6} id="menu-list-grow-hobies">
+            <Popper open={open6} anchorEl={anchorEl6} id="menu-list-grow-hobbies">
               <Paper onMouseLeave={this.handleMenuClose6.bind(this)}>
                 <MenuList>
                   {subHobbies.map((item, index) => (

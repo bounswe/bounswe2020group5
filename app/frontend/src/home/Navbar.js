@@ -21,7 +21,6 @@ import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
 
-import { navigate } from "@reach/router"
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -317,7 +316,7 @@ export default function Navbar() {
                   if (ev.key === 'Enter') {
                     localStorage.setItem('searchkey',value)
                     window.location.replace('/search')
-                    
+
                   }
                 }}
             />
