@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Subcategories() {
+export default function Categories() {
   const [loadPage, setLoadPage] = React.useState(false);
   let [allProducts, setAllProducts] = React.useState("");
 
@@ -76,8 +76,6 @@ export default function Subcategories() {
   let [selectid,setselectid]=React.useState([]);
   let [branddata,setbranddata]=React.useState(true);
   let [vendordata,setvendordata]=React.useState(true);
-  let [productList, setProductList] = React.useState("");
-
 
   let filledidproducts;
   let filledbrandlist;
@@ -86,36 +84,35 @@ export default function Subcategories() {
   let uniquevendor=new Set();
 
   useEffect(() => {
+      const data = {
+        category_name: localStorage.getItem("category"),
+      }
+      console.log(data)
+      localStorage.removeItem("category");
 
-    const data = {
-      category_name: localStorage.getItem("category"),
-    }
-    localStorage.removeItem("category");
+      fetch(serverUrl + 'api/products/category/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+      }).then(res => res.json())
+        .then(json => {
+          setAllProducts ( json);
+          setLoadPage(true);
 
-    fetch(serverUrl + 'api/products/category/', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data),
-    }).then(res => res.json())
-      .then(json => {
-        setAllProducts ( json);
-        setLoadPage(true);
+          filledidproducts = json.map((product) => (product.id));
+          setselectid(filledidproducts)
 
-        filledidproducts = json.map((product) => (product.id));
-        setselectid(filledidproducts)
+          filledbrandlist=json.map((product) => (product.brand));
+          filledbrandlist.forEach(b => uniquebrand.add(b));
+          filledbrandlist=Array.from(uniquebrand);
+          setselectbrand(filledbrandlist);
 
-        filledbrandlist=json.map((product) => (product.brand));
-        filledbrandlist.forEach(b => uniquebrand.add(b));
-        filledbrandlist=Array.from(uniquebrand);
-        setselectbrand(filledbrandlist);
-
-        filledvendorlist=json.map((product) => (product.vendor));
-        filledvendorlist.forEach(v => uniquevendor.add(v));
-        filledvendorlist=Array.from(uniquevendor);
-        setselectvendor(filledvendorlist);
-      })
-      .catch(err => console.log(err));
-
+          filledvendorlist=json.map((product) => (product.vendor));
+          filledvendorlist.forEach(v => uniquevendor.add(v));
+          filledvendorlist=Array.from(uniquevendor);
+          setselectvendor(filledvendorlist);
+        })
+        .catch(err => console.log(err));
 
   }, []);
 
@@ -679,7 +676,7 @@ export default function Subcategories() {
                   <FilterListIcon  style={{fontSize: 18 }}/>
                 </IconButton>
               </div>
-              <TitlebarGridList tileData={allProducts}/>
+              <TitlebarGridList tileData={allProducts} categoryPage={true}/>
 
             </Grid>
 

@@ -12,7 +12,7 @@ import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
 import search from "./search/search"
-import Subcategories from "./subcategories/Subcategories";
+import Categories from "./categories/Categories";
 
 function App() {
   return (
@@ -36,8 +36,8 @@ function App() {
           <Route path="/profile/changepassword" component={ChangePassword} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
-          <Route path="/category" exact component={Subcategories} />
-          <Route path="/subcategory" exact component={Subcategories} />
+          <Route path="/category" component={Categories} />
+          <Route path="/subcategory" exact component={Categories} />
           <Route component={NoMatch} />
         </Switch>
       </div>

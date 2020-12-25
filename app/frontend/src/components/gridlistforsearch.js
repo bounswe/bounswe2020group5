@@ -31,16 +31,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export const TitlebarGridList= ({tileData}) =>  {
+export const TitlebarGridList= ({tileData, categoryPage}) =>  {
     const classes = useStyles();
 
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
             <GridList cellHeight={400}  className={classes.gridList}>
-                <GridListTile  cols={2} style={{ height: 'auto' }}>
-                    <ListSubheader style={{ marginBottom:'1rem'}}component="div"><Button>Search Result For :
-                        &nbsp; {localStorage.getItem('searchkey')}</Button></ListSubheader>
-                </GridListTile>
+                {!categoryPage ? (
+                  <GridListTile  cols={2} style={{ height: 'auto' }}>
+                      <h3 style={{ marginBottom:'1rem'}}>Search Result For :
+                          &nbsp; {localStorage.getItem('searchkey')}</h3>
+                  </GridListTile>
+                ) : null}
+
                 {tileData.map((tile) => (
 
                     <GridListTile key={tile.img} cols={tile.cols || 2/3} >
