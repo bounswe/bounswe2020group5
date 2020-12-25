@@ -45,3 +45,4 @@ from .orders import MessageSerializer
 from .products import HomePageRequestSerializer
 from .products import HomePageResponseSerializer
 from .products import UpdateProductSerializer
+from .orders import CustomerOrderSerializer

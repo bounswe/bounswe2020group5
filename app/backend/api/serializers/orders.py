@@ -44,3 +44,8 @@ class CustomerPurchasedSerializer(serializers.Serializer):
 
 class MessageSerializer(serializers.Serializer):
     message = serializers.BooleanField()
+
+class CustomerOrderSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField()
+    purchases = serializers.ListField(child = PurchaseSerializer())
+

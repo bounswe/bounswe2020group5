@@ -9,7 +9,6 @@ from drf_yasg.utils import swagger_auto_schema
 from ..custom_permissions import IsAuthVendor
 from django.db.models import Q
 
-
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
 @api_view(['GET'])
 @permission_classes([AllowAny])

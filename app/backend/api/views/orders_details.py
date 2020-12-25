@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
-from ..serializers import CustomerPurchasedSerializer, MessageSerializer
+from ..serializers import CustomerPurchasedSerializer, MessageSerializer, CustomerOrderSerializer
 from ..models import Product, Order, Purchase, Customer, Vendor
 from rest_framework.response import Response
 
@@ -75,7 +75,7 @@ def customer_cancel_order(request):
     
     return Response(data={'success': 'Order is successfully canceled.'}, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: CustomerOrderSerializer})
 @api_view(['GET'])
 @permission_classes([IsAuthCustomer])
 def get_customer_orders(request):
@@ -83,9 +83,12 @@ def get_customer_orders(request):
     my_orders = Order.objects.filter(customer=customer)
     order_list = []
     for order in my_orders:
+        content = {}
+        content['order_id'] = order.id
         queryset = Purchase.objects.filter(order=order)
-        content = PurchaseSerializer(queryset, many=True).data
+        content['purchases'] = PurchaseSerializer(queryset, many=True).data
         order_list.append(content)
+        
     return Response(data=order_list, status=status.HTTP_200_OK)
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer}, request_body=UpdateStatusSerializer)
