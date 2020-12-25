@@ -3,14 +3,25 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import User
-from ..serializers import UserSerializer, AuthUserSerializer, LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, UpdateProfileSerializer, SuccessSerializer
-from ..utils import create_user_account
+from ..models import User, TempUser
+from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer
+from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
+from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
+from ..utils import create_user_account, create_temp_user_account, send_email
 from rest_framework import serializers
+from django.conf import settings
+from django.template.loader import render_to_string
+from random import randint
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
-    HTTP_200_OK
+    HTTP_200_OK,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 from drf_yasg.utils import swagger_auto_schema
 
@@ -23,7 +34,6 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
     serializer_classes = {
@@ -32,7 +42,10 @@ class AuthViewSet(viewsets.GenericViewSet):
         'register': RegisterSerializer, 
         'password_change': PasswordChangeSerializer,
         'user_info' : EmptySerializer,
-        'profile_update': UpdateProfileSerializer,  
+        'profile_update': UpdateProfileSerializer, 
+        'register_activate': RegisterActivateSerializer,
+        'password_reset_request' : PasswordResetRequestEmailSerializer,
+        'password_reset_confirm' : PasswordResetConfirmSerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -59,7 +72,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
     
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -67,8 +80,44 @@ class AuthViewSet(viewsets.GenericViewSet):
         validated = serializer.validated_data
         if 'address' not in validated:
             validated['address'] = ""
-        user = create_user_account(**validated)
+
+        is_found = TempUser.objects.filter(email=validated['email'])
+        if is_found:
+            is_found.delete()
+        
+        number = randint(100000, 999999)
+
+        template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
+        if send_email(template , "bupazar451@gmail.com") == 5:
+            return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
+        
+        user_info = create_temp_user_account(**validated,number=number)
+        return Response(data = {"success": "user_info is created"}, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
+    @action(methods=['POST', ], detail=False)
+    def register_activate(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_user_email = serializer.validated_data['email']
+        number = request.data.get("number")
+
+        is_found = User.objects.filter(email=validated_user_email)
+        if is_found:
+            return Response(data={'user': 'user is already registered'}, status=HTTP_400_BAD_REQUEST)
+
+        the_user = TempUser.objects.filter(email=validated_user_email)
+        if not the_user:
+            return Response(data={'email': 'email is not found'}, status=HTTP_400_BAD_REQUEST)
+
+        validated_user_account = the_user.values()[0]
+        if (validated_user_account.pop('number') != number):
+            return Response(data={'number': 'The number does not match'}, status=HTTP_400_BAD_REQUEST)
+
+        user = create_user_account(**validated_user_account)
+        the_user.delete()
         data = AuthUserSerializer(user).data
+
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})   
@@ -106,6 +155,65 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def user_info(self, request):
         data = UserSerializer(request.user).data
+        return Response(data=data, status=status.HTTP_200_OK)
+    
+    @action(methods=['POST'], detail=False)
+    def password_reset_request(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            current_site = get_current_site(
+                request=request).domain
+            relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
+            link = 'http://'+current_site +"/"+ relativeLink
+            template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
+            send_email(template,"sarismet2825@gmail.com")
+            data = {
+                "uidb64" : uidb64,
+                "token" : token,
+                "current_site" : current_site,
+                "relativeLink" : relativeLink,
+                "template" : template
+            } 
+    
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
+    @action(methods=['POST'], detail=False)
+    def password_reset_confirm(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated = serializer.validated_data
+
+        uidb64 = request.query_params['uidb64']
+        token = request.query_params['token']
+        password = validated['new_password']
+        try:
+            id = smart_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+            if user.password == password:
+                return Response({'error': 'new password is the same as the older version. Please enter different password from the pervious one.'}, status=status.HTTP_400_BAD_REQUEST)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(password)
+            user.save()
+            data = AuthUserSerializer(user).data
+            return Response(data=data, status=status.HTTP_200_OK)
+
+        except DjangoUnicodeDecodeError as identifier:
+            try:
+                if not PasswordResetTokenGenerator().check_token(user):
+                    return Response({'error': 'user does not have this token'}, status=status.HTTP_400_BAD_REQUEST)
+                    
+            except UnboundLocalError as e:
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+                
         return Response(data=data, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):

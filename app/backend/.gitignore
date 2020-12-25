@@ -137,8 +137,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Databse configuration
-.db_config
-
-# AWS S3 configuration
-.aws_s3_config
+# Only for Development only
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py

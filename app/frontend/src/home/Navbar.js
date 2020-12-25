@@ -21,6 +21,7 @@ import Divider from "@material-ui/core/Divider";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -106,10 +107,16 @@ export default function Navbar() {
   };
 
   let [isLogged,setIsLogged] = useState(false);
+  let [state,setState] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [value, setValue] = React.useState()
+
+
+
+
 
  // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -166,6 +173,7 @@ export default function Navbar() {
 
   const StyledMenuItem = withStyles((theme) => ({
     root: {
+
       '&:focus': {
         backgroundColor: theme.palette.primary.main,
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -262,7 +270,7 @@ export default function Navbar() {
 
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
-          <Link style={{textDecoration: 'none'}} to="/login">
+          <Link style={{textDecoration: 'none'}} to="/search">
             <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
           </Link>
         </StyledMenuItem>
@@ -290,12 +298,23 @@ export default function Navbar() {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                onChange={event=>{
+                  setValue(event.target.value)
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onKeyPress={(ev) => {
+                  console.log(`Pressed keyCode ${ev.key}`);
+                  if (ev.key === 'Enter') {
+                    localStorage.setItem('searchkey',value)
+                    window.location.replace('/search')
+                    
+                  }
+                }}
             />
           </div>
           {isLogged ? (
