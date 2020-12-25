@@ -23,3 +23,9 @@ class ChatCreateSerializer(serializers.Serializer):
 class SendMessageSerializer(serializers.Serializer):
     chat_id = serializers.CharField(required=True)
     context = serializers.CharField(required=True)
+
+class GetLastMessageSerializer(serializers.Serializer):
+    chat_id = serializers.CharField(required=True)
+
+class GetChatHistorySerializer(serializers.Serializer):
+    pass

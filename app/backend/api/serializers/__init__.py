@@ -46,3 +46,5 @@ from .chats import ChatSerializer
 from .chats import MessageSerializer
 from .chats import ChatCreateSerializer
 from .chats import SendMessageSerializer
+from .chats import GetLastMessageSerializer
+from .chats import GetChatHistorySerializer
