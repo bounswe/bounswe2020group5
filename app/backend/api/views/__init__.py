@@ -22,3 +22,4 @@ from .lists import CartViewSet
 from .orders_details import get_vendor_purchases
 from .orders_details import vendor_cancel_purchase
 from .orders_details import customer_cancel_order
+from .chats import ChatViewSet

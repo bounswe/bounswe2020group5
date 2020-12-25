@@ -19,3 +19,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class ChatCreateSerializer(serializers.Serializer):
     vendor_id = serializers.CharField(required=True)
     context = serializers.CharField(required=True)
+
+class SendMessageSerializer(serializers.Serializer):
+    chat_id = serializers.CharField(required=True)
+    context = serializers.CharField(required=True)
