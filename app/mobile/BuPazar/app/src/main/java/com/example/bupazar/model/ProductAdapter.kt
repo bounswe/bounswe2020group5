@@ -1,13 +1,9 @@
 package com.example.bupazar.model
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bupazar.R
@@ -36,7 +32,7 @@ class ProductAdapter(private val context: Context, private val products: Array<P
         fun bind(product: ProductDetails) {
             itemView.product_name.text = product.name
             itemView.product_price.text = "$" + "%.2f".format(product.price)
-            Glide.with(context).load(product.imageUrl).into(itemView.ivProduct)
+            Glide.with(context).load(product.imageUrl).into(itemView.product_image)
         }
 
         init {

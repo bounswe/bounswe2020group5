@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".page.fragment.BasketFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/topBar"
+        android:background="@drawable/rectangle_border"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/numberOfProductsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Cart (# Products)"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar" />
+</RelativeLayout>

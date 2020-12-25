@@ -28,6 +28,7 @@ class HomepageActivity : AppCompatActivity() {
         val myAccountFragment = MyAccountFragment()
 
         myAccountFragment.arguments = bundle
+        homepageFragment.arguments = bundle
 
         makeCurrentFragment(homepageFragment)
 
