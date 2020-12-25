@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
+from ..serializers import CustomerPurchasedSerializer, MessageSerializer
 from ..models import Product, Order, Purchase, Customer, Vendor
 from rest_framework.response import Response
 
@@ -83,10 +84,9 @@ def get_customer_orders(request):
     order_list = []
     for order in my_orders:
         queryset = Purchase.objects.filter(order=order)
-        for purchase in queryset:
-            order_list.append(purchase)
-    content = PurchaseSerializer(order_list, many=True)
-    return Response(data=content.data, status=status.HTTP_200_OK)
+        content = PurchaseSerializer(queryset, many=True).data
+        order_list.append(content)
+    return Response(data=order_list, status=status.HTTP_200_OK)
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer}, request_body=UpdateStatusSerializer)
 @api_view(['POST'])
@@ -104,3 +104,17 @@ def vendor_update_status(request):
             purchase.status = status
             purchase.save()
     return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageSerializer}, request_body=CustomerPurchasedSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def customer_purchased(request):
+    serializer = CustomerPurchasedSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    product_id = serializer.validated_data['product_id']
+    customer = Customer.objects.get(user=request.user)
+    purchases = Purchase.objects.filter(customer=customer, product_id=product_id)
+    for purchase in purchases:
+        if not(purchase.status == 'Ccancelled' or purchase.status == 'Vcancelled'):
+            return Response(data={'message': True}, status=status.HTTP_200_OK)
+    return Response(data={'message': False}, status=status.HTTP_200_OK)

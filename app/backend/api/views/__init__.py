@@ -24,3 +24,4 @@ from .orders_details import vendor_cancel_purchase
 from .orders_details import customer_cancel_order
 from .orders_details import get_customer_orders
 from .orders_details import vendor_update_status
+from .orders_details import customer_purchased

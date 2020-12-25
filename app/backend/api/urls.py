@@ -47,5 +47,6 @@ urlpatterns = [
     path('orders/vendor-cancel/', vendor_cancel_purchase),
     path('orders/customer-cancel/', customer_cancel_order),
     path('orders/customer-orders/', get_customer_orders),
-    path('orders/update-status/', vendor_update_status)
+    path('orders/update-status/', vendor_update_status),
+    path('orders/customer-purchased/', customer_purchased)
 ]
