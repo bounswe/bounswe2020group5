@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
         height: 480,
     },
     img: {
-        marginTop: 50,
         display: 'block',
         maxWidth: '100%',
         maxHeight: '100%',
@@ -56,13 +55,14 @@ const Product = (props) => {
     const {id} = props.match.params;
     const classes = useStyles();
     const [loadPage1, setLoadPage1] = React.useState(false);
-    const [loadPage2, setLoadPage2] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
     const [stars, setStars] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
+    let [purchased, setPurchased] = useState(false);
+    const token = localStorage.getItem('token')
 
     const [state, setState] = useState({
         name: '',
@@ -73,8 +73,9 @@ const Product = (props) => {
         comments: [],
     });
 
-    useEffect(() => {
-        fetch(serverUrl + 'api/products/' + id, {
+    useEffect(values => {
+
+        Promise.all([fetch(serverUrl + 'api/products/' + id, {
             method: 'GET',
         }).then(res => res.json())
             .then(json => {
@@ -86,22 +87,27 @@ const Product = (props) => {
                 state.description = json.description;
                 state.imgsrc = json.image_url;
                 state.rating = json.rating;
-                setLoadPage1(true);
-            })
-            .catch(err => console.log(err));
-
-        fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+            }), fetch(serverUrl + 'api/products/opts/get_all_comments/', {
             method: 'POST',
             body: JSON.stringify({product_id: id}),
             headers: {'Content-Type': 'application/json'},
         }).then(res => res.json())
             .then(json => {
                 state.comments = json;
-                setLoadPage2(true);
-            })
-            .catch(err => console.log(err));
-    })
-
+            }), fetch(serverUrl + 'api/orders/customer-purchased/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({product_id: id}),
+        }).then(res => res.json())
+            .then(json => {
+                setPurchased(json.message)
+            })]).then(() => {
+            setLoadPage1(true);
+            //json response
+        }).catch((err) => {
+            console.log(err);
+        })
+    });
 
     const handlecountplus = () => {
         if (countclickamount < 10) {
@@ -149,7 +155,6 @@ const Product = (props) => {
     };
 
     function handleOnButtonClick() {
-        const token = localStorage.getItem('token')
 
         let data = {
             product_id: id,
@@ -158,7 +163,7 @@ const Product = (props) => {
             rating_score: stars,
         }
 
-        fetch(serverUrl + 'api/products/opts/add_comment/', {
+        Promise.all([fetch(serverUrl + 'api/products/opts/add_comment/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
             body: JSON.stringify(data)
@@ -166,24 +171,20 @@ const Product = (props) => {
             .then(json => {
                 const success = json.success
                 if (success) {
-                    setLoadPage2(false);
+                    setLoadPage1(false);
                     alert('Your review is posted!');
-                } else alert(json.error)
-            })
-            .catch(err => console.log(err));
-
-
-        fetch(serverUrl + 'api/products/opts/get_all_comments/', {
-            method: 'POST',
-            body: JSON.stringify({product_id: id}),
-            headers: {'Content-Type': 'application/json'},
-        }).then(res => res.json())
-            .then(json => {
-                state.comments = json;
-                setLoadPage2(true);
-            })
-            .catch(err => console.log(err));
-
+                } else alert('Your review could not be posted!')
+            }),
+            fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+                method: 'POST',
+                body: JSON.stringify({product_id: id}),
+                headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json())
+                .then(json => {
+                    state.comments = json;
+                })]).then(
+            setLoadPage1(true)
+        ).catch(err => console.log(err));
     }
 
     return (
@@ -199,43 +200,41 @@ const Product = (props) => {
                 </div>
             </div>
 
-            {loadPage1 && loadPage2 ? (
+            {loadPage1 ? (
                 <div>
                     <Paper className={classes.paper}>
-                        <Grid lg item container>
-                            <Grid sm item container alignItems={"center"} justify="center">
-                                <Grid container alignItems={"center"} justify="center">
+                        <Grid xs item container>
+                            <Grid xs item container justify="center" >
+                                <Grid container justify="center">
                                     <ButtonBase className={classes.image}>
                                         <img className={classes.img} alt="complex" src={state.imgsrc}/>
                                     </ButtonBase>
                                 </Grid>
-                                <Grid container alignItems={"center"} justify="center">
-                                    <Box component="fieldset" mb={3} borderColor="transparent">
-                                        <Rating style={{justify: 'center'}} name="read-only" value={state.rating}
-                                                precision={0.1} readOnly/>
-                                    </Box>
+                                <Grid container justify="center" >
+                                    <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
-                                <Grid container alignItems={"center"} justify="center">
-                                    <IconButton onClick={handlelistcount}>
-                                        {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
-                                            <TurnedInNotIcon fontSize={"large"}/>}
-                                    </IconButton>
-                                    <Menu
-                                        id="simple-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}>
-                                        <MenuItem onClick={handleClose}>Create new list</MenuItem>
-                                        <MenuItem onClick={handleClose}>Mockup List 1</MenuItem>
-                                        <MenuItem onClick={handleClose}>Mockup List 2</MenuItem>
-                                        <MenuItem onClick={handleClose}>Mockup List 3</MenuItem>
-                                    </Menu>
-                                    <IconButton onClick={handleclickheart}>
-                                        {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
-                                            <FavoriteBorderIcon fontSize={"large"}/>}
-                                    </IconButton>
-                                </Grid>
+                                {token ? (
+                                    <Grid container alignItems={"center"} justify="center">
+                                        <IconButton onClick={handlelistcount}>
+                                            {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
+                                                <TurnedInNotIcon fontSize={"large"}/>}
+                                        </IconButton>
+                                        <Menu
+                                            id="simple-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleClose}>
+                                            <MenuItem onClick={handleClose}>Create new list</MenuItem>
+                                            <MenuItem onClick={handleClose}>Mockup List 1</MenuItem>
+                                            <MenuItem onClick={handleClose}>Mockup List 2</MenuItem>
+                                            <MenuItem onClick={handleClose}>Mockup List 3</MenuItem>
+                                        </Menu>
+                                        <IconButton onClick={handleclickheart}>
+                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
+                                                <FavoriteBorderIcon fontSize={"large"}/>}
+                                        </IconButton>
+                                    </Grid>) : null}
                             </Grid>
 
                             <Grid sm item container style={{marginLeft: "2rem"}}>
@@ -246,7 +245,11 @@ const Product = (props) => {
                                         </Typography>
                                         <Divider/>
                                         <Typography
-                                            style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
+                                            style={{
+                                                marginTop: "4rem",
+                                                marginBottom: "2rem",
+                                                display: 'inline-block'
+                                            }}
                                             variant="body2"
                                             gutterBottom>
                                             Brand:
@@ -330,7 +333,11 @@ const Product = (props) => {
                                         }
                                         <Divider/>
                                         <Typography
-                                            style={{marginTop: "4rem", marginBottom: "2rem", display: 'inline-block'}}
+                                            style={{
+                                                marginTop: "4rem",
+                                                marginBottom: "2rem",
+                                                display: 'inline-block'
+                                            }}
                                             variant="body2"
                                             gutterBottom>
                                             Vendor:
@@ -341,7 +348,8 @@ const Product = (props) => {
                                             {state.vendor}
                                         </Typography>
                                         <Divider/>
-                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}} variant="body2"
+                                        <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
+                                                    variant="body2"
                                                     gutterBottom>
                                             Product Description:
                                         </Typography>
@@ -360,7 +368,8 @@ const Product = (props) => {
                                                     onClick={handlecountplus}>
                                                     <AddIcon/>
                                                 </IconButton>
-                                                <Button size='small' id="outlined-basic" label="0" variant="outlined">
+                                                <Button size='small' id="outlined-basic" label="0"
+                                                        variant="outlined">
                                                     {countclickamount}
                                                 </Button>
                                                 <IconButton
@@ -384,55 +393,60 @@ const Product = (props) => {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <Paper className={classes.paper}>
-                        <Grid>
-                            <Box component="fieldset" mb={3} borderColor="transparent">
-                                <div>
-                                    <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please give a
-                                        rating</Typography>
-                                    <Rating
-                                        id="temp_rating"
-                                        name="temp_rating"
-                                        value={stars}
-                                        onChange={(event, newValue) => {
-                                            setStars(newValue);
-                                        }}
-                                    />
 
-                                </div>
-                            </Box>
 
-                        </Grid>
-                        <div>
-                            <TextField style={{"height": "100%", "width": "100%"}}
-                                       id="temp_comment"
-                                       label="Please write a comment"
-                                       multiline
-                                       rows={4}
-                                       defaultValue=""
-                                       variant="outlined"
-                                       onChange={onChange}
-                            />
-                        </div>
-                        <Button size="large" variant="contained" style={{
-                            marginTop: "1rem",
-                            marginBottom: "1rem",
-                            cursor: 'pointer',
-                            background: '#0B3954',
-                            color: 'white'
-                        }} onClick={handleOnButtonClick}>
-                            ADD REVIEW
-                        </Button>
-                        <Checkbox
-                            id="checked"
-                            checked={checked}
-                            color="primary"
-                            onChange={handleChange}
-                            inputProps={{'aria-label': 'primary checkbox'}}
-                        />
-                        <Typography style={{display: 'inline-block'}}>Review as anonymous</Typography>
+                    {purchased ? (
+                        <Paper className={classes.paper}>
+                            <Grid>
+                                <Box component="fieldset" mb={3} borderColor="transparent">
+                                    <div>
+                                        <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please
+                                            give a
+                                            rating</Typography>
+                                        <Rating
+                                            id="temp_rating"
+                                            name="temp_rating"
+                                            value={stars}
+                                            onChange={(event, newValue) => {
+                                                setStars(newValue);
+                                            }}
+                                        />
 
-                    </Paper>
+                                    </div>
+                                </Box>
+
+                            </Grid>
+                            <div>
+                                <TextField style={{"height": "100%", "width": "100%"}}
+                                           id="temp_comment"
+                                           label="Please write a comment"
+                                           multiline
+                                           rows={4}
+                                           defaultValue=""
+                                           variant="outlined"
+                                           onChange={onChange}
+                                />
+                                <Button size="large" variant="contained" style={{
+                                    marginTop: "1rem",
+                                    marginBottom: "1rem",
+                                    cursor: 'pointer',
+                                    background: '#0B3954',
+                                    color: 'white'
+                                }} onClick={handleOnButtonClick}>
+                                    ADD REVIEW
+                                </Button>
+                                <Checkbox
+                                    id="checked"
+                                    checked={checked}
+                                    color="primary"
+                                    onChange={handleChange}
+                                    inputProps={{'aria-label': 'primary checkbox'}}
+                                />
+                                <Typography style={{display: 'inline-block'}}>Review as anonymous</Typography>
+                            </div>
+                        </Paper>
+
+                    ) : null}
 
                     <Paper className={classes.paper}>
                         COMMENT SECTION ({state.comments.length})
