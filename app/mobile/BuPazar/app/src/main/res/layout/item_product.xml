@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="TextView"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/ivProduct"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Sample Product Name #SAMPLE" />
-
-    <TextView
-        android:id="@+id/product_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/ivProduct"
-        app:layout_constraintTop_toBottomOf="@+id/product_name"
-        tools:text="Sample Description" />
+    android:layout_width="196dp"
+    android:layout_height="270dp"
+    android:background="@drawable/item_border">
 
     <ImageView
         android:id="@+id/ivProduct"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="196dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/rectangle_border"
+        android:backgroundTint="@color/black"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_empty_fav_icon"
+        android:layout_alignTop="@id/ivProduct"
+        android:layout_alignEnd="@id/ivProduct"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/round_border" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_name"
+        android:layout_below="@id/ivProduct"
+        android:text="Product Name"
+        android:layout_alignStart="@id/ivProduct"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_price"
+        android:text="$999.99"
+        android:layout_below="@id/product_name"
+        android:layout_marginTop="2dp"
+        android:layout_alignStart="@id/product_name"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
