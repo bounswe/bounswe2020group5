@@ -84,8 +84,10 @@ def get_homepage_products(request):
         response = {}
         newest_arrivals = Product.objects.order_by('-date_added')[:number_of_products]
         best_sellers = Product.objects.order_by('-number_of_sales')[:number_of_products]
+        trends = Product.objects.all()[:number_of_products]
         response['newest_arrivals'] = ProductSerializer(newest_arrivals, many=True).data
         response['best_sellers'] = ProductSerializer(best_sellers, many=True).data
+        response['trends'] = ProductSerializer(trends, many=True).data
 
         return Response(data=response, status=status.HTTP_200_OK)
 

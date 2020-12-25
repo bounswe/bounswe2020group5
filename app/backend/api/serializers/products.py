@@ -137,3 +137,4 @@ class HomePageRequestSerializer(serializers.Serializer):
 class HomePageResponseSerializer(serializers.Serializer):
     newest_arrivals = serializers.ListField(child = ProductSerializer())
     best_sellers = serializers.ListField(child = ProductSerializer())
+    trends = serializers.ListField(child = ProductSerializer())
