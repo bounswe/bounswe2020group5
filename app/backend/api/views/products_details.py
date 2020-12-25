@@ -7,6 +7,8 @@ from ..models import Product, Vendor, Category, SubCategory, User
 from rest_framework import viewsets, status
 from drf_yasg.utils import swagger_auto_schema
 from ..custom_permissions import IsAuthVendor
+from django.db.models import Q
+
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
 @api_view(['GET'])
@@ -45,16 +47,11 @@ def get_category_products(request):
         if subcategory.exists() is False:
             return Response(data={'error': 'Subcategory does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-        s_0 = subcategory[0]
-        products = Product.objects.filter(subcategory_id=s_0.id)        
-        subcategory = subcategory[1:]
-        if subcategory.exists() is False:
-            content = ProductSerializer(products, many=True).data
-            return Response(data=content, status=status.HTTP_200_OK)
-        
+        Q_filter = Q()
         for s in subcategory:
-            products |= Product.objects.filter(subcategory_id=s.id)
-            
+            Q_filter |= Q(subcategory_id=s.id)
+        
+        products = Product.objects.filter(Q_filter)
         content = ProductSerializer(products, many=True).data
         return Response(data=content, status=status.HTTP_200_OK)
     
