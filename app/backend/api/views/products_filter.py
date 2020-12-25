@@ -1,22 +1,25 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from drf_yasg.utils import swagger_auto_schema
-from ..serializers import FilterProductSerializer, ProductSerializer, ProductSearchSerializer
+from ..serializers import FilterProductSerializer, ProductSerializer, ProductSearchSerializer, SortProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from ..models import Product, User, Vendor
 from django.db.models import Max
 from nltk.stem import PorterStemmer
 from django.db.models import Q
+import operator
+from datamuse import datamuse
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def search_products(request):
-    products = Product.objects.none()
-    products_m = Product.objects.none()
-    dic = request.data
-    query = dic['query']
+    products = []
+
+    serializer = ProductSearchSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    query = serializer.validated_data['query']
     if not query:
         return Response(data={'error': 'Query is not valid'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -26,18 +29,43 @@ def search_products(request):
     
     Q_strict = Q()
     for index in range(len(query_list)):
-        Q_strict &= Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_product = Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_vendor = Q(vendor__user__username__icontains=query_list[index])
+        Q_strict &= Q_product | Q_vendor
 
     if bool(Q_strict):
-        products = Product.objects.filter(Q_strict)
+        products_strict = Product.objects.filter(Q_strict)
+        for product in products_strict:
+            if product not in products:
+                products.append(product)
 
     Q_soft = Q()
     for index in range(len(query_list)):
-        Q_soft |= Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_product = Q(name__icontains=query_list[index]) | Q(description__icontains=query_list[index]) | Q(name__icontains=stem_list[index]) | Q(description__icontains=stem_list[index])
+        Q_category = Q(subcategory__name__icontains=query_list[index]) | Q(subcategory__category__name__icontains=query_list[index])
+        Q_vendor = Q(vendor__user__username__icontains=query_list[index])
+        Q_soft |= Q_product | Q_category | Q_vendor
 
     if bool(Q_soft):
-        products_m = Product.objects.filter(Q_soft)
-        products |= products_m
+        products_soft = Product.objects.filter(Q_soft)
+        for product in products_soft:
+            if product not in products:
+                products.append(product)
+
+    datamuse_api = api = datamuse.Datamuse()
+    keyword_list = datamuse_api.words(ml=query, max=5)
+    Q_datamuse = Q()
+    for keyword in keyword_list:
+        word = keyword['word']
+        Q_product = Q(name__icontains=word) | Q(description__icontains=word) | Q(subcategory__name__icontains=word) | Q(subcategory__category__name__icontains=word)
+        Q_vendor = Q(vendor__user__username__icontains=word)
+        Q_datamuse |= Q_product | Q_vendor
+    
+    if bool(Q_datamuse):
+        products_datamuse = Product.objects.filter(Q_datamuse)
+        for product in products_datamuse:
+            if product not in products:
+                products.append(product)
 
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
@@ -106,9 +134,61 @@ def filter_products(request):
 
         elif filter_by == 'discount_rate':
             lower_limit = data
-            upper_limit = Products.aggregate(Max('discount'))
-            P_discount_rate = P_discount_rate.objects.filter(discount__range=(lower_limit, upper_limit['discount__max']))
+            upper_limit = P_discount_rate.aggregate(Max('discount'))
+            P_discount_rate = P_discount_rate.filter(discount__range=(lower_limit, upper_limit['discount__max']))
 
     Products = set(P_brand) & set(P_vendor) & set(P_price_range) & set(P_rating) & set(P_discount_rate)
+    content = ProductSerializer(Products, many=True)
+    return Response(data=content.data, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=SortProductSerializer)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def sort_products(request):
+    Products = Product.objects.all()
+    dic = request.data
+    if bool(dic) is False:
+        return Response(data={'error': 'Query is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+
+    product_ids = dic['product_ids']
+    sort_by = dic['sort_by']
+    order = dic['order']
+
+    if len(product_ids) > 0:
+        Q_filter = Q()
+        for product_id in product_ids:
+            Q_filter |= Q(id=product_id)
+        Products = Products.filter(Q_filter)
+
+    if sort_by == 'best_sellers':
+        if order == 'descending':
+            Products = Products.order_by('-number_of_sales')
+        elif order == 'ascending':
+            Products = Products.order_by('number_of_sales')
+
+    elif sort_by == 'newest_arrivals':
+        if order == 'descending':
+            Products = Products.order_by('-date_added')
+        elif order == 'ascending':
+            Products = Products.order_by('date_added')
+
+    elif sort_by == 'price':
+        if order == 'descending':
+            Products = Products.order_by('-price')
+        elif order == 'ascending':
+            Products = Products.order_by('price')
+
+    elif sort_by == 'rating':
+        if order == 'descending':
+            Products = sorted(Products, key=operator.attrgetter('rating'), reverse=True)
+        elif order == 'ascending':
+            Products = sorted(Products, key=operator.attrgetter('rating'))
+            
+    elif sort_by == 'comments':
+        if order == 'descending':
+            Products = Products.order_by('-rating_count')
+        elif order == 'ascending':
+            Products = Products.order_by('rating_count')
+
     content = ProductSerializer(Products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
