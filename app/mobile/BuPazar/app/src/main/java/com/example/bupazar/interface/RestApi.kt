@@ -29,4 +29,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/cart/edit/")
     fun addToCart(@Header("Authorization") authToken: String, @Body productData: AddToCartRequest): Call<AddToCartResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/cart/get/")
+    fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
 }

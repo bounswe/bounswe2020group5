@@ -12,5 +12,10 @@ data class AddToCartResponse(
 ) : Serializable
 
 data class ProductsInCart(
-    @SerializedName("products_in_cart") val productsInCart: Array<ProductDetails>?
+    @SerializedName("products_in_cart") val cartProducts: Array<CartProduct>
+) : Serializable
+
+data class CartProduct(
+    @SerializedName("count") val count: Int,
+    @SerializedName("product") val product: ProductDetails
 ) : Serializable
