@@ -19,6 +19,10 @@ interface RestApi {
     fun userRegister(@Body userData: RegisterRequest): Call<Success>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/register_activate/")
+    fun userVerificate(@Body userData: VerificationRequest): Call<LoginResponse>
+
+    @Headers("Content-Type: application/json")
     @GET("/api/products/{id}")
     fun productDetails(@Path("id") id: Long): Call<ProductDetails>
 

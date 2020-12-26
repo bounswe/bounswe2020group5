@@ -39,6 +39,7 @@
     <string name="car_vehicle_electronics"><![CDATA[Car & Vehicle Electronics]]></string>
     <string name="videogame_consoles_accessories"><![CDATA[Video Game Consoles]]></string>
     <string name="product_name_const">product name</string>
+    <string name="please_enter_verification_number">Please enter verification number</string>
 
 
     <string-array name="sports_images">

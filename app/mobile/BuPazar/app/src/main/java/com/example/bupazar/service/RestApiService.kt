@@ -37,6 +37,21 @@ class RestApiService {
         )
     }
 
+    fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.userVerificate(userData).enqueue(
+            object : Callback<LoginResponse> {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
+
     fun productDetails(id: Long, onResult: (ProductDetails?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.productDetails(id).enqueue(
