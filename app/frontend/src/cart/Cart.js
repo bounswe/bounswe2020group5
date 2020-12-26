@@ -2,6 +2,8 @@ import { Box, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import { serverUrl } from "../common/ServerUrl";
 import { useState, useEffect } from "react";
+import Navbar from "../home/Navbar";
+import CategoryTab from "../components/CategoryTab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +33,7 @@ export default function Cart() {
       },
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => console.log(data.products_in_cart));
     return () => {
       console.log("cleanup");
     };
@@ -39,8 +41,12 @@ export default function Cart() {
 
   const classes = useStyles();
   return (
-    <Box>
-      <Paper className={classes.paper}>asd</Paper>
-    </Box>
+    <React.Fragment>
+      <Navbar />
+      <CategoryTab />
+      <Box>
+        <Paper className={classes.paper}>asd</Paper>
+      </Box>
+    </React.Fragment>
   );
 }
