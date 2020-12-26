@@ -79,6 +79,7 @@ function AddProduct() {
   const [image, setImage] = useState(undefined);
   const [alertMessage, setAlertMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [subCat, setSubCat] = useState("");
 
   const initialValues = {
     name: "",
@@ -87,6 +88,7 @@ function AddProduct() {
     desc: "",
     image: undefined,
     category: undefined,
+    subcategory: undefined,
   };
 
   const validate = (values) => {
@@ -121,6 +123,8 @@ function AddProduct() {
 
     if (!values.category) {
       errors.category = "Required";
+    } else {
+      setSubCat(values.category);
     }
 
     // if (!values.image) {
@@ -160,6 +164,7 @@ function AddProduct() {
       description: values.desc,
       image_file: image,
       category_name: values.category,
+      subcategory_name: values.subcategory,
     };
 
     postDataToken(url, data, localStorage.getItem("token"))
@@ -199,6 +204,24 @@ function AddProduct() {
       label: "Hobbies&Books",
     },
   ];
+
+  const subCategories = {
+    Electronics: [
+      {
+        label: "Computer and Tablets",
+        value: "Computer and Tablets val",
+      },
+      {
+        label: "Cable",
+        value: "Cable val",
+      },
+    ],
+    Fashion: [{}],
+    "Home&Kitchen": [{}],
+    "Personal Care": [{}],
+    "Sports&Outdoors": [{}],
+    "Hobbies&Books": [{}],
+  };
 
   const upload = (event, setImage) => {
     setImage(event.target.files[0]);
@@ -285,6 +308,7 @@ function AddProduct() {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      // onChange={(event) => setSubCat(event.target.value)}
                     >
                       {categories.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -292,6 +316,25 @@ function AddProduct() {
                         </MenuItem>
                       ))}
                     </Field>
+                    {subCat && (
+                      <Field
+                        component={TextField}
+                        name="subcategory"
+                        label="Subcategory"
+                        select
+                        variant="filled"
+                        helperText="Please select a subcategory"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      >
+                        {subCategories[subCat].map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    )}
                     {isSubmitting && (
                       <LinearProgress className={classes.progress} />
                     )}
