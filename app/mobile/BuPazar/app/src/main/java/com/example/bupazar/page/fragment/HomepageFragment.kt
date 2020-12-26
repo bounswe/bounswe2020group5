@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
-import com.example.bupazar.model.ProductAdapter
+import com.example.bupazar.model.HomepageProductAdapter
 import com.example.bupazar.model.ProductDetails
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_homepage.*
@@ -39,7 +39,7 @@ class HomepageFragment : Fragment() {
             }
             else {
                 val products: Array<ProductDetails> = it
-                val productAdapter = this.context?.let { ProductAdapter(it, products) }
+                val productAdapter = this.context?.let { HomepageProductAdapter(it, products) }
                 rvProducts.adapter = productAdapter
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
                 productAdapter!!.onItemClick = { product ->
