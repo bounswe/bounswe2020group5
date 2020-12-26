@@ -5,13 +5,13 @@ from ..models.chats import Chat, Message
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ['id', 'vendor_id', 'customer_id']
+        fields = ('id', 'vendor_id', 'customer_id')
 
 #Message Serializer
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ['id', 'whose_message', 'context', 'chat']
+        fields = ('id', 'whose_message', 'context', 'chat')
 
 class ChatCreateSerializer(serializers.Serializer):
     vendor_id = serializers.CharField(required=True)
@@ -30,7 +30,10 @@ class GetMessagePropertySerializer(serializers.Serializer):
     message_id = serializers.CharField(required=True)
     chat_id = serializers.CharField(required=True)
 
+class ChatSuccessSerializer(serializers.Serializer):
+    success = serializers.CharField()
+
 class PropertiesSerializer(serializers.Serializer):
     id = serializers.CharField(required=True)
     date_created = serializers.DateTimeField()
-    success = serializers.CharField(max_length=200)
+    success = serializers.CharField()

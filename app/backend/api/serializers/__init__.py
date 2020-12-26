@@ -55,3 +55,4 @@ from .chats import EmptySerializer
 from .chats import GetMessagePropertySerializer
 from .chats import PropertiesSerializer
 from .users import ErrorSerializer
+from .chats import ChatSuccessSerializer

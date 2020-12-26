@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import Message, Chat, User
 from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, PropertiesSerializer, ErrorSerializer
-from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer
+from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer, ChatSuccessSerializer
 from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message, is_found_a_chat
 from rest_framework import serializers
 from django.conf import settings
@@ -34,7 +34,6 @@ class ChatViewSet(viewsets.GenericViewSet):
         'delete_chat': GetChatPropertySerializer,
         'delete_message':GetMessagePropertySerializer,
     }
-    ##TODO change the http return values
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def create_chat(self, request):
@@ -77,7 +76,7 @@ class ChatViewSet(viewsets.GenericViewSet):
         }
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PropertiesSerializer,status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer,status.HTTP_404_NOT_FOUND: ErrorSerializer})
     @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_last_message(self, request):
         chat_id = request.data.get("chat_id")
@@ -85,17 +84,13 @@ class ChatViewSet(viewsets.GenericViewSet):
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
             return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
-        message = Message.objects.filter(chat_id=chat_id).last()
+        message = Message.objects.filter(chat_id=chat_id)
         if not message:
             return Response(data={"error":"there is no message in this chat"}, status=HTTP_404_NOT_FOUND)
-        data = {
-            "success":message.context,
-            "message_id":message.id,
-            "date_sent": message.date_sent
-        }
-        return Response(data=data, status=status.HTTP_200_OK)
+        message_contents = MessageSerializer(message, many=True)
+        return Response(data=message_contents.data[len(message_contents.data)-1], status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
     @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_chat_history(self, request):
         chat_id = request.data.get("chat_id")
@@ -103,16 +98,11 @@ class ChatViewSet(viewsets.GenericViewSet):
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
             return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
-        messages = chat.message_set.all().values()
-        data = {}
-        for count, message in enumerate(messages):
-            whose_message = "vendor"
-            if message['whose_message'] == True:
-                whose_message = 'customer'
-            data[str(count)] = {'whose_message':whose_message, 'context': message['context'], 'date_sent': message['date_sent']}
-        return Response(data=data, status=status.HTTP_200_OK)
+        message = chat.message_set.all()
+        message_contents = MessageSerializer(message, many=True)
+        return Response(data=message_contents.data, status=status.HTTP_200_OK)
    
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
     @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_all_chats(self, request):
         user_id = request.user.id
@@ -124,10 +114,8 @@ class ChatViewSet(viewsets.GenericViewSet):
             chats = Chat.objects.filter(vendor_id=user_id)
         if not chats:
             return Response(data={"error":"there is no chat the user is involved"}, status=status.HTTP_404_NOT_FOUND)
-        data = {"ids":[]}
-        for chat in chats.values():
-            data["ids"].append(chat['id'])
-        return Response(data=data, status=status.HTTP_200_OK)
+        chats_contents = ChatSerializer(chats, many=True)
+        return Response(data=chats_contents.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='delete', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
     @action(methods=['DELETE', ], detail=False, permission_classes=[IsAuthenticated, ])
