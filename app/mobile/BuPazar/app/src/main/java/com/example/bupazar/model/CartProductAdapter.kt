@@ -24,7 +24,12 @@ class CartProductAdapter(private val context: Context, private val cartProducts:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartProduct = cartProducts[position]
-        holder.bind(cartProduct)
+        if (position != cartProducts.size - 1) {
+            holder.bind(cartProduct)
+        }
+        else {
+            holder.bindLastItem(cartProduct)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -33,13 +38,24 @@ class CartProductAdapter(private val context: Context, private val cartProducts:
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(cartProduct: CartProduct) {
-            itemView.vendor_name_text.text = "Vendor:" + cartProduct.product.vendor
+            itemView.vendor_name_text.text = "Vendor: " + cartProduct.product.vendor
             itemView.product_name.text = cartProduct.product.name
             itemView.product_description.text = cartProduct.product.description
             itemView.product_brand.text = "Brand: " + cartProduct.product.brand
-            itemView.product_quantity.text = "Quantity" + cartProduct.count
+            itemView.product_quantity.text = "Quantity: " + cartProduct.count
             itemView.product_price.text = "$" + cartProduct.product.price
             Glide.with(context).load(cartProduct.product.imageUrl).into(itemView.product_image)
+        }
+        fun bindLastItem(cartProduct: CartProduct) {
+            itemView.vendor_name_text.text = "Vendor: " + cartProduct.product.vendor
+            itemView.product_name.text = cartProduct.product.name
+            itemView.product_description.text = cartProduct.product.description
+            itemView.product_brand.text = "Brand: " + cartProduct.product.brand
+            itemView.product_quantity.text = "Quantity: " + cartProduct.count
+            itemView.product_price.text = "$" + cartProduct.product.price
+            Glide.with(context).load(cartProduct.product.imageUrl).into(itemView.product_image)
+            itemView.divider.visibility = View.INVISIBLE
+            itemView.divider.background = null
         }
     }
 }

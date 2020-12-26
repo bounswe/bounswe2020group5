@@ -38,6 +38,11 @@ class CartFragment : Fragment() {
             }
             else {
                 productsInCart = it.cartProducts
+                numberOfProductsText.text = "My Cart (" + productsInCart!!.size + " Products)"
+
+                val cartProductAdapter = this.context?.let { productsInCart?.let { it1 -> CartProductAdapter(it, cartProducts = it1) } }
+                cartProducts.adapter = cartProductAdapter
+                cartProducts.layoutManager = LinearLayoutManager(this.context)
             }
         }
     }
