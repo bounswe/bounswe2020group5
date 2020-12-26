@@ -36,7 +36,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
             <GridList cellHeight={400}  className={classes.gridList}>
-                {!categoryPage ? (
+                {!categoryPage && localStorage.getItem('searchkey')!=='undefined'? (
                   <GridListTile  cols={2} style={{ height: 'auto' }}>
                       <h3 style={{ marginBottom:'1rem'}}>Search Result For :
                           &nbsp; {localStorage.getItem('searchkey')}</h3>

@@ -555,7 +555,7 @@ export default function Categories() {
                              size="small"
                   />
 
-                  <IconButton onClick={brandfilterclick} style={{ background: '#F3DE8A' }} color="secondary" aria-label="add to shopping cart">
+                  <IconButton onClick={brandfilterclick} style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                     <SearchIcon  style={{ fontSize: 18 }}/>
                   </IconButton>
                 </div>
@@ -577,7 +577,7 @@ export default function Categories() {
                              variant="outlined"
                              size="small"
                   />
-                  <IconButton onClick={vendorfilterclick}  style={{ background: '#F3DE8A' }}color="secondary" aria-label="add to shopping cart">
+                  <IconButton onClick={vendorfilterclick}  style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                     <SearchIcon  style={{ fontSize: 18 }}/>
                   </IconButton>
                 </div>
@@ -605,7 +605,7 @@ export default function Categories() {
                            variant="outlined"
                            size="small"
                 />
-                <IconButton onClick={pricefilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                <IconButton onClick={pricefilterclick} style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                   <SearchIcon  style={{ fontSize: 18 }}/>
                 </IconButton>
 
@@ -613,7 +613,7 @@ export default function Categories() {
               <Divider style={{marginTop:'2rem',marginBottom:'1rem'}}/>
               <div className={classes.float} style={{marginLeft:'0.5rem'}}>
                 <Typography className={classes.float} > {'Star Filter (Min.)'} </Typography>
-                <IconButton onClick={starfilterclick} color="secondary" style={{marginLeft:'4.5rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
+                <IconButton onClick={starfilterclick}  style={{marginLeft:'4.5rem',color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                   <SearchIcon  style={{ fontSize: 18 }}/>
                 </IconButton></div>
               <div className={classes.float}>
@@ -626,7 +626,7 @@ export default function Categories() {
                         }}
 
                 />
-                <IconButton onClick={resetstar} color="secondary" style={{marginTop:'1.8rem',marginLeft:'4.5rem' }}>
+                <IconButton onClick={resetstar} style={{ color: 'white',background:'#0B3954',marginTop:'1.8rem',marginLeft:'4.5rem' }}>
                   <CancelIcon  style={{ fontSize: 18 }}/>
                 </IconButton>
 
@@ -644,7 +644,7 @@ export default function Categories() {
                              variant="outlined"
                              size="small"
                   />
-                  <IconButton onClick={discountfilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                  <IconButton onClick={discountfilterclick} style={{color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                     <SearchIcon  style={{ fontSize: 18 }}/>
                   </IconButton>
 

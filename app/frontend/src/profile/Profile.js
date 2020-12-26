@@ -84,6 +84,7 @@ function Profile() {
   let [emailChanged, setEmailChanged] = React.useState(false);
   let [addressChanged, setAddressChanged] = React.useState(false);
   let [usernameChanged, setUsernameChanged] = React.useState(false);
+  let [isvendor,setIsVendor] = React.useState(false);
 
   let history = useHistory();
 
@@ -226,6 +227,7 @@ function Profile() {
               username: json.username,
             }
           )
+          setIsVendor(json.is_vendor);
         }).then(() => {
         setLoadPage(true)
       })
@@ -292,12 +294,22 @@ function Profile() {
                         </ListItemIcon>
                         <ListItemText primary="Orders"/>
                       </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <ListIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Lists"/>
-                      </ListItem>
+                      {!isvendor ? (
+                        <ListItem button>
+                          <ListItemIcon>
+                            <ListIcon/>
+                          </ListItemIcon>
+                          <ListItemText primary="Lists"/>
+                        </ListItem>
+                      ):(
+                        <ListItem button component={Link}
+                                  to="/add-product">
+                          <ListItemIcon>
+                            <ListIcon/>
+                          </ListItemIcon>
+                          <ListItemText primary="Add Product"/>
+                        </ListItem>
+                      )}
                       <ListItem button>
                         <ListItemIcon>
                           <HomeIcon/>
