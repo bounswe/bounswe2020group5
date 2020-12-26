@@ -21,7 +21,6 @@ import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
 
-import { navigate } from "@reach/router"
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -275,7 +274,7 @@ export default function Navbar() {
 
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
-          <Link style={{textDecoration: 'none'}} to="/search">
+          <Link style={{textDecoration: 'none'}} to="/login">
             <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
           </Link>
         </StyledMenuItem>
