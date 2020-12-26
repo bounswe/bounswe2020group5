@@ -15,15 +15,12 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
-import Icon from "@material-ui/core/Icon";
-import SearchBar from "material-ui-search-bar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -60,11 +57,11 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'black',
   },
-  logged:{
-    marginLeft:"17rem",
+  logged: {
+    marginLeft: "17rem",
   },
-  notlogged:{
-    marginLeft:"10rem",
+  notlogged: {
+    marginLeft: "10rem",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -88,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  menuBackground:{
+  menuBackground: {
     backgroundColor: "white",
   }
 }));
@@ -108,19 +105,13 @@ export default function Navbar() {
     color: "black"
   };
 
-  let [isLogged,setIsLogged] = useState(false);
-  let [state,setState] = useState(false);
+  let [isLogged, setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState()
 
-
-
-
-
- // const isMenuOpen = Boolean(anchorEl);
+  // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -158,24 +149,23 @@ export default function Navbar() {
       border: '1px solid #d3d4d5',
     },
   })((props) => (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
-      {...props}
-    />
+      <Menu
+          elevation={0}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          {...props}
+      />
   ));
 
   const StyledMenuItem = withStyles((theme) => ({
     root: {
-
       '&:focus': {
         backgroundColor: theme.palette.primary.main,
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -187,79 +177,81 @@ export default function Navbar() {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <StyledMenu
-      id="customized-menu"
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={handleMenuClose}
-    >
-      <StyledMenuItem style={{background:"white"}}>
-        <Link style={{textDecoration: 'none'}} to="/profile">
-          <ListItemText primaryTypographyProps={{ style: text }} primary="My Account"/>
-       </Link>
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="My Orders" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="My Lists" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
-          <ListItemText primaryTypographyProps={{ style: text }} primary="Log out" />
-        </Link>
-      </StyledMenuItem>
-    </StyledMenu>
+      <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+      >
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/profile">
+            <ListItemText primaryTypographyProps={{style: text}} primary="My Account"/>
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="My Orders"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/profile/lists">
+            <ListItemText primaryTypographyProps={{style: text}} primary="My Lists"/>
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="Messages"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
+            <ListItemText primaryTypographyProps={{style: text}} primary="Log out"/>
+          </Link>
+        </StyledMenuItem>
+      </StyledMenu>
   );
 
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon/>
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+      <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{vertical: 'top', horizontal: 'right'}}
+          open={isMobileMenuOpen}
+          onClose={handleMobileMenuClose}
+      >
+        <MenuItem>
+          <IconButton aria-label="show 4 new mails" color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <MailIcon/>
+            </Badge>
+          </IconButton>
+          <p>Messages</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton aria-label="show 11 new notifications" color="inherit">
+            <Badge badgeContent={11} color="secondary">
+              <NotificationsIcon/>
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+          >
+            <AccountCircle/>
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu>
   );
   const menujointId = 'login menu';
   const renderjointMenu = (
@@ -273,109 +265,99 @@ export default function Navbar() {
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
           <Link style={{textDecoration: 'none'}} to="/login">
-            <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
+            <ListItemText primaryTypographyProps={{style: text}} primary="Log In"/>
           </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{backgroundColor: 'white'}}>
           <Link style={{textDecoration: 'none'}} to="/signup">
-            <ListItemText primaryTypographyProps={{ style: text }} primary="Sign Up" />
+            <ListItemText primaryTypographyProps={{style: text}} primary="Sign Up"/>
           </Link>
         </StyledMenuItem>
 
       </StyledMenu>
   );
   return (
-    <div className={classes.grow}>
-      <AppBar position="static" style={{ background: '#F3DE8A' }}>
-        <Toolbar>
-          <a className="navbar-brand" href="/">
-            <img style={{
-              height:"5rem",
-              width:"5rem",
-            }} src="/img/logo.png" className="navbar-logo" alt=""/>
-          </a>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                onChange={event=>{
-                  setValue(event.target.value)
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-                onKeyPress={(ev) => {
-                  console.log(`Pressed keyCode ${ev.key}`);
-                  if (ev.key === 'Enter') {
-                    localStorage.setItem('searchkey',value)
-                    window.location.replace('/search')
-                    
-                  }
-                }}
-            />
-          </div>
-          {isLogged ? (
-            <div className={classes.logged}>
-              <div className={classes.grow} />
-              <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="primary">
-                    <MailIcon style={{ color: '#7E7F9A' }}/>
-                  </Badge>
-                </IconButton>
-                <IconButton aria-label="show 17 new notifications" color="inherit">
-                  <Badge badgeContent={17} color="primary">
-                    <NotificationsIcon style={{ color: '#7E7F9A' }} />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="primary"
-                >
-                  <AccountCircle style={{ color: '#7E7F9A' }}/>
-                </IconButton>
+      <div className={classes.grow}>
+        <AppBar position="static" style={{background: '#F3DE8A'}}>
+          <Toolbar>
+            <a className="navbar-brand" href="/">
+              <img style={{
+                height: "5rem",
+                width: "5rem",
+              }} src="/img/logo.png" className="navbar-logo" alt=""/>
+            </a>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon/>
               </div>
-              <div className={classes.sectionMobile}>
-                <IconButton
-                  aria-label="show more"
-                  aria-controls={mobileMenuId}
-                  aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
-                  color="inherit"
-                >
-                  <MoreIcon />
-                </IconButton>
-              </div>
+              <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{'aria-label': 'search'}}
+              />
             </div>
-          ):
-          <div className={classes.notlogged}>
-            <Button
-                style={{backgroundColor:"#0B3954"}}
-                variant="contained" color="primary"
-                onMouseOver={handlejointclick}
-                onClick={handlejointclick}
-                >
-           Log In
-          </Button>
+            {isLogged ? (
+                    <div className={classes.logged}>
+                      <div className={classes.grow}/>
+                      <div className={classes.sectionDesktop}>
+                        <IconButton aria-label="show 4 new mails" color="inherit">
+                          <Badge badgeContent={4} color="primary">
+                            <MailIcon style={{color: '#7E7F9A'}}/>
+                          </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 17 new notifications" color="inherit">
+                          <Badge badgeContent={17} color="primary">
+                            <NotificationsIcon style={{color: '#7E7F9A'}}/>
+                          </Badge>
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                            color="primary"
+                        >
+                          <AccountCircle style={{color: '#7E7F9A'}}/>
+                        </IconButton>
+                      </div>
+                      <div className={classes.sectionMobile}>
+                        <IconButton
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                          <MoreIcon/>
+                        </IconButton>
+                      </div>
+                    </div>
+                ) :
+                <div className={classes.notlogged}>
+                  <Button
+                      style={{backgroundColor: "#0B3954"}}
+                      variant="contained" color="primary"
+                      onMouseOver={handlejointclick}
+                      onClick={handlejointclick}
+                  >
+                    Log In
+                  </Button>
 
 
-
-          </div>
-          }
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-      {renderjointMenu}
-    </div>
+                </div>
+            }
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+        {renderjointMenu}
+      </div>
   );
 }
+
+

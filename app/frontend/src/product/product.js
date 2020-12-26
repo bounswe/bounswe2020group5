@@ -235,7 +235,7 @@ const Product = (props) => {
                                     </Grid>) : null}
                             </Grid>
 
-                            <Grid sm item container style={{marginLeft: "2rem"}}>
+                            <Grid xs item container style={{marginLeft: "2rem"}}>
                                 <Grid>
                                     <Grid style={{marginTop: "2rem"}}>
                                         <Typography gutterBottom variant="subtitle1">
@@ -297,7 +297,7 @@ const Product = (props) => {
                                                                     color: "red"
                                                                 }}
                                                                             variant="body2" color="textSecondary">
-                                                                    {state.price - state.price * state.discount / 100}
+                                                                    {(state.price - state.price * state.discount / 100).toFixed(2)}
                                                                 </Typography>
                                                             </div>
 
