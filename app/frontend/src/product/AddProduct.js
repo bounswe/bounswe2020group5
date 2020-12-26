@@ -89,6 +89,8 @@ function AddProduct() {
     image: undefined,
     category: undefined,
     subcategory: undefined,
+    brand: "",
+    discount: 0,
   };
 
   const validate = (values) => {
@@ -125,6 +127,14 @@ function AddProduct() {
       errors.category = "Required";
     } else {
       setSubCat(values.category);
+    }
+
+    if (!values.subcategory) {
+      errors.subcategory = "Required";
+    }
+
+    if (!values.brand) {
+      errors.brand = "Required";
     }
 
     // if (!values.image) {
@@ -165,6 +175,8 @@ function AddProduct() {
       image_file: image,
       category_name: values.category,
       subcategory_name: values.subcategory,
+      brand: values.brand,
+      discount: values.discount,
     };
 
     postDataToken(url, data, localStorage.getItem("token"))
@@ -209,11 +221,27 @@ function AddProduct() {
     Electronics: [
       {
         label: "Computer and Tablets",
-        value: "Computer and Tablets val",
+        value: "PC&Tablet",
       },
       {
         label: "Cable",
-        value: "Cable val",
+        value: "Cable",
+      },
+      {
+        label: "Cable",
+        value: "Cable",
+      },
+      {
+        label: "Cable",
+        value: "Cable",
+      },
+      {
+        label: "Cable",
+        value: "Cable",
+      },
+      {
+        label: "Cable",
+        value: "Cable",
       },
     ],
     Fashion: [{}],
@@ -335,6 +363,23 @@ function AddProduct() {
                         ))}
                       </Field>
                     )}
+                    <Field
+                      component={TextField}
+                      label="Brand Name"
+                      name="brand"
+                      variant="filled"
+                    />
+                    <Field
+                      component={TextField}
+                      label="Discount Rate"
+                      name="discount"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">%</InputAdornment>
+                        ),
+                      }}
+                    />
                     {isSubmitting && (
                       <LinearProgress className={classes.progress} />
                     )}
