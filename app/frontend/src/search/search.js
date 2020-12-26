@@ -145,7 +145,9 @@ export default function ComplexGrid() {
         if (vendorkeys==0){
             setvendordata(false);
             vendorkeys=[];
-            setvendordata(true);
+            if(statepro.length==0){
+                setvendordata(true);
+            }
         }else{
             setvendordata(true);
         }
@@ -172,6 +174,7 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                 else{
+
                     if(vendorkeys.length!=0) {
                         setStatepro(json)
                     }
@@ -214,11 +217,12 @@ export default function ComplexGrid() {
 
                     setStatepro([])}
                 else{
+                    if(priceleast!=pricemost){
                     if(dataprice.length!=0) {
                         if(statepro.length!=0){
                         setStatepro(json)
                     }}
-                }
+                }}
                     setLoadPage(true);
 
 
@@ -314,16 +318,22 @@ export default function ComplexGrid() {
         let error;
         let databrand;
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
+        console.log(brandkeys)
 
 
-        if(brandkeys==null){
-            brandkeys=0
+        if(brandkeys==null ){
+            brandkeys=[]
+
         }
 
-        if (brandkeys==0){
+        if (brandkeys.length==0){
             setbranddata(false);
-            brandkeys=[];
+
+        if(statepro.length==0){
+            console.log('aa')
+
             setbranddata(true);
+            }
         }else{
             setbranddata(true);
         }
@@ -348,6 +358,7 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                setStatepro([])
                 }else{
+
                     if(brandkeys.length!=0) {
                         setStatepro(json)
 
@@ -377,23 +388,23 @@ export default function ComplexGrid() {
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
 
         if(brandkeys==null){
-            brandkeys=0
+            brandkeys=[]
         }
         if(vendorkeys==null){
-            vendorkeys=0
+            vendorkeys=[]
 
         }
 
         setvendordata(true);
         setbranddata(true);
 
-        if(brandkeys==0){
+        if(brandkeys.length==0){
             applyallbrand=false
 
         }else{
             applyallbrand=true
         }
-        if(vendorkeys==0){
+        if(vendorkeys.length==0){
 
             applyallvendor=false
 

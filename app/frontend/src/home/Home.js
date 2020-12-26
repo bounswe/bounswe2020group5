@@ -50,7 +50,7 @@ function Home() {
                     <div>
                         <CategoryTab/>
                     </div>
-                    <div>
+                    <div style={{marginTop:'2rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{
                                 color: "black",
@@ -70,7 +70,7 @@ function Home() {
                     <div>
                         <SimpleGridList tileData={bestsellers}/>
                     </div>
-                    <div>
+                    <div style={{marginTop:'5rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{
                                 color: "black",
@@ -90,7 +90,7 @@ function Home() {
                     <div>
                         <SimpleGridList tileData={newarrivals}/>
                     </div>
-                    <div>
+                    <div style={{marginTop:'5rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{
                                 color: "black",
@@ -107,7 +107,7 @@ function Home() {
                             disabled={true}
                         />
                     </div>
-                    <div>
+                    <div style={{marginBottom:'5rem'}}>
                         <SimpleGridList tileData={trending}/>
                     </div>
                     <div>

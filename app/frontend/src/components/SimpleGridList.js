@@ -23,14 +23,15 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'nowrap',
     transform: 'translateZ(0)',
     '&::-webkit-scrollbar': {
-      width: '0.2em'
+      width: '0.2rem',
+      height:'0.5rem'
     },
     '&::-webkit-scrollbar-track': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.8)',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.6)',
       'border-radius': '10px',
     },
     '&::-webkit-scrollbar-thumb': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.8)',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.6)',
       'border-radius': '10px',
     }
   },
@@ -43,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
   titleBar: {
     background: "white"
+  },
+  subtitle_disc: {
+    color: "red",
+    fontSize: 18,
   },
 }));
 
@@ -77,40 +82,56 @@ export const SimpleGridList = ({tileData}) => {
   return (
     <Paper className={classes.root} >
 
-      <GridList className={classes.gridList}  cols={3} >
-        {tileData.map((tile,index) => (
-
+      <GridList style={{marginBottom:'0.5rem'}} className={classes.gridList}  cols={3} >
+        {tileData.map((tile,index) => {
+          if (tile.discount > 0) {
+          return(
           <GridListTile style={{height:"23rem"}}>
+            <Link to={{pathname: `product/${tile.id}`}}>
             <img onMouseOver={()=>handleover(index)} onMouseLeave={()=>handleleave(index)}style={selected==index?{marginLeft:'4rem',width:"19.5rem",height:"19.5rem"}:
                 {marginLeft:'4rem',width:"17.5rem",height:"17.5rem"}}
                  src={tile.image_url} alt={tile.name}
               />
+            </Link>
             <GridListTileBar   onMouseOver={()=>handleover(index)} onMouseLeave={()=>handleleave(index)}style={selected==index?{ backgroundColor:'rgb(255,69,0,.3)',height:'6rem',marginLeft:'1rem'}:
                 { backgroundColor:'rgb(211,211,211,.7)',height:'6rem',marginLeft:'1rem'}}
               title={tile.name.toUpperCase()}
-              subtitle={<span><br></br>{tile.price}</span>}
+              subtitle={"$" + (tile.price - tile.price * tile.discount / 100).toFixed(2)}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
-                subtitle: classes.subtitle,
+                subtitle: classes.subtitle_disc,
 
               }}
+              actionPosition={'left'}
               actionIcon={
-                <Link onClick={() => localStorage.setItem("id",JSON.stringify(tile.id))}
-                      style={{textDecoration: 'none'}} to="/product">
-                <IconButton  style={{color: 'white'}}
-                    aria-label={`info about ${tile.name}`}
-                    className={classes.icon}
-                    onClick={() => handleIconClick(index, tile.icon)}
+                <img style={{width: "2.5rem", height: "2.5rem"}} src="/img/discount.png"
+                alt="discount icon"/>}
 
-                >
-                  <InfoIcon />
-                </IconButton>
-                </Link>
-              }
             />
-          </GridListTile>
-        ))}
+          </GridListTile>)
+          }else{
+          return(
+          <GridListTile style={{height: "23rem"}}>
+          <Link to={{pathname: `product/${tile.id}`}}>
+          <img onMouseOver={()=>handleover(index)} onMouseLeave={()=>handleleave(index)}style={selected==index?{marginLeft:'4rem',width:"19.5rem",height:"19.5rem"}:
+              {marginLeft:'4rem',width:"17.5rem",height:"17.5rem"}}
+               src={tile.image_url} alt={tile.name}
+          />
+          </Link>
+          <GridListTileBar onMouseOver={()=>handleover(index)} onMouseLeave={()=>handleleave(index)}style={selected==index?{ backgroundColor:'rgb(255,69,0,.3)',height:'6rem',marginLeft:'1rem'}:
+              { backgroundColor:'rgb(211,211,211,.7)',height:'6rem',marginLeft:'1rem'}}
+          title={tile.name}
+          subtitle={"$" + tile.price}
+          classes={{
+          root: classes.titleBar,
+          title: classes.title,
+          subtitle: classes.subtitle,
+        }}
+          />
+          </GridListTile>)
+        }
+        })}
       </GridList>
     </Paper>
   );
