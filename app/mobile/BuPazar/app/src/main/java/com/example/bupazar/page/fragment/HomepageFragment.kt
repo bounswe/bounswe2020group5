@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.ProductAdapter
 import com.example.bupazar.model.ProductDetails
 import com.example.bupazar.service.RestApiService
@@ -14,10 +15,12 @@ import kotlinx.android.synthetic.main.fragment_homepage.*
 
 class HomepageFragment : Fragment() {
 
+    private var userData: LoginResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            userData = arguments?.getSerializable("USERDATA") as LoginResponse
         }
     }
 
@@ -41,7 +44,7 @@ class HomepageFragment : Fragment() {
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
                 productAdapter!!.onItemClick = { product ->
                         requireActivity().supportFragmentManager.beginTransaction().apply {
-                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(product.productId!!))
+                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(userData!!.authToken, product.productId!!))
                             commit()
                     }
                 }
