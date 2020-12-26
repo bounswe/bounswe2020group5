@@ -56,3 +56,14 @@ def create_message(context, chat, whose_message=1):
     m = Message(context=context, chat=chat, whose_message=whose_message,)
     m.save()
     return m
+
+def is_found_a_chat(chat_id,usr):
+    try:
+        chat = None
+        if usr.is_customer:
+            chat = Chat.objects.get(id=chat_id, customer_id=usr.id)
+        else:
+            chat = Chat.objects.get(id=chat_id, vendor_id=usr.id)
+        return chat
+    except:
+        return None

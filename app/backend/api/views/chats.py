@@ -3,8 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import Message, Chat, User
-from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, SendMessageSerializer, GetLastMessageSerializer, GetChatHistorySerializer
-from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message
+from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, PropertiesSerializer, ErrorSerializer
+from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer
+from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message, is_found_a_chat
 from rest_framework import serializers
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -27,68 +28,81 @@ class ChatViewSet(viewsets.GenericViewSet):
     serializer_classes = {
         'create_chat': ChatCreateSerializer,
         'send_message': SendMessageSerializer,
-        'get_last_message': GetLastMessageSerializer,
-        'get_chat_history': GetChatHistorySerializer,
+        'get_last_message': GetChatPropertySerializer,
+        'get_chat_history': GetChatPropertySerializer,
+        'get_all_chats': EmptySerializer,
+        'delete_chat': GetChatPropertySerializer,
+        'delete_message':GetMessagePropertySerializer,
     }
-    
-
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    ##TODO change the http return values
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def create_chat(self, request):
-        customer_id = request.user.id
         vendor_id = request.data.get("vendor_id")
-        context = request.data.get("context")
-        vendor = User.objects.filter(id=vendor_id)
-        if not vendor:
-            return Response(data={'error': 'There is not such vendor with that id'}, status=HTTP_400_BAD_REQUEST)
+        user = User.objects.get(id=request.user.id)
+        if not user.is_customer:
+            return Response(data={'error': 'Only customers can create a chat'}, status=HTTP_400_BAD_REQUEST)
+        try:
+            vendor = User.objects.get(id=vendor_id)
+        except:
+            return Response(data={'error': 'There is not such user with that id'}, status=HTTP_400_BAD_REQUEST)
+        if not vendor.is_vendor:
+            return Response(data={'error': 'The user is not a vendor'}, status=HTTP_400_BAD_REQUEST)
+        is_present = Chat.objects.filter(vendor_id=vendor_id,customer_id=user.id)
+        if is_present:
+            return Response(data={'error': 'The chat with this vendor already exists'}, status=HTTP_400_BAD_REQUEST)
+        customer_id = user.id 
         chat = create_chat(customer_id, vendor_id)
-        message = create_message(context,chat)
-        return Response(data={"success":"conversation is created. Happy chatting"}, status=status.HTTP_200_OK)
+        data = {
+            "success": "conversation is created. Happy chatting",
+            "chat_id": chat.id,
+            "data_created": chat.date_created
+            }
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def send_message(self, request):
         chat_id = request.data.get("chat_id")
         context = request.data.get("context")
-        chat = Chat.objects.get(id=chat_id)
-        if not chat:
-            return Response(data={'error': 'There is not such chat with that id'}, status=HTTP_400_BAD_REQUEST)
-        try:
-            usr = User.objects.get(id=request.user.id)
-            message = create_message(context,chat,usr.is_customer)
-        except:
-            return Response(data={'error': 'the messages is not sent'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(data={"success":"message is sent."}, status=status.HTTP_200_OK)
+        usr = User.objects.get(id=request.user.id)
+        chat = is_found_a_chat(chat_id, usr)
+        if chat == None:
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
+        message = create_message(context,chat,usr.is_customer)
+        data = {
+            "success":"message is sent",
+            "message_id":message.id,
+            "date_sent": message.date_sent
+        }
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PropertiesSerializer,status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_last_message(self, request):
         chat_id = request.data.get("chat_id")
-        chat = None
-        if request.user.is_vendor:
-            chat = Chat.objects.get(id=chat_id,vendor_id=request.user.id)
-        else:
-            chat = Chat.objects.get(id=chat_id,customer_id=request.user.id)
+        usr = User.objects.get(id=request.user.id)
+        chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={'error': 'There is not such chat with that id'}, status=HTTP_400_BAD_REQUEST)
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
         message = Message.objects.filter(chat_id=chat_id).last()
         if not message:
-            return Response(data={"data":"there is not message in this chat"}, status=status.HTTP_200_OK)
-        return Response(data={"success":message.context}, status=status.HTTP_200_OK)
+            return Response(data={"error":"there is no message in this chat"}, status=HTTP_404_NOT_FOUND)
+        data = {
+            "success":message.context,
+            "message_id":message.id,
+            "date_sent": message.date_sent
+        }
+        return Response(data=data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_chat_history(self, request):
-        user_id = request.user.id
-
-        usr = User.objects.get(id=user_id)
-        chat = None
-        if usr.is_customer:
-            chat = Chat.objects.get(customer_id=user_id)
-        else:
-            chat = Chat.objects.get(vendor_id=user_id)
+        chat_id = request.data.get("chat_id")
+        usr = User.objects.get(id=request.user.id)
+        chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={"data":"there is not message in this chat"}, status=status.HTTP_200_OK)
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
         messages = chat.message_set.all().values()
         data = {}
         for count, message in enumerate(messages):
@@ -98,7 +112,53 @@ class ChatViewSet(viewsets.GenericViewSet):
             data[str(count)] = {'whose_message':whose_message, 'context': message['context']}
         return Response(data=data, status=status.HTTP_200_OK)
    
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
+    def get_all_chats(self, request):
+        user_id = request.user.id
+        usr = User.objects.get(id=user_id)
+        chats = None
+        if usr.is_customer:
+            chats = Chat.objects.filter(customer_id=user_id)
+        else:
+            chats = Chat.objects.filter(vendor_id=user_id)
+        if not chats:
+            return Response(data={"error":"there is no chat the user is involved"}, status=status.HTTP_404_NOT_FOUND)
+        data = {"ids":[]}
+        for chat in chats.values():
+            data["ids"].append(chat['id'])
+        return Response(data=data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(method='delete', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['DELETE', ], detail=False, permission_classes=[IsAuthenticated, ])
+    def delete_chat(self, request):
+        chat_id = request.data.get("chat_id")
+        usr = User.objects.get(id=request.user.id)
+        chat = is_found_a_chat(chat_id, usr)
+        if chat == None:
+            return Response(data={"error":"The chat does not exists or there is no such chat the user is allowed to delete"}, status=HTTP_404_NOT_FOUND)
+        try:
+            chat.delete()
+        except:
+            return Response(data={"error":"The chat is not deleted"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(data={"success":"The chat is deleted"}, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(method='delete', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer,status.HTTP_500_INTERNAL_SERVER_ERROR: ErrorSerializer})
+    @action(methods=['DELETE', ], detail=False, permission_classes=[IsAuthenticated, ])
+    def delete_message(self, request):
+        message_id = request.data.get("message_id")
+        chat_id = request.data.get("chat_id")
+        user_id = request.user.id
+        usr = User.objects.get(id=user_id)
+        
+        message = Message.objects.filter(whose_message=usr.is_customer,id=message_id,chat_id=chat_id)
+        if not message:
+            return Response(data={"error":"The message does not exists or there is no message the user is allowed to delete"}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            message.delete()
+        except Exception as e:
+            return Response(data={"error":"The message is not deleted"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(data={"success":"The message is deleted"}, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
