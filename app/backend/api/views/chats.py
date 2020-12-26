@@ -109,7 +109,7 @@ class ChatViewSet(viewsets.GenericViewSet):
             whose_message = "vendor"
             if message['whose_message'] == True:
                 whose_message = 'customer'
-            data[str(count)] = {'whose_message':whose_message, 'context': message['context']}
+            data[str(count)] = {'whose_message':whose_message, 'context': message['context'], 'date_sent': message['date_sent']}
         return Response(data=data, status=status.HTTP_200_OK)
    
     @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
