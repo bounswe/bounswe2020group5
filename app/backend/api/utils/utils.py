@@ -1,8 +1,10 @@
+  
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from ..models import Customer, Vendor
 from ..models import Product
 from ..models import TempUser
+from ..models import Chat, Message
 
 def create_user_account(email, username, first_name,
                         last_name, password, is_customer, is_vendor, address, **extra_fields):
@@ -44,3 +46,24 @@ def send_email(template,to):
         except:
             index+=1  
     return index
+
+def create_chat(customer_id, vendor_id):
+    c = Chat(customer_id=customer_id, vendor_id=vendor_id)
+    c.save()
+    return c
+
+def create_message(context, chat, whose_message=1):
+    m = Message(context=context, chat=chat, whose_message=whose_message,)
+    m.save()
+    return m
+
+def is_found_a_chat(chat_id,usr):
+    try:
+        chat = None
+        if usr.is_customer:
+            chat = Chat.objects.get(id=chat_id, customer_id=usr.id)
+        else:
+            chat = Chat.objects.get(id=chat_id, vendor_id=usr.id)
+        return chat
+    except:
+        return None
