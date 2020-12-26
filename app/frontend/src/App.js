@@ -28,7 +28,7 @@ function App() {
             exact
             component={EmailVerification}
           />
-          <Route path="/product" component={product} />
+          <Route exact path="/product/:id" component={product} />
           <Route path="/search" component={search} />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
