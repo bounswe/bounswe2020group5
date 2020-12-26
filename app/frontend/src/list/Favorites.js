@@ -11,6 +11,9 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Link, useHistory} from "react-router-dom";
 import List from "@material-ui/core/List";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.8rem",
         color: "#7A0010",
         display: "inline-block"
+    },
+    iconbutton: {
+        marginRight:"1rem",
+        "&:hover": {
+            backgroundColor: "transparent",
+        },
     }
 }));
 
@@ -46,6 +55,21 @@ export default function Favorites() {
     const [loadPage, setLoadPage] = React.useState(false);
     const [list, setList] = React.useState([]);
     let history = useHistory();
+
+    const HandleRemove = (event) => {
+        fetch(serverUrl + 'api/favorites/remove/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'product_id': event.target.value })
+        }).then(res => res.json())
+            .then(json => {
+                console.log(json)
+                if(json.ok){
+                    alert("Product has been removed from your favorites!")
+                    window.location.reload()
+                } else alert(json.message)
+            })
+    };
 
     useEffect(() => {
         if (token) {
@@ -74,6 +98,15 @@ export default function Favorites() {
             <div>
                 <CategoryTab/>
             </div>
+            <Breadcrumbs style={{color: "#0B3954", marginTop:"1rem"}} separator="›">
+                <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/profile">
+                    My Account
+                </Link>
+                <Link style={{color: "#0B3954"}} to="/profile/lists">
+                    My Lists
+                </Link>
+                <Typography> Favorites </Typography>
+            </Breadcrumbs>
             {loadPage ? (
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={6}>
@@ -93,9 +126,12 @@ export default function Favorites() {
                                 {list.products.map((product, index) => (
 
                                     <Box style={{marginTop: "1rem", marginBottom: "1rem"}} key={index}>
+                                        <Grid xs container>
+                                            <IconButton size="small" className={classes.iconbutton} value={product.id} onClick={HandleRemove}>
+                                                <DeleteIcon/>
+                                            </IconButton>
                                         <Link to={{pathname: `/product/${product.id}`}}
                                               style={{textDecoration: "none", color: "black"}}>
-
                                             <Grid xs container>
                                                 <Grid item>
                                                     <img style={{width: "6rem", height: "6rem"}} src={product.image_url}
@@ -132,7 +168,7 @@ export default function Favorites() {
                                                 </Grid>
                                             </Grid>
                                         </Link>
-
+                                        </Grid>
                                         <Divider/>
                                     </Box>
 

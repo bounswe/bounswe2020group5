@@ -14,6 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import {Favorite} from "@material-ui/icons";
 import {Link, useHistory} from "react-router-dom";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,6 +76,14 @@ export default function ListPage() {
             <div>
                 <CategoryTab/>
             </div>
+            <Breadcrumbs style={{color: "#0B3954", marginTop:"1rem"}} separator="›">
+                <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/profile">
+                    My Account
+                </Link>
+                <Link style={{color: "#0B3954"}} to="/profile/lists">
+                    My Lists
+                </Link>
+            </Breadcrumbs>
             <Grid container justify="center" spacing={3}>
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>

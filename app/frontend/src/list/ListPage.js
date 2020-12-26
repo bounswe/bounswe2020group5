@@ -11,6 +11,9 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Link, useHistory} from "react-router-dom";
 import List from "@material-ui/core/List";
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from "@material-ui/core/IconButton";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.8rem",
         color: "#7A0010",
         display: "inline-block"
+    },
+    iconbutton: {
+        marginRight:"1rem",
+        width: "auto",
+        "&:hover": {
+            backgroundColor: "white",
+        },
     }
 }));
 
@@ -47,6 +57,36 @@ const ListPage = (props) => {
     const [loadPage, setLoadPage] = React.useState(false);
     const [list, setList] = React.useState([]);
     let history = useHistory();
+
+    const HandleRemove = (event) => {
+            fetch(serverUrl + 'api/product-lists/opts/remove_product/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify({'list_id': id, 'product_id': event.target.value })
+            }).then(res => res.json())
+                .then(json => {
+                    console.log(json)
+                    if(json.ok){
+                        alert("Product has been removed from your list!")
+                        window.location.reload()
+                    } else alert(json.message)
+                })
+    };
+
+    const HandleDelete = () => {
+        fetch(serverUrl + 'api/product-lists/opts/delete/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'list_id': id })
+        }).then(res => res.json())
+            .then(json => {
+                console.log(json)
+                if(json.ok){
+                    alert("Your list has been deleted!")
+                    history.push('/profile/lists/')
+                } else alert(json.message)
+            })
+    };
 
     useEffect(() => {
         if (token) {
@@ -67,6 +107,7 @@ const ListPage = (props) => {
     }, []);
 
 
+
     return (
         <div>
             <div className="Home">
@@ -75,71 +116,85 @@ const ListPage = (props) => {
             <div>
                 <CategoryTab/>
             </div>
+            <Breadcrumbs style={{color: "#0B3954", marginTop:"1rem"}} separator="›">
+                <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/profile">
+                    My Account
+                </Link>
+                <Link style={{color: "#0B3954"}} to="/profile/lists">
+                    My Lists
+                </Link>
+                <Typography> {list.name} </Typography>
+            </Breadcrumbs>
             {loadPage ? (
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            <Typography variant="h4" gutterBottom>
-                                <Box color={"#0B3954"} fontWeight="fontWeightBold" m={1}>
-                                    {list.name}
-                                </Box>
-                            </Typography>
+                                <Grid xs container >
+                                    <Typography variant="h4" gutterBottom display={"inline"}>
+                                        <Box color={"#0B3954"} fontWeight="fontWeightBold" m={1}>
+                                            {list.name}
+                                        </Box>
+                                    </Typography>
+                                    <IconButton className={classes.iconbutton} onClick={HandleDelete}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                </Grid>
+
                             {list.products.length > 1 ? (
                                 <Typography style={{marginLeft: "1rem"}}
                                             variant="inherit"> {list.products.length} Products </Typography>
                             ) : <Typography style={{marginLeft: "1rem"}}
                                             variant="inherit"> {list.products.length} Product </Typography>}
-
                             <List>
                                 {list.products.map((product, index) => (
-
                                     <Box style={{marginTop: "1rem", marginBottom: "1rem"}} key={index}>
-                                        <Link to={{pathname: `/product/${product.id}`}}
-                                              style={{textDecoration: "none", color: "black"}}>
-
                                             <Grid xs container>
-                                                <Grid item>
-                                                    <img style={{width: "6rem", height: "6rem"}} src={product.image_url}
-                                                         alt={product.name}/>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography className={classes.header}> {product.name} </Typography>
-                                                    {product.discount > 0 ? (
-                                                        <Grid container>
-                                                            <Grid item>
+                                                    <IconButton className={classes.iconbutton} value={product.id} onClick={HandleRemove}>
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                <Link to={{pathname: `/product/${product.id}`}}
+                                                      style={{textDecoration: "none", color: "black"}}>
+                                                    <Grid xs container>
+                                                    <Grid item>
+                                                        <img style={{width: "6rem", height: "6rem"}} src={product.image_url}
+                                                             alt={product.name}/>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Typography className={classes.header}> {product.name} </Typography>
+                                                        {product.discount > 0 ? (
+                                                            <Grid container>
+                                                                <Grid item>
+                                                                    <Typography
+                                                                        className={classes.subtext}> {product.vendor} </Typography>
+                                                                    <Typography
+                                                                        className={classes.subtext}> $ {product.price} </Typography>
+                                                                    <Typography
+                                                                        className={classes.subtext_discount}> $ {(product.price - product.price * product.discount / 100).toFixed(2)} </Typography>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <img style={{
+                                                                        width: "3rem",
+                                                                        height: "3rem",
+                                                                        marginLeft: "2rem"
+                                                                    }} src="/img/discount.png"/>
+                                                                </Grid>
+                                                            </Grid>
+                                                        ) : (
+                                                            <div>
                                                                 <Typography
                                                                     className={classes.subtext}> {product.vendor} </Typography>
                                                                 <Typography
                                                                     className={classes.subtext}> $ {product.price} </Typography>
-                                                                <Typography
-                                                                    className={classes.subtext_discount}> $ {(product.price - product.price * product.discount / 100).toFixed(2)} </Typography>
-                                                            </Grid>
-                                                            <Grid item>
-                                                                <img style={{
-                                                                    width: "3rem",
-                                                                    height: "3rem",
-                                                                    marginLeft: "2rem"
-                                                                }} src="/img/discount.png"/>
-                                                            </Grid>
-                                                        </Grid>
-                                                    ) : (
-                                                        <div>
-                                                            <Typography
-                                                                className={classes.subtext}> {product.vendor} </Typography>
-                                                            <Typography
-                                                                className={classes.subtext}> $ {product.price} </Typography>
-                                                        </div>
-                                                    )}
+                                                            </div>
+                                                        )}
+                                                    </Grid>
                                                 </Grid>
+                                                </Link>
                                             </Grid>
-                                        </Link>
-
                                         <Divider/>
                                     </Box>
-
                                 ))}
                             </List>
-
                         </Paper>
                     </Grid>
                 </Grid>) : null}
