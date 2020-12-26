@@ -12,18 +12,18 @@ import {
   InputBase,
   withStyles
 } from "@material-ui/core";
-import {Link} from "react-router-dom";
+
+
 
 
 const styles = theme => {};
 
-const subElectronic = ["PC & Tablet", "Smartphone", "White Appliances", "Photo & Camera", "Game&Game Console"];
-const subFashion = ["Woman Clothing", "Accessory", "Sportswear", "Man Clothing", "Shoes&Bags"];
+const subElectronic = ["PC & Tablet", "Smartphone", "White Appliances", "Photo & Camera", "Game & Game Console"];
+const subFashion = ["Woman Clothing", "Accessory", "Sportswear", "Man Clothing", "Shoes & Bags"];
 const subHome = ["Kitchenware", "Beds", "Decoration", "Office Furniture"];
 const subSport = ["Sport Clothing", "Fitness"];
 const subPersonal = ["Perfume", "Makeup", "Skin Care", "Oral Care", "Hair Care"];
-const subHobbies = ["Book&Magazine", "Musical Instrument", "Art"];
-
+const subHobbies = ["Book & Magazine", "Musical Instrument", "Art"];
 
 class AppBarTop extends React.Component {
   state = {
@@ -105,46 +105,64 @@ class AppBarTop extends React.Component {
     });
   };
 
-  handleMenuClose = () => {
+  handleMenuClose = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open: false,
       anchorEl: null
     });
+    window.location.href="/category/electronic/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose2 = () => {
+  handleMenuClose2 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open2: false,
       anchorEl2: null
     });
+    window.location.href="/category/fashion/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose3 = () => {
+  handleMenuClose3 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open3: false,
       anchorEl3: null
     });
+    window.location.href="/category/home&kitchen/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose4 = () => {
+  handleMenuClose4 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory",temp.replace(" ",""));
     this.setState({
       open4: false,
       anchorEl4: null
     });
+    window.location.href="/category/sports&outdoors/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose5 = () => {
+  handleMenuClose5 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open5: false,
       anchorEl5: null
     });
+    window.location.href="/category/personal/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose6 = () => {
+  handleMenuClose6 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open6: false,
       anchorEl6: null
     });
+    window.location.href="/category/hobbies/"+temp.toLowerCase().replace(" ","");
   };
 
   handleMenuCloseAll = () =>{
@@ -247,10 +265,10 @@ class AppBarTop extends React.Component {
               {localStorage.setItem("category", this.state.value)}
             </Tabs>
             <Popper open={open} anchorEl={anchorEl} id="menu-list-grow-electronic" >
-              <Paper onMouseLeave={this.handleMenuClose.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList >
                   {subElectronic.map((item, index) => (
-                      <MenuItem key={index} onClick={this.handleMenuClose}>
+                      <MenuItem key={index} onClick={()=>this.handleMenuClose(item)}>
                         {item}
                       </MenuItem>
                   ))}
@@ -258,10 +276,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open2} anchorEl={anchorEl2} id="menu-list-grow-fashion">
-              <Paper onMouseLeave={this.handleMenuClose2.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subFashion.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose2}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose2(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -269,10 +287,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open3} anchorEl={anchorEl3} id="menu-list-grow-home">
-              <Paper onMouseLeave={this.handleMenuClose3.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subHome.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose3}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose3(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -280,10 +298,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open4} anchorEl={anchorEl4} id="menu-list-grow-sport">
-              <Paper onMouseLeave={this.handleMenuClose4.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subSport.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose4}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose4(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -291,10 +309,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open5} anchorEl={anchorEl5} id="menu-list-grow-personal">
-              <Paper onMouseLeave={this.handleMenuClose5.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subPersonal.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose5}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose5(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -302,10 +320,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open6} anchorEl={anchorEl6} id="menu-list-grow-hobbies">
-              <Paper onMouseLeave={this.handleMenuClose6.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subHobbies.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose6}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose6(item)}>
                       {item}
                     </MenuItem>
                   ))}

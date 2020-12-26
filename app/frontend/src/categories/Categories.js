@@ -84,20 +84,29 @@ export default function Categories() {
   let uniquevendor=new Set();
 
   useEffect(() => {
-      const data = {
+    let data = "";
+    let url = "";
+    if (localStorage.getItem("subcategory")) {
+      data = {
+        subcategory_name: localStorage.getItem("subcategory"),
+      }
+      localStorage.removeItem("subcategory");
+      url = serverUrl + 'api/products/subcategory/'
+    } else if (localStorage.getItem("category")) {
+      data = {
         category_name: localStorage.getItem("category"),
       }
-      console.log(data)
       localStorage.removeItem("category");
-
-      fetch(serverUrl + 'api/products/category/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
-      }).then(res => res.json())
-        .then(json => {
-          setAllProducts ( json);
-          setLoadPage(true);
+      url = serverUrl + 'api/products/category/'
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    }).then(res => res.json())
+      .then(json => {
+        setAllProducts(json);
+        setLoadPage(true);
 
           filledidproducts = json.map((product) => (product.id));
           setselectid(filledidproducts)
