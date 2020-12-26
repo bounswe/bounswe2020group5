@@ -2,8 +2,9 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from ..custom_permissions import IsAuthCustomer, IsAuthVendor
-from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer
-from ..models import Product, Order, Purchase 
+from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
+from ..serializers import CustomerPurchasedSerializer, MessageSerializer, CustomerOrderSerializer
+from ..models import Product, Order, Purchase, Customer, Vendor
 from rest_framework.response import Response
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
@@ -73,4 +74,50 @@ def customer_cancel_order(request):
               product.save()
     
     return Response(data={'success': 'Order is successfully canceled.'}, status=status.HTTP_200_OK)
-    
+
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: CustomerOrderSerializer})
+@api_view(['GET'])
+@permission_classes([IsAuthCustomer])
+def get_customer_orders(request):
+    customer = Customer.objects.get(user=request.user)
+    my_orders = Order.objects.filter(customer=customer)
+    order_list = []
+    for order in my_orders:
+        content = {}
+        content['order_id'] = order.id
+        queryset = Purchase.objects.filter(order=order)
+        content['purchases'] = PurchaseSerializer(queryset, many=True).data
+        order_list.append(content)
+        
+    return Response(data=order_list, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer}, request_body=UpdateStatusSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthVendor])
+def vendor_update_status(request):
+    serializer = UpdateStatusSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    order_id = serializer.validated_data['order_id']
+    status = serializer.validated_data['status']
+    vendor = Vendor.objects.get(user=request.user)
+    order = Order.objects.get(id=order_id)
+    purchases = Purchase.objects.filter(vendor=vendor, order=order)
+    for purchase in purchases:
+        if purchase.status != status:
+            purchase.status = status
+            purchase.save()
+    return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageSerializer}, request_body=CustomerPurchasedSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def customer_purchased(request):
+    serializer = CustomerPurchasedSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    product_id = serializer.validated_data['product_id']
+    customer = Customer.objects.get(user=request.user)
+    purchases = Purchase.objects.filter(customer=customer, product_id=product_id)
+    for purchase in purchases:
+        if not(purchase.status == 'Ccancelled' or purchase.status == 'Vcancelled'):
+            return Response(data={'message': True}, status=status.HTTP_200_OK)
+    return Response(data={'message': False}, status=status.HTTP_200_OK)

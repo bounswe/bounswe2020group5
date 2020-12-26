@@ -39,6 +39,10 @@ from .orders import DeleteCreditCardSerializer
 from .orders import CancelOrderSerializer
 from .orders import CancelPurchaseSerializer
 from .orders import PurchaseSerializer
+from .orders import UpdateStatusSerializer
+from .orders import CustomerPurchasedSerializer
+from .orders import MessageSerializer
+from .orders import CustomerOrderSerializer
 from .products import HomePageRequestSerializer
 from .products import HomePageResponseSerializer
 from .products import UpdateProductSerializer

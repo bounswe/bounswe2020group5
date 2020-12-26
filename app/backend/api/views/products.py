@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer, ProductListResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
@@ -103,6 +103,16 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             customer = Customer.objects.get(user=request.user)
         except:
             return Response(data={'error': 'Unauthorized user'}, status=status.HTTP_401_UNAUTHORIZED)
+        purchases = Purchase.objects.filter(customer=customer, product=product)
+        if len(purchases) == 0:
+            return Response(data={'error': 'Cannot comment on this product'}, status=status.HTTP_400_BAD_REQUEST)
+        valid_purchase = False
+        for purchase in purchases:
+            if not(purchase.status == 'Ccancelled' or purchase.status == 'Vcancelled'):
+                valid_purchase = True
+                break
+        if not valid_purchase:        
+            return Response(data={'error': 'Cannot comment on this product'}, status=status.HTTP_400_BAD_REQUEST)
         comment_text = request.data.get("comment_text")
         is_anonymous = request.data.get("is_anonymous")
         rating_score = request.data.get("rating_score")

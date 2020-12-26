@@ -34,3 +34,18 @@ class PurchaseSerializer(serializers.ModelSerializer):
     
     def get_product(self, obj):
         return ProductSerializer(obj.product).data
+
+class UpdateStatusSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField(required=True)
+    status = serializers.CharField(max_length=100, required=True)
+
+class CustomerPurchasedSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+
+class MessageSerializer(serializers.Serializer):
+    message = serializers.BooleanField()
+
+class CustomerOrderSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField()
+    purchases = serializers.ListField(child = PurchaseSerializer())
+

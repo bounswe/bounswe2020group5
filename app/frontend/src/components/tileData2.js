@@ -12,30 +12,6 @@ export const tileData2 = [
     title: 'Tefal Frying pan',
     price: '202 TL',
   },
-  {
-    img: image2,
-    title: 'Euro Akdeniz Aquarium Set',
-    price: '1096 TL',
-  },
-  {
-    img: image3,
-    title: 'Purina Cat Food',
-    price: '69 TL',
-  },
-  {
-    img: image4,
-    title: 'Faber-Castle Black Mechanical pencil',
-    price: '39 TL',
-  },
-  {
-    img: image5,
-    title: 'Polaxtor HDMI Cable',
-    price: '57 TL',
-  },
-  {
-    img: image6,
-    title: 'Toshiba Full HD Smart Led TV',
-    price: '3699 TL',
-  },
+
 
 ];

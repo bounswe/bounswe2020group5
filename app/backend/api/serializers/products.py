@@ -135,5 +135,6 @@ class HomePageRequestSerializer(serializers.Serializer):
     number_of_products = serializers.IntegerField()
 
 class HomePageResponseSerializer(serializers.Serializer):
-    newest_arrivals = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
-    best_sellers = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
+    newest_arrivals = serializers.ListField(child = ProductSerializer())
+    best_sellers = serializers.ListField(child = ProductSerializer())
+    trends = serializers.ListField(child = ProductSerializer())
