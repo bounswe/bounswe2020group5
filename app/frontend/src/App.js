@@ -12,6 +12,7 @@ import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
 import search from "./search/search"
+import Payment from "./payment/Payment";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/profile/changepassword" component={ChangePassword} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
+          <Route path="/payment" exact component={Payment} />
           <Route component={NoMatch} />
         </Switch>
       </div>
