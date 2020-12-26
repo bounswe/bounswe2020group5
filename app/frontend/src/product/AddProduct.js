@@ -137,9 +137,6 @@ function AddProduct() {
       errors.brand = "Required";
     }
 
-    // if (!values.image) {
-    //   errors.image = "Required";
-    // }
     return errors;
   };
 
@@ -213,42 +210,119 @@ function AddProduct() {
     },
     {
       value: "Hobbies&Books",
-      label: "Hobbies&Books",
+      label: "Hobbies",
     },
   ];
 
   const subCategories = {
     Electronics: [
       {
-        label: "Computer and Tablets",
+        label: "PC&Tablet",
         value: "PC&Tablet",
       },
       {
-        label: "Cable",
-        value: "Cable",
+        label: "Smartphone",
+        value: "Smartphone",
       },
       {
-        label: "Cable",
-        value: "Cable",
+        label: "WhiteAppliances",
+        value: "WhiteAppliances",
       },
       {
-        label: "Cable",
-        value: "Cable",
+        label: "Photo&Camera",
+        value: "Photo&Camera",
       },
       {
-        label: "Cable",
-        value: "Cable",
-      },
-      {
-        label: "Cable",
-        value: "Cable",
+        label: "Game&GameConsole",
+        value: "Game&GameConsole",
       },
     ],
-    Fashion: [{}],
-    "Home&Kitchen": [{}],
-    "Personal Care": [{}],
-    "Sports&Outdoors": [{}],
-    "Hobbies&Books": [{}],
+    Fashion: [
+      {
+        label: "WomanClothing",
+        value: "WomanClothing",
+      },
+      {
+        label: "Accessory",
+        value: "Accessory",
+      },
+      {
+        label: "Sportswear",
+        value: "Sportswear",
+      },
+      {
+        label: "ManClothing",
+        value: "ManClothing",
+      },
+      {
+        label: "Shoes&Bags",
+        value: "Shoes&Bags",
+      },
+    ],
+    "Home&Kitchen": [
+      {
+        label: "Kitchenware",
+        value: "Kitchenware",
+      },
+      {
+        label: "Beds",
+        value: "Beds",
+      },
+      {
+        label: "Decoration",
+        value: "Decoration",
+      },
+      {
+        label: "OfficeFurniture",
+        value: "OfficeFurniture",
+      },
+    ],
+    "Personal Care": [
+      {
+        label: "Perfume",
+        value: "Perfume",
+      },
+      {
+        label: "Makeup",
+        value: "Makeup",
+      },
+      {
+        label: "SkinCare",
+        value: "SkinCare",
+      },
+      {
+        label: "OralCare",
+        value: "OralCare",
+      },
+      {
+        label: "HairCare",
+        value: "HairCare",
+      },
+    ],
+    "Sports&Outdoors": [
+      {
+        label: "SportClothing",
+        value: "SportClothing",
+      },
+      {
+        label: "Fitness",
+        value: "Fitness",
+      },
+    ],
+    "Hobbies&Books": [
+      {
+        label: "Book&Magazine",
+        value: "Book&Magazine",
+      },
+      {
+        label: "MusicalInstrument",
+        value: "MusicalInstrument",
+      },
+      {
+        label: "Art",
+        value: "Art",
+      },
+    ],
   };
 
   const upload = (event, setImage) => {
