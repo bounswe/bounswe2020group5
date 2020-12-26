@@ -54,6 +54,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.OMG_SECRET }}
           port: 22
+
           script: |
             cd bounswe2020group5/
             git pull

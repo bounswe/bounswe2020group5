@@ -40,11 +40,31 @@ class AddProductSerializer(serializers.Serializer):
 class DeleteProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
 
+class UpdateProductSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+    name = serializers.CharField(max_length=250, required=False)
+    price = serializers.FloatField(required=False)
+    stock = serializers.IntegerField(required=False)
+    description = serializers.CharField(max_length=500, required=False)
+    discount = serializers.FloatField(required=False)
+
 #ProductList Serializer
 class ProductListSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('get_user')
+    products = serializers.SerializerMethodField('get_products')
+
     class Meta:
         model = ProductList
-        fields = '__all__'
+        fields = ('id', 'name', 'user', 'products')
+    
+    def get_user(self, obj):
+        user = User.objects.get(id=obj.user_id)
+        return user.username
+    
+    def get_products(self, obj):
+        products = obj.products.all()
+        content = ProductSerializer(products, many=True).data
+        return content
 
 class CreateProductListSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250, required=True)
@@ -61,7 +81,11 @@ class ProductListRemoveProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
 
 class ResponseSerializer(serializers.Serializer):
-    ok = serializers.CharField(max_length=200)
+    ok = serializers.BooleanField()
+    message = serializers.CharField(max_length=250)
+
+class ProductListResponseSerializer(ResponseSerializer):
+    data = ProductListSerializer()
   
 #Comment Serializer
 class CommentSerializer(serializers.ModelSerializer):
@@ -96,9 +120,21 @@ class SubCategoryProductsSeriazlier(serializers.Serializer):
     subcategory_name = serializers.CharField(max_length=250, required=True)
     
 class FilterProductSerializer(serializers.Serializer):
-    product_ids = serializers.CharField(max_length=250, required=True)
-    filter_data = serializers.CharField(max_length=250, required=True)
+    product_ids = serializers.ListField(child = serializers.IntegerField()) 
+    filter_data = serializers.ListField(child = serializers.DictField(child = serializers.CharField()))
 
 class ProductSearchSerializer(serializers.Serializer):
     query = serializers.CharField(max_length=250, required=True)
-    
+
+class SortProductSerializer(serializers.Serializer):
+    product_ids = serializers.ListField(child = serializers.IntegerField()) 
+    sort_by = serializers.CharField(max_length=250, required=True)
+    order = serializers.CharField(max_length=250, required=True)
+
+class HomePageRequestSerializer(serializers.Serializer):
+    number_of_products = serializers.IntegerField()
+
+class HomePageResponseSerializer(serializers.Serializer):
+    newest_arrivals = serializers.ListField(child = ProductSerializer())
+    best_sellers = serializers.ListField(child = ProductSerializer())
+    trends = serializers.ListField(child = ProductSerializer())

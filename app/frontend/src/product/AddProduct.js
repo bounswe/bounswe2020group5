@@ -19,6 +19,7 @@ import { TextField } from "formik-material-ui";
 import { serverUrl } from "../common/ServerUrl";
 import { postDataToken } from "../common/Requests";
 import Alert from "@material-ui/lab/Alert";
+import { Redirect } from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
@@ -79,6 +80,7 @@ function AddProduct() {
   const [image, setImage] = useState(undefined);
   const [alertMessage, setAlertMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [subCat, setSubCat] = useState("");
 
   const initialValues = {
     name: "",
@@ -87,6 +89,9 @@ function AddProduct() {
     desc: "",
     image: undefined,
     category: undefined,
+    subcategory: undefined,
+    brand: "",
+    discount: 0,
   };
 
   const validate = (values) => {
@@ -99,11 +104,13 @@ function AddProduct() {
 
     if (!values.price) {
       errors.price = "Required";
-    } else if (!isInteger(values.price)) {
-      errors.price = "Price must be a number";
-    } else if (values.price < 1) {
-      errors.price = "Products must have a positive price";
     }
+
+    // else if (!isInteger(values.price)) {
+    //   errors.price = "Price must be a number";
+    // } else if (values.price < 1) {
+    //   errors.price = "Products must have a positive price";
+    // }
 
     if (!values.stock) {
       errors.stock = "Required";
@@ -121,11 +128,18 @@ function AddProduct() {
 
     if (!values.category) {
       errors.category = "Required";
+    } else {
+      setSubCat(values.category);
     }
 
-    // if (!values.image) {
-    //   errors.image = "Required";
-    // }
+    if (!values.subcategory) {
+      errors.subcategory = "Required";
+    }
+
+    if (!values.brand) {
+      errors.brand = "Required";
+    }
+
     return errors;
   };
 
@@ -160,6 +174,9 @@ function AddProduct() {
       description: values.desc,
       image_file: image,
       category_name: values.category,
+      subcategory_name: values.subcategory,
+      brand: values.brand,
+      discount: values.discount,
     };
 
     postDataToken(url, data, localStorage.getItem("token"))
@@ -196,13 +213,128 @@ function AddProduct() {
     },
     {
       value: "Hobbies&Books",
-      label: "Hobbies&Books",
+      label: "Hobbies",
     },
   ];
+
+  const subCategories = {
+    Electronics: [
+      {
+        label: "PC&Tablet",
+        value: "PC&Tablet",
+      },
+      {
+        label: "Smartphone",
+        value: "Smartphone",
+      },
+      {
+        label: "WhiteAppliances",
+        value: "WhiteAppliances",
+      },
+      {
+        label: "Photo&Camera",
+        value: "Photo&Camera",
+      },
+      {
+        label: "Game&GameConsole",
+        value: "Game&GameConsole",
+      },
+    ],
+    Fashion: [
+      {
+        label: "WomanClothing",
+        value: "WomanClothing",
+      },
+      {
+        label: "Accessory",
+        value: "Accessory",
+      },
+      {
+        label: "Sportswear",
+        value: "Sportswear",
+      },
+      {
+        label: "ManClothing",
+        value: "ManClothing",
+      },
+      {
+        label: "Shoes&Bags",
+        value: "Shoes&Bags",
+      },
+    ],
+    "Home&Kitchen": [
+      {
+        label: "Kitchenware",
+        value: "Kitchenware",
+      },
+      {
+        label: "Beds",
+        value: "Beds",
+      },
+      {
+        label: "Decoration",
+        value: "Decoration",
+      },
+      {
+        label: "OfficeFurniture",
+        value: "OfficeFurniture",
+      },
+    ],
+    "Personal Care": [
+      {
+        label: "Perfume",
+        value: "Perfume",
+      },
+      {
+        label: "Makeup",
+        value: "Makeup",
+      },
+      {
+        label: "SkinCare",
+        value: "SkinCare",
+      },
+      {
+        label: "OralCare",
+        value: "OralCare",
+      },
+      {
+        label: "HairCare",
+        value: "HairCare",
+      },
+    ],
+    "Sports&Outdoors": [
+      {
+        label: "SportClothing",
+        value: "SportClothing",
+      },
+      {
+        label: "Fitness",
+        value: "Fitness",
+      },
+    ],
+    "Hobbies&Books": [
+      {
+        label: "Book&Magazine",
+        value: "Book&Magazine",
+      },
+      {
+        label: "MusicalInstrument",
+        value: "MusicalInstrument",
+      },
+      {
+        label: "Art",
+        value: "Art",
+      },
+    ],
+  };
 
   const upload = (event, setImage) => {
     setImage(event.target.files[0]);
   };
+
+  if (successMessage) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -285,6 +417,7 @@ function AddProduct() {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      // onChange={(event) => setSubCat(event.target.value)}
                     >
                       {categories.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -292,6 +425,42 @@ function AddProduct() {
                         </MenuItem>
                       ))}
                     </Field>
+                    {subCat && (
+                      <Field
+                        component={TextField}
+                        name="subcategory"
+                        label="Subcategory"
+                        select
+                        variant="filled"
+                        helperText="Please select a subcategory"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      >
+                        {subCategories[subCat].map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    )}
+                    <Field
+                      component={TextField}
+                      label="Brand Name"
+                      name="brand"
+                      variant="filled"
+                    />
+                    <Field
+                      component={TextField}
+                      label="Discount Rate"
+                      name="discount"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">%</InputAdornment>
+                        ),
+                      }}
+                    />
                     {isSubmitting && (
                       <LinearProgress className={classes.progress} />
                     )}
