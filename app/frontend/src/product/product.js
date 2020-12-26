@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 20,
         marginBottom: 20,
         maxWidth: 1500,
-        maxHeight: 1500,
     },
     image: {
         width: 460,
@@ -171,7 +170,7 @@ const Product = (props) => {
             .then(json => {
                 const success = json.success
                 if (success) {
-                    setLoadPage1(false);
+                    window.location.reload()
                     alert('Your review is posted!');
                 } else alert('Your review could not be posted!')
             }),
@@ -183,8 +182,7 @@ const Product = (props) => {
                 .then(json => {
                     state.comments = json;
                 })]).then(
-            setLoadPage1(true)
-        ).catch(err => console.log(err));
+    ).catch(err => console.log(err));
     }
 
     return (
