@@ -11,8 +11,8 @@ import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
-import search from "./search/search"
-
+import search from "./search/search";
+import messages from "./profile/messages";
 function App() {
   return (
     <React.Fragment>
@@ -33,6 +33,7 @@ function App() {
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
+          <Route path="/profile/messages" component={messages} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
           <Route component={NoMatch} />

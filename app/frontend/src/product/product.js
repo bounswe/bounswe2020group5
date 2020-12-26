@@ -25,6 +25,7 @@ import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import CustomizedDialogs from "../components/dialog";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,6 +60,7 @@ const Product = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
+    let [messageclick, setmessageclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
@@ -212,7 +214,11 @@ const Product = (props) => {
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
                                 {token ? (
+
                                     <Grid container alignItems={"center"} justify="center">
+
+                                        <CustomizedDialogs/>
+
                                         <IconButton onClick={handlelistcount}>
                                             {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
                                                 <TurnedInNotIcon fontSize={"large"}/>}
