@@ -76,8 +76,8 @@ class ChatViewSet(viewsets.GenericViewSet):
         }
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer,status.HTTP_404_NOT_FOUND: ErrorSerializer})
-    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ChatSuccessSerializer,status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_last_message(self, request):
         chat_id = request.data.get("chat_id")
         usr = User.objects.get(id=request.user.id)
@@ -90,8 +90,8 @@ class ChatViewSet(viewsets.GenericViewSet):
         message_contents = MessageSerializer(message, many=True)
         return Response(data=message_contents.data[len(message_contents.data)-1], status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
-    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_chat_history(self, request):
         chat_id = request.data.get("chat_id")
         usr = User.objects.get(id=request.user.id)
@@ -102,8 +102,8 @@ class ChatViewSet(viewsets.GenericViewSet):
         message_contents = MessageSerializer(message, many=True)
         return Response(data=message_contents.data, status=status.HTTP_200_OK)
    
-    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
-    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ChatSuccessSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})
+    @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def get_all_chats(self, request):
         user_id = request.user.id
         usr = User.objects.get(id=user_id)
