@@ -27,12 +27,14 @@
         android:id="@+id/cartProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topBar" />
+        android:layout_below="@id/topBar"
+        android:layout_above="@id/bottom_bar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_bar"
         android:background="@drawable/rectangle_border">
 
         <TextView
@@ -41,9 +43,8 @@
             android:id="@+id/total_text"
             android:text="Total"
             android:textSize="12sp"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/go_to_order_page"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"/>
 
         <TextView
@@ -54,7 +55,9 @@
             android:textSize="18sp"
             android:layout_below="@id/total_text"
             android:layout_alignStart="@id/total_text"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/secondary_blue"/>
 
         <LinearLayout
             android:id="@+id/go_to_order_page"
@@ -62,12 +65,11 @@
             android:layout_height="wrap_content"
             android:background="@color/secondary_blue"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="16dp">
 
             <TextView
-                android:id="@+id/addtocart_text"
                 android:padding="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"

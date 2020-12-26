@@ -43,7 +43,7 @@ class CartProductAdapter(private val context: Context, private val cartProducts:
             itemView.product_description.text = cartProduct.product.description
             itemView.product_brand.text = "Brand: " + cartProduct.product.brand
             itemView.product_quantity.text = "Quantity: " + cartProduct.count
-            itemView.product_price.text = "$" + cartProduct.product.price
+            itemView.product_price.text = "$" + (cartProduct.product.price?.times(cartProduct.count))
             Glide.with(context).load(cartProduct.product.imageUrl).into(itemView.product_image)
         }
         fun bindLastItem(cartProduct: CartProduct) {
@@ -52,7 +52,7 @@ class CartProductAdapter(private val context: Context, private val cartProducts:
             itemView.product_description.text = cartProduct.product.description
             itemView.product_brand.text = "Brand: " + cartProduct.product.brand
             itemView.product_quantity.text = "Quantity: " + cartProduct.count
-            itemView.product_price.text = "$" + cartProduct.product.price
+            itemView.product_price.text = "$" + (cartProduct.product.price?.times(cartProduct.count))
             Glide.with(context).load(cartProduct.product.imageUrl).into(itemView.product_image)
             itemView.divider.visibility = View.INVISIBLE
             itemView.divider.background = null

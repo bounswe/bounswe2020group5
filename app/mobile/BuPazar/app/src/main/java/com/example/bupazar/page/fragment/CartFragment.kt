@@ -14,6 +14,7 @@ import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_homepage.*
 import kotlinx.android.synthetic.main.fragment_product.*
+import kotlinx.android.synthetic.main.homepage_activity.*
 
 private const val ARG_AUTH_TOKEN = "authToken"
 
@@ -22,6 +23,7 @@ class CartFragment : Fragment() {
     private var userData: LoginResponse? = null
     private var authToken: String? = null
     private var productsInCart: Array<CartProduct>? = null
+    private var totalPrice: Float = 0.0F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,13 @@ class CartFragment : Fragment() {
                 val cartProductAdapter = this.context?.let { productsInCart?.let { it1 -> CartProductAdapter(it, cartProducts = it1) } }
                 cartProducts.adapter = cartProductAdapter
                 cartProducts.layoutManager = LinearLayoutManager(this.context)
+
+                totalPrice = 0.0F
+
+                for (product in productsInCart!!) {
+                    totalPrice += product.product.price!! * product.count
+                }
+                total_price.text = "$" + totalPrice
             }
         }
     }
@@ -60,6 +69,13 @@ class CartFragment : Fragment() {
         val cartProductAdapter = this.context?.let { productsInCart?.let { it1 -> CartProductAdapter(it, cartProducts = it1) } }
         cartProducts.adapter = cartProductAdapter
         cartProducts.layoutManager = LinearLayoutManager(this.context)
+
+        go_to_order_page.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, OrderFragment())
+                commit()
+            }
+        }
     }
 
     companion object {
