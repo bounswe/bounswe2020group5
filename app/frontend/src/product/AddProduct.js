@@ -103,11 +103,13 @@ function AddProduct() {
 
     if (!values.price) {
       errors.price = "Required";
-    } else if (!isInteger(values.price)) {
-      errors.price = "Price must be a number";
-    } else if (values.price < 1) {
-      errors.price = "Products must have a positive price";
     }
+
+    // else if (!isInteger(values.price)) {
+    //   errors.price = "Price must be a number";
+    // } else if (values.price < 1) {
+    //   errors.price = "Products must have a positive price";
+    // }
 
     if (!values.stock) {
       errors.stock = "Required";
@@ -328,6 +330,10 @@ function AddProduct() {
   const upload = (event, setImage) => {
     setImage(event.target.files[0]);
   };
+
+  if (successMessage) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
