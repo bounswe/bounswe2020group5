@@ -14,6 +14,7 @@ function Home() {
     const [loadPage, setLoadPage] = React.useState(false);
     let [bestsellers, setbestsellers] = React.useState("");
     let [newarrivals, setnewarrivals] = React.useState("");
+    let [trending, settrending] = React.useState("");
 
     useEffect(() => {
 
@@ -32,6 +33,7 @@ function Home() {
         .then(json => {
             setbestsellers( json.best_sellers);
             setnewarrivals(json.newest_arrivals);
+            settrending(json.trends);
             setLoadPage(true);
         })
         .catch(err => console.log(err));
@@ -87,6 +89,26 @@ function Home() {
                     </div>
                     <div>
                         <SimpleGridList tileData={newarrivals}/>
+                    </div>
+                    <div>
+                        <InputBase
+                            style={{
+                                color: "black",
+                                fontSize: 30,
+                                fontWeight: "bold",
+                                marginLeft: "3rem",
+                                marginTop: "2rem",
+                                marginBottom: "1rem",
+                                fontStyle: "italic",
+
+                            }}
+                            defaultValue="TRENDING"
+                            inputProps={{'aria-label': 'new-arrivals'}}
+                            disabled={true}
+                        />
+                    </div>
+                    <div>
+                        <SimpleGridList tileData={trending}/>
                     </div>
                     <div>
                         <Footer/>

@@ -138,8 +138,14 @@ export default function ComplexGrid() {
         let datavendor;
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
 
-        if (vendorkeys.length==0){
+        if(vendorkeys==null){
+            vendorkeys=0
+        }
+
+        if (vendorkeys==0){
             setvendordata(false);
+            vendorkeys=[];
+            setvendordata(true);
         }else{
             setvendordata(true);
         }
@@ -205,10 +211,13 @@ export default function ComplexGrid() {
                 console.log(json)
 
                 if(error=='No products found'){
-                    console.log('bbb')
+
                     setStatepro([])}
                 else{
-                    setStatepro(json)
+                    if(dataprice.length!=0) {
+                        if(statepro.length!=0){
+                        setStatepro(json)
+                    }}
                 }
                     setLoadPage(true);
 
@@ -242,7 +251,10 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                 else{
-                    setStatepro(json)
+                    if(datastar.length!=0) {
+                        if(statepro.length!=0){
+                            setStatepro(json)
+                        }}
                 }
                 setLoadPage(true);
 
@@ -278,8 +290,10 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                     else{
-                    console.log('aaaaaaaa')
-                    setStatepro(json)
+                    if(datadiscount.length!=0) {
+                        if(statepro.length!=0){
+                            setStatepro(json)
+                        }}
                 }
                     console.log(statepro)
 
@@ -300,13 +314,20 @@ export default function ComplexGrid() {
         let error;
         let databrand;
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
-        console.log(brandkeys)
 
-        if (brandkeys.length==0){
+
+        if(brandkeys==null){
+            brandkeys=0
+        }
+
+        if (brandkeys==0){
             setbranddata(false);
+            brandkeys=[];
+            setbranddata(true);
         }else{
             setbranddata(true);
         }
+
 
 
         databrand = {
@@ -351,31 +372,29 @@ export default function ComplexGrid() {
         let dataall;
         let filterdata=[];
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
-        console.log(brandkeys)
+
 
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
-        console.log('vvvvvvvvvv')
+
         if(brandkeys==null){
             brandkeys=0
         }
         if(vendorkeys==null){
             vendorkeys=0
-            console.log("qqqqqqqqqq")
-        }
 
-        console.log(vendorkeys)
+        }
 
         setvendordata(true);
         setbranddata(true);
 
         if(brandkeys==0){
             applyallbrand=false
-            console.log('nnnnn')
+
         }else{
             applyallbrand=true
         }
         if(vendorkeys==0){
-            console.log('llll')
+
             applyallvendor=false
 
         }else{
@@ -383,7 +402,7 @@ export default function ComplexGrid() {
         }
 
         if(priceleast==pricemost){
-            console.log('kkkkk')
+
             applyallprice=false
         }else{
             applyallprice=true
@@ -398,7 +417,7 @@ export default function ComplexGrid() {
         }
 
         if(applyallvendor==true){
-            console.log('mmmm')
+
             filterdata.push(    {
                 "filter_by":"vendor",
                 "data":vendorkeys,
@@ -426,8 +445,6 @@ export default function ComplexGrid() {
             "data":discountleast,
             })
 
-        console.log(filterdata)
-
         dataall = {
             "product_ids": selectid,
             "filter_data":filterdata,
@@ -443,7 +460,10 @@ export default function ComplexGrid() {
                     setStatepro([])
                 }else{
 
-                    setStatepro(json)
+                    if(dataall.length!=0) {
+                        if(statepro.length!=0){
+                            setStatepro(json)
+                        }}
 
                 }
                 setLoadPage(true);
@@ -499,9 +519,11 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                 else{
-                    setStatepro(json)
+                    if(datasort.length!=0) {
+                        if(statepro.length!=0){
+                            setStatepro(json)
+                        }}
                 }
-                console.log(statepro)
 
                 setLoadPage(true);
 
