@@ -327,7 +327,7 @@ export default function Navbar() {
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
                 </IconButton>
                 <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="primary">
+                  <Badge color="primary">
                     <MailIcon style={{ color: '#7E7F9A' }}/>
                   </Badge>
                 </IconButton>

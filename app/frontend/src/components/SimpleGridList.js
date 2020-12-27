@@ -104,7 +104,7 @@ export const SimpleGridList = ({tileData}) => {
               }}
               actionPosition={'left'}
               actionIcon={
-                <img style={{marginLeft:'2rem',marginRight:'1rem',width: "2.5rem", height: "2.5rem"}} src="/img/discount.jpg"
+                <img style={{marginLeft:'2rem',marginRight:'1rem',width: "2.5rem", height: "2.5rem"}} src="/img/discount.png"
                 alt="discount icon"/>}
 
             />

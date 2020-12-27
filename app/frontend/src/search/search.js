@@ -1,11 +1,11 @@
-import React , {Component,useEffect, useState}from 'react';
+import React , {useEffect}from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Footer from "../components/Footer";
-import gridlistforsearch, {TitlebarGridList} from "../components/gridlistforsearch";
+import {TitlebarGridList} from "../components/gridlistforsearch";
 import CheckboxListSecondary from "../components/filterlists";
 import TextField from "@material-ui/core/TextField";
 import {Button, Divider} from "@material-ui/core";
@@ -106,12 +106,12 @@ export default function ComplexGrid() {
                 setselectid(filledidproducts)
 
                 filledbrandlist=json.map((product) => (product.brand));
-                filledbrandlist.forEach(b => uniquebrand.add(b));
+                filledbrandlist.forEach(b => uniquebrand.add(b.toLowerCase()));
                 filledbrandlist=Array.from(uniquebrand);
                 setselectbrand(filledbrandlist);
 
                 filledvendorlist=json.map((product) => (product.vendor));
-                filledvendorlist.forEach(v => uniquevendor.add(v));
+                filledvendorlist.forEach(v => uniquevendor.add(v.toLowerCase()));
                 filledvendorlist=Array.from(uniquevendor);
                 setselectvendor(filledvendorlist);
 
@@ -133,10 +133,10 @@ export default function ComplexGrid() {
             vendorkeys=0
         }
 
-        if (vendorkeys==0){
+        if (vendorkeys===0){
             setvendordata(false);
             vendorkeys=[];
-            if(statepro.length==0){
+            if(statepro.length===0){
                 setvendordata(true);
             }
         }else{
@@ -161,11 +161,11 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
                     setStatepro([])}
                 else{
 
-                    if(vendorkeys.length!=0) {
+                    if(vendorkeys.length!==0) {
                         setStatepro(json)
                     }
                 }
@@ -202,13 +202,13 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
 
                     setStatepro([])}
                 else{
-                    if(priceleast!=pricemost){
-                    if(dataprice.length!=0) {
-                        if(statepro.length!=0){
+                    if(priceleast!==pricemost){
+                    if(dataprice.length!==0) {
+                        if(statepro.length!==0){
                         setStatepro(json)
                     }}
                 }}
@@ -240,11 +240,11 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
                     setStatepro([])}
                 else{
-                    if(datastar.length!=0) {
-                        if(statepro.length!=0){
+                    if(datastar.length!==0) {
+                        if(statepro.length!==0){
                             setStatepro(json)
                         }}
                 }
@@ -279,12 +279,12 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
                     setStatepro([])}
                     else{
 
-                    if(datadiscount.length!=0) {
-                        if(statepro.length!=0){
+                    if(datadiscount.length!==0) {
+                        if(statepro.length!==0){
                             setStatepro(json)
                         }}
 
@@ -307,15 +307,15 @@ export default function ComplexGrid() {
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
 
 
-        if(brandkeys==null ){
+        if(brandkeys===null ){
             brandkeys=[]
 
         }
 
-        if (brandkeys.length==0){
+        if (brandkeys.length===0){
             setbranddata(false);
 
-        if(statepro.length==0){
+        if(statepro.length===0){
             console.log('aa')
 
             setbranddata(true);
@@ -340,11 +340,11 @@ export default function ComplexGrid() {
         }).then(res => res.json())
             .then(json => {
                 error=json.error
-                if(error=='No products found'){
+                if(error==='No products found'){
                setStatepro([])
                 }else{
 
-                    if(brandkeys.length!=0) {
+                    if(brandkeys.length!==0) {
                         setStatepro(json)
 
                     }
@@ -373,10 +373,10 @@ export default function ComplexGrid() {
 
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
 
-        if(brandkeys==null){
+        if(brandkeys===null){
             brandkeys=[]
         }
-        if(vendorkeys==null){
+        if(vendorkeys===null){
 
             vendorkeys=[]
 
@@ -386,14 +386,14 @@ export default function ComplexGrid() {
         setvendordata(true);
         setbranddata(true);
 
-        if(brandkeys.length==0){
+        if(brandkeys.length===0){
             applyallbrand=false
 
 
         }else{
             applyallbrand=true
         }
-        if(vendorkeys.length==0){
+        if(vendorkeys.length===0){
 
 
             applyallvendor=false
@@ -401,7 +401,7 @@ export default function ComplexGrid() {
             applyallvendor=true
         }
 
-        if(priceleast==pricemost){
+        if(priceleast===pricemost){
 
             applyallprice=false
         }else{
@@ -409,14 +409,14 @@ export default function ComplexGrid() {
         }
 
 
-        if(applyallbrand==true){
+        if(applyallbrand===true){
             filterdata.push(    {
                 "filter_by":"brand",
                 "data":brandkeys,
             })
         }
 
-        if(applyallvendor==true){
+        if(applyallvendor===true){
 
             filterdata.push(    {
                 "filter_by":"vendor",
@@ -424,7 +424,7 @@ export default function ComplexGrid() {
             })
         }
 
-        if(applyallprice==true){
+        if(applyallprice===true){
             filterdata.push(    {
                 "filter_by":"price_range",
                 "data":{
@@ -459,13 +459,13 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
                     setStatepro([])
                 }else{
 
 
-                    if(dataall.length!=0) {
-                        if(statepro.length!=0){
+                    if(dataall.length!==0) {
+                        if(statepro.length!==0){
                             setStatepro(json)
                         }}
 
@@ -519,11 +519,11 @@ export default function ComplexGrid() {
             .then(json => {
                 error=json.error
 
-                if(error=='No products found'){
+                if(error==='No products found'){
                     setStatepro([])}
                 else{
-                    if(datasort.length!=0) {
-                        if(statepro.length!=0){
+                    if(datasort.length!==0) {
+                        if(statepro.length!==0){
                             setStatepro(json)
                         }}
                 }
