@@ -86,7 +86,7 @@ class ChatViewSet(viewsets.GenericViewSet):
             return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
         message = Message.objects.filter(chat_id=chat_id)
         if not message:
-            return Response(data={"error":"there is no message in this chat"}, status=HTTP_404_NOT_FOUND)
+            return Response(data={"alert":"Chat exists but there is no message in it"}, status=HTTP_200_OK)
         message_contents = MessageSerializer(message, many=True)
         return Response(data=message_contents.data[len(message_contents.data)-1], status=status.HTTP_200_OK)
 
