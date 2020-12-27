@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.example.bupazar.R
+import com.example.bupazar.model.EditPersonalInfoRequest
 import com.example.bupazar.model.LoginResponse
+import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_edit_profile_info.*
 import kotlinx.android.synthetic.main.fragment_profile_page.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import kotlinx.android.synthetic.main.homepage_activity.*
 
 /**
  * A simple [Fragment] subclass.
@@ -51,14 +50,42 @@ class EditProfileInfoFragment : Fragment() {
         addressTextView = view.findViewById(R.id.editAddress)
         addressTextView.text = "${userData?.address}"
 
-        buttonSave.setOnClickListener(){  // TODO user info should be saved
-            val profilePage = ProfilePageFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("USERDATA",userData)
-            profilePage.arguments = bundle
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,  profilePage)
-                commit()
+        buttonSave.setOnClickListener{
+            if (userNameTextView.text.isEmpty() ||  mailTextView.text.isEmpty() ||
+                    NameTextView.text.isEmpty() || surNameTextView.text.isEmpty() ||
+                    addressTextView.text.isEmpty()) {
+                Toast.makeText(
+                        this.activity,
+                        "User information fields should not be empty.",
+                        Toast.LENGTH_SHORT).show()
+            } else {
+                val apiService = RestApiService()
+                val editUserInfo = EditPersonalInfoRequest(
+                        userEmail = editEmail.text.toString(),
+                        userName = editUserName.text.toString(),
+                        userFirstName = editName.text.toString(),
+                        userLastName = editSurname.text.toString(),
+                        userAddress = editAddress.text.toString(),
+                )
+
+                apiService.editProfileInfo(editUserInfo) {
+                    if(it?.success == null){  // TODO bu if'e giriyor nedenini anlamadık. w/emre
+                        Toast.makeText(this.activity,"User info credentials are not valid." ,
+                                Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        Toast.makeText(this.activity,"You have successfully edited your " +
+                                "personal info." , Toast.LENGTH_SHORT).show()
+                        val profilePageFragment = ProfilePageFragment()
+                        val bundle = Bundle()
+                        bundle.putSerializable("USERDATA",userData) // TODO bu olacak mı emin değilim.
+                        profilePageFragment.arguments = bundle
+                        requireActivity().supportFragmentManager.beginTransaction().apply {
+                            replace(R.id.fl_wrapper, profilePageFragment)
+                            commit()
+                        }
+                    }
+                }
             }
         }
     }

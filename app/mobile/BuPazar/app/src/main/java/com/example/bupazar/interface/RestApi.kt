@@ -33,4 +33,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/cart/get/")
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/profile_update/")
+    fun editProfileInfo(@Body userData: EditPersonalInfoRequest): Call<Success>
 }

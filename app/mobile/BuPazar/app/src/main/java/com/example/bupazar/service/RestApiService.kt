@@ -22,7 +22,7 @@ class RestApiService {
         )
     }
 
-  fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
+    fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userRegister(userData).enqueue(
             object : Callback<Success> {
@@ -82,7 +82,7 @@ class RestApiService {
         )
     }
 
-  fun allProducts(onResult: (Array<ProductDetails>?) -> Unit){
+    fun allProducts(onResult: (Array<ProductDetails>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.allProducts().enqueue(
             object : Callback<Array<ProductDetails>?> {
@@ -95,5 +95,22 @@ class RestApiService {
                 }
             }
         )
-  }
+    }
+
+    fun editProfileInfo(userData: EditPersonalInfoRequest, onResult: (Success?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.editProfileInfo(userData).enqueue(
+            object : Callback<Success> {
+
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
 }
