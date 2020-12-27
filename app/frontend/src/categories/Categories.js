@@ -132,8 +132,14 @@ export default function Categories() {
     let datavendor;
     var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
 
-    if (vendorkeys.length==0){
+    if(vendorkeys==null){
+      vendorkeys=0
+    }
+
+    if (vendorkeys==0){
       setvendordata(false);
+      vendorkeys=[];
+      setvendordata(true);
     }else{
       setvendordata(true);
     }
@@ -156,10 +162,10 @@ export default function Categories() {
       .then(json => {
         error=json.error
 
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])}
         else{
-          if(vendorkeys.length!=0) {
+          if(vendorkeys.length!==0) {
             setAllProducts(json)
           }
         }
@@ -200,7 +206,10 @@ export default function Categories() {
 
           setAllProducts([])}
         else{
-          setAllProducts(json)
+          if(dataprice.length!==0) {
+            if(allProducts.length!==0){
+              setAllProducts(json)
+            }}
         }
         setLoadPage(true);
 
@@ -233,7 +242,10 @@ export default function Categories() {
         if(error=='No products found'){
           setAllProducts([])}
         else{
-          setAllProducts(json)
+          if(datastar.length!=0) {
+            if(allProducts.length!=0){
+              setAllProducts(json)
+            }}
         }
         setLoadPage(true);
 
@@ -269,7 +281,10 @@ export default function Categories() {
         if(error=='No products found'){
           setAllProducts([])}
         else{
-          setAllProducts(json)
+          if(datadiscount.length!=0) {
+            if(allProducts.length!=0){
+              setAllProducts(json)
+            }}
         }
 
         setLoadPage(true);
@@ -288,8 +303,14 @@ export default function Categories() {
     let databrand;
     var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
 
-    if (brandkeys.length==0){
+    if(brandkeys==null){
+      brandkeys=0
+    }
+
+    if (brandkeys==0){
       setbranddata(false);
+      brandkeys=[];
+      setbranddata(true);
     }else{
       setbranddata(true);
     }
@@ -420,7 +441,10 @@ export default function Categories() {
         if(error=='No products found'){
           setAllProducts([])
         }else{
-          setAllProducts(json)
+          if(dataall.length!=0) {
+            if(allProducts.length!=0){
+              setAllProducts(json)
+            }}
         }
         setLoadPage(true);
 
@@ -473,7 +497,10 @@ export default function Categories() {
         if(error=='No products found'){
           setAllProducts([])}
         else{
-          setAllProducts(json)
+          if(datasort.length!=0) {
+            if(allProducts.length!=0){
+              setAllProducts(json)
+            }}
         }
 
         setLoadPage(true);
