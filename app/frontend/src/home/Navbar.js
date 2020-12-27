@@ -21,6 +21,7 @@ import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -380,5 +381,3 @@ export default function Navbar() {
       </div>
   );
 }
-
-

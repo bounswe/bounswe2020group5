@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
@@ -8,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import Rating from '@material-ui/lab/Rating';
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 
 
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export const TitlebarGridList= ({tileData, categoryPage}) =>  {
     const classes = useStyles();
 
+
     return (
         <div style={{marginTop:'2rem'}} className={classes.root}>
             <GridList cellHeight={400}  className={classes.gridList}>
@@ -59,17 +62,18 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                                 <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} /></Link>
                           )}
 
-                      <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
-                           title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase()}
-                          <Divider/> <br></br></span>}
-                      subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
-                          <br></br><br></br>BY: {tile.vendor}
-                          <br></br><br></br>
+
+                                title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase()}
+                                <Divider/> <br></br></span>}
+                            subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
+                                <br></br><br></br>BY: {tile.vendor}
+                                <br></br><br></br>
                                 <Rating name="size-small" value={tile.total_rating_score}   readOnly size="small" /> </span>}
-                      />
-                      </GridListTile>
-                      ))
-                )}
+
+                        />
+                    </GridListTile>
+                ))}
+
             </GridList>
 
         </div>
