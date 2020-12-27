@@ -9,6 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import Rating from '@material-ui/lab/Rating';
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,23 +44,18 @@ export const TitlebarGridList= ({tileData}) =>  {
                 {tileData.map((tile) => (
 
                     <GridListTile key={tile.img} cols={tile.cols || 2/3} >
-                        <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} />
+                        <Link to={{pathname: `product/${tile.id}`}}>
+                            <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} /></Link>
 
                         <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
 
-                                          title={<span style={{fontSize:"1rem", width:"max-component"}}>{tile.name}
+                                          title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase()}
                                 <Divider/> <br></br></span>}
                             subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
                                 <br></br><br></br>BY: {tile.vendor}
                                 <br></br><br></br>
                                 <Rating name="size-small" value={tile.total_rating_score}   readOnly size="small" /> </span>}
 
-
-                            actionIcon={
-                                <IconButton style={{color: "white"}} aria-label={`info about ${tile.title}`} className={classes.icon}>
-                                    <InfoIcon />
-                                </IconButton>
-                            }
                         />
                     </GridListTile>
                 ))}
