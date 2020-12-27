@@ -14,6 +14,7 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { postDataToken2 } from "../common/Requests";
 import { serverUrl } from "../common/ServerUrl";
+import { Rating } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     display: "flex",
     minHeight: 16,
+  },
+  box: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -60,9 +67,9 @@ export default function CartProduct(props) {
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={4}>
-        <Grid item xs={3}>
+        <Grid justify="center" item container xs={3}>
           <img
-            style={{ width: "100%" }}
+            style={{ maxHeight: 200 }}
             src={props.product.image_url}
             alt="product image"
           />
@@ -102,11 +109,17 @@ export default function CartProduct(props) {
                 margin: 8,
                 textDecorationLine: "line-through",
                 marginLeft: 0,
+                color: "#A93226",
               }}
             >
               {props.product.price}
             </Typography>
-            <Typography gutterBottom variant="h5" style={{ margin: 8 }}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              style={{ margin: 8, color: "#229954" }}
+            >
+              $
               {(parseFloat(props.product.price) *
                 (100 - props.product.discount)) /
                 100}
@@ -124,8 +137,8 @@ export default function CartProduct(props) {
           justify="center"
           xs={3}
         >
-          <Grid item xs={4} />
-          <Grid item xs={4} alignItems="center" justify="center">
+          <Box className={classes.box}></Box>
+          <Box className={classes.box}>
             <ButtonGroup
               style={{}}
               variant="text"
@@ -147,10 +160,18 @@ export default function CartProduct(props) {
                 <RemoveIcon />
               </IconButton>
             </ButtonGroup>
-          </Grid>
-          <Grid xs={4} alignItems="center" justify="center">
+          </Box>
+          <Box className={classes.box}>
             <Typography variant="h5"> {props.product.rating}</Typography>{" "}
-          </Grid>
+          </Box>
+          <Box
+            className={classes.box}
+            component="fieldset"
+            mb={3}
+            borderColor="transparent"
+          >
+            <Rating name="read-only" value={props.product.rating} readOnly />
+          </Box>
         </Grid>
       </Grid>
     </Paper>
