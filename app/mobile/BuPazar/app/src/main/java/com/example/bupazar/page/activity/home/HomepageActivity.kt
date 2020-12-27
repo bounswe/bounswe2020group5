@@ -23,16 +23,19 @@ class HomepageActivity : AppCompatActivity() {
 
         val homepageFragment = HomepageFragment()
         val categoriesFragment = CategoriesFragment()
-        val basketFragment = BasketFragment()
+        val cartFragment = CartFragment()
         val favoritesFragment = FavoritesFragment()
         val myAccountFragment = MyAccountFragment()
         val guestUserAccountFragment = GuestUserAccountFragment()
 
         myAccountFragment.arguments = bundle
+        homepageFragment.arguments = bundle
+        cartFragment.arguments = bundle
 
         makeCurrentFragment(homepageFragment)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
+
             if (userData != null) {
                 when(it.itemId) {
                     R.id.ic_home -> makeCurrentFragment(homepageFragment)
