@@ -165,7 +165,6 @@ const Product = (props) => {
             body: JSON.stringify({'list_id': list.id, 'product_id': id})
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
                 if (json.ok) {
                     if (json.message==="product added") alert("Product has been added to your list")
                     else alert(json.message)
@@ -193,7 +192,6 @@ const Product = (props) => {
         var mutableState = state
         mutableState["newlist"] = ""
         setState(mutableState)
-        console.log(state)
         await addtolist(temp);
     }
 
@@ -209,7 +207,6 @@ const Product = (props) => {
                 body: JSON.stringify({'product_id': id})
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
                     if (json.ok) {
                         alert(json.message)
                     } else alert(json.message)
@@ -224,7 +221,6 @@ const Product = (props) => {
                 body: JSON.stringify({'product_id': id})
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
                     if (json.ok) {
                         alert(json.message)
                     } else alert(json.message)

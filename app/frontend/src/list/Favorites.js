@@ -63,7 +63,6 @@ export default function Favorites() {
             body: JSON.stringify({'product_id': product.id })
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
                 if(json.ok){
                     alert("Product has been removed from your favorites!")
                     window.location.reload()

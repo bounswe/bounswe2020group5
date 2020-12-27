@@ -65,7 +65,6 @@ const ListPage = (props) => {
                 body: JSON.stringify({'list_id': id, 'product_id': product.id })
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
                     if(json.ok){
                         alert("Product has been removed from your list!")
                         window.location.reload()
@@ -80,7 +79,6 @@ const ListPage = (props) => {
             body: JSON.stringify({'list_id': id })
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
                 if(json.ok){
                     alert("Your list has been deleted!")
                     history.push('/profile/lists/')
