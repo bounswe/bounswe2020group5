@@ -56,11 +56,11 @@ export default function Favorites() {
     const [list, setList] = React.useState([]);
     let history = useHistory();
 
-    const HandleRemove = (event) => {
+    const HandleRemove = (product, event) => {
         fetch(serverUrl + 'api/favorites/remove/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify({'product_id': event.target.value })
+            body: JSON.stringify({'product_id': product.id })
         }).then(res => res.json())
             .then(json => {
                 console.log(json)
@@ -127,7 +127,7 @@ export default function Favorites() {
 
                                     <Box style={{marginTop: "1rem", marginBottom: "1rem"}} key={index}>
                                         <Grid xs container>
-                                            <IconButton size="small" className={classes.iconbutton} value={product.id} onClick={HandleRemove}>
+                                            <IconButton size="small" className={classes.iconbutton} value={product.id} onClick={(event) => HandleRemove(product, event)}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         <Link to={{pathname: `/product/${product.id}`}}
