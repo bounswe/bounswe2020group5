@@ -235,6 +235,12 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={() => { history.push("/cart") }}>
+        <IconButton aria-label="cart" onClick={() => { history.push("/cart") }}>
+          <ShoppingCartIcon style={{ color: '#790110' }}/>
+        </IconButton>
+        <p>Cart</p>
+      </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
