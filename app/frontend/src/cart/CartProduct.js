@@ -161,16 +161,18 @@ export default function CartProduct(props) {
               </IconButton>
             </ButtonGroup>
           </Box>
-          <Box className={classes.box}>
-            <Typography variant="h5"> {props.product.rating}</Typography>{" "}
-          </Box>
           <Box
             className={classes.box}
             component="fieldset"
             mb={3}
             borderColor="transparent"
+            style={{ flexDirection: "column" }}
           >
             <Rating name="read-only" value={props.product.rating} readOnly />
+            {/* <Typography variant="h5" style={{ color: "#F1C40F" }}>
+              {" "}
+              {props.product.rating}
+            </Typography>{" "} */}
           </Box>
         </Grid>
       </Grid>
