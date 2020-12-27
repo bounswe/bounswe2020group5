@@ -172,7 +172,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
             link = 'http://'+current_site +"/"+ relativeLink
             template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
-            send_email(template,"sarismet2825@gmail.com")
+            send_email(template,email)
             data = {
                 "uidb64" : uidb64,
                 "token" : token,
