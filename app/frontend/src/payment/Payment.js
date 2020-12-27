@@ -114,7 +114,6 @@ function Payment() {
   let [cardOwner2, setCardOwner2] = React.useState('');
   let [cardNumber, setCardNumber] = React.useState('');
   let [cardNumber2, setCardNumber2] = React.useState('');
-  let [expirationDate, setExpirationDate] = React.useState('');
   let [expirationDate2, setExpirationDate2] = React.useState('');
   let [cvc, setCvc] = React.useState('');
   let [cvc2, setCvc2] = React.useState('');
@@ -124,7 +123,17 @@ function Payment() {
   let [vendor, setVendor] = React.useState('');
   let [cardName, setCardName] = React.useState('');
   let [cardName2, setCardName2] = React.useState('');
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  let [selectedDate, setSelectedDate] = React.useState(null);
+  let [errorCardNumber, setErrorCardNumber] = React.useState(false);
+  let [errorCardName, setErrorCardName] = React.useState(false);
+  let [errorCardOwner, setErrorCardOwner] = React.useState(false);
+  let [errorCvc, setErrorCvc] = React.useState(false);
+  let [errorDate, setErrorDate] = React.useState(false);
+  let [CardMsg, setCardMsg] = React.useState('');
+  let [CVCMsg, setCVCMsg] = React.useState('');
+  let [dateMsg, setDateMsg] = React.useState('');
+
+
 
 
   let history = useHistory();
@@ -423,6 +432,8 @@ function Payment() {
                         onFocus={handleInputFocus}
                         value={cardName}
                         variant="outlined"
+                        error={errorCardName}
+                        helperText={errorCardName && "Card name is required"}
                       />
                     </div>
                     <div>
@@ -435,6 +446,8 @@ function Payment() {
                         onFocus={handleInputFocus}
                         value={cardNumber}
                         variant="outlined"
+                        error={errorCardNumber}
+                        helperText={errorCardNumber && CardMsg}
                       />
                     </div>
                     <div>
@@ -446,6 +459,8 @@ function Payment() {
                         onFocus={handleInputFocus}
                         value={cardOwner}
                         variant="outlined"
+                        error={errorCardOwner}
+                        helperText={errorCardOwner && "Card owner is required"}
                       />
                     </div>
                     <div>
@@ -465,6 +480,8 @@ function Payment() {
                             keyboardIcon
                             open={false}
                             disablePast
+                            error={errorDate}
+                            helperText={errorDate && dateMsg}
                           />
                       </MuiPickersUtilsProvider>
                       <TextField
@@ -475,6 +492,8 @@ function Payment() {
                         onChange={handleInputChange}
                         onFocus={handleInputFocus}
                         value={cvc}
+                        error={errorCvc}
+                        helperText={errorCvc && CVCMsg}
                       />
                     </div>
                   </div>
@@ -560,51 +579,112 @@ function Payment() {
                 history.push("/")
               }
               else{
-                alert("Payment could not be completed. \n Please try again.")
+                alert(json.error)
               }
             })
             .catch(err => console.log(err));
         }
       }
       else if(value === "new"){
+        let valCheck = true
+
+
+
         if(cardNumber === ''){
-          alert("Card number is required.")
+          setErrorCardNumber(true)
+          setCardMsg('Card number is required')
+          valCheck = false;
         }
-        else if(cardOwner === ''){
-          alert("Card owner is required.")
-        }
-        else if(cardName === ''){
-          alert("Card name is required.")
-        }
-        else if(cvc === ''){
-          alert("Cvc is required.")
+        else if(cardNumber.length < 19){
+          setErrorCardNumber(true)
+          setCardMsg('Not in the correct form')
+          valCheck = false;
         }
         else{
-          const token = localStorage.getItem('token')
-          let data = {
-            name: cardName,
-            card_owner: cardOwner,
-            card_number: cardNumber,
-            expiration_date: Moment(selectedDate).format('MM/YY').toString(),
-            cvc_security_number: cvc,
-          }
-
-          fetch(serverUrl + 'api/credit-cards/opts/add/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-          }).then(res => res.json())
-            .then(json => {
-              if(json.success){
-                alert("Payment is completed and credit card is added to system")
-                history.push("/")
-              }
-              else{
-                alert("Payment could not be completed. \n Please try again.")
-              }
-            })
-            .catch(err => console.log(err));
+          setErrorCardNumber(false)
         }
+
+        if(cardOwner === ''){
+          setErrorCardOwner(true);
+          valCheck = false;
+        }
+        else{
+          setErrorCardOwner(false)
+        }
+        if(cardName === ''){
+          setErrorCardName(true);
+          valCheck = false;
+        }
+        else{
+          setErrorCardName(false)
+        }
+
+        if(cvc === ''){
+          setErrorCvc(true)
+          setCVCMsg("CVC is required")
+          valCheck = false;
+        }
+        else if(cvc.length <3){
+          setErrorCvc(true)
+          setCVCMsg("Not in correct form")
+          valCheck = false;
+        }
+        else{
+          setErrorCvc(false)
+        }
+        if(parseInt(Moment(selectedDate).format('MM/YY').toString().split("/")[1]) < 20){
+          setErrorDate(true)
+          setDateMsg("Date can not be in the past")
+          valCheck = false
+        }
+        else if(Moment(selectedDate).format('MM/YY').toString()==="Invalid date"){
+          setErrorDate(true)
+          setDateMsg("Expiry date is required")
+          valCheck = false
+        }
+        else{
+          setErrorDate(false)
+        }
+
+          if(valCheck){
+            const token = localStorage.getItem('token')
+            let data = {
+              name: cardName,
+              card_owner: cardOwner,
+              card_number: cardNumber,
+              expiration_date: Moment(selectedDate).format('MM/YY').toString(),
+              cvc_security_number: cvc,
+            }
+
+            fetch(serverUrl + 'api/orders/make_purchase/', {
+              method: 'POST',
+              headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            }).then(res => res.json())
+              .then(json => {
+                if(json.success){
+                  fetch(serverUrl + 'api/credit-cards/opts/add/', {
+                    method: 'POST',
+                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                  }).then(res => res.json())
+                    .then(json => {
+                      if(json.success){
+                        alert("Payment is completed and credit card is added to system")
+                        history.push("/")
+                      }
+                      else{
+                        alert("Payment is completed but credit card \n could not be saved.")
+                        history.push("/")
+                      }
+                    })
+                    .catch(err => console.log(err));
+                }
+                else{
+                  alert(json.error)
+                }
+              })
+              .catch(err => console.log(err));
+          }
       }
     }
   };
