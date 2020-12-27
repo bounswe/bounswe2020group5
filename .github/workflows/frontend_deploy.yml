@@ -1,11 +1,11 @@
-name: CI_backend_in_master
+name: CI_frontend_in_master
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     paths:
-      - "app/backend/**"
+      - "app/frontend/**"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -31,31 +31,30 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: docker build
         run: |
-          docker build ./app/backend -t django_app --build-arg KEY=${{ secrets.SECRET_KEY_C }}
+          docker build ./app/frontend -t react_app
           echo build is completed.
 
       - name: docker tag
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker tag django_app $DOCKER_USER/django_app
+          docker tag react_app $DOCKER_USER/react_app
           echo tag is completed.
       - name: docker push
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker push $DOCKER_USER/django_app
+          docker push $DOCKER_USER/react_app
           echo push is completed.
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: 18.195.107.160
+          host: 100.25.223.242
           username: ec2-user
-          key: ${{ secrets.OMG_SECRET }}
+          key: ${{ secrets.OMG_SECRET_FRONTEND }}
           port: 22
-
           script: |
             cd bounswe2020group5/
             git pull
-            bash .github/workflows/backend_script.sh
+            bash .github/workflows/frontend_script.sh

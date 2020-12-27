@@ -1,6 +1,6 @@
 #!/bin/sh
 { # try
-    docker rm $(docker stop $(docker ps | grep "bupazar/django_app" | cut -d ' ' -f1))  &&
+    docker rm $(docker stop $(docker ps | grep "bupazar/react_app" | cut -d ' ' -f1))  &&
     #save your output
     echo "Docker stopped successfully"
 
@@ -8,8 +8,8 @@
     # save log for exception 
     echo "No running docker"
 }
-docker pull bupazar/django_app:latest
-docker run -d -p 8000:8000 bupazar/django_app:latest
+docker pull bupazar/react_app:latest
+docker run -d -p 3000:3000 bupazar/react_app:latest
 docker container prune -f
 echo "Deleting the images with tag none"
 { # try
