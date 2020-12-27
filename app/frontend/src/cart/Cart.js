@@ -29,9 +29,11 @@ export default function Cart() {
   const [plist, setPlist] = useState([]);
   useEffect(() => {
     console.log("effect");
+    console.log(plist);
+    console.log(localStorage.getItem("token"))
     fetch(serverUrl + "api/cart/get", {
       headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
+        'Authorization': `Token ${localStorage.getItem("token")}`,
       },
     })
       .then((response) => response.json())
@@ -62,7 +64,7 @@ export default function Cart() {
     <React.Fragment>
       <Navbar />
       <CategoryTab />
-      {plist.length > 0 && <Box>{renderProducts()}</Box>}
+      {plist && plist.length > 0 && <Box>{renderProducts()}</Box>}
     </React.Fragment>
   );
 }

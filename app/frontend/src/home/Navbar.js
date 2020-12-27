@@ -111,6 +111,7 @@ export default function Navbar() {
   let [isLogged, setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
+  const [value, setValue] = React.useState();
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -315,7 +316,7 @@ export default function Navbar() {
                   if (ev.key === 'Enter') {
                     localStorage.setItem('searchkey',value)
                     window.location.replace('/search')
-                    
+
                   }
                 }}
             />
