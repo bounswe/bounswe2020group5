@@ -10,7 +10,7 @@ import com.example.bupazar.R
 import kotlinx.android.synthetic.main.item_product.view.*
 
 
-class ProductAdapter(private val context: Context, private val products: Array<ProductDetails>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class HomepageProductAdapter(private val context: Context, private val products: Array<ProductDetails>) : RecyclerView.Adapter<HomepageProductAdapter.ViewHolder>() {
 
     var onItemClick: ((ProductDetails) -> Unit)? = null
 

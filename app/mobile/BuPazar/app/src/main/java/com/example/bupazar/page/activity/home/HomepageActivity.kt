@@ -23,12 +23,13 @@ class HomepageActivity : AppCompatActivity() {
 
         val homepageFragment = HomepageFragment()
         val categoriesFragment = CategoriesFragment()
-        val basketFragment = BasketFragment()
+        val cartFragment = CartFragment()
         val favoritesFragment = FavoritesFragment()
         val myAccountFragment = MyAccountFragment()
 
         myAccountFragment.arguments = bundle
         homepageFragment.arguments = bundle
+        cartFragment.arguments = bundle
 
         makeCurrentFragment(homepageFragment)
 
@@ -36,7 +37,7 @@ class HomepageActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.ic_home -> makeCurrentFragment(homepageFragment)
                 R.id.ic_categories -> makeCurrentFragment(categoriesFragment)
-                R.id.ic_basket -> makeCurrentFragment(basketFragment)
+                R.id.ic_basket -> makeCurrentFragment(cartFragment)
                 R.id.ic_favorites -> makeCurrentFragment(favoritesFragment)
                 R.id.ic_accounts -> makeCurrentFragment(myAccountFragment)
             }
