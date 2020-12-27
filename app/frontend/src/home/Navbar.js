@@ -15,7 +15,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
@@ -24,7 +24,6 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -61,11 +60,11 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'black',
   },
-  logged:{
-    marginLeft:"17rem",
+  logged: {
+    marginLeft: "17rem",
   },
-  notlogged:{
-    marginLeft:"10rem",
+  notlogged: {
+    marginLeft: "10rem",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -89,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  menuBackground:{
+  menuBackground: {
     backgroundColor: "white",
   }
 }));
@@ -109,19 +108,13 @@ export default function Navbar() {
     color: "black"
   };
 
-  let [isLogged,setIsLogged] = useState(false);
-  let [state,setState] = useState(false);
+  let [isLogged, setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState()
 
-
-
-
-
- // const isMenuOpen = Boolean(anchorEl);
+  // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -159,24 +152,23 @@ export default function Navbar() {
       border: '1px solid #d3d4d5',
     },
   })((props) => (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
-      {...props}
-    />
+      <Menu
+          elevation={0}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          {...props}
+      />
   ));
 
   const StyledMenuItem = withStyles((theme) => ({
     root: {
-
       '&:focus': {
         backgroundColor: theme.palette.primary.main,
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -188,37 +180,39 @@ export default function Navbar() {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <StyledMenu
-      id="customized-menu"
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={handleMenuClose}
-    >
-      <StyledMenuItem style={{background:"white"}}>
-        <Link style={{textDecoration: 'none'}} to="/profile">
-          <ListItemText primaryTypographyProps={{ style: text }} primary="My Account"/>
-       </Link>
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="My Orders" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="My Lists" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
-      </StyledMenuItem>
-      <Divider/>
-      <StyledMenuItem style={{background:"white"}}>
-        <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
-          <ListItemText primaryTypographyProps={{ style: text }} primary="Log out" />
-        </Link>
-      </StyledMenuItem>
-    </StyledMenu>
+      <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+      >
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/profile">
+            <ListItemText primaryTypographyProps={{style: text}} primary="My Account"/>
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="My Orders"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/profile/lists">
+            <ListItemText primaryTypographyProps={{style: text}} primary="My Lists"/>
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="Messages"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
+            <ListItemText primaryTypographyProps={{style: text}} primary="Log out"/>
+          </Link>
+        </StyledMenuItem>
+      </StyledMenu>
   );
 
 
@@ -280,13 +274,13 @@ export default function Navbar() {
       >
         <StyledMenuItem style={{backgroundColor: 'white'}}>
           <Link style={{textDecoration: 'none'}} to="/login">
-            <ListItemText  primaryTypographyProps={{ style: text }} primary="Log In" />
+            <ListItemText primaryTypographyProps={{style: text}} primary="Log In"/>
           </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{backgroundColor: 'white'}}>
           <Link style={{textDecoration: 'none'}} to="/signup">
-            <ListItemText primaryTypographyProps={{ style: text }} primary="Sign Up" />
+            <ListItemText primaryTypographyProps={{style: text}} primary="Sign Up"/>
           </Link>
         </StyledMenuItem>
 
@@ -364,28 +358,29 @@ export default function Navbar() {
                 >
                   <MoreIcon />
                 </IconButton>
-              </div>
-            </div>
-          ):
-          <div className={classes.notlogged}>
-            <Button
-                style={{backgroundColor:"#0B3954"}}
-                variant="contained" color="primary"
-                onMouseOver={handlejointclick}
-                onClick={handlejointclick}
-                >
-           Log In
-          </Button>
+                      </div>
+                    </div>
+                ) :
+                <div className={classes.notlogged}>
+                  <Button
+                      style={{backgroundColor: "#0B3954"}}
+                      variant="contained" color="primary"
+                      onMouseOver={handlejointclick}
+                      onClick={handlejointclick}
+                  >
+                    Log In
+                  </Button>
 
 
-
-          </div>
-          }
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-      {renderjointMenu}
-    </div>
+                </div>
+            }
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+        {renderjointMenu}
+      </div>
   );
 }
+
+

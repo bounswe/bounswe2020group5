@@ -10,9 +10,13 @@ import { Vendor } from "./signup/Vendor";
 import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { CssBaseline } from "@material-ui/core";
-import search from "./search/search";
+import { CssBaseline } from '@material-ui/core';
+import search from "./search/search"
+import ListPage from "./list/ListPage";
+import ListsPage from "./list/ListsPage";
+import Favorites from "./list/Favorites";
 import Cart from "./cart/Cart";
+
 
 function App() {
   return (
@@ -34,6 +38,9 @@ function App() {
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
+          <Route path="/profile/lists" exact component={ListsPage} />
+          <Route exact path="/profile/lists/favorites" component={Favorites} />
+          <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
           <Route path="/cart" exact component={Cart} />
