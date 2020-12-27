@@ -1,12 +1,19 @@
 import {
   Box,
+  Button,
+  ButtonGroup,
   Divider,
   Grid,
+  IconButton,
   makeStyles,
   Paper,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import { postDataToken2 } from "../common/Requests";
+import { serverUrl } from "../common/ServerUrl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +35,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CartProduct(props) {
   const classes = useStyles();
+  let [countclickamount, setcount] = useState(props.cnt);
+
+  const handlecountplus = () => {
+    if (countclickamount < 10) {
+      countclickamount = countclickamount + 1;
+    }
+
+    setcount(countclickamount);
+  };
+
+  const handlecountminus = () => {
+    if (countclickamount > 0) {
+      countclickamount = countclickamount - 1;
+      setcount(countclickamount);
+      const data = {
+        product_id: props.product.id,
+        count: countclickamount,
+      };
+      postDataToken2(serverUrl + "api/cart/edit/", data);
+    }
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -88,8 +116,41 @@ export default function CartProduct(props) {
             </Typography>
           </Box>
         </Grid>
-        <Grid item container xs={3}>
-          asd
+        <Grid
+          item
+          container
+          direction="column"
+          alignItems="center"
+          justify="center"
+          xs={3}
+        >
+          <Grid item xs={4} />
+          <Grid item xs={4} alignItems="center" justify="center">
+            <ButtonGroup
+              style={{}}
+              variant="text"
+              color="#FFFFFF"
+              aria-label="text primary button group"
+            >
+              <IconButton onClick={handlecountplus}>
+                <AddIcon />
+              </IconButton>
+              <Button
+                size="small"
+                id="outlined-basic"
+                label="0"
+                variant="outlined"
+              >
+                {countclickamount}
+              </Button>
+              <IconButton onClick={handlecountminus}>
+                <RemoveIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Grid>
+          <Grid xs={4} alignItems="center" justify="center">
+            <Typography variant="h5"> {props.product.rating}</Typography>{" "}
+          </Grid>
         </Grid>
       </Grid>
     </Paper>

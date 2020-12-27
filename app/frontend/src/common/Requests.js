@@ -33,3 +33,15 @@ export async function postDataToken(url = "", data = {}, token) {
 
   return response.then((res) => res.json());
 }
+
+export function postDataToken2(url = "", data = {}) {
+  const response = fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.then((res) => res.json());
+}
