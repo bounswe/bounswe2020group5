@@ -20,6 +20,7 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -325,6 +326,9 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
+                <IconButton aria-label="cart" onClick={() => { history.push("/cart") }}>
+                  <ShoppingCartIcon style={{ color: '#7A0010' }}/>
+                </IconButton>
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <Badge badgeContent={4} color="primary">
                     <MailIcon style={{ color: '#7E7F9A' }}/>
