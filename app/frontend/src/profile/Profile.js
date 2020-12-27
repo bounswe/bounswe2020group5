@@ -84,6 +84,7 @@ function Profile() {
   let [emailChanged, setEmailChanged] = React.useState(false);
   let [addressChanged, setAddressChanged] = React.useState(false);
   let [usernameChanged, setUsernameChanged] = React.useState(false);
+  let [isvendor,setIsVendor] = React.useState(false);
 
   let history = useHistory();
 
@@ -216,16 +217,18 @@ function Profile() {
         method: 'POST',
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
       }).then(res => res.json())
-          .then(json => {
-            setName({
-                  first_name: json.first_name,
-                  last_name: json.last_name,
-                  email: json.email,
-                  address: json.address,
-                  username: json.username,
-                }
-            )
-          }).then(() => {
+        .then(json => {
+          setName({
+              first_name: json.first_name,
+              last_name: json.last_name,
+              email: json.email,
+              address: json.address,
+              username: json.username,
+            }
+          )
+          setIsVendor(json.is_vendor);
+        }).then(() => {
+
         setLoadPage(true)
       })
           .catch(err => console.log(err));
@@ -257,71 +260,80 @@ function Profile() {
                 </Breadcrumbs>
               </div>
 
-
-              <div className={classes.gridroot}>
-                <Grid container>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <div style={{marginLeft: "1rem"}}>
-                        <IconButton>
-                          <Badge>
-                            <AccountCircleOutlinedIcon
-                                style={{fontSize: "2.5rem", color: "#525b60"}}/>
-                          </Badge>
-                        </IconButton>
-                        <InputBase
-                            style={{
-                              color: "#525B60",
-                              marginTop: "1.5rem",
-                              marginBottom: "1rem"
-                            }}
-                            defaultValue={JSON.parse(JSON.stringify(name.first_name)) + ' ' + JSON.parse(JSON.stringify(name.last_name))}
-                            inputProps={{'aria-label': 'new-arrivals'}}
-                            disabled={true}
-                        />
-                      </div>
-                      <div>
-                        <List
-                            component="nav"
-                            className={classes.root}
-                        >
-                          <ListItem button>
-                            <ListItemIcon>
-                              <LocalMallIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Orders"/>
-                          </ListItem>
-                          <ListItem button component={Link} to="/profile/lists">
+          <div className={classes.gridroot}>
+            <Grid container>
+              <Grid item xs={3}>
+                <Paper className={classes.paper}>
+                  <div style={{marginLeft: "1rem"}}>
+                    <IconButton>
+                      <Badge>
+                        <AccountCircleOutlinedIcon
+                          style={{fontSize: "2.5rem", color: "#525b60"}}/>
+                      </Badge>
+                    </IconButton>
+                    <InputBase
+                      style={{
+                        color: "#525B60",
+                        marginTop: "1.5rem",
+                        marginBottom: "1rem"
+                      }}
+                      defaultValue={JSON.parse(JSON.stringify(name.first_name)) + ' ' + JSON.parse(JSON.stringify(name.last_name))}
+                      inputProps={{'aria-label': 'new-arrivals'}}
+                      disabled={true}
+                    />
+                  </div>
+                  <div>
+                    <List
+                      component="nav"
+                      className={classes.root}
+                    >
+                      <ListItem button>
+                        <ListItemIcon>
+                          <LocalMallIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Orders"/>
+                      </ListItem>
+                      {!isvendor ? (
+                        <ListItem button component={Link} to="/profile/lists">
                             <ListItemIcon>
                               <ListIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Lists"/>
                           </ListItem>
-                          <ListItem button>
-                            <ListItemIcon>
-                              <HomeIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Addresses"/>
-                          </ListItem>
-                          <ListItem button>
-                            <ListItemIcon>
-                              <PaymentIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Saved Credit Cards"/>
-                          </ListItem>
-                          <ListItem button>
-                            <ListItemIcon>
-                              <StarBorderIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Assessments"/>
-                          </ListItem>
-                          <ListItem button onClick={handleClick}>
-                            <ListItemIcon>
-                              <SettingsIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Settings"/>
-                            {open ? <ExpandLess/> : <ExpandMore/>}
-                          </ListItem>
+                      ):(
+                        <ListItem button component={Link}
+                                  to="/add-product">
+                          <ListItemIcon>
+                            <ListIcon/>
+                          </ListItemIcon>
+                          <ListItemText primary="Add Product"/>
+                        </ListItem>
+                      )}
+                      <ListItem button>
+                        <ListItemIcon>
+                          <HomeIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Addresses"/>
+                      </ListItem>
+                      <ListItem button>
+                        <ListItemIcon>
+                          <PaymentIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Saved Credit Cards"/>
+                      </ListItem>
+                      <ListItem button>
+                        <ListItemIcon>
+                          <StarBorderIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Assessments"/>
+                      </ListItem>
+                      <ListItem button onClick={handleClick}>
+                        <ListItemIcon>
+                          <SettingsIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Settings"/>
+                        {open ? <ExpandLess/> : <ExpandMore/>}
+                      </ListItem>
                           <Collapse in={open} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                               <ListItem button className={classes.nested} component={Link}

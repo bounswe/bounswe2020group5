@@ -12,6 +12,7 @@ import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
 import search from "./search/search"
+import Categories from "./categories/Categories";
 import ListPage from "./list/ListPage";
 import ListsPage from "./list/ListsPage";
 import Favorites from "./list/Favorites";
@@ -43,6 +44,8 @@ function App() {
           <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
+          <Route path="/category" component={Categories} />
+          <Route path="/subcategory" exact component={Categories} />
           <Route path="/cart" exact component={Cart} />
           <Route component={NoMatch} />
         </Switch>

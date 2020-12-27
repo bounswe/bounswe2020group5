@@ -71,10 +71,7 @@ const useStyles = makeStyles((theme) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+    width: '40rem',
   },
   sectionDesktop: {
     display: 'none',
@@ -235,16 +232,16 @@ export default function Navbar() {
         <p>Cart</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+        <IconButton color="inherit">
+          <Badge color="secondary">
             <MailIcon/>
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
+        <IconButton color="inherit">
+          <Badge color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -333,8 +330,8 @@ export default function Navbar() {
                     <MailIcon style={{ color: '#7E7F9A' }}/>
                   </Badge>
                 </IconButton>
-                <IconButton aria-label="show 17 new notifications" color="inherit">
-                  <Badge badgeContent={17} color="primary">
+                <IconButton color="inherit">
+                  <Badge color="primary">
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>
