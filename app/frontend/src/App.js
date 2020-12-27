@@ -15,6 +15,8 @@ import search from "./search/search"
 import ListPage from "./list/ListPage";
 import ListsPage from "./list/ListsPage";
 import Favorites from "./list/Favorites";
+import Cart from "./cart/Cart";
+
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
           <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
+          <Route path="/cart" exact component={Cart} />
           <Route component={NoMatch} />
         </Switch>
       </div>
