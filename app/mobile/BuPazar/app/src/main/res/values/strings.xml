@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="appName">BuPazar!</string>
     <string name="username">Username</string>
-    <string name="username_hint">Username or email address</string>
+    <string name="username_hint">E-mail address</string>
     <string name="password">Password</string>
     <string name="password_hint">Password</string>
     <string name="forgot_password">Forgot your password?</string>
@@ -39,6 +39,7 @@
     <string name="car_vehicle_electronics"><![CDATA[Car & Vehicle Electronics]]></string>
     <string name="videogame_consoles_accessories"><![CDATA[Video Game Consoles]]></string>
     <string name="product_name_const">product name</string>
+    <string name="please_enter_verification_number">Please enter verification number</string>
 
 
     <string-array name="sports_images">

@@ -37,6 +37,17 @@ class RestApiService {
         )
     }
 
+    fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.userVerificate(userData).enqueue(
+            object : Callback<LoginResponse> {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    val user = response.body()
+                    onResult(user)
+
     fun addToCart(authToken: String, productData: AddToCartRequest, onResult: (AddToCartResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addToCart(authToken, productData).enqueue(
@@ -62,6 +73,7 @@ class RestApiService {
                 override fun onResponse(call: Call<ProductsInCart>, response: Response<ProductsInCart>) {
                     val addToCartResponse = response.body()
                     onResult(addToCartResponse)
+
                 }
             }
         )
