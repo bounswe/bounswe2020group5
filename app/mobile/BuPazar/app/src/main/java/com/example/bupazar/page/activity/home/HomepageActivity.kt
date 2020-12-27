@@ -40,7 +40,7 @@ class HomepageActivity : AppCompatActivity() {
                 when(it.itemId) {
                     R.id.ic_home -> makeCurrentFragment(homepageFragment)
                     R.id.ic_categories -> makeCurrentFragment(categoriesFragment)
-                    R.id.ic_basket -> makeCurrentFragment(basketFragment)
+                    R.id.ic_basket -> makeCurrentFragment(cartFragment)
                     R.id.ic_favorites -> makeCurrentFragment(favoritesFragment)
                     R.id.ic_accounts -> makeCurrentFragment(myAccountFragment)
                 }
