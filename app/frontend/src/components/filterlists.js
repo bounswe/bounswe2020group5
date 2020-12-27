@@ -4,12 +4,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
 
-import {render} from 'react-dom';
-import SimpleGridList from "./SimpleGridList";
 const useStyles = makeStyles((theme) => ({
     list: {
         overflowY: "scroll",
@@ -50,13 +46,9 @@ export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
         }
 
         setChecked(newChecked);
-        console.log(newChecked)
 
         {isbrand ?  sessionStorage.setItem('brandlist', JSON.stringify(newChecked)) :
             sessionStorage.setItem('vendorlist', JSON.stringify(newChecked))}
-
-        console.log(sessionStorage.getItem('brandlist'))
-
 
     };
 

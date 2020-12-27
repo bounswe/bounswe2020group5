@@ -1,7 +1,6 @@
 import React , {Component,useEffect, useState}from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
@@ -67,14 +66,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
     },
 }));
-const styles = {
-
-    largeIcon: {
-        width: 60,
-        height: 60,
-    },
-
-};
 
 export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
@@ -168,7 +159,6 @@ export default function ComplexGrid() {
             body: JSON.stringify(datavendor)
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
                 error=json.error
 
                 if(error=='No products found'){
@@ -179,6 +169,7 @@ export default function ComplexGrid() {
                         setStatepro(json)
                     }
                 }
+
                 setLoadPage(true);
                 sessionStorage.setItem('vendorlist',JSON.stringify([]))
 
@@ -210,8 +201,6 @@ export default function ComplexGrid() {
         }).then(res => res.json())
             .then(json => {
                 error=json.error
-                console.log(json.error)
-                console.log(json)
 
                 if(error=='No products found'){
 
@@ -224,7 +213,6 @@ export default function ComplexGrid() {
                     }}
                 }}
                     setLoadPage(true);
-
 
             })
             .catch(err => {
@@ -294,22 +282,21 @@ export default function ComplexGrid() {
                 if(error=='No products found'){
                     setStatepro([])}
                     else{
+
                     if(datadiscount.length!=0) {
                         if(statepro.length!=0){
                             setStatepro(json)
                         }}
+
                 }
-                    console.log(statepro)
 
                 setLoadPage(true);
 
 
             })
             .catch(err => {
-
                     alert('Some error has occurred')
                     console.log(err)
-
             });
 
     };
@@ -318,7 +305,6 @@ export default function ComplexGrid() {
         let error;
         let databrand;
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
-        console.log(brandkeys)
 
 
         if(brandkeys==null ){
@@ -337,7 +323,6 @@ export default function ComplexGrid() {
         }else{
             setbranddata(true);
         }
-
 
 
         databrand = {
@@ -382,6 +367,7 @@ export default function ComplexGrid() {
         let error;
         let dataall;
         let filterdata=[];
+
         var brandkeys=JSON.parse(sessionStorage.getItem('brandlist'));
 
 
@@ -391,9 +377,11 @@ export default function ComplexGrid() {
             brandkeys=[]
         }
         if(vendorkeys==null){
+
             vendorkeys=[]
 
         }
+
 
         setvendordata(true);
         setbranddata(true);
@@ -401,13 +389,14 @@ export default function ComplexGrid() {
         if(brandkeys.length==0){
             applyallbrand=false
 
+
         }else{
             applyallbrand=true
         }
         if(vendorkeys.length==0){
 
-            applyallvendor=false
 
+            applyallvendor=false
         }else{
             applyallvendor=true
         }
@@ -456,10 +445,12 @@ export default function ComplexGrid() {
             "data":discountleast,
             })
 
+
         dataall = {
             "product_ids": selectid,
             "filter_data":filterdata,
         }
+
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -467,14 +458,17 @@ export default function ComplexGrid() {
         }).then(res => res.json())
             .then(json => {
                 error=json.error
+
                 if(error=='No products found'){
                     setStatepro([])
                 }else{
+
 
                     if(dataall.length!=0) {
                         if(statepro.length!=0){
                             setStatepro(json)
                         }}
+
 
                 }
                 setLoadPage(true);
@@ -510,8 +504,6 @@ export default function ComplexGrid() {
         let error;
         let datasort;
         let sorting=statepro.map((product) => (product.id));
-        console.log('pppp')
-        console.log(sorting)
 
         datasort = {
             "product_ids": sorting,
@@ -615,7 +607,7 @@ export default function ComplexGrid() {
                         size="small"
                     />
 
-                    <IconButton onClick={brandfilterclick} style={{ background: '#F3DE8A' }} color="secondary" aria-label="add to shopping cart">
+                    <IconButton onClick={brandfilterclick} style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton>
                         </div>
@@ -637,7 +629,7 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton onClick={vendorfilterclick}  style={{ background: '#F3DE8A' }}color="secondary" aria-label="add to shopping cart">
+                        <IconButton onClick={vendorfilterclick}  style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
                     </div>
@@ -665,7 +657,7 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton onClick={pricefilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={pricefilterclick} style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
@@ -673,7 +665,7 @@ export default function ComplexGrid() {
                     <Divider style={{marginTop:'2rem',marginBottom:'1rem'}}/>
                     <div className={classes.float} style={{marginLeft:'0.5rem'}}>
                         <Typography className={classes.float} > {'Star Filter (Min.)'} </Typography>
-                        <IconButton onClick={starfilterclick} color="secondary" style={{marginLeft:'4.5rem', background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={starfilterclick}  style={{marginLeft:'4.5rem',color: 'white',background:'#0B3954'}} aria-label="add to shopping cart">
                         <SearchIcon  style={{ fontSize: 18 }}/>
                     </IconButton></div>
                     <div className={classes.float}>
@@ -686,7 +678,7 @@ export default function ComplexGrid() {
                             }}
 
                         />
-                        <IconButton onClick={resetstar} color="secondary" style={{marginTop:'1.8rem',marginLeft:'4.5rem' }}>
+                        <IconButton onClick={resetstar}  style={{marginTop:'1.8rem',marginLeft:'4.5rem',color: 'white',background:'#0B3954'}}>
                             <CancelIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
@@ -704,7 +696,7 @@ export default function ComplexGrid() {
                             variant="outlined"
                             size="small"
                         />
-                        <IconButton onClick={discountfilterclick} color="secondary" style={{ background: '#F3DE8A' }} aria-label="add to shopping cart">
+                        <IconButton onClick={discountfilterclick} style={{ color: 'white',background:'#0B3954' }} aria-label="add to shopping cart">
                             <SearchIcon  style={{ fontSize: 18 }}/>
                         </IconButton>
 
@@ -759,3 +751,4 @@ export default function ComplexGrid() {
         </div>
     );
 }
+

@@ -1,13 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
 import {Link} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles((theme) => ({
+
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -49,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: 18,
   },
-}));
 
+}));
 
 
 export const SimpleGridList = ({tileData}) => {
@@ -135,6 +134,7 @@ export const SimpleGridList = ({tileData}) => {
       </GridList>
     </Paper>
   );
+
 }
 
 export default SimpleGridList;

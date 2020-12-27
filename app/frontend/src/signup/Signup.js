@@ -1,116 +1,110 @@
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Link, Redirect } from 'react-router-dom'
-import Typography from '@material-ui/core/Typography';
-import { useState } from 'react';
-import validate from './Validate.js'
-import './Signup.css'
-import Alert from '@material-ui/lab/Alert';
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Link, Redirect } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import { useState } from "react";
+import validate from "./Validate.js";
+import "./Signup.css";
+import Alert from "@material-ui/lab/Alert";
 import { postData } from "../common/Requests";
 import { serverUrl } from "../common/ServerUrl";
-import React from 'react';
-
-
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
     "& .left ": {
-      display: 'inline',
-      float: 'left',
-      width: '223px',
-      margin: '16px 8px 16px 16px',
+      display: "inline",
+      float: "left",
+      width: "223px",
+      margin: "16px 8px 16px 16px",
     },
 
     "& .right ": {
-      display: 'inline',
-      float: 'right',
-      width: '223px',
-      margin: '16px 16px 16px 8px',
+      display: "inline",
+      float: "right",
+      width: "223px",
+      margin: "16px 16px 16px 8px",
     },
 
     "& .left2 ": {
-      display: 'inline',
-      float: 'left',
-      width: '223px',
-      margin: '0px 8px 16px 16px',
+      display: "inline",
+      float: "left",
+      width: "223px",
+      margin: "0px 8px 16px 16px",
     },
 
     "& .right2 ": {
-      display: 'inline',
-      float: 'right',
-      width: '223px',
-      margin: '0px 16px 16px 8px',
+      display: "inline",
+      float: "right",
+      width: "223px",
+      margin: "0px 16px 16px 8px",
     },
 
     "& .MuiTextField-root": {
-      width: '100%',
+      width: "100%",
     },
-
 
     "& > div": {
       margin: theme.spacing(2),
     },
   },
   loginButtonRoot: {
-    '& > *': {
-      width: '100%',
-      height: '56px',
+    "& > *": {
+      width: "100%",
+      height: "56px",
     },
     alertRoot: {
-      width: '100%',
-      '& > * + *': {
+      width: "100%",
+      "& > * + *": {
         marginTop: theme.spacing(2),
       },
     },
   },
 }));
 
-
 function Signup(props) {
-
   const classes = useStyles();
 
   const [state, setState] = useState({
-    password: '',
-    confirm: '',
-    fname: '',
-    lname: '',
-    email: '',
-    uname: '',
-    address: '',
+    password: "",
+    confirm: "",
+    fname: "",
+    lname: "",
+    email: "",
+    uname: "",
+    address: "",
   });
 
   const [val, setVal] = useState({
-    password: { error: false, message: '' },
-    confirm: { error: false, message: '' },
-    fname: { error: false, message: '' },
-    lname: { error: false, message: '' },
-    email: { error: false, message: '' },
-    uname: { error: false, message: '' },
-    address: { error: false, message: '' },
+    password: { error: false, message: "" },
+    confirm: { error: false, message: "" },
+    fname: { error: false, message: "" },
+    lname: { error: false, message: "" },
+    email: { error: false, message: "" },
+    uname: { error: false, message: "" },
+    address: { error: false, message: "" },
   });
 
-  const [logged, setLogged] = useState(false); 
+  const [logged, setLogged] = useState(false);
 
-  const [alertMessage, setAlertMessage] = useState(''); 
+  const [alertMessage, setAlertMessage] = useState("");
 
   function onChange(event) {
-    var mutableState = state
-    mutableState[event.target.id] = event.target.value
-    setState(mutableState)
-    setAlertMessage('')
+    var mutableState = state;
+    mutableState[event.target.id] = event.target.value;
+    setState(mutableState);
+    setAlertMessage("");
   }
 
   function handleOnClick() {
     let newVal = validate(state, val);
     if (!props.type) {
-      newVal.address = { error: false, message: '' };
+      newVal.address = { error: false, message: "" };
     }
-    setVal(newVal)
+    setVal(newVal);
     let valCheck = true;
 
-    
     for (const key in newVal) {
       if (newVal.hasOwnProperty(key)) {
         const element = newVal[key];
@@ -121,7 +115,7 @@ function Signup(props) {
     }
 
     if (valCheck) {
-      const url = serverUrl + 'api/auth/register/';
+      const url = serverUrl + "api/auth/register/";
       let data = {
         email: state.email,
         username: state.uname,
@@ -130,51 +124,66 @@ function Signup(props) {
         password: state.password,
         is_customer: true,
         is_vendor: false,
-      }
+      };
 
       if (props.type) {
         data.address = state.address;
         data.is_customer = false;
         data.is_vendor = true;
       }
-      
+
       postData(url, data)
         .then(handleResponse)
-        .catch(rej => console.log(rej))
+        .catch((rej) => console.log(rej));
     }
   }
 
   function handleResponse(res) {
     try {
-      const token = res.auth_token;
-      if (token) {
-        console.log(token)
-        localStorage.setItem('token', token);
+      const success = res.success;
+      if (success) {
+        // console.log(token)
+        localStorage.setItem("mail-for-register", state.email);
         setLogged(true);
       } else {
-        setAlertMessage('User with this username already exists');
+        if (res.email) {
+          setAlertMessage("User with this email already exists");
+        } else if (res.username) {
+          setAlertMessage("User with this username already exists");
+        } else {
+          setAlertMessage("Some error has occured");
+          console.log(res);
+        }
       }
     } catch (error) {
-      setAlertMessage('Some error has occured');
+      setAlertMessage("Some error has occured");
     }
   }
 
   if (logged) {
-    return <Redirect to='/' />
+    return <Redirect to="/email-verification" />;
   }
 
   return (
     <div className="login">
       <div className="login-header">
         <Link to="/home">
-          <img src="/img/logo.png" alt="bupazar logo" width="100" height="100" />
-        </Link>    
+          <img
+            src="/img/logo.png"
+            alt="bupazar logo"
+            width="100"
+            height="100"
+          />
+        </Link>
       </div>
       <div className="signup-container">
         <Typography className="h5-style" variant="h5" gutterBottom>
           Create your bupazar account
         </Typography>
-        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+        <div
+          className={classes.alertRoot}
+          style={{ display: alertMessage ? "block" : "none" }}
+        >
           <Alert severity="error">{alertMessage}</Alert>
         </div>
 
@@ -243,18 +252,19 @@ function Signup(props) {
               onChange={onChange}
             />
           </div>
-          {props.type && <div className="username">
-            <TextField
-              id="address"
-              label="Address"
-              variant="outlined"
-              error={val.address.error}
-              helperText={val.address.message}
-              onChange={onChange}
-            />
-          </div>}
+          {props.type && (
+            <div className="username">
+              <TextField
+                id="address"
+                label="Address"
+                variant="outlined"
+                error={val.address.error}
+                helperText={val.address.message}
+                onChange={onChange}
+              />
+            </div>
+          )}
         </form>
-
 
         <div className="button-div">
           <div className={classes.loginButtonRoot}>
@@ -264,28 +274,31 @@ function Signup(props) {
           </div>
         </div>
 
-
         <div>
-          {!props.type && <div className="forgot-password">
-            <Button
-              color="primary"
-              style={{ textTransform: "none" }}
-              to="/signup/vendor"
-              component={Link}
-            >
-              <b>Are you a vendor?</b>
-            </Button>
-          </div>}
-          {props.type && <div className="forgot-password">
-            <Button
-              color="primary"
-              style={{ textTransform: "none" }}
-              to="/signup"
-              component={Link}
-            >
-              <b>Not a vendor?</b>
-            </Button>
-          </div>}
+          {!props.type && (
+            <div className="forgot-password">
+              <Button
+                color="primary"
+                style={{ textTransform: "none" }}
+                to="/signup/vendor"
+                component={Link}
+              >
+                <b>Are you a vendor?</b>
+              </Button>
+            </div>
+          )}
+          {props.type && (
+            <div className="forgot-password">
+              <Button
+                color="primary"
+                style={{ textTransform: "none" }}
+                to="/signup"
+                component={Link}
+              >
+                <b>Not a vendor?</b>
+              </Button>
+            </div>
+          )}
           <div className="signup">
             <Button
               color="primary"
@@ -298,7 +311,7 @@ function Signup(props) {
           </div>
         </div>
         <div>
-          <div style={{ textAlign: 'center', margin: '8px' }}>
+          <div style={{ textAlign: "center", margin: "8px" }}>
             <Typography variant="body1" gutterBottom>
               - or -
             </Typography>
@@ -308,7 +321,9 @@ function Signup(props) {
               <Button
                 variant="outlined"
                 color="primary"
-                startIcon={<img src="/img/google-icon.svg" alt="facebook icon" />}
+                startIcon={
+                  <img src="/img/google-icon.svg" alt="facebook icon" />
+                }
                 style={{ textTransform: "none" }}
               >
                 Continue with Google
@@ -320,11 +335,13 @@ function Signup(props) {
               <Button
                 variant="outlined"
                 color="primary"
-                startIcon={<img src="/img/facebook-icon.svg" alt="google icon" />}
+                startIcon={
+                  <img src="/img/facebook-icon.svg" alt="google icon" />
+                }
                 style={{ textTransform: "none" }}
               >
                 Continue with Facebook
-            </Button>
+              </Button>
             </div>
           </div>
         </div>
@@ -332,6 +349,5 @@ function Signup(props) {
     </div>
   );
 }
-
 
 export default Signup;

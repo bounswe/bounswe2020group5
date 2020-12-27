@@ -1,10 +1,11 @@
+
 import React, {useEffect, useState} from 'react';
+
+
 import Navbar from "./Navbar";
 import CategoryTab from "../components/CategoryTab";
 import SimpleGridList from "../components/SimpleGridList";
 import InputBase from "@material-ui/core/InputBase";
-import {tileData} from '../components/tileData';
-import {tileData2} from '../components/tileData2';
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
 
@@ -12,6 +13,7 @@ import {serverUrl} from "../common/ServerUrl";
 function Home() {
 
     const [loadPage, setLoadPage] = React.useState(false);
+
     let [bestsellers, setbestsellers] = React.useState("");
     let [newarrivals, setnewarrivals] = React.useState("");
     let [trending, settrending] = React.useState("");
@@ -116,6 +118,7 @@ function Home() {
                 </div>) : null}
 
         </div>
+
 
     );
 }
