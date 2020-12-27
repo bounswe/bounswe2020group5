@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoryHome">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -39,52 +39,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/kitchenware"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
-        android:background="@drawable/transparent_rectangle_border">
-
-
-        <ImageView
-            android:id="@+id/orderImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_living_room" />
-
-        <TextView
-            android:id="@+id/electronicstext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_toEndOf="@+id/orderImage"
-            android:text="@string/furniture"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/ElectronicsArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="18dp"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/fashion"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/electronics"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -123,10 +81,10 @@
 
 
     <RelativeLayout
-        android:id="@+id/personalCare"
+        android:id="@+id/beds"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fashion"
+        android:layout_below="@id/kitchenware"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -151,6 +109,7 @@
             android:text="@string/beds"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/personalCareArrow"
             android:layout_width="wrap_content"
@@ -163,10 +122,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/home"
+        android:id="@+id/decoration"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/personalCare"
+        android:layout_below="@id/beds"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -191,6 +150,7 @@
             android:text="@string/decoration"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/homeArrow"
             android:layout_width="wrap_content"
@@ -203,10 +163,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/sports"
+        android:id="@+id/officeFurniture"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/home"
+        android:layout_below="@id/decoration"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -231,6 +191,7 @@
             android:text="@string/office_furniture"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/sportsArrow"
             android:layout_width="wrap_content"

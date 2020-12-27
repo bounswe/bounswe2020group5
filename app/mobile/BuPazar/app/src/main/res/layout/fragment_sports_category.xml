@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategorySports">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -39,12 +39,11 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/sportClothing"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
         android:background="@drawable/transparent_rectangle_border">
-
 
         <ImageView
             android:id="@+id/orderImage"
@@ -81,10 +80,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fashion"
+        android:id="@+id/fitness"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/electronics"
+        android:layout_below="@id/sportClothing"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView

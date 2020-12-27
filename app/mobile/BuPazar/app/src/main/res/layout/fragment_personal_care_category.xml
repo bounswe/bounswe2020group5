@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoryPersonalCare">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -21,7 +21,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/personal_care"
+            android:text="@string/personal"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -39,12 +39,11 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/perfume"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
         android:background="@drawable/transparent_rectangle_border">
-
 
         <ImageView
             android:id="@+id/orderImage"
@@ -81,10 +80,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fashion"
+        android:id="@+id/makeup"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/electronics"
+        android:layout_below="@id/perfume"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -123,10 +122,10 @@
 
 
     <RelativeLayout
-        android:id="@+id/personalCare"
+        android:id="@+id/skinCare"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fashion"
+        android:layout_below="@id/makeup"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -151,6 +150,7 @@
             android:text="@string/skin_care"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/personalCareArrow"
             android:layout_width="wrap_content"
@@ -163,10 +163,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/home"
+        android:id="@+id/oralCare"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/personalCare"
+        android:layout_below="@id/skinCare"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -191,6 +191,7 @@
             android:text="@string/oral_care"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/homeArrow"
             android:layout_width="wrap_content"
@@ -203,10 +204,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/sports"
+        android:id="@+id/hairCare"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/home"
+        android:layout_below="@id/oralCare"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -231,6 +232,7 @@
             android:text="@string/hair_care"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/sportsArrow"
             android:layout_width="wrap_content"

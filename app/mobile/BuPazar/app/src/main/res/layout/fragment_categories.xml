@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoriesFragment">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -45,7 +45,6 @@
         android:layout_below="@id/categoriesTitle"
         android:background="@drawable/transparent_rectangle_border">
 
-
         <ImageView
             android:id="@+id/orderImage"
             android:layout_width="wrap_content"
@@ -53,7 +52,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_electrical_services_24" />
+            app:srcCompat="@drawable/ic_plug" />
 
         <TextView
             android:id="@+id/electronicstext"
@@ -121,7 +120,6 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/personalCare"
         android:layout_width="match_parent"
@@ -148,7 +146,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/personalCareImage"
-            android:text="@string/personal_care"
+            android:text="@string/personal"
             android:textColor="@color/black"
             android:textSize="18sp" />
         <ImageView
@@ -191,6 +189,7 @@
             android:text="@string/home_amp_kitchen"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/homeArrow"
             android:layout_width="wrap_content"
@@ -216,7 +215,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_running" />
+            app:srcCompat="@drawable/ic_hiking" />
 
         <TextView
             android:id="@+id/sportsText"
@@ -231,6 +230,7 @@
             android:text="@string/sports_outdoors"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/sportsArrow"
             android:layout_width="wrap_content"
@@ -268,7 +268,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="14dp"
             android:layout_toEndOf="@+id/hobbieImage"
-            android:text="@string/hobbie_amp_books"
+            android:text="@string/hobbies"
             android:textColor="@color/black"
             android:textSize="18sp" />
 

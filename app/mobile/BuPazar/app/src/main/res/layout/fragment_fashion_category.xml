@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoryFashion">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -39,12 +39,11 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/womanClothing"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
         android:background="@drawable/transparent_rectangle_border">
-
 
         <ImageView
             android:id="@+id/orderImage"
@@ -81,10 +80,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fashion"
+        android:id="@+id/accessory"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/electronics"
+        android:layout_below="@id/womanClothing"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -123,10 +122,10 @@
 
 
     <RelativeLayout
-        android:id="@+id/personalCare"
+        android:id="@+id/sportsWear"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fashion"
+        android:layout_below="@id/accessory"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -163,10 +162,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/home"
+        android:id="@+id/manClothing"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/personalCare"
+        android:layout_below="@id/sportsWear"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -191,6 +190,7 @@
             android:text="@string/man_clothing"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/homeArrow"
             android:layout_width="wrap_content"
@@ -203,10 +203,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/sports"
+        android:id="@+id/shoesBags"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/home"
+        android:layout_below="@id/manClothing"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -231,6 +231,7 @@
             android:text="@string/shoes_amp_bags"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/sportsArrow"
             android:layout_width="wrap_content"

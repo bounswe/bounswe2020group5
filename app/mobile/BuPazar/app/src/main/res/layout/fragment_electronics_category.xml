@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoryElectronics">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -39,7 +39,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/smartPhone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
@@ -81,10 +81,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fashion"
+        android:id="@+id/whiteAppliances"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/electronics"
+        android:layout_below="@id/smartPhone"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -94,7 +94,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_headphones" />
+            app:srcCompat="@drawable/ic_oven" />
 
         <TextView
             android:id="@+id/fashionText"
@@ -106,7 +106,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/fashionImage"
-            android:text="@string/headphones"
+            android:text="@string/whiteAppliances"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -123,10 +123,10 @@
 
 
     <RelativeLayout
-        android:id="@+id/personalCare"
+        android:id="@+id/pctablet"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fashion"
+        android:layout_below="@id/whiteAppliances"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -148,7 +148,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/personalCareImage"
-            android:text="@string/computer_amp_tablet"
+            android:text="@string/pc_amp_tablet"
             android:textColor="@color/black"
             android:textSize="18sp" />
         <ImageView
@@ -163,10 +163,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/home"
+        android:id="@+id/photoCamera"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/personalCare"
+        android:layout_below="@id/pctablet"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -202,12 +202,11 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:id="@+id/videoGame"
+        android:id="@+id/gameConsoles"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/home"
+        android:layout_below="@id/photoCamera"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -243,23 +242,5 @@
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
     </RelativeLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:itemBackground="@color/secondary_blue"
-        app:itemIconTint="#fff"
-        app:itemTextColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.998"
-        app:menu="@menu/nav_menu" />
-
 
 </RelativeLayout>

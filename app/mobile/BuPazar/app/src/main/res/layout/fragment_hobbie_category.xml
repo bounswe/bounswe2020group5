@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".page.fragment.MyAccountFragment">
+    tools:context=".page.fragment.categories.CategoryHobbie">
 
     <RelativeLayout
         android:id="@+id/categoriesTitle"
@@ -21,7 +21,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/hobbie_amp_books"
+            android:text="@string/hobbies"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -39,12 +39,11 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/electronics"
+        android:id="@+id/bookMagazine"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/categoriesTitle"
         android:background="@drawable/transparent_rectangle_border">
-
 
         <ImageView
             android:id="@+id/orderImage"
@@ -81,10 +80,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fashion"
+        android:id="@+id/musicalInstrument"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/electronics"
+        android:layout_below="@id/bookMagazine"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -106,7 +105,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/fashionImage"
-            android:text="Musical Instrument"
+            android:text="@string/musical_instrument"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -121,12 +120,11 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:id="@+id/personalCare"
+        android:id="@+id/art"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fashion"
+        android:layout_below="@id/musicalInstrument"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -162,6 +160,5 @@
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
     </RelativeLayout>
-
 
 </RelativeLayout>
