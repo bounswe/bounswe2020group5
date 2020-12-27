@@ -4,6 +4,7 @@ import { serverUrl } from "../common/ServerUrl";
 import { useState, useEffect } from "react";
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
+import CartProduct from "./CartProduct";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Cart() {
+  const [plist, setPlist] = useState([]);
   useEffect(() => {
     console.log("effect");
     fetch(serverUrl + "api/cart/get", {
@@ -33,20 +35,34 @@ export default function Cart() {
       },
     })
       .then((response) => response.json())
-      .then((data) => console.log(data.products_in_cart));
+      .then((data) => {
+        setPlist(data.products_in_cart);
+        console.log(data.products_in_cart);
+      });
     return () => {
       console.log("cleanup");
     };
   }, []);
+
+  const renderProducts = () => {
+    console.log(plist);
+    return plist.map((e, i) => {
+      return (
+        <CartProduct
+          key={e.product.id}
+          product={e.product}
+          cnt={e.count}
+        ></CartProduct>
+      );
+    });
+  };
 
   const classes = useStyles();
   return (
     <React.Fragment>
       <Navbar />
       <CategoryTab />
-      <Box>
-        <Paper className={classes.paper}>asd</Paper>
-      </Box>
+      {plist.length > 0 && <Box>{renderProducts()}</Box>}
     </React.Fragment>
   );
 }
