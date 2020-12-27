@@ -153,6 +153,14 @@ const Product = (props) => {
         setChecked(event.target.checked);
     };
 
+    function addtocart() {
+        fetch(serverUrl + 'api/cart/edit/', {
+            method: 'POST',
+            body: JSON.stringify({product_id: id, count: countclickamount}),
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+        }).then(res => res.json()).then(json => {}).catch(err => console.log(err));
+    }
+
     function handleOnButtonClick() {
 
         let data = {
@@ -375,7 +383,7 @@ const Product = (props) => {
                                                     <RemoveIcon/>
                                                 </IconButton>
                                             </ButtonGroup>
-                                            <Button size="large" variant="contained" style={{
+                                            <Button  onClick={addtocart} size="large" variant="contained" style={{
                                                 marginLeft: "9.1rem",
                                                 marginTop: "1rem",
                                                 marginBottom: "1rem",
