@@ -5,7 +5,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     paths:
-      - "./app/backend/**"
+      - "app/backend/**"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -33,7 +33,6 @@ jobs:
         run: |
           docker build ./app/backend -t django_app --build-arg KEY=${{ secrets.SECRET_KEY_C }}
           echo build is completed.
-
       - name: docker tag
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
@@ -46,7 +45,6 @@ jobs:
         run: |
           docker push $DOCKER_USER/django_app
           echo push is completed.
-
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:

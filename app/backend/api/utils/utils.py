@@ -39,7 +39,6 @@ def send_email(template,to):
     index = 0
     while index < 5:
         try:
-            #send_mail("Complete your signing up", template , "bupazar451@gmail.com", [validated['email']])
             send_mail("Complete your signing up", template , "bupazar451@gmail.com", [to])
             print("Email is sent")
             break
