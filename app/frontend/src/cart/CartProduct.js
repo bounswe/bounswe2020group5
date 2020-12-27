@@ -39,14 +39,54 @@ export default function CartProduct(props) {
             alt="product image"
           />
         </Grid>
-        <Grid item style={{ flexDirection: "column" }} container xs={6}>
+        <Grid
+          item
+          style={{ flexDirection: "column", position: "relative" }}
+          container
+          xs={6}
+        >
           <Typography gutterBottom variant="h4">
             {props.product.name}
           </Typography>
           <Divider variant="middle" />
-          <Typography gutterBottom variant="body1">
+          <Typography gutterBottom style={{ margin: 16 }} variant="body1">
             {props.product.description}
           </Typography>
+          <Box
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              display: "flex",
+            }}
+          >
+            <Typography
+              gutterBottom
+              variant="h5"
+              style={{ margin: 8, marginRight: 0 }}
+            >
+              List: $
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="h5"
+              style={{
+                margin: 8,
+                textDecorationLine: "line-through",
+                marginLeft: 0,
+              }}
+            >
+              {props.product.price}
+            </Typography>
+            <Typography gutterBottom variant="h5" style={{ margin: 8 }}>
+              {(parseFloat(props.product.price) *
+                (100 - props.product.discount)) /
+                100}
+            </Typography>
+            <Typography gutterBottom variant="h5" style={{ margin: 8 }}>
+              {"%" + props.product.discount}
+            </Typography>
+          </Box>
         </Grid>
         <Grid item container xs={3}>
           asd
