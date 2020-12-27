@@ -1,1 +1,1 @@
-export let serverUrl = "http://18.195.107.160:81/";
+export let serverUrl = "http://18.195.107.160:8000/";

@@ -51,7 +51,7 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
+export const GeneralCustomizedDialogs= ({id}) =>  {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState('');
     let [chatid,setchatid]=React.useState('');
@@ -64,71 +64,42 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
     const handleClickOpen = () => {
         setOpen(true);
 
-            const token = localStorage.getItem('token')
-
-            console.log(token)
-            console.log('ooooo')
-            let messagetovendor;
-            let chatid;
-
-
-            messagetovendor= {
-                "vendor_id": '108',
-            }
-
-            if (token) {
-                fetch(serverUrl + 'api/chats/create_chat/', {
-                    method: 'POST',
-                    headers: {'Authorization': 'Token ' + token,'Content-Type': 'application/json'},
-                    body: JSON.stringify(messagetovendor),
-                }).then(res => res.json())
-                    .then(json => {
-                       setchatid(json.chat_id);
-
-
-                    }).then(() => {
-                    setLoadPage(true)
-                })
-                    .catch(err => console.log(err));
-            } else {
-                alert('Please login in order to message to vendor')
-            }
 
 
     };
     const handleClose = () => {
         setOpen(false);
 
-            const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token')
 
-            console.log(token)
-            console.log('ooooo')
-            let createmessage;
-
-
-
-            createmessage= {
-                "chat_id": chatid,
-                "context":value,
-            }
-
-            if (token) {
-                fetch(serverUrl + 'api/chats/send_message/', {
-                    method: 'POST',
-                    headers: {'Authorization': 'Token ' + token,'Content-Type': 'application/json'},
-                    body: JSON.stringify(createmessage),
-                }).then(res => res.json())
-                    .then(json => {
-                       console.log(json);
+        console.log(token)
+        console.log('ooooo')
+        let createmessage;
 
 
-                    }).then(() => {
-                    setLoadPage(true)
-                })
-                    .catch(err => console.log(err));
-            } else {
-                alert('Please login in order to message to vendor')
-            }
+
+        createmessage= {
+            "chat_id": id,
+            "context":value,
+        }
+
+        if (token) {
+            fetch(serverUrl + 'api/chats/send_message/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token,'Content-Type': 'application/json'},
+                body: JSON.stringify(createmessage),
+            }).then(res => res.json())
+                .then(json => {
+                    console.log(json);
+
+
+                }).then(() => {
+                setLoadPage(true)
+            })
+                .catch(err => console.log(err));
+        } else {
+            alert('Please login in order to message')
+        }
 
 
     };
@@ -136,24 +107,24 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
 
     return (
         <div>
-            <Button size="large" variant="contained" onClick={handleClickOpen} style={{
+            <Button size="large"  onClick={handleClickOpen} style={{
                 marginRight:'2rem',
                 cursor: 'pointer',
                 background: '#0B3954',
                 color: 'white'
 
             }}>
-                MESSAGE VENDOR
+                REPLY
             </Button>
             <Dialog  onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    SEND MESSAGE TO VENDOR
+                    SEND MESSAGE
                 </DialogTitle>
                 <DialogContent dividers>
                     <Typography gutterBottom>
                         <TextField style={{"height": "30rem", "width": "35rem"}}
                                    id="temp_comment"
-                                   label="Please write a message to vendor"
+                                   label="Please write a message "
                                    multiline
                                    rows={20}
                                    value={value}
@@ -172,4 +143,4 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
         </div>
     );
 }
-export default CustomizedDialogs;
+export default GeneralCustomizedDialogs;

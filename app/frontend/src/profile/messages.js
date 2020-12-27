@@ -2,10 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import {Link} from "react-router-dom";
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import InputBase from "@material-ui/core/InputBase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -20,19 +16,34 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
-import {useHistory} from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import validate from "./ValidateEditProfile";
-
+import {ExpandLess, ExpandMore} from "@material-ui/icons";
+import Collapse from "@material-ui/core/Collapse";
+import Divider from "@material-ui/core/Divider";
+import GeneralCustomizedDialogs from "../components/generaldialog";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+
+    },
+    float:{
+        display: 'inline-block',
+        flexDirection: 'vertical',
+        alignItems:'center',
+        justifyContent:'space-between',
+
+    },
+    reply:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+
     },
     nested: {
         paddingLeft: theme.spacing(4),
+        marginBottom:'2rem'
     },
     gridroot: {
         flexGrow: 1,
@@ -74,41 +85,54 @@ function Messages() {
     const classes = useStyles();
     let [open, setOpen] = React.useState(false);
     let [loadPage, setLoadPage] = React.useState(true);
+    let [open2, setOpen2] = React.useState('');
+    let[allchats,setallchats]=React.useState([]);
+    let chatnos =new Set();
+    let [lastmessages, setlastmessages] = React.useState([]);
 
-    let history = useHistory();
+    useEffect(() => {
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
+    const token = localStorage.getItem('token')
 
-    const [name, setName] = useState({
-        first_name: '',
-        last_name: '',
-        email:'',
-        address:'',
-        username:'',
-    });
-    const [val, setVal] = useState({
-        first_name: { error: false, message: '' },
-        last_name: { error: false, message: '' },
-        email: { error: false, message: '' },
-        address: { error: false, message: '' },
-        username: { error: false, message: '' },
-    });
+    console.log(token)
 
 
+    if (token) {
+        fetch(serverUrl + 'api/chats/get_all_chats/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: '',
 
+        }).then(res => res.json())
+            .then(json => {
+                {json.map((value) => {chatnos.add(value.id)})}
 
+                console.log(chatnos)
+                console.log('aaaa')
+                console.log(json)
+                setallchats(json)
+                getlastmessage(chatnos)
 
+            }).then(() => {
+            setLoadPage(true)
+        })
+            .catch(err => console.log(err));
+    } else {
+        alert('Please login to see profile page')
+    }
+    }, []);
 
-    const getchathistory = () => {
+    let[messagehistoryofid,setmessagehistoryofid]=React.useState([])
+
+    const getchathistory = (id) => {
+
         const token = localStorage.getItem('token')
         let messagehistory;
 
 
 
         messagehistory= {
-            "chat_id": '25',
+            "chat_id": id,
         }
 
 
@@ -122,6 +146,9 @@ function Messages() {
             }).then(res => res.json())
                 .then(json => {
                    console.log(json)
+                    console.log('hhhhhh')
+                    setmessagehistoryofid(json)
+
                 }).then(() => {
                 setLoadPage(true)
             })
@@ -132,31 +159,50 @@ function Messages() {
 
     };
 
-    const getallchats = () => {
-        const token = localStorage.getItem('token')
 
+
+function getlastmessage(chatnos){
+    let arraychatnos = Array.from(chatnos);
+   arraychatnos.map((value) => {
+       console.log(value)
+
+        const token = localStorage.getItem('token')
+        let lastmessage;
+
+
+        lastmessage = {
+            "chat_id": value,
+        }
+
+        console.log('sssssssss')
         console.log(token)
 
-
-
         if (token) {
-            fetch(serverUrl + 'api/chats/get_all_chats/', {
+            fetch(serverUrl + 'api/chats/get_last_message/', {
                 method: 'POST',
                 headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-                body: '',
-
+                body: JSON.stringify(lastmessage),
             }).then(res => res.json())
                 .then(json => {
                     console.log(json)
+                    console.log('xxxxxx')
+                    lastmessages.push(json)
+                    setlastmessages(lastmessages)
+                    console.log(lastmessages)
                 }).then(() => {
                 setLoadPage(true)
             })
                 .catch(err => console.log(err));
         } else {
-            alert('Please login to see profile page')
+            alert('')
         }
+})
 
-    };
+    }
+
+
+
+    let [indexnow, setindexnow] = React.useState('');
 
 
     return (
@@ -179,27 +225,51 @@ function Messages() {
                                 Messsages
                             </Link>
                         </Breadcrumbs>
-                        <List dense >
-                            {[0, 1, 2, 3].map((value) => {
-                                const labelId = `checkbox-list-secondary-label-${value}`;
+                        <List className={classes.root}  >
+                            {allchats.map((value,index) => {
+                                console.log(index)
+                                console.log(value.id)
+                                console.log(lastmessages)
+
+
+
                                 return (
 
-                                    <ListItem key={value} button>
-                                        <ListItemAvatar>
+
+                                    <ListItem  className={classes.float} key={index}>
+                                        <ListItemAvatar style={{width:'30rem'}} className={classes.reply}  >
                                             <Avatar
                                                 alt={`Avatar n°${value + 1}`}
                                                 src={`/static/images/avatar/${value + 1}.jpg`}
                                             />
+                                            <GeneralCustomizedDialogs id={value.customer_id} />
                                         </ListItemAvatar>
-                                        <ListItemText onClick={getchathistory} id={labelId} primary={`Line item ${value + 1}`} secondary={`kkkkkkkkkkkkkkkkkkkk
-                                        kkkkkkkkkkkkkkkkkkkkkkk`} /> {open ? <ExpandLess /> : <ExpandMore />}
-                                        <ListItemSecondaryAction>
+                                        <ListItemText onClickCapture={()=>setOpen2(!open2)}
+                                                      onClick={()=>setindexnow(index)} primary={<span>From: {value.customer_id} To:{value.vendor_id}
+                                                      </span>} secondary={<span
+                                                      contentEditable="true">{lastmessages.indexOf(index)}</span>}/>
 
-                                        </ListItemSecondaryAction>
+
+                                        { open2&&index==indexnow ? <ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
+                                        <Collapse  className={classes.float} in={open2&&index==indexnow } timeout="auto" unmountOnExit>
+                                            {[].map((value,index) => {
+                                         return(
+                                            <List >
+                                                <ListItem  className={classes.flow}>
+                                                    <ListItemText primary={value}/>
+                                                </ListItem>
+                                            </List> );})}
+                                        </Collapse>
+
+                                        <Divider/>
                                     </ListItem>
-                                );
+
+
+                            );
                             })}
+
                         </List>
+
                     </div>
 
 
