@@ -14,3 +14,5 @@
 app/backend/aws_s3_config.py
 app/backend/db_config.py
 app/backend/api/migrations/0001_initial.py
+app/backend/email_config.py
+app/backend/shared_memory.json

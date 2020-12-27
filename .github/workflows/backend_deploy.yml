@@ -5,7 +5,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     paths:
-      - "./app/backend/**"
+      - "app/backend/**"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -54,6 +54,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.OMG_SECRET }}
           port: 22
+
           script: |
             cd bounswe2020group5/
             git pull
