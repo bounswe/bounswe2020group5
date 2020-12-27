@@ -37,23 +37,23 @@ class ChatViewSet(viewsets.GenericViewSet):
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def create_chat(self, request):
-        vendor_id = request.data.get("vendor_id")
+        vendor_username = request.data.get("vendor_username")
         user = User.objects.get(id=request.user.id)
         if not user.is_customer:
             return Response(data={'error': 'Only customers can create a chat'}, status=HTTP_400_BAD_REQUEST)
         try:
-            vendor = User.objects.get(id=vendor_id)
+            vendor = User.objects.get(username=vendor_username)
         except:
             return Response(data={'error': 'There is not such user with that id'}, status=HTTP_400_BAD_REQUEST)
         if not vendor.is_vendor:
             return Response(data={'error': 'The user is not a vendor'}, status=HTTP_400_BAD_REQUEST)
-        is_present = Chat.objects.filter(vendor_id=vendor_id,customer_id=user.id)
+        is_present = Chat.objects.filter(vendor_id=vendor.id,customer_id=user.id)
         if is_present:
             return Response(data={'error': 'The chat with this vendor already exists'}, status=HTTP_400_BAD_REQUEST)
         customer_id = user.id 
-        chat = create_chat(customer_id, vendor_id)
+        chat = create_chat(customer_id, vendor.id)
         data = {
-            "success": "conversation is created. Happy chatting",
+            "success": "True",
             "chat_id": chat.id,
             "data_created": chat.date_created
             }
@@ -86,7 +86,7 @@ class ChatViewSet(viewsets.GenericViewSet):
             return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_404_NOT_FOUND)
         message = Message.objects.filter(chat_id=chat_id)
         if not message:
-            return Response(data={"error":"there is no message in this chat"}, status=HTTP_404_NOT_FOUND)
+            return Response(data={"alert":"Chat exists but there is no message in it"}, status=HTTP_200_OK)
         message_contents = MessageSerializer(message, many=True)
         return Response(data=message_contents.data[len(message_contents.data)-1], status=status.HTTP_200_OK)
 
