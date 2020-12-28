@@ -80,11 +80,12 @@ function Messages() {
 
     const classes = useStyles();
     let [open, setOpen] = React.useState(false);
-    let [loadPage, setLoadPage] = React.useState(true);
+    let [loadPage, setLoadPage] = React.useState(false);
     let [open2, setOpen2] = React.useState('');
     let[allchats,setallchats]=React.useState([]);
     let chatnos =new Set();
-    let [lastmessages, setlastmessages] = React.useState([]);
+    let [lastmessages,setlastmessages]=React.useState([]);
+    let [lastmessagesfrom,setlastmessagesfrom]=React.useState([]);
 
     useEffect(() => {
 
@@ -107,14 +108,16 @@ function Messages() {
                 console.log('aaaa')
                 console.log(json)
                 setallchats(json)
-                getlastmessage(chatnos)
+
 
             }).then(() => {
-            setLoadPage(true)
+            getlastmessage(chatnos)
+
         })
+
             .catch(err => console.log(err));
     } else {
-        alert('Please login to see profile page')
+        alert('Please login to see message page')
     }
     }, []);
 
@@ -157,10 +160,13 @@ function Messages() {
 
 
 
-function getlastmessage(chatnos){
+    function getlastmessage(chatnos){
+    let messageset=[];
+    let lastmessagefr=[];
     let arraychatnos = Array.from(chatnos);
-   arraychatnos.map((value) => {
+     arraychatnos.map((value) => {
        console.log(value)
+       console.log('sssssssss')
 
         const token = localStorage.getItem('token')
         let lastmessage;
@@ -170,8 +176,7 @@ function getlastmessage(chatnos){
             "chat_id": value,
         }
 
-        console.log('sssssssss')
-        console.log(token)
+
 
         if (token) {
             fetch(serverUrl + 'api/chats/get_last_message/', {
@@ -180,20 +185,24 @@ function getlastmessage(chatnos){
                 body: JSON.stringify(lastmessage),
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
-                    console.log('xxxxxx')
-                    lastmessages.push(json)
-                    setlastmessages(lastmessages)
 
+                    console.log(json)
+                    console.log(json.context)
+                    console.log('xxxxxx')
+                    setlastmessages(messageset.push(json.context))
+                    setlastmessagesfrom(lastmessagefr.push(json.whose_message))
                     console.log(lastmessages)
-                }).then(() => {
-                setLoadPage(true)
-            })
+                    console.log(lastmessagefr)
+                    console.log('xxxxxx')
+
+                })
+
                 .catch(err => console.log(err));
         } else {
             alert('')
         }
 })
+        setLoadPage(true)
 
     }
 
@@ -201,12 +210,16 @@ function getlastmessage(chatnos){
 
     let [indexnow, setindexnow] = React.useState('');
     const nthElement = (arr, n = 0) => (n > 0 ? arr.slice(n, n + 1) : arr.slice(n))[0];
+    let [context, setcontext] = React.useState('');
+
 
 
     return (
 
+
         <div>
             {loadPage ? (
+
                 <div>
                     <div className="Home">
                         <Navbar/>
@@ -224,11 +237,23 @@ function getlastmessage(chatnos){
                             </Link>
                         </Breadcrumbs>
                         <List className={classes.root}  >
+
                             {allchats.map((value,index) => {
+
+                                console.log(lastmessages)
+                                console.log(lastmessagesfrom)
+
+
+                                console.log('vvvvvvv')
+
                                 console.log(index)
                                 console.log(value.id)
-                                console.log(lastmessages)
+
                                 console.log('lastmessages')
+
+
+
+
 
                                 return (
 
@@ -244,7 +269,7 @@ function getlastmessage(chatnos){
                                         <ListItemText onClickCapture={()=>setOpen2(!open2)}
                                                       onClick={()=>setindexnow(index)} primary={<span>From: {value.customer_id} To:{value.vendor_id}
                                                       </span>} secondary={<span
-                                                      contentEditable="true">{nthElement(lastmessages,index)}</span>}/>
+                                                      ></span>}/>
 
 
                                         { open2&&index==indexnow ? <ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
