@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.*
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_cart.*
@@ -43,6 +44,12 @@ class CartFragment : Fragment() {
                 val cartProductAdapter = this.context?.let { productsInCart?.let { it1 -> CartProductAdapter(it, cartProducts = it1) } }
                 cartProducts.adapter = cartProductAdapter
                 cartProducts.layoutManager = LinearLayoutManager(this.context)
+                cartProductAdapter!!.onItemClick = { cartProduct ->
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, cartProduct.product.productId!!))
+                        commit()
+                    }
+                }
             }
         }
     }
