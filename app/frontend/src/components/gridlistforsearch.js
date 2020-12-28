@@ -62,7 +62,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
 
                             {tile.discount >0 ? (
                                 <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
-                                                  title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase() }
+                                                  title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.substr(0, 22).toUpperCase() }
                                                       <span style={{color: "red",fontSize:"1.2rem"}} > &nbsp; &nbsp; %{tile.discount} </span> <Divider/>  <br></br> </span>}
                                                   subtitle={<span  style={{color: "black",fontSize:"0.9rem"}}>PRICE: ${tile.price} <span style={{color: "red",fontSize:"0.9rem"}} > &nbsp; ---> &nbsp;  ${(tile.price - tile.price * tile.discount / 100).toFixed(2)} </span>
                                                       <br></br><br></br>BY: {tile.vendor}
