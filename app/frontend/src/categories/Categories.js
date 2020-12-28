@@ -112,12 +112,12 @@ export default function Categories() {
           setselectid(filledidproducts)
 
           filledbrandlist=json.map((product) => (product.brand));
-          filledbrandlist.forEach(b => uniquebrand.add(b));
+          filledbrandlist.forEach(b => uniquebrand.add(b.toLowerCase()));
           filledbrandlist=Array.from(uniquebrand);
           setselectbrand(filledbrandlist);
 
           filledvendorlist=json.map((product) => (product.vendor));
-          filledvendorlist.forEach(v => uniquevendor.add(v));
+          filledvendorlist.forEach(v => uniquevendor.add(v.toLowerCase()));
           filledvendorlist=Array.from(uniquevendor);
           setselectvendor(filledvendorlist);
         })
