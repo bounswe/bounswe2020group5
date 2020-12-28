@@ -1,6 +1,7 @@
 package com.example.bupazar.page.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bupazar.R
 import com.example.bupazar.model.*
+import com.example.bupazar.page.activity.message.ChatActivity
 import com.example.bupazar.service.RestApiService
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_message_main.*
 import kotlinx.android.synthetic.main.fragment_product.*
 
 
@@ -44,6 +47,8 @@ class ProductFragment : Fragment() {
             productId = it.getLong(ARG_PRODUCT_ID)
         }
 
+
+
         val apiService = RestApiService()
         apiService.productDetails(productId){
             if(it?.name == null){
@@ -58,8 +63,25 @@ class ProductFragment : Fragment() {
                 Picasso.with(context)
                     .load(it.imageUrl)
                     .into(productImageView);
+
+                var vendorUsername = it.vendor
+                product_vendor_text.setOnClickListener() {
+                    val apiService = RestApiService()
+                    val chatCreateRequest = ChatCreateRequest(
+                        vendorUsername
+                    )
+                    apiService.chatCreate(chatCreateRequest) {
+                        if(it?.chatId != null) {
+                            //                    createChats() // Uncomment it if you wanna update the chat list before changing the intent
+                            var intent = Intent(this.activity, ChatActivity::class.java)
+                            intent.putExtra("chatId", it.chatId)
+                            startActivity(intent)
+                        }
+                    }
+                }
             }
         }
+
         apiService.getCart(authToken!!){
             if (it == null) {
 

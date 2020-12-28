@@ -49,17 +49,15 @@
                     android:textSize="26dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp" />
-
                 <TextView
                     android:id="@+id/product_brand_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Brand: BuPazar"
-                    android:textColor="#ff5e5c"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="6dp" />
-
                 <View
                     android:id="@+id/action_divider"
                     android:layout_width="match_parent"
@@ -73,7 +71,8 @@
                     android:id="@+id/product_vendor_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Brand: BuPazar"
+                    android:background="@drawable/my_chat_bubble2"
+                    android:text="VENDOR: BuPazar"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
