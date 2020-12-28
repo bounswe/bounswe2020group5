@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.bupazar.ChangePasswordFragment
 import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
 import kotlinx.android.synthetic.main.fragment_profile_page.*
@@ -55,6 +56,13 @@ class ProfilePageFragment : Fragment() {
             editProfileInfoFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper,  editProfileInfoFragment)
+                commit()
+            }
+        }
+
+        buttonChangePassword.setOnClickListener(){
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  ChangePasswordFragment())
                 commit()
             }
         }

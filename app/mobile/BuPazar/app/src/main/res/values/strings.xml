@@ -71,6 +71,15 @@
     <string name="edit">EDIT</string>
     <string name="user_name">User Name</string>
     <string name="save">SAVE</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="new_password_again">New Password (Again)</string>
+    <string name="type_your_new_password_again">Type your new password again</string>
+    <string name="type_your_new_password">Type your new password</string>
+    <string name="type_your_current_password">Type your current password</string>
+    <string name="change_password_lower">Change Password</string>
+    <string name="update_password">UPDATE PASSWORD</string>
 
 
     <string-array name="sports_images">
