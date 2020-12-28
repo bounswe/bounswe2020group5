@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bupazar.R
-import com.example.bupazar.model.AddToCartRequest
+import com.example.bupazar.model.*
 import com.example.bupazar.service.RestApiService
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_product.*
@@ -23,6 +25,8 @@ class ProductFragment : Fragment() {
     private var productId: Long = 0
     private var addedToCart: Boolean = false
     private var quantityAdded: Int = 1
+
+    private lateinit var rcView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -87,6 +91,7 @@ class ProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        rcView = view.findViewById(R.id.rvComments)
         val apiService = RestApiService()
         addtocart.setOnClickListener {
             if (addedToCart) {
@@ -140,6 +145,19 @@ class ProductFragment : Fragment() {
             if (quantityAdded > 1) {
                 quantityAdded -= 1
                 quantity_text.setText(quantityAdded.toString())
+            }
+        }
+        val commentRequest = CommentRequest(
+                productId = this.productId
+        )
+        apiService.allComments(commentRequest) {
+            if (it == null){
+
+            }
+            else {
+                val comments: Array<CommentDetails> = it
+                rcView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+                rcView.adapter = CommentAdapter(comments)
             }
         }
     }

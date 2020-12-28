@@ -45,7 +45,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/chats/create_chat/")
     fun createChat(@Header("Authorization") authToken: String, @Body chatCreateRequest: ChatCreateRequest): Call<ChatCreateResponse>
-
+    
+    @Headers("Content-Type: application/json")
     @POST("/api/cart/edit/")
     fun addToCart(@Header("Authorization") authToken: String, @Body productData: AddToCartRequest): Call<AddToCartResponse>
 
@@ -54,6 +55,11 @@ interface RestApi {
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/get_all_comments/")
+    fun allComments(@Body commentRequest: CommentRequest): Call<Array<CommentDetails>?>
+  
+    @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
+
 }
