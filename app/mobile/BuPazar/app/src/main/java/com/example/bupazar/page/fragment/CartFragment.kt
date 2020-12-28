@@ -75,6 +75,7 @@ class CartFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable("USERDATA", userData)
             bundle.putSerializable("price", totalPrice)
+            bundle.putSerializable("chosenCreditCard", null)
             orderFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper, orderFragment)

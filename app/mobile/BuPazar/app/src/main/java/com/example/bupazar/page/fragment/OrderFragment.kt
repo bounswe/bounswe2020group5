@@ -10,7 +10,6 @@ import com.example.bupazar.R
 import com.example.bupazar.model.CreditCard
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.service.RestApiService
-import kotlinx.android.synthetic.main.fragment_categories.*
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.homepage_activity.*
 
@@ -20,6 +19,7 @@ class OrderFragment : Fragment() {
     private var userData: LoginResponse? = null
     private var authToken: String? = null
     private var creditCards: Array<CreditCard>? = null
+    private var chosenCreditCard: CreditCard? = null
     private var price: Float? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +28,19 @@ class OrderFragment : Fragment() {
             userData = arguments?.getSerializable("USERDATA") as LoginResponse
             authToken = "Token " + userData!!.authToken
             price = arguments?.getSerializable("price") as Float
+            chosenCreditCard = arguments?.getSerializable("chosenCreditCard") as CreditCard?
         }
         requireActivity().bottom_navigation.visibility = View.INVISIBLE
         val apiService = RestApiService()
 
         apiService.getCreditCards(authToken!!) {
             creditCards = it
-            card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            if (chosenCreditCard != null) {
+                card_name_text.text = chosenCreditCard!!.name
+            }
+            else{
+                card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            }
         }
 
     }
@@ -53,9 +59,14 @@ class OrderFragment : Fragment() {
 
         apiService.getCreditCards(authToken!!) {
             creditCards = it
-            card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            if (chosenCreditCard != null) {
+                card_name_text.text = chosenCreditCard!!.name
+            }
+            else{
+                card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            }
         }
-        address_text.text = userData!!.address
+        address_text.setText(userData!!.address)
         installment_price.text = "$" + price
         total_price_text.text = "$" + price
 
@@ -77,6 +88,18 @@ class OrderFragment : Fragment() {
             }
             else {
                 Toast.makeText(this.context, "Please agree to the terms of GDPR.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        pay_with_another_card.setOnClickListener {
+            val payWithAnotherCardFragment = PayWithAnotherCardFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("USERDATA", userData)
+            bundle.putSerializable("price", price)
+            payWithAnotherCardFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, payWithAnotherCardFragment)
+                commit()
             }
         }
     }

@@ -5,12 +5,15 @@ package com.example.bupazar.page.activity.home
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.bupazar.R
+import com.example.bupazar.model.CreditCard
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.fragment.*
 import kotlinx.android.synthetic.main.homepage_activity.*
 
-class HomepageActivity : AppCompatActivity() {
+class HomepageActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

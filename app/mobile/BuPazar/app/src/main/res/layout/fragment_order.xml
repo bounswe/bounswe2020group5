@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/address_header_bar"
-            android:id="@+id/address_bar"
+            android:id="@+id/card_number_bar"
             android:background="@drawable/rectangle_border">
 
             <RelativeLayout
@@ -61,12 +61,14 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp">
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/address_text"
                     android:text="Ev(Bebek Mah/Beşiktaş/İstanbul"
-                    android:padding="8dp"/>
+                    android:textSize="14sp"
+                    android:padding="8dp"
+                    android:imeOptions="actionDone"/>
             </RelativeLayout>
 
         </RelativeLayout>
@@ -105,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_card"
+                android:id="@+id/pay_with_another_card"
                 android:text="Pay with another card"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

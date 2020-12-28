@@ -41,4 +41,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/orders/make_purchase/")
     fun makePurchase(@Header("Authorization") authToken: String): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/add/")
+    fun addCreditCard(@Header("Authorization") authToken: String, @Body addCreditCardRequest: AddCreditCardRequest): Call<Success>
 }

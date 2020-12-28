@@ -67,6 +67,21 @@ class RestApiService {
         )
     }
 
+    fun addCreditCard(authToken: String, addCreditCardRequest: AddCreditCardRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addCreditCard(authToken, addCreditCardRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val successResponse = response.body()
+                    onResult(successResponse)
+                }
+            }
+        )
+    }
+
     fun addToCart(authToken: String, productData: AddToCartRequest, onResult: (AddToCartResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addToCart(authToken, productData).enqueue(
