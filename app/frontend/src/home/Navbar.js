@@ -226,8 +226,8 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => { history.push("/cart") }}>
-        <IconButton aria-label="cart" onClick={() => { history.push("/cart") }}>
+      <MenuItem onClick={() => { history.push("/payment") }}>
+        <IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
           <ShoppingCartIcon style={{ color: '#790110' }}/>
         </IconButton>
         <p>Cart</p>
@@ -323,7 +323,7 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="cart" onClick={() => { history.push("/cart") }}>
+                <IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
                 </IconButton>
                 <IconButton aria-label="show 4 new mails" color="inherit">

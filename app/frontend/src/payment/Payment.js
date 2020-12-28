@@ -27,6 +27,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Cart from "../cart/Cart";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -199,7 +200,7 @@ function Payment() {
   }
 
   function getSteps() {
-    return ['Address Info', 'Payment Info'];
+    return ['Cart','Address Info', 'Payment Info'];
   }
 
   function handleOnClick() {
@@ -238,6 +239,10 @@ function Payment() {
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
+        return(
+          <Cart/>
+        )
+      case 1:
         return (
           <Grid container>
             <Grid item xs={8} style={{margin:"auto"}}>
@@ -291,7 +296,7 @@ function Payment() {
               </Paper>
             </Grid>
           </Grid>);
-      case 1:
+      case 2:
         return (
           <Grid container>
             <Grid item xs={8} style={{margin:"auto"}}>
@@ -502,6 +507,7 @@ function Payment() {
               </Paper>
             </Grid>
           </Grid>);
+
       default:
         return 'Unknown stepIndex';
     }
@@ -549,8 +555,26 @@ function Payment() {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
+  const handleCart = () => {
+
+    const token = localStorage.getItem('token')
+
+    fetch(serverUrl + 'api/cart/clear/', {
+      method: 'DELETE',
+      headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+    }).then(res => res.json())
+      .then(json => {
+        console.log(json)
+        window.location.reload();
+      })
+      .catch(err => console.log(err));
+  }
+
   const handleNext = () => {
     if(activeStep === 0){
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if(activeStep === 1){
       if(address === ''){
         alert("Shipping address can not be empty. \n Please enter a shipping address.")
       }
@@ -558,7 +582,7 @@ function Payment() {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
-    else if(activeStep === 1){
+    else if(activeStep === 2){
       if(value === ''){
         alert("Select one of the options")
       }
@@ -712,7 +736,13 @@ function Payment() {
           <div>
               <div>
                 <Typography className={classes.instructions2}>{getStepContent(activeStep)}</Typography>
-                <div style={{marginLeft:"33rem"}}>
+                <div style={{display:"flex", flexDirection:"row-reverse"}}>
+                  {!edit ? (
+                    <Button variant="contained" style={{marginRight:"36rem", backgroundColor: "#0B3954",color:"white",borderWidth:"1rem",borderColor:"black",width:"10rem"}}
+                            onClick={handleNext}>
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  ): null}
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
@@ -720,13 +750,18 @@ function Payment() {
                   >
                     Back
                   </Button>
-                  {!edit ? (
-                    <Button variant="contained" style={{backgroundColor: "#0B3954",color:"white",borderWidth:"1rem",borderColor:"black",width:"10rem"}}
-                            onClick={handleNext}>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
-                  ): null}
 
+                  {activeStep === 0 ? (
+                    <Button
+                      style={{backgroundColor: "#7A0010"}}
+                      variant={"contained"}
+                      color={"secondary"}
+                      onClick={handleCart}
+                      className={classes.backButton2}
+                    >
+                      Empty Cart
+                    </Button>
+                  ) : (null)}
                 </div>
               </div>
           </div>

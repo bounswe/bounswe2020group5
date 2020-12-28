@@ -59,6 +59,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                             <Link to={{pathname: `product/${tile.id}`}}>
                                 <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} /></Link>
                           )}
+
                             {tile.discount >0 ? (
                                 <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
                                                   title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase() }
