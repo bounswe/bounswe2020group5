@@ -72,17 +72,66 @@ class RestApiService {
     fun getCart(authToken: String, onResult: (ProductsInCart?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getCart(authToken).enqueue(
-                object : Callback<ProductsInCart> {
-                    override fun onFailure(call: Call<ProductsInCart>, t: Throwable) {
-                        onResult(null)
-                    }
-
-                    override fun onResponse(call: Call<ProductsInCart>, response: Response<ProductsInCart>) {
-                        val addToCartResponse = response.body()
-                        onResult(addToCartResponse)
-
-                    }
+            object : Callback<ProductsInCart> {
+                override fun onFailure(call: Call<ProductsInCart>, t: Throwable) {
+                    onResult(null)
                 }
+
+                override fun onResponse(call: Call<ProductsInCart>, response: Response<ProductsInCart>) {
+                    val addToCartResponse = response.body()
+                    onResult(addToCartResponse)
+
+                }
+            }
+        )
+    }
+
+    fun addToFavoriteList(authToken: String, productData: AddRemoveFavoriteListRequest, onResult: (AddRemoveFavoriteListResponse?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addToFavoriteList(authToken, productData).enqueue(
+            object : Callback<AddRemoveFavoriteListResponse> {
+                override fun onFailure(call: Call<AddRemoveFavoriteListResponse>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<AddRemoveFavoriteListResponse>, response: Response<AddRemoveFavoriteListResponse>) {
+                    val addToFavoriteListResponse = response.body()
+                    onResult(addToFavoriteListResponse)
+                }
+            }
+        )
+    }
+
+    fun removeFromFavoriteList(authToken: String, productData: AddRemoveFavoriteListRequest, onResult: (AddRemoveFavoriteListResponse?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.removeFromFavoriteList(authToken, productData).enqueue(
+            object : Callback<AddRemoveFavoriteListResponse> {
+                override fun onFailure(call: Call<AddRemoveFavoriteListResponse>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<AddRemoveFavoriteListResponse>, response: Response<AddRemoveFavoriteListResponse>) {
+                    val addToFavoriteListResponse = response.body()
+                    onResult(addToFavoriteListResponse)
+                }
+            }
+        )
+    }
+
+    fun getFavoriteList(onResult: (ProductsInFavoriteList?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getFavoriteList("Token " + User.authToken).enqueue(
+            object : Callback<ProductsInFavoriteList> {
+                override fun onFailure(call: Call<ProductsInFavoriteList>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<ProductsInFavoriteList>, response: Response<ProductsInFavoriteList>) {
+                    val addToFavoriteListResponse = response.body()
+                    onResult(addToFavoriteListResponse)
+
+                }
+            }
         )
     }
 
@@ -117,6 +166,25 @@ class RestApiService {
                 }
         )
     }
+
+    fun allComments(commentRequest: CommentRequest, onResult: (Array<CommentDetails>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.allComments(commentRequest).enqueue(
+                object : Callback<Array<CommentDetails>?>{
+                    override fun onFailure(call: Call<Array<CommentDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<CommentDetails>?>, response: Response<Array<CommentDetails>?>) {
+                        val allComments = response.body()
+                        onResult(allComments)
+                    }
+                }
+        )
+    }
+
+
+
 
     fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
