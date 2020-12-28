@@ -624,9 +624,9 @@ function Payment() {
           setCardMsg('Not in the correct form')
           valCheck = false;
         }
-        else if(!/[0-9]{16}/.test(cardNumber)){
+        else if(!/[0-9]{16}/.test(cardNumber.replaceAll(" ",""))){
           setErrorCardNumber(true)
-          setCardMsg('Enter only number')
+          setCardMsg('Only integer values')
           valCheck = false;
         }
         else{
