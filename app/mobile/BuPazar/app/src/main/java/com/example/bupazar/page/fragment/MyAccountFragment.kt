@@ -11,6 +11,7 @@ import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.login.LoginActivity
 import com.example.bupazar.page.activity.login.RegisterActivity
+import com.example.bupazar.page.activity.message.MessageMainActivity
 import kotlinx.android.synthetic.main.fragment_my_account.*
 
 
@@ -33,8 +34,13 @@ class MyAccountFragment : Fragment() {
         mailTextView = view.findViewById(R.id.accountPageUserEmail)
         mailTextView.text = "${userData?.userEmail}"
 
-        rightArrow6.setOnClickListener(){
+        logoutLayout.setOnClickListener(){
             var intent=Intent(this.activity, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        messagesLayout.setOnClickListener() {
+            var intent=Intent(this.activity, MessageMainActivity::class.java)
             startActivity(intent)
         }
     }

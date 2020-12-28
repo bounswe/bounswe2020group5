@@ -41,7 +41,6 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                         var intent = Intent(this, HomepageActivity::class.java)
                         User.authToken = it.authToken!!
                         User.user = it.userName!!
-                        intent.putExtra("chatId", 28)
                         intent.putExtra("USERDATA", it)
                         startActivity(intent)
                     }

@@ -1,5 +1,6 @@
 package com.example.bupazar.service
 
+import com.example.bupazar.User
 import com.example.bupazar.`interface`.RestApi
 import com.example.bupazar.model.*
 import retrofit2.Call
@@ -95,6 +96,36 @@ class RestApiService {
                     onResult(message)
                 }
             }
+        )
+    }
+
+    fun getAllChats(onResult: (Array<Chat>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getAllChats("Token ${User.authToken}").enqueue(
+                object : Callback<Array<Chat>?> {
+                    override fun onFailure(call: Call<Array<Chat>?>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<Array<Chat>?>, response: Response<Array<Chat>?>) {
+                        val allChats = response.body()
+                        onResult(allChats)
+                    }
+                }
+        )
+    }
+
+    fun chatCreate(chatCreateRequest: ChatCreateRequest, onResult: (ChatCreateResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.createChat("Token ${User.authToken}", chatCreateRequest).enqueue(
+                object : Callback<ChatCreateResponse> {
+                    override fun onFailure(call: Call<ChatCreateResponse>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<ChatCreateResponse>, response: Response<ChatCreateResponse>) {
+                        val allChats = response.body()
+                        onResult(allChats)
+                    }
+                }
         )
     }
 }

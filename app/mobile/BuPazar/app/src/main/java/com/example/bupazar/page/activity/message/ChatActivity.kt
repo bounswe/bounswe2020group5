@@ -51,7 +51,7 @@ class ChatActivity : AppCompatActivity() {
 
         Timer().scheduleAtFixedRate(timerTask {
             checkLast()
-        },0,5000)
+        },0,2000)
     }
 
     private fun resetInput() {
@@ -72,7 +72,7 @@ class ChatActivity : AppCompatActivity() {
             null
         )
         RestApiService().getLastMessage(User.authToken, chatIdRequest) {
-            if (it != null && !(it.messageId!!.equals(lastMessageId))) {
+            if (it?.messageId != null && (it.messageId!=lastMessageId)) {
                 runOnUiThread {
                     adapter.addMessage(it)
                     // scroll the RecyclerView to the last added element
