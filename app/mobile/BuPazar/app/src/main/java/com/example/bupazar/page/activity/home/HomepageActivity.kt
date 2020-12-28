@@ -11,6 +11,7 @@ import com.example.bupazar.R
 import com.example.bupazar.model.CreditCard
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.fragment.*
+import com.example.bupazar.page.fragment.categories.CategoriesFragment
 import kotlinx.android.synthetic.main.homepage_activity.*
 
 class HomepageActivity : AppCompatActivity(){

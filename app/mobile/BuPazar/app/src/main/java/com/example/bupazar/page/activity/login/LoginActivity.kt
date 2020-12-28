@@ -47,7 +47,11 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                     else {
                         var intent = Intent(this, HomepageActivity::class.java)
                         User.authToken = it.authToken!!
-                        User.user = it.userName!!
+                        User.userName = it.userName!!
+                        User.address = it.address!!
+                        User.firstName = it.firstName!!
+                        User.lastName = it.lastName!!
+                        User.userEmail = it.userEmail!!
                         intent.putExtra("USERDATA", it)
                         startActivity(intent)
                     }

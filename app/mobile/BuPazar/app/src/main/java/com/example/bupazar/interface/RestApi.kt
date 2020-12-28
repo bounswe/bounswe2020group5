@@ -55,6 +55,10 @@ interface RestApi {
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/profile_update/")
+    fun editProfileInfo(@Header("Authorization") authToken: String, @Body userData: EditPersonalInfoRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/credit-cards/opts/get_all_credit_cards/")
     fun getCreditCards(@Header("Authorization") authToken: String): Call<Array<CreditCard>?>
 

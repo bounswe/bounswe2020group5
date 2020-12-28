@@ -306,4 +306,23 @@ class RestApiService {
                 }
         )
     }
+
+    fun editProfileInfo(userData: EditPersonalInfoRequest, onResult: (Success?) -> Unit) {
+        if(userData.userName.equals(User.userName))
+                userData.userName = null
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.editProfileInfo("Token ${User.authToken}", userData).enqueue(
+            object : Callback<Success> {
+
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
 }

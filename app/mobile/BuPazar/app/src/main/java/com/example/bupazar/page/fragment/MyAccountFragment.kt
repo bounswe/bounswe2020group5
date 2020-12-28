@@ -2,15 +2,14 @@ package com.example.bupazar.page.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.login.LoginActivity
-import com.example.bupazar.page.activity.login.RegisterActivity
 import com.example.bupazar.page.activity.message.MessageMainActivity
 import kotlinx.android.synthetic.main.fragment_my_account.*
 
@@ -34,14 +33,24 @@ class MyAccountFragment : Fragment() {
         mailTextView = view.findViewById(R.id.accountPageUserEmail)
         mailTextView.text = "${userData?.userEmail}"
 
-        logoutLayout.setOnClickListener(){
-            var intent=Intent(this.activity, LoginActivity::class.java)
+        logoutLayout.setOnClickListener {
+            val intent=Intent(this.activity, LoginActivity::class.java)
             startActivity(intent)
         }
 
         messagesLayout.setOnClickListener() {
             var intent=Intent(this.activity, MessageMainActivity::class.java)
             startActivity(intent)
+        }
+        personalInfoLayout.setOnClickListener {
+            val profilePage = ProfilePageFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("USERDATA",userData)
+            profilePage.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  profilePage)
+                commit()
+            }
         }
     }
 
