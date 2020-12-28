@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.`interface`.ActivityChangeListener
 import com.example.bupazar.core.BaseActivity
 import com.example.bupazar.model.LoginRequest
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.home.HomepageActivity
+import com.example.bupazar.page.activity.message.ChatActivity
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -37,6 +39,9 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                     }
                     else {
                         var intent = Intent(this, HomepageActivity::class.java)
+                        User.authToken = it.authToken!!
+                        User.user = it.userName!!
+                        intent.putExtra("chatId", 28)
                         intent.putExtra("USERDATA", it)
                         startActivity(intent)
                     }

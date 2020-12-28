@@ -66,4 +66,35 @@ class RestApiService {
             }
         )
     }
+
+
+    fun sendMessage(authToken : String, chatRequest: ChatRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.sendMessage("Token $authToken", chatRequest).enqueue(
+                object : Callback<Success> {
+                    override fun onFailure(call: Call<Success>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<Success>, response: Response<Success>) {
+                        val success = response.body()
+                        onResult(success)
+                    }
+                }
+        )
+    }
+
+    fun getLastMessage(authToken : String, chatRequest : ChatRequest, onResult: (Message?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getLastMessage("Token $authToken", chatRequest).enqueue(
+            object : Callback<Message> {
+                override fun onFailure(call: Call<Message>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse( call: Call<Message>, response: Response<Message>) {
+                    val message = response.body()
+                    onResult(message)
+                }
+            }
+        )
+    }
 }

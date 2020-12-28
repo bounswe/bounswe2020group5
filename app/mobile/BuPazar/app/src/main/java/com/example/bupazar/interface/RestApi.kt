@@ -25,4 +25,12 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/products/")
     fun allProducts(): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/send_message/")
+    fun sendMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/get_last_message/")
+    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Message>
 }
