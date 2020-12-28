@@ -28,6 +28,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Link} from "react-router-dom";
 import Input from "@material-ui/core/Input";
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,6 +68,9 @@ const Product = (props) => {
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
     const [mylists, setMylists] = React.useState([]);
+    const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+    const [message, setMessage] = React.useState("");
 
     const [state, setState] = useState({
         name: '',
@@ -195,6 +200,14 @@ const Product = (props) => {
         await addtolist(temp);
     }
 
+    const snackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen1(false);
+        setOpen2(false);
+    };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -246,7 +259,15 @@ const Product = (props) => {
             method: 'POST',
             body: JSON.stringify({product_id: id, count: countclickamount}),
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-        }).then(res => res.json()).then(json => {}).catch(err => console.log(err));
+        }).then(res => res.json()).then(json => {
+            if (json.ok) {
+                setMessage(json.message);
+                setOpen1(true);
+            } else  {
+                setMessage(json.message);
+                setOpen2(true);
+            }
+        }).catch(err => console.log(err));
     }
 
     function handleOnButtonClick() {
@@ -486,6 +507,18 @@ const Product = (props) => {
                                             }}>
                                                 ADD TO CART
                                             </Button>
+                                            <Snackbar open={open1} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="success">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+                                            <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="error">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+
+
                                         </div>
                                     </Grid>
                                 </Grid>
