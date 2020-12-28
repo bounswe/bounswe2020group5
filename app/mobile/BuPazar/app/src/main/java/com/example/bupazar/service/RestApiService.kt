@@ -37,6 +37,51 @@ class RestApiService {
             }
         )
     }
+  
+    fun getCreditCards(authToken: String, onResult: (Array<CreditCard>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getCreditCards(authToken).enqueue(
+            object : Callback<Array<CreditCard>?> {
+                override fun onFailure(call: Call<Array<CreditCard>?>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Array<CreditCard>?>, response: Response<Array<CreditCard>?>) {
+                    val creditCards = response.body()
+                    onResult(creditCards)
+                }
+            }
+        )
+    }
+
+    fun makePurchase(authToken: String, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.makePurchase(authToken).enqueue(
+                object : Callback<Success> {
+                    override fun onFailure(call: Call<Success>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                        val successResponse = response.body()
+                        onResult(successResponse)
+                    }
+                }
+        )
+    }
+
+    fun addCreditCard(authToken: String, addCreditCardRequest: AddCreditCardRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addCreditCard(authToken, addCreditCardRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val successResponse = response.body()
+                    onResult(successResponse)
+                }
+            }
+        )
+    }
 
     fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
