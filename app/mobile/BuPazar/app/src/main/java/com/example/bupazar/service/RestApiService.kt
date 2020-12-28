@@ -130,6 +130,10 @@ class RestApiService {
                         val allComments = response.body()
                         onResult(allComments)
                     }
+                }
+        )
+    }
+
 
 
 
