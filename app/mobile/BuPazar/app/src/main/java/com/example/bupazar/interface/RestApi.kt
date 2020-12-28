@@ -33,4 +33,12 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/cart/get/")
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/get_all_credit_cards/")
+    fun getCreditCards(@Header("Authorization") authToken: String): Call<Array<CreditCard>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/make_purchase/")
+    fun makePurchase(@Header("Authorization") authToken: String): Call<Success>
 }

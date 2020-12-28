@@ -71,8 +71,13 @@ class CartFragment : Fragment() {
         cartProducts.layoutManager = LinearLayoutManager(this.context)
 
         go_to_order_page.setOnClickListener {
+            val orderFragment = OrderFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("USERDATA", userData)
+            bundle.putSerializable("price", totalPrice)
+            orderFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, OrderFragment())
+                replace(R.id.fl_wrapper, orderFragment)
                 commit()
             }
         }
@@ -80,7 +85,7 @@ class CartFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             CartFragment().apply {
                 arguments = Bundle().apply {
                 }
