@@ -6,7 +6,7 @@ from ..serializers import ProductSerializer
 class CreditCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreditCard
-        fields = ('id', 'name', 'customer', 'card_number', 'expiration_date', 'cvc_security_number')
+        fields = ('id', 'name', 'customer', 'card_owner', 'card_number', 'expiration_date', 'cvc_security_number')
 
 class AddCreditCardSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=50, required=False)

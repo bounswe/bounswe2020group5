@@ -88,7 +88,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         number = randint(100000, 999999)
 
         template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
-        if send_email(template , "bupazar451@gmail.com") == 5:
+        if send_email(template , validated['email']) == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
         
         user_info = create_temp_user_account(**validated,number=number)
@@ -172,7 +172,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
             link = 'http://'+current_site +"/"+ relativeLink
             template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
-            send_email(template,"sarismet2825@gmail.com")
+            send_email(template,email)
             data = {
                 "uidb64" : uidb64,
                 "token" : token,

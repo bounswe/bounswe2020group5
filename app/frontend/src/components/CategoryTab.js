@@ -6,7 +6,6 @@ import {
   Paper,
   Tabs,
   Tab,
-  Link,
   Popper,
   MenuList,
   MenuItem,
@@ -14,19 +13,21 @@ import {
   withStyles
 } from "@material-ui/core";
 
+
+
+
 const styles = theme => {};
 
-const subElectronic = ["Computer/Tablet", "Smartphone", "White Appliances", "Photo/Camera", "Game/Game Console"];
-const subFashion = ["Woman Clothing", "Accessory", "Sportswear", "Man Clothing", "Shoes&Bags"];
-const subHome = ["Furniture", "Kitchenware", "Beds", "Decoration", "Office Furniture"];
+const subElectronic = ["PC & Tablet", "Smartphone", "White Appliances", "Photo & Camera", "Game & Game Console"];
+const subFashion = ["Woman Clothing", "Accessory", "Sportswear", "Man Clothing", "Shoes & Bags"];
+const subHome = ["Kitchenware", "Beds", "Decoration", "Office Furniture"];
 const subSport = ["Sport Clothing", "Fitness"];
 const subPersonal = ["Perfume", "Makeup", "Skin Care", "Oral Care", "Hair Care"];
-const subHobbies = ["Book/Magazine", "Musical Instrument", "Films"];
-
+const subHobbies = ["Book & Magazine", "Musical Instrument", "Art"];
 
 class AppBarTop extends React.Component {
   state = {
-    value: 0,
+    value: "",
     open: false,
     open2:false,
     open3:false,
@@ -104,46 +105,64 @@ class AppBarTop extends React.Component {
     });
   };
 
-  handleMenuClose = () => {
+  handleMenuClose = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open: false,
       anchorEl: null
     });
+    window.location.href="/category/electronic/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose2 = () => {
+  handleMenuClose2 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open2: false,
       anchorEl2: null
     });
+    window.location.href="/category/fashion/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose3 = () => {
+  handleMenuClose3 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open3: false,
       anchorEl3: null
     });
+    window.location.href="/category/home&kitchen/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose4 = () => {
+  handleMenuClose4 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory",temp.replace(" ",""));
     this.setState({
       open4: false,
       anchorEl4: null
     });
+    window.location.href="/category/sports&outdoors/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose5 = () => {
+  handleMenuClose5 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open5: false,
       anchorEl5: null
     });
+    window.location.href="/category/personal/"+temp.toLowerCase().replace(" ","");
   };
 
-  handleMenuClose6 = () => {
+  handleMenuClose6 = (item) => {
+    let temp = item.replace(" & ","&")
+    localStorage.setItem("subcategory", temp.replace(" ",""));
     this.setState({
       open6: false,
       anchorEl6: null
     });
+    window.location.href="/category/hobbies/"+temp.toLowerCase().replace(" ","");
   };
 
   handleMenuCloseAll = () =>{
@@ -171,82 +190,96 @@ class AppBarTop extends React.Component {
         <AppBar position="static">
           <Paper className={classes.grow} onMouseLeave={this.handleMenuCloseAll.bind(this)}>
             <Tabs
+              style={{backgroundColor:"#a71325"}}
               value={this.state.value}
               indicatorColor="primary"
               textColor="primary"
               centered
             >
-              <Tab
-                key={0}
-                onMouseEnter={this.handleMenuOpen.bind(this, 0)}
-                data-key={0}
-                classes={{ root: classes.tabItem }}
-                label={"Electronics"}
-                aria-owns={open ? "menu-list-grow-electronic" : undefined}
-                aria-haspopup={"true"}
-              />
-              <Tab
-                key={1}
-                onMouseEnter={this.handleMenuOpen2.bind(this, 1)}
-                data-key={1}
-                classes={{ root: classes.tabItem }}
-                label={"Fashion"}
-                aria-owns={open2 ? "menu-list-grow-fashion" : undefined}
-                aria-haspopup={"true"}
-              />
-              <Tab
-                key={2}
-                onMouseEnter={this.handleMenuOpen3.bind(this, 2)}
-                data-key={2}
-                classes={{ root: classes.tabItem }}
-                label={"Home & Kitchen"}
-                aria-owns={open2 ? "menu-list-grow-home" : undefined}
-                aria-haspopup={"true"}
-              />
-              <Tab
-                key={3}
-                onMouseEnter={this.handleMenuOpen4.bind(this, 3)}
-                data-key={3}
-                classes={{ root: classes.tabItem }}
-                label={"Sports & Outdoors"}
-                aria-owns={open2 ? "menu-list-grow-sport" : undefined}
-                aria-haspopup={"true"}
-              />
-              <Tab
-                key={4}
-                onMouseEnter={this.handleMenuOpen5.bind(this, 4)}
-                data-key={4}
-                classes={{ root: classes.tabItem }}
-                label={"Personal Care"}
-                aria-owns={open2 ? "menu-list-grow-personal" : undefined}
-                aria-haspopup={"true"}
-              />
-              <Tab
-                key={5}
-                onMouseEnter={this.handleMenuOpen6.bind(this, 5)}
-                data-key={5}
-                classes={{ root: classes.tabItem }}
-                label={"Hobbies & Books"}
-                aria-owns={open2 ? "menu-list-grow-hobbies" : undefined}
-                aria-haspopup={"true"}
-              />
+              <a href={"/category/electronics"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={0}
+                  onMouseEnter={this.handleMenuOpen.bind(this, "Electronics")}
+                  data-key={0}
+                  style={{color:"white"}}
+                  label={"Electronics"}
+                  aria-owns={open ? "menu-list-grow-electronic" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              <a href={"/category/fashion"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={1}
+                  onMouseEnter={this.handleMenuOpen2.bind(this, "Fashion")}
+                  data-key={1}
+                  style={{color:"white"}}
+                  label={"Fashion"}
+                  aria-owns={open2 ? "menu-list-grow-fashion" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              <a href={"/category/home&kitchen"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={2}
+                  onMouseEnter={this.handleMenuOpen3.bind(this, "Home&Kitchen")}
+                  data-key={2}
+                  style={{color:"white"}}
+                  label={"Home&Kitchen"}
+                  aria-owns={open2 ? "menu-list-grow-home" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              <a href={"/category/sports&outdoors"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={3}
+                  onMouseEnter={this.handleMenuOpen4.bind(this, "Sports&Outdoors")}
+                  data-key={3}
+                  style={{color:"white"}}
+                  label={"Sports&Outdoors"}
+                  aria-owns={open2 ? "menu-list-grow-sport" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              <a href={"/category/personal"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={4}
+                  onMouseEnter={this.handleMenuOpen5.bind(this, "Personal")}
+                  data-key={4}
+                  style={{color:"white"}}
+                  label={"Personal"}
+                  aria-owns={open2 ? "menu-list-grow-personal" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              <a href={"/category/hobbies"} style={{textDecoration:"none"}}>
+                <Tab
+                  key={5}
+                  onMouseEnter={this.handleMenuOpen6.bind(this, "Hobbies")}
+                  data-key={5}
+                  style={{color:"white"}}
+                  label={"Hobbies"}
+                  aria-owns={open2 ? "menu-list-grow-hobbies" : undefined}
+                  aria-haspopup={"true"}
+                />
+              </a>
+              {localStorage.setItem("category", this.state.value)}
             </Tabs>
             <Popper open={open} anchorEl={anchorEl} id="menu-list-grow-electronic" >
-              <Paper onMouseLeave={this.handleMenuClose.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList >
                   {subElectronic.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose}>
-                      {item}
-                    </MenuItem>
+                      <MenuItem key={index} onClick={()=>this.handleMenuClose(item)}>
+                        {item}
+                      </MenuItem>
                   ))}
                 </MenuList>
               </Paper>
             </Popper>
             <Popper open={open2} anchorEl={anchorEl2} id="menu-list-grow-fashion">
-              <Paper onMouseLeave={this.handleMenuClose2.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subFashion.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose2}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose2(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -254,10 +287,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open3} anchorEl={anchorEl3} id="menu-list-grow-home">
-              <Paper onMouseLeave={this.handleMenuClose3.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subHome.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose3}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose3(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -265,10 +298,10 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open4} anchorEl={anchorEl4} id="menu-list-grow-sport">
-              <Paper onMouseLeave={this.handleMenuClose4.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subSport.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose4}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose4(item)}>
                       {item}
                     </MenuItem>
                   ))}
@@ -276,21 +309,21 @@ class AppBarTop extends React.Component {
               </Paper>
             </Popper>
             <Popper open={open5} anchorEl={anchorEl5} id="menu-list-grow-personal">
-              <Paper onMouseLeave={this.handleMenuClose5.bind(this)}>
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subPersonal.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose5}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose5(item)}>
                       {item}
                     </MenuItem>
                   ))}
                 </MenuList>
               </Paper>
             </Popper>
-            <Popper open={open6} anchorEl={anchorEl6} id="menu-list-grow-hobies">
-              <Paper onMouseLeave={this.handleMenuClose6.bind(this)}>
+            <Popper open={open6} anchorEl={anchorEl6} id="menu-list-grow-hobbies">
+              <Paper onMouseLeave={this.handleMenuCloseAll.bind(this)}>
                 <MenuList>
                   {subHobbies.map((item, index) => (
-                    <MenuItem key={index} onClick={this.handleMenuClose6}>
+                    <MenuItem key={index} onClick={() => this.handleMenuClose6(item)}>
                       {item}
                     </MenuItem>
                   ))}

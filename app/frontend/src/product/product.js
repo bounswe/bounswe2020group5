@@ -25,6 +25,9 @@ import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import {Link} from "react-router-dom";
+import Input from "@material-ui/core/Input";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,6 +65,7 @@ const Product = (props) => {
     let [countclickamount, setcount] = useState(1);
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
+    const [mylists, setMylists] = React.useState([]);
 
     const [state, setState] = useState({
         name: '',
@@ -70,9 +74,37 @@ const Product = (props) => {
         rating: '',
         temp_comment: '',
         comments: [],
+        newlist: "",
     });
 
-    useEffect(values => {
+    useEffect(() => {
+
+        if (token) {
+            Promise.all([
+                fetch(serverUrl + 'api/orders/customer-purchased/', {
+                    method: 'POST',
+                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                    body: JSON.stringify({product_id: id}),
+                }).then(res => res.json())
+                    .then(json => {
+                        setPurchased(json.message)
+                    }),
+                fetch(serverUrl + 'api/favorites/get/', {
+                    method: 'GET',
+                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+                }).then(res => res.json())
+                    .then(json => {
+                        for (let j = 0; j < json.products.length; j++) {
+                            console.log(json.products[j]);
+                            if (""+json.products[j].id === id)
+                                setheartclick(true);
+                        }
+                    })
+            ]).catch((err) => {
+                console.log(err);
+            })
+
+        }
 
         Promise.all([fetch(serverUrl + 'api/products/' + id, {
             method: 'GET',
@@ -93,20 +125,13 @@ const Product = (props) => {
         }).then(res => res.json())
             .then(json => {
                 state.comments = json;
-            }), fetch(serverUrl + 'api/orders/customer-purchased/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify({product_id: id}),
-        }).then(res => res.json())
-            .then(json => {
-                setPurchased(json.message)
             })]).then(() => {
             setLoadPage1(true);
             //json response
         }).catch((err) => {
             console.log(err);
         })
-    });
+    }, []);
 
     const handlecountplus = () => {
         if (countclickamount < 10) {
@@ -123,22 +148,85 @@ const Product = (props) => {
     };
 
     const handlelistcount = (event) => {
-        if (listclick) {
-            listclick = false;
-            setlistclick(listclick);
-        } else setAnchorEl(event.currentTarget);
+        fetch(serverUrl + 'api/product-lists/opts/my/', {
+            method: 'GET',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+        }).then(res => res.json())
+            .then(json => {
+                setMylists(json);
+            });
+        setAnchorEl(event.currentTarget);
     };
+
+    const addtolist = function (list) {
+        fetch(serverUrl + 'api/product-lists/opts/add_product/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'list_id': list.id, 'product_id': id})
+        }).then(res => res.json())
+            .then(json => {
+                if (json.ok) {
+                    if (json.message==="product added") alert("Product has been added to your list")
+                    else alert(json.message)
+                    setlistclick(true);
+                } else alert(json.message)
+            }).catch((err) => {
+            console.log(err);
+        })
+        handleClose();
+    }
+
+    const addtonewlist = async function () {
+        let temp = {};
+
+        const res = await fetch(serverUrl + 'api/product-lists/opts/add/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'name': state.newlist})
+        });
+        const body = await res.json();
+        if (body.ok) {
+            temp = body.data;
+        } else alert(body.message)
+
+        var mutableState = state
+        mutableState["newlist"] = ""
+        setState(mutableState)
+        await addtolist(temp);
+    }
 
     const handleClose = () => {
         setAnchorEl(null);
-        listclick = true;
-        setlistclick(listclick);
     };
 
     const handleclickheart = () => {
         if (heartclick) {
+            fetch(serverUrl + 'api/favorites/remove/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify({'product_id': id})
+            }).then(res => res.json())
+                .then(json => {
+                    if (json.ok) {
+                        alert(json.message)
+                    } else alert(json.message)
+                }).catch((err) => {
+                console.log(err);
+            })
             setheartclick(false);
         } else {
+            fetch(serverUrl + 'api/favorites/add/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify({'product_id': id})
+            }).then(res => res.json())
+                .then(json => {
+                    if (json.ok) {
+                        alert(json.message)
+                    } else alert(json.message)
+                }).catch((err) => {
+                console.log(err);
+            })
             setheartclick(true);
         }
     };
@@ -152,6 +240,14 @@ const Product = (props) => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
+
+    function addtocart() {
+        fetch(serverUrl + 'api/cart/edit/', {
+            method: 'POST',
+            body: JSON.stringify({product_id: id, count: countclickamount}),
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+        }).then(res => res.json()).then(json => {}).catch(err => console.log(err));
+    }
 
     function handleOnButtonClick() {
 
@@ -182,8 +278,9 @@ const Product = (props) => {
                 .then(json => {
                     state.comments = json;
                 })]).then(
-    ).catch(err => console.log(err));
+        ).catch(err => console.log(err));
     }
+
 
     return (
         <div>
@@ -202,13 +299,13 @@ const Product = (props) => {
                 <div>
                     <Paper className={classes.paper}>
                         <Grid xs item container>
-                            <Grid xs item container justify="center" >
+                            <Grid xs item container justify="center">
                                 <Grid container justify="center">
                                     <ButtonBase className={classes.image}>
                                         <img className={classes.img} alt="complex" src={state.imgsrc}/>
                                     </ButtonBase>
                                 </Grid>
-                                <Grid container justify="center" >
+                                <Grid container justify="center">
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
                                 {token ? (
@@ -223,24 +320,31 @@ const Product = (props) => {
                                             keepMounted
                                             open={Boolean(anchorEl)}
                                             onClose={handleClose}>
-                                            <MenuItem onClick={handleClose}>Create new list</MenuItem>
-                                            <MenuItem onClick={handleClose}>Mockup List 1</MenuItem>
-                                            <MenuItem onClick={handleClose}>Mockup List 2</MenuItem>
-                                            <MenuItem onClick={handleClose}>Mockup List 3</MenuItem>
+                                            <MenuItem>
+                                                <Input id="newlist" placeholder="New List" onChange={onChange}/>
+                                                <IconButton aria-label="add" onClick={addtonewlist}>
+                                                    <AddBoxIcon style={{color: "#0B3954", marginRight: "0.5rem"}}
+                                                                fontSize={"medium"}/>
+                                                </IconButton>
+                                            </MenuItem>
+                                            <Divider/>
+                                            {mylists.map(list => (
+                                                <Box>
+                                                    <MenuItem key={list.id} onClick={(event) => addtolist(list, event)}>{list.name}</MenuItem>
+                                                    <Divider/>
+                                                </Box>
+                                            ))}
                                         </Menu>
                                         <IconButton onClick={handleclickheart}>
-                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
-                                                <FavoriteBorderIcon fontSize={"large"}/>}
+                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> : <FavoriteBorderIcon fontSize={"large"}/>}
                                         </IconButton>
                                     </Grid>) : null}
                             </Grid>
 
-                            <Grid sm item container style={{marginLeft: "2rem"}}>
+                            <Grid xs item container style={{marginLeft: "2rem"}}>
                                 <Grid>
                                     <Grid style={{marginTop: "2rem"}}>
-                                        <Typography gutterBottom variant="subtitle1">
-                                            {state.name}
-                                        </Typography>
+                                        <Typography gutterBottom variant="subtitle1">{state.name}</Typography>
                                         <Divider/>
                                         <Typography
                                             style={{
@@ -260,9 +364,7 @@ const Product = (props) => {
                                         <Divider/>
                                         {state.discount > 0 ? (
                                             <div>
-
-                                                <div>
-                                                    <Grid container direction="row" alignItems="center">
+                                                 <Grid container direction="row" alignItems="center">
                                                         <Grid item>
                                                             <div>
                                                                 <Typography style={{
@@ -297,7 +399,7 @@ const Product = (props) => {
                                                                     color: "red"
                                                                 }}
                                                                             variant="body2" color="textSecondary">
-                                                                    {state.price - state.price * state.discount / 100}
+                                                                    {(state.price - state.price * state.discount / 100).toFixed(2)}
                                                                 </Typography>
                                                             </div>
 
@@ -307,7 +409,6 @@ const Product = (props) => {
                                                                  src="/img/discount.png" alt="discount icon"/>
                                                         </Grid>
                                                     </Grid>
-                                                </div>
                                             </div>
                                         ) : (
                                             <div>
@@ -375,7 +476,7 @@ const Product = (props) => {
                                                     <RemoveIcon/>
                                                 </IconButton>
                                             </ButtonGroup>
-                                            <Button size="large" variant="contained" style={{
+                                            <Button  onClick={addtocart} size="large" variant="contained" style={{
                                                 marginLeft: "9.1rem",
                                                 marginTop: "1rem",
                                                 marginBottom: "1rem",
@@ -398,8 +499,7 @@ const Product = (props) => {
                             <Grid>
                                 <Box component="fieldset" mb={3} borderColor="transparent">
                                     <div>
-                                        <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please
-                                            give a
+                                        <Typography style={{display: 'inline-block', marginRight: '2rem'}}>Please give a
                                             rating</Typography>
                                         <Rating
                                             id="temp_rating"
