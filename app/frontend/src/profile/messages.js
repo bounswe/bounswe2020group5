@@ -5,14 +5,10 @@ import {Link} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Paper from "@material-ui/core/Paper";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Grid from "@material-ui/core/Grid";
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
@@ -188,6 +184,7 @@ function getlastmessage(chatnos){
                     console.log('xxxxxx')
                     lastmessages.push(json)
                     setlastmessages(lastmessages)
+
                     console.log(lastmessages)
                 }).then(() => {
                 setLoadPage(true)
@@ -203,6 +200,7 @@ function getlastmessage(chatnos){
 
 
     let [indexnow, setindexnow] = React.useState('');
+    const nthElement = (arr, n = 0) => (n > 0 ? arr.slice(n, n + 1) : arr.slice(n))[0];
 
 
     return (
@@ -230,8 +228,7 @@ function getlastmessage(chatnos){
                                 console.log(index)
                                 console.log(value.id)
                                 console.log(lastmessages)
-
-
+                                console.log('lastmessages')
 
                                 return (
 
@@ -247,7 +244,7 @@ function getlastmessage(chatnos){
                                         <ListItemText onClickCapture={()=>setOpen2(!open2)}
                                                       onClick={()=>setindexnow(index)} primary={<span>From: {value.customer_id} To:{value.vendor_id}
                                                       </span>} secondary={<span
-                                                      contentEditable="true">{lastmessages.indexOf(index)}</span>}/>
+                                                      contentEditable="true">{nthElement(lastmessages,index)}</span>}/>
 
 
                                         { open2&&index==indexnow ? <ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
