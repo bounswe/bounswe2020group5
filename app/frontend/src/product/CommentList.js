@@ -1,14 +1,10 @@
 import React from "react";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import {Link, useLocation} from "react-router-dom";
-import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
 import {makeStyles} from "@material-ui/core/styles";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
+import Box from "@material-ui/core/Box";
+import {Divider} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Rating from "@material-ui/lab/Rating";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "1rem",
         fontSize: "3rem",
     },
+    comment: {
+        "& .MuiInputBase-root.Mui-disabled": {
+            color: "rgba(0, 0, 0, 1)" // (default alpha is 0.38)
+        }
+    }
 }));
 
 export const CommentList = ({commentList}) =>  {
@@ -36,15 +37,18 @@ export const CommentList = ({commentList}) =>  {
             <div className={classes.root}>
                 <List component="nav" className={classes.root} aria-label="mailbox folders">
                     {commentList.map((comment, index) => (
+                        <Box style={{marginTop: "1rem", marginBottom:"1rem"}} key={index}>
+                            <Typography variant="h6" style={{display: 'inline-block'}}  gutterBottom>
+                                {comment.customer}
+                            </Typography>
+                            <Rating style={{marginLeft: "2rem", justify: 'center'}}
+                                    name="read-only" value={comment.rating_score} precision={0.1} readOnly />
+                            <Typography variant="subtitle1" gutterBottom>
+                                {comment.comment_text}
+                            </Typography>
+                            <Divider/>
+                        </Box>
 
-                        <ListItem key={index}>
-                            <div>
-                            <ListItemText primary={comment.author+": "} className={classes.author} />
-                            </div>
-                            <div>
-                            <ListItemText primary={comment.text} className={classes.text} />
-                            </div>
-                        </ListItem>
                         ))}
                 </List>
             </div>

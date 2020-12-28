@@ -40,6 +40,7 @@
     <string name="videogame_consoles_accessories"><![CDATA[Video Game Consoles]]></string>
     <string name="product_name_const">product name</string>
     <string name="please_enter_verification_number">Please enter verification number</string>
+    <string name="my_wish_list">My Wish List</string>
 
 
     <string-array name="sports_images">

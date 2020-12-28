@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.item_product.view.product_price
 
 class CartProductAdapter(private val context: Context, private val cartProducts: Array<CartProduct>) : RecyclerView.Adapter<CartProductAdapter.ViewHolder>() {
 
+    var onItemClick: ((CartProduct) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.cart_product_item, parent, false)
         return ViewHolder(view)
@@ -56,6 +58,11 @@ class CartProductAdapter(private val context: Context, private val cartProducts:
             Glide.with(context).load(cartProduct.product.imageUrl).into(itemView.product_image)
             itemView.divider.visibility = View.INVISIBLE
             itemView.divider.background = null
+        }
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(cartProducts[adapterPosition])
+            }
         }
     }
 }
