@@ -5,14 +5,26 @@ from ..models.users import User
 from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
+from ..models import Purchase
 
 usr = get_user_model()
 
 #User Serializer
 class UserSerializer(serializers.ModelSerializer):
+    total_purchase = serializers.SerializerMethodField('get_total_purchase')
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'is_customer', 'is_vendor', 'is_active', 'is_staff', 'address']
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_customer', 'is_vendor', 'is_active', 'is_staff', 'address', 'total_purchase')
+    
+    def get_total_purchase(self, obj):
+        total = 0
+        purchases = Purchase.objects.filter(customer_id=obj.id)
+        for purchase in purchases:
+            if purchase.status != 'Vcancelled' or purchase.status != 'Ccancelled':
+                total += purchase.amount * purchase.unit_price
+
+        return total
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=200, required=True)

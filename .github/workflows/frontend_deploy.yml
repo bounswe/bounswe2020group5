@@ -1,13 +1,11 @@
-name: CI_frontend
+name: CI_frontend_in_master
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ frontend ]
-  pull_request:
-    branches: [ frontend ]
-
+    paths:
+      - "app/frontend/**"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -35,7 +33,7 @@ jobs:
         run: |
           docker build ./app/frontend -t react_app
           echo build is completed.
-          
+
       - name: docker tag
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
@@ -48,14 +46,15 @@ jobs:
         run: |
           docker push $DOCKER_USER/react_app
           echo push is completed.
-      
+
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: 18.195.107.160
+          host: 100.25.223.242
           username: ec2-user
-          key: ${{ secrets.OMG_SECRET }}
+          key: ${{ secrets.OMG_SECRET_FRONTEND }}
           port: 22
           script: |
-            docker rm $(docker stop $(docker ps | grep ${{ secrets.DOCKER_USERNAME }}"/react_app" | cut -d ' ' -f1))
-            docker run -d -p 81:81 ${{ secrets.DOCKER_USERNAME }}/react_app
+            cd bounswe2020group5/
+            git pull
+            bash .github/workflows/frontend_script.sh

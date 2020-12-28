@@ -255,6 +255,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/addToWishList"
                         android:layout_weight="1"
                         android:padding="16dp"
                         android:layout_width="match_parent"
@@ -279,6 +280,29 @@
                         android:text="@string/Share" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/wishlist"
+                android:background="@color/text"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:letterSpacing="0.09"
+                android:padding="10dp"
+                android:text="Comments"
+                android:textColor="#fff"
+                android:textSize="17dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:layout_below="@id/comment"/>
 
 
 
@@ -381,12 +405,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-
-
-
-
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
