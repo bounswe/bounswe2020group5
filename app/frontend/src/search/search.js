@@ -504,6 +504,8 @@ export default function ComplexGrid() {
         let error;
         let datasort;
         let sorting=statepro.map((product) => (product.id));
+        console.log(sortkey.substring(0,sortkey.indexOf("-")))
+        console.log(sortkey.substring(sortkey.indexOf("-")+1,sortkey.length))
 
         datasort = {
             "product_ids": sorting,
@@ -722,8 +724,8 @@ export default function ComplexGrid() {
                             <option aria-label="None" value="" />
                             <option value='best_sellers-ascending'>Best sellers Ascending</option>
                             <option value='best_sellers-descending'>Best sellers Descending</option>
-                            <option value='new_arrivals-ascending'>New arrivals Ascending</option>
-                            <option value='new_arrivals-descending'>New arrivals Descending</option>
+                            <option value='newest_arrivals-ascending'>New arrivals Ascending</option>
+                            <option value='newest_arrivals-descending'>New arrivals Descending</option>
                             <option value='price-ascending'>Price Ascending</option>
                             <option value='price-descending'>Price Descending</option>
                             <option value='comments-ascending'>Comments Ascending</option>
