@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.LoginResponse
 import kotlinx.android.synthetic.main.fragment_profile_page.*
 
@@ -31,27 +32,25 @@ class ProfilePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userData = arguments?.getSerializable("USERDATA") as LoginResponse
         return inflater.inflate(R.layout.fragment_profile_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NameTextView = view.findViewById(R.id.name)
-        NameTextView.text = "${userData?.firstName}"
+        NameTextView.text = User.firstName
         surNameTextView = view.findViewById(R.id.surname)
-        surNameTextView.text = "${userData?.lastName}"
+        surNameTextView.text = User.lastName
         userNameTextView = view.findViewById(R.id.username)
-        userNameTextView.text = "${userData?.userName}"
+        userNameTextView.text = User.userEmail
         mailTextView = view.findViewById(R.id.email)
-        mailTextView.text = "${userData?.userEmail}"
+        mailTextView.text = User.userEmail
         addressTextView = view.findViewById(R.id.address)
-        addressTextView.text = "${userData?.address}"
+        addressTextView.text = User.address
 
         buttonEdit.setOnClickListener(){
             val editProfileInfoFragment = EditProfileInfoFragment()
             val bundle = Bundle()
-            bundle.putSerializable("USERDATA",userData)
             editProfileInfoFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper,  editProfileInfoFragment)

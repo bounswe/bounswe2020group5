@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.login.LoginActivity
+import com.example.bupazar.page.activity.message.MessageMainActivity
 import kotlinx.android.synthetic.main.fragment_my_account.*
+
 
 class MyAccountFragment : Fragment() {
     var userData : LoginResponse? = null
@@ -35,6 +37,11 @@ class MyAccountFragment : Fragment() {
             val intent=Intent(this.activity, LoginActivity::class.java)
             startActivity(intent)
         }
+
+        messagesLayout.setOnClickListener() {
+            var intent=Intent(this.activity, MessageMainActivity::class.java)
+            startActivity(intent)
+        }
         personalInfoLayout.setOnClickListener {
             val profilePage = ProfilePageFragment()
             val bundle = Bundle()
@@ -46,4 +53,6 @@ class MyAccountFragment : Fragment() {
             }
         }
     }
+
+
 }

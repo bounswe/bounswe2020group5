@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.EditPersonalInfoRequest
-import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_edit_profile_info.*
-import kotlinx.android.synthetic.main.fragment_profile_page.*
-import kotlinx.android.synthetic.main.homepage_activity.*
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +20,6 @@ import kotlinx.android.synthetic.main.homepage_activity.*
  */
 class EditProfileInfoFragment : Fragment() {
 
-    var userData : LoginResponse? = null
     lateinit var NameTextView: TextView
     lateinit var surNameTextView: TextView
     lateinit var userNameTextView: TextView
@@ -33,22 +30,21 @@ class EditProfileInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userData = arguments?.getSerializable("USERDATA") as LoginResponse
         return inflater.inflate(R.layout.fragment_edit_profile_info, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NameTextView = view.findViewById(R.id.editName)
-        NameTextView.text = "${userData?.firstName}"
+        NameTextView.text = User.firstName
         surNameTextView = view.findViewById(R.id.editSurname)
-        surNameTextView.text = "${userData?.lastName}"
+        surNameTextView.text = User.lastName
         userNameTextView = view.findViewById(R.id.editUserName)
-        userNameTextView.text = "${userData?.userName}"
+        userNameTextView.text = User.userEmail
         mailTextView = view.findViewById(R.id.editEmail)
-        mailTextView.text = "${userData?.userEmail}"
+        mailTextView.text = User.userEmail
         addressTextView = view.findViewById(R.id.editAddress)
-        addressTextView.text = "${userData?.address}"
+        addressTextView.text = User.address
 
         buttonSave.setOnClickListener{
             if (userNameTextView.text.isEmpty() ||  mailTextView.text.isEmpty() ||
@@ -61,7 +57,6 @@ class EditProfileInfoFragment : Fragment() {
             } else {
                 val apiService = RestApiService()
                 val editUserInfo = EditPersonalInfoRequest(
-                        userEmail = editEmail.text.toString(),
                         userName = editUserName.text.toString(),
                         userFirstName = editName.text.toString(),
                         userLastName = editSurname.text.toString(),
@@ -76,12 +71,15 @@ class EditProfileInfoFragment : Fragment() {
                     else {
                         Toast.makeText(this.activity,"You have successfully edited your " +
                                 "personal info." , Toast.LENGTH_SHORT).show()
-                        val profilePageFragment = ProfilePageFragment()
-                        val bundle = Bundle()
-                        bundle.putSerializable("USERDATA",userData) // TODO bu olacak mı emin değilim.
-                        profilePageFragment.arguments = bundle
+                        if(editUserInfo.userName!=null)
+                            User.userName = editUserInfo.userName!!
+                        User.firstName = editUserInfo.userFirstName!!
+                        User.lastName = editUserInfo.userLastName!!
+                        User.address = editUserInfo.userAddress!!
+
+
                         requireActivity().supportFragmentManager.beginTransaction().apply {
-                            replace(R.id.fl_wrapper, profilePageFragment)
+                            replace(R.id.fl_wrapper, ProfilePageFragment())
                             commit()
                         }
                     }
