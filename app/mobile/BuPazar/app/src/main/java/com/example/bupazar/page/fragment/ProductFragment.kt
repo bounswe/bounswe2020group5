@@ -84,7 +84,7 @@ class ProductFragment : Fragment() {
                 }
             }
         }
-        apiService.getFavoriteList(authToken!!){
+        apiService.getFavoriteList(){
              if (it == null) {
 
             }
@@ -95,7 +95,7 @@ class ProductFragment : Fragment() {
 
                  if (productsInFavoriteList.size > 0) {
                      for (favoriteListProduct in productsInFavoriteList.iterator()) {
-                         if (favoriteListProduct.product.productId == productId) {
+                         if (favoriteListProduct.productId == productId) {
                              addToWishList.setText("Remove from Wishlist")
                              addToWishList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_star_24, 0, 0, 0);
                              addedToFavoriteList = true
@@ -130,14 +130,6 @@ class ProductFragment : Fragment() {
                         addToWishList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_star_24, 0, 0, 0)
                         addedToFavoriteList = true
                     }
-                }
-                apiService.getFavoriteList(authToken!!){
-                     if (it == null) {
-
-                    }
-                    else {
-                         var productsInFavoriteList = it.favoriteListProducts
-                     }
                 }
             }
         }

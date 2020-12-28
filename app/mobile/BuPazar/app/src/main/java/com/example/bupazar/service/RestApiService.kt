@@ -118,9 +118,9 @@ class RestApiService {
         )
     }
 
-    fun getFavoriteList(authToken: String, onResult: (ProductsInFavoriteList?) -> Unit) {
+    fun getFavoriteList(onResult: (ProductsInFavoriteList?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.getFavoriteList(authToken).enqueue(
+        retrofit.getFavoriteList("Token " + User.authToken).enqueue(
             object : Callback<ProductsInFavoriteList> {
                 override fun onFailure(call: Call<ProductsInFavoriteList>, t: Throwable) {
                     onResult(null)

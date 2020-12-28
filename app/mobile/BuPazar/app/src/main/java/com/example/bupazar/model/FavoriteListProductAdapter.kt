@@ -38,20 +38,20 @@ class FavoriteListProductAdapter(private val context: Context, private val favor
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(favoriteListProduct: FavoriteListProduct) {
-            itemView.vendor_name_text.text = "Vendor: " + favoriteListProduct.product.vendor
-            itemView.product_name.text = favoriteListProduct.product.name
-            itemView.product_description.text = favoriteListProduct.product.description
-            itemView.product_brand.text = "Brand: " + favoriteListProduct.product.brand
-            itemView.price.text = "Price: $" + favoriteListProduct.product.price
-            Glide.with(context).load(favoriteListProduct.product.imageUrl).into(itemView.product_image)
+            itemView.vendor_name_text.text = "Vendor: " + favoriteListProduct.vendor
+            itemView.product_name.text = favoriteListProduct.name
+            itemView.product_description.text = favoriteListProduct.description
+            itemView.product_brand.text = "Brand: " + favoriteListProduct.brand
+            itemView.price.text = "Price: $" + favoriteListProduct.price
+            Glide.with(context).load(favoriteListProduct.imageUrl).into(itemView.product_image)
         }
         fun bindLastItem(favoriteListProduct: FavoriteListProduct) {
-            itemView.vendor_name_text.text = "Vendor: " + favoriteListProduct.product.vendor
-            itemView.product_name.text = favoriteListProduct.product.name
-            itemView.product_description.text = favoriteListProduct.product.description
-            itemView.product_brand.text = "Brand: " + favoriteListProduct.product.brand
-            itemView.price.text = "Price: $" + favoriteListProduct.product.price
-            Glide.with(context).load(favoriteListProduct.product.imageUrl).into(itemView.product_image)
+            itemView.vendor_name_text.text = "Vendor: " + favoriteListProduct.vendor
+            itemView.product_name.text = favoriteListProduct.name
+            itemView.product_description.text = favoriteListProduct.description
+            itemView.product_brand.text = "Brand: " + favoriteListProduct.brand
+            itemView.price.text = "Price: $" + favoriteListProduct.price
+            Glide.with(context).load(favoriteListProduct.imageUrl).into(itemView.product_image)
             itemView.divider.visibility = View.INVISIBLE
             itemView.divider.background = null
         }

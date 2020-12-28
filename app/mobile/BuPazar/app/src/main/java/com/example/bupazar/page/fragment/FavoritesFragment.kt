@@ -26,7 +26,7 @@ class FavoritesFragment : Fragment() {
         authToken = "Token " + authToken
 
         val apiService = RestApiService()
-        apiService.getFavoriteList(authToken!!){
+        apiService.getFavoriteList(){
             if (it == null) {
 
             }
