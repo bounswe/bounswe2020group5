@@ -1,5 +1,6 @@
 package com.example.bupazar.service
 
+import com.example.bupazar.User
 import com.example.bupazar.`interface`.RestApi
 import com.example.bupazar.model.*
 import retrofit2.Call
@@ -116,6 +117,7 @@ class RestApiService {
                 }
         )
     }
+
     fun allComments(commentRequest: CommentRequest, onResult: (Array<CommentDetails>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.allComments(commentRequest).enqueue(
@@ -129,6 +131,80 @@ class RestApiService {
                         onResult(allComments)
                     }
 
+
+
+    fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.forgotPassword(userMail).enqueue(
+            object : Callback<ForgotPasswordRequest> {
+                override fun onFailure(call: Call<ForgotPasswordRequest>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<ForgotPasswordRequest>, response: Response<ForgotPasswordRequest>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
+
+
+    fun sendMessage(authToken : String, chatRequest: ChatRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.sendMessage("Token $authToken", chatRequest).enqueue(
+                object : Callback<Success> {
+                    override fun onFailure(call: Call<Success>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<Success>, response: Response<Success>) {
+                        val success = response.body()
+                        onResult(success)
+                    }
+                }
+        )
+    }
+
+    fun getLastMessage(authToken : String, chatRequest : ChatRequest, onResult: (Message?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getLastMessage("Token $authToken", chatRequest).enqueue(
+            object : Callback<Message> {
+                override fun onFailure(call: Call<Message>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse( call: Call<Message>, response: Response<Message>) {
+                    val message = response.body()
+                    onResult(message)
+                }
+            }
+        )
+    }
+
+    fun getAllChats(onResult: (Array<Chat>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getAllChats("Token ${User.authToken}").enqueue(
+                object : Callback<Array<Chat>?> {
+                    override fun onFailure(call: Call<Array<Chat>?>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<Array<Chat>?>, response: Response<Array<Chat>?>) {
+                        val allChats = response.body()
+                        onResult(allChats)
+                    }
+                }
+        )
+    }
+
+    fun chatCreate(chatCreateRequest: ChatCreateRequest, onResult: (ChatCreateResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.createChat("Token ${User.authToken}", chatCreateRequest).enqueue(
+                object : Callback<ChatCreateResponse> {
+                    override fun onFailure(call: Call<ChatCreateResponse>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse( call: Call<ChatCreateResponse>, response: Response<ChatCreateResponse>) {
+                        val allChats = response.body()
+                        onResult(allChats)
+                    }
                 }
         )
     }
