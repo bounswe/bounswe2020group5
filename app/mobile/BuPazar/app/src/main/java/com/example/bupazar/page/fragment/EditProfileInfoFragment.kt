@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.example.bupazar.ChangePasswordFragment
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.EditPersonalInfoRequest
@@ -45,6 +46,18 @@ class EditProfileInfoFragment : Fragment() {
         mailTextView.text = User.userEmail
         addressTextView = view.findViewById(R.id.editAddress)
         addressTextView.text = User.address
+
+
+        buttonChangePassword.setOnClickListener{
+            val changePasswordFragment = ChangePasswordFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("USERDATA",userData) // TODO bu olacak mı emin değilim.
+            changePasswordFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, changePasswordFragment)
+                commit()
+            }
+        }
 
         buttonSave.setOnClickListener{
             if (userNameTextView.text.isEmpty() ||  mailTextView.text.isEmpty() ||
