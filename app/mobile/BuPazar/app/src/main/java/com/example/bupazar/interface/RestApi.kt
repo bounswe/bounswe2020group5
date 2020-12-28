@@ -55,6 +55,18 @@ interface RestApi {
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/get_all_credit_cards/")
+    fun getCreditCards(@Header("Authorization") authToken: String): Call<Array<CreditCard>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/make_purchase/")
+    fun makePurchase(@Header("Authorization") authToken: String): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/add/")
+    fun addCreditCard(@Header("Authorization") authToken: String, @Body addCreditCardRequest: AddCreditCardRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/favorites/add/")
     fun addToFavoriteList(@Header("Authorization") authToken: String, @Body productData: AddRemoveFavoriteListRequest): Call<AddRemoveFavoriteListResponse>
 
@@ -73,5 +85,4 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
-
 }

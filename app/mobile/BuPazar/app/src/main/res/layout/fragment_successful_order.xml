@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".page.fragment.SuccessfulOrderFragment">
+
+    <ImageView
+        android:id="@+id/check_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_baseline_check_circle_24"
+        app:tint="@color/secondary_blue"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"/>
+
+    <TextView
+        android:id="@+id/successful_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check_image"
+        android:text="Your payment is successful"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/deliver_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/successful_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="Your items will be delivered \ns soon as possible."
+        android:gravity="center"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/go_to_home_page_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/secondary_blue"
+        android:layout_below="@id/deliver_text"
+        android:layout_marginTop="256dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/place_order_text"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GO BACK TO HOME PAGE"
+            android:textColor="#fff"
+            android:textSize="17dp"
+            android:gravity="center"
+            android:letterSpacing="0.09"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
