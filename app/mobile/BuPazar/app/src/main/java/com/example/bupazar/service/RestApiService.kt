@@ -23,7 +23,7 @@ class RestApiService {
         )
     }
 
-  fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
+    fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userRegister(userData).enqueue(
             object : Callback<Success> {
@@ -38,14 +38,14 @@ class RestApiService {
         )
     }
 
-    fun productDetails(id: Long, onResult: (ProductDetails?) -> Unit){
+    fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.productDetails(id).enqueue(
-            object : Callback<ProductDetails> {
-                override fun onFailure(call: Call<ProductDetails>, t: Throwable) {
+        retrofit.userVerificate(userData).enqueue(
+            object : Callback<LoginResponse> {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     onResult(null)
                 }
-                override fun onResponse( call: Call<ProductDetails>, response: Response<ProductDetails>) {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     val user = response.body()
                     onResult(user)
                 }
@@ -53,16 +53,81 @@ class RestApiService {
         )
     }
 
-  fun allProducts(onResult: (Array<ProductDetails>?) -> Unit){
+    fun addToCart(authToken: String, productData: AddToCartRequest, onResult: (AddToCartResponse?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addToCart(authToken, productData).enqueue(
+                object : Callback<AddToCartResponse> {
+                    override fun onFailure(call: Call<AddToCartResponse>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<AddToCartResponse>, response: Response<AddToCartResponse>) {
+                        val addToCartResponse = response.body()
+                        onResult(addToCartResponse)
+                    }
+                }
+        )
+    }
+
+    fun getCart(authToken: String, onResult: (ProductsInCart?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getCart(authToken).enqueue(
+                object : Callback<ProductsInCart> {
+                    override fun onFailure(call: Call<ProductsInCart>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<ProductsInCart>, response: Response<ProductsInCart>) {
+                        val addToCartResponse = response.body()
+                        onResult(addToCartResponse)
+
+                    }
+                }
+        )
+    }
+
+    fun productDetails(id: Long, onResult: (ProductDetails?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.productDetails(id).enqueue(
+                object : Callback<ProductDetails> {
+                    override fun onFailure(call: Call<ProductDetails>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<ProductDetails>, response: Response<ProductDetails>) {
+                        val user = response.body()
+                        onResult(user)
+                    }
+                }
+        )
+    }
+
+    fun allProducts(onResult: (Array<ProductDetails>?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.allProducts().enqueue(
-            object : Callback<Array<ProductDetails>?> {
-                override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val all_products = response.body()
+                        onResult(all_products)
+                    }
+                }
+        )
+    }
+
+    fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.forgotPassword(userMail).enqueue(
+            object : Callback<ForgotPasswordRequest> {
+                override fun onFailure(call: Call<ForgotPasswordRequest>, t: Throwable) {
                     onResult(null)
                 }
-                override fun onResponse( call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
-                    val all_products = response.body()
-                    onResult(all_products)
+                override fun onResponse(call: Call<ForgotPasswordRequest>, response: Response<ForgotPasswordRequest>) {
+                    val user = response.body()
+                    onResult(user)
                 }
             }
         )
