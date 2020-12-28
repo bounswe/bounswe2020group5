@@ -37,4 +37,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/cart/get/")
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/get_all_comments/")
+    fun allComments(@Body commentRequest: CommentRequest): Call<Array<CommentDetails>?>
 }

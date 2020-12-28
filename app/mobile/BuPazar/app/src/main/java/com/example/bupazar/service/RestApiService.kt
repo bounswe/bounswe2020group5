@@ -116,4 +116,20 @@ class RestApiService {
                 }
         )
     }
+    fun allComments(commentRequest: CommentRequest, onResult: (Array<CommentDetails>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.allComments(commentRequest).enqueue(
+                object : Callback<Array<CommentDetails>?>{
+                    override fun onFailure(call: Call<Array<CommentDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<CommentDetails>?>, response: Response<Array<CommentDetails>?>) {
+                        val allComments = response.body()
+                        onResult(allComments)
+                    }
+
+                }
+        )
+    }
 }
