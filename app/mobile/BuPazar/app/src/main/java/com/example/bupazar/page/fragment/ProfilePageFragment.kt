@@ -43,7 +43,7 @@ class ProfilePageFragment : Fragment() {
         surNameTextView = view.findViewById(R.id.surname)
         surNameTextView.text = User.lastName
         userNameTextView = view.findViewById(R.id.username)
-        userNameTextView.text = User.userEmail
+        userNameTextView.text = User.userName
         mailTextView = view.findViewById(R.id.email)
         mailTextView.text = User.userEmail
         addressTextView = view.findViewById(R.id.address)

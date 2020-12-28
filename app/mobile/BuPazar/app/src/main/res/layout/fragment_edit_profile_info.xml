@@ -159,7 +159,7 @@
                     android:textColor="@color/secondary_blue"
                     android:textSize="18sp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,6 +167,13 @@
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/secondary_blue" />
+
 
             </LinearLayout>
 

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.example.bupazar.ChangePasswordFragment
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.EditPersonalInfoRequest
@@ -41,23 +40,11 @@ class EditProfileInfoFragment : Fragment() {
         surNameTextView = view.findViewById(R.id.editSurname)
         surNameTextView.text = User.lastName
         userNameTextView = view.findViewById(R.id.editUserName)
-        userNameTextView.text = User.userEmail
+        userNameTextView.text = User.userName
         mailTextView = view.findViewById(R.id.editEmail)
         mailTextView.text = User.userEmail
         addressTextView = view.findViewById(R.id.editAddress)
         addressTextView.text = User.address
-
-
-        buttonChangePassword.setOnClickListener{
-            val changePasswordFragment = ChangePasswordFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("USERDATA",userData) // TODO bu olacak mı emin değilim.
-            changePasswordFragment.arguments = bundle
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, changePasswordFragment)
-                commit()
-            }
-        }
 
         buttonSave.setOnClickListener{
             if (userNameTextView.text.isEmpty() ||  mailTextView.text.isEmpty() ||
@@ -77,7 +64,7 @@ class EditProfileInfoFragment : Fragment() {
                 )
 
                 apiService.editProfileInfo(editUserInfo) {
-                    if(it?.success == null){  // TODO bu if'e giriyor nedenini anlamadık. w/emre
+                    if(it?.success == null){
                         Toast.makeText(this.activity,"User info credentials are not valid." ,
                                 Toast.LENGTH_SHORT).show()
                     }
@@ -86,10 +73,9 @@ class EditProfileInfoFragment : Fragment() {
                                 "personal info." , Toast.LENGTH_SHORT).show()
                         if(editUserInfo.userName!=null)
                             User.userName = editUserInfo.userName!!
-                        User.firstName = editUserInfo.userFirstName!!
-                        User.lastName = editUserInfo.userLastName!!
-                        User.address = editUserInfo.userAddress!!
-
+                            User.firstName = editUserInfo.userFirstName!!
+                            User.lastName = editUserInfo.userLastName!!
+                            User.address = editUserInfo.userAddress!!
 
                         requireActivity().supportFragmentManager.beginTransaction().apply {
                             replace(R.id.fl_wrapper, ProfilePageFragment())
