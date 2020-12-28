@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.item_product.view.product_price
 
 class FavoriteListProductAdapter(private val context: Context, private val favoriteListProducts: Array<FavoriteListProduct>) : RecyclerView.Adapter<FavoriteListProductAdapter.ViewHolder>() {
 
+    var onItemClick: ((FavoriteListProduct) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.favorite_list_product_item, parent, false)
         return ViewHolder(view)
@@ -54,6 +56,11 @@ class FavoriteListProductAdapter(private val context: Context, private val favor
             Glide.with(context).load(favoriteListProduct.imageUrl).into(itemView.product_image)
             itemView.divider.visibility = View.INVISIBLE
             itemView.divider.background = null
+        }
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(favoriteListProducts[adapterPosition])
+            }
         }
     }
 }

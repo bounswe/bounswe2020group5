@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.*
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_favorites.*
@@ -35,7 +36,12 @@ class FavoritesFragment : Fragment() {
                 val favoriteListProductAdapter = this.context?.let { productsInFavoriteList?.let { it1 -> FavoriteListProductAdapter(it, favoriteListProducts = it1) } }
                 wishListProducts.adapter = favoriteListProductAdapter
                 wishListProducts.layoutManager = LinearLayoutManager(this.context)
-
+                favoriteListProductAdapter!!.onItemClick = { favoriteListProduct ->
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, favoriteListProduct.productId!!))
+                        commit()
+                    }
+                }
             }
         }
     }
