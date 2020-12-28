@@ -116,4 +116,19 @@ class RestApiService {
                 }
         )
     }
+
+    fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.forgotPassword(userMail).enqueue(
+            object : Callback<ForgotPasswordRequest> {
+                override fun onFailure(call: Call<ForgotPasswordRequest>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<ForgotPasswordRequest>, response: Response<ForgotPasswordRequest>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
 }

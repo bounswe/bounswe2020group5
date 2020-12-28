@@ -37,4 +37,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/cart/get/")
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/password_reset_request/")
+    fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
 }
