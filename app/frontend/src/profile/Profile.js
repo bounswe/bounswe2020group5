@@ -418,7 +418,7 @@ function Profile() {
                               label="E-mail"
                               variant="outlined"
                               defaultValue={JSON.parse(JSON.stringify(name.email))}
-                              disabled={!edit}
+                              disabled={true}
                               onChange={onChange}
                           />
                         </div>
