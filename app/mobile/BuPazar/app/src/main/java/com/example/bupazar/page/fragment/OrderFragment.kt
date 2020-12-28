@@ -63,13 +63,13 @@ class OrderFragment : Fragment() {
             if (gdpr_checkbox.isChecked) {
                 apiService.makePurchase(authToken!!) {
                     if (it?.success == "Products in cart are successfully purchased") {
-                        val homePage = HomepageFragment()
+                        val successfulOrderFragment = SuccessfulOrderFragment()
                         val bundle = Bundle()
                         bundle.putSerializable("USERDATA", userData)
-                        homePage.arguments = bundle
+                        successfulOrderFragment.arguments = bundle
                         requireActivity().bottom_navigation.visibility = View.VISIBLE
                         requireActivity().supportFragmentManager.beginTransaction().apply {
-                            replace(R.id.fl_wrapper, homePage)
+                            replace(R.id.fl_wrapper, successfulOrderFragment)
                             commit()
                         }
                     }
