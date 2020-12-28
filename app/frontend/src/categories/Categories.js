@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Categories() {
   const [loadPage, setLoadPage] = React.useState(false);
   let [allProducts, setAllProducts] = React.useState("");
-
+  let[initialstate,setinitialstate]=React.useState("");
   let [selectbrand, setselectbrand] = React.useState([]);
   let [selectvendor, setselectvendor] = React.useState([]);
   let [selectid,setselectid]=React.useState([]);
@@ -106,6 +106,7 @@ export default function Categories() {
     }).then(res => res.json())
       .then(json => {
         setAllProducts(json);
+        setinitialstate(json)
         setLoadPage(true);
 
           filledidproducts = json.map((product) => (product.id));
@@ -126,6 +127,9 @@ export default function Categories() {
   }, []);
 
   const classes = useStyles();
+  const undoclick= () => {
+    setAllProducts(initialstate)
+  }
 
   const vendorfilterclick = () => {
     let error;
@@ -562,9 +566,11 @@ export default function Categories() {
             container spacing={2}>
             <Grid  item style={{marginTop: '2rem'}} xs={12} sm={2}>
 
-              <Button onClick={Applyallfilter} style={{marginLeft:'1.2rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
-                APPLY ALL SELECTED
-              </Button>
+              <Button onClick={Applyallfilter} style={{marginLeft:'0.5rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
+                APPLY SELECTED
+              </Button><Button onClick={undoclick} style={{marginLeft:'0.5rem',marginBottom:'0.5rem',backgroundColor:'#7E7F9A'}}variant="contained" color="secondary">
+              UNDO
+            </Button>
 
               <div>
                 <div className={classes.float} style={{marginTop:'1rem'}}  variant="text" aria-label="text primary button group">
@@ -697,8 +703,8 @@ export default function Categories() {
                     <option aria-label="None" value="" />
                     <option value='best_sellers-ascending'>Best sellers Ascending</option>
                     <option value='best_sellers-descending'>Best sellers Descending</option>
-                    <option value='new_arrivals-ascending'>New arrivals Ascending</option>
-                    <option value='new_arrivals-descending'>New arrivals Descending</option>
+                    <option value='newest_arrivals-ascending'>New arrivals Ascending</option>
+                    <option value='newest_arrivals-descending'>New arrivals Descending</option>
                     <option value='price-ascending'>Price Ascending</option>
                     <option value='price-descending'>Price Descending</option>
                     <option value='comments-ascending'>Comments Ascending</option>

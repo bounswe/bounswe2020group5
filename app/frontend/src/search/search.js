@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ComplexGrid() {
     const [loadPage, setLoadPage] = React.useState(false);
     let [statepro, setStatepro] = React.useState("");
-
+    let[initialstate,setinitialstate]=React.useState("");
     let [selectbrand, setselectbrand] = React.useState([]);
     let [selectvendor, setselectvendor] = React.useState([]);
     let [selectid,setselectid]=React.useState([]);
@@ -101,6 +101,7 @@ export default function ComplexGrid() {
             .then(json => {
                 setStatepro ( json);
                 setLoadPage(true);
+                setinitialstate(json)
 
                 filledidproducts = json.map((product) => (product.id));
                 setselectid(filledidproducts)
@@ -123,6 +124,10 @@ export default function ComplexGrid() {
     }, []);
 
     const classes = useStyles();
+
+    const undoclick= () => {
+        setStatepro(initialstate)
+    }
 
     const vendorfilterclick = () => {
         let error;
@@ -588,10 +593,13 @@ export default function ComplexGrid() {
             <Grid
                 container spacing={2}>
                 <Grid  item style={{marginTop: '2rem'}} xs={12} sm={2}>
-
-                    <Button onClick={Applyallfilter} style={{marginLeft:'1.2rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
-                        APPLY ALL SELECTED
-                    </Button>
+                <div className={classes.float}>
+                    <Button onClick={Applyallfilter} style={{marginLeft:'0.5rem',marginBottom:'0.5rem',backgroundColor:"#0B3954"}}variant="contained" color="secondary">
+                        APPLY SELECTED
+                    </Button><Button onClick={undoclick} style={{marginLeft:'0.5rem',marginBottom:'0.5rem',backgroundColor:'#7E7F9A'}}variant="contained" color="secondary">
+                   UNDO
+                </Button>
+                </div>
 
                     <div>
                         <div className={classes.float} style={{marginTop:'1rem'}}  variant="text" aria-label="text primary button group">
