@@ -58,7 +58,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                                 <img  style={{width:"21rem",height:"20rem"}} src={tile.image_url} alt={tile.name} /></Link>
                           )}
                             <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
-                            title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase() }
+                            title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.substr(0, 22).toUpperCase() }
                                 <span style={{color: "red",fontSize:"1.2rem"}} > &nbsp; &nbsp; %{tile.discount} </span> <Divider/>  <br></br> </span>}
                                               subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: {tile.price}
                                 <br></br><br></br>BY: {tile.vendor}
