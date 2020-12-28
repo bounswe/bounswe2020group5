@@ -37,4 +37,16 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/cart/get/")
     fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/favorites/add/")
+    fun addToFavoriteList(@Header("Authorization") authToken: String, @Body productData: AddRemoveFavoriteListRequest): Call<AddRemoveFavoriteListResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/favorites/remove/")
+    fun removeFromFavoriteList(@Header("Authorization") authToken: String, @Body productData: AddRemoveFavoriteListRequest): Call<AddRemoveFavoriteListResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/favorites/get/")
+    fun getFavoriteList(@Header("Authorization") authToken: String): Call<ProductsInFavoriteList>
 }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.bupazar.R
 import com.example.bupazar.model.AddToCartRequest
+import com.example.bupazar.model.AddRemoveFavoriteListRequest
 import com.example.bupazar.service.RestApiService
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_product.*
@@ -22,6 +23,7 @@ class ProductFragment : Fragment() {
     private var authToken: String? = null
     private var productId: Long = 0
     private var addedToCart: Boolean = false
+    private var addedToFavoriteList: Boolean = false
     private var quantityAdded: Int = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -82,12 +84,64 @@ class ProductFragment : Fragment() {
                 }
             }
         }
+        apiService.getFavoriteList(authToken!!){
+             if (it == null) {
 
+            }
+            else {
+                 var productsInFavoriteList = it.favoriteListProducts
+                 System.out.println("aaaaaaaaaaaa")
+                 System.out.println(productsInFavoriteList.size)
+
+                 if (productsInFavoriteList.size > 0) {
+                     for (favoriteListProduct in productsInFavoriteList.iterator()) {
+                         if (favoriteListProduct.product.productId == productId) {
+                             addToWishList.setText("Remove from Wishlist")
+                             addToWishList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_star_24, 0, 0, 0);
+                             addedToFavoriteList = true
+                         }
+                     }
+                 }
+             }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val apiService = RestApiService()
+
+        addToWishList.setOnClickListener {
+            val productData = AddRemoveFavoriteListRequest(
+                productId = this.productId
+            )
+            if (addedToFavoriteList) {
+                authToken?.let { it1 ->
+                    apiService.removeFromFavoriteList(it1, productData) {
+                        addToWishList.setText("Add to Wishlist")
+                        addToWishList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.fav, 0, 0, 0)
+                        addedToFavoriteList = false
+                    }
+                }
+            }
+            else {
+                authToken?.let { it1 ->
+                    apiService.addToFavoriteList(it1, productData) {
+                        addToWishList.setText("Remove from Wishlist")
+                        addToWishList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_star_24, 0, 0, 0)
+                        addedToFavoriteList = true
+                    }
+                }
+                apiService.getFavoriteList(authToken!!){
+                     if (it == null) {
+
+                    }
+                    else {
+                         var productsInFavoriteList = it.favoriteListProducts
+                     }
+                }
+            }
+        }
+
         addtocart.setOnClickListener {
             if (addedToCart) {
                 val productData = AddToCartRequest(
