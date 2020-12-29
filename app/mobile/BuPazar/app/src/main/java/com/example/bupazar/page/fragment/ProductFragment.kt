@@ -115,8 +115,6 @@ class ProductFragment : Fragment() {
             }
             else {
                  var productsInFavoriteList = it.favoriteListProducts
-                 System.out.println("aaaaaaaaaaaa")
-                 System.out.println(productsInFavoriteList.size)
 
                  if (productsInFavoriteList.size > 0) {
                      for (favoriteListProduct in productsInFavoriteList.iterator()) {

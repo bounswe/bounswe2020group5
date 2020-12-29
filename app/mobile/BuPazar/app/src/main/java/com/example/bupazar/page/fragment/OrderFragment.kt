@@ -38,11 +38,13 @@ class OrderFragment : Fragment() {
             if (chosenCreditCard != null) {
                 card_name_text.text = chosenCreditCard!!.name
             }
-            else{
-                card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            else if (creditCards == null || creditCards!!.size == 0) {
+                card_name_text.text = "Please add credit card!"
+            }
+            else {
+                card_name_text.text = creditCards?.get(0)?.name
             }
         }
-
     }
 
     override fun onCreateView(
@@ -62,8 +64,11 @@ class OrderFragment : Fragment() {
             if (chosenCreditCard != null) {
                 card_name_text.text = chosenCreditCard!!.name
             }
-            else{
-                card_name_text.text = creditCards?.get(0)?.name ?: "Please add card"
+            else if (creditCards == null || creditCards!!.size == 0) {
+                card_name_text.text = "Please add credit card!"
+            }
+            else {
+                card_name_text.text = creditCards?.get(0)?.name
             }
         }
         address_text.setText(userData!!.address)
@@ -71,7 +76,7 @@ class OrderFragment : Fragment() {
         total_price_text.text = "$" + price
 
        place_order_button.setOnClickListener {
-            if (gdpr_checkbox.isChecked) {
+            if (gdpr_checkbox.isChecked && !card_name_text.text.equals("Please add credit card!")) {
                 apiService.makePurchase(authToken!!) {
                     if (it?.success == "Products in cart are successfully purchased") {
                         val successfulOrderFragment = SuccessfulOrderFragment()
@@ -86,8 +91,11 @@ class OrderFragment : Fragment() {
                     }
                 }
             }
+            else if (card_name_text.text.equals("Please add credit card!")) {
+                Toast.makeText(this.activity,"Please add credit card!", Toast.LENGTH_SHORT).show()
+            }
             else {
-                Toast.makeText(this.context, "Please agree to the terms of GDPR.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.activity, "Please agree to the terms of GDPR.", Toast.LENGTH_LONG).show()
             }
         }
 

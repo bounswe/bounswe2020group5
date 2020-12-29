@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.model.*
@@ -31,26 +32,25 @@ class PayWithAnotherCardFragment : Fragment() {
         val apiService = RestApiService()
         apiService.getCreditCards(authToken!!){
             creditCards = it
-            chosenCreditCard = creditCards?.get(creditCards!!.size - 1)
-            val creditCardAdapter = this.context?.let { it1 -> creditCards?.let { it2 ->
-                CreditCardAdapter(it1,
-                    it2
-                )
-            } }
-            credit_cards.adapter = creditCardAdapter
-            credit_cards.layoutManager = LinearLayoutManager(this.context)
-            creditCardAdapter!!.onItemClick = { creditCard ->
-                chosenCreditCard = creditCard
-                val orderFragment = OrderFragment()
-                val bundle = Bundle()
-                bundle.putSerializable("USERDATA", userData)
-                bundle.putSerializable("price", price)
-                bundle.putSerializable("chosenCreditCard", chosenCreditCard)
-                orderFragment.arguments = bundle
-
-                requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.fl_wrapper, orderFragment)
-                    commit()
+            if (creditCards != null && creditCards!!.size > 0) {
+                chosenCreditCard = creditCards?.get(creditCards!!.size - 1)
+                val creditCardAdapter = this.context?.let { it1 -> creditCards?.let { it2 ->
+                    CreditCardAdapter(it1, it2) }
+                }
+                credit_cards.adapter = creditCardAdapter
+                credit_cards.layoutManager = LinearLayoutManager(this.context)
+                creditCardAdapter!!.onItemClick = { creditCard ->
+                    chosenCreditCard = creditCard
+                    val orderFragment = OrderFragment()
+                    val bundle = Bundle()
+                    bundle.putSerializable("USERDATA", userData)
+                    bundle.putSerializable("price", price)
+                    bundle.putSerializable("chosenCreditCard", chosenCreditCard)
+                    orderFragment.arguments = bundle
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fl_wrapper, orderFragment)
+                        commit()
+                    }
                 }
             }
         }

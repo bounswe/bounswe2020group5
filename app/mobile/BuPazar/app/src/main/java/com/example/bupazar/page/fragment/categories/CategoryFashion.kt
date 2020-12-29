@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.bupazar.R
 import com.example.bupazar.page.activity.home.HomepageActivity
 import kotlinx.android.synthetic.main.fragment_electronics_category.*
@@ -46,28 +47,23 @@ class CategoryFashion : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         womanClothing.setOnClickListener() {
-            val intent= Intent(this.activity, HomepageActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
         }
 
         accessory.setOnClickListener() {
-            val intent= Intent(this.activity, HomepageActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
         }
 
         sportsWear.setOnClickListener() {
-            val intent= Intent(this.activity, HomepageActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
         }
 
         manClothing.setOnClickListener() {
-            val intent= Intent(this.activity, HomepageActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
         }
 
         shoesBags.setOnClickListener() {
-            val intent= Intent(this.activity, HomepageActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
         }
     }
 
