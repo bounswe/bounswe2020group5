@@ -24,8 +24,8 @@
 
     <RelativeLayout
         android:id="@+id/product"
-        android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/vendor_name_bar"
         android:background="@drawable/rectangle_border">
 
@@ -54,12 +54,14 @@
 
         <TextView
             android:id="@+id/product_description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/product_name"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:layout_toEndOf="@id/product_image"
             android:text="Product Description"
+            android:gravity="fill"
             android:textSize="12sp" />
 
         <TextView
@@ -80,6 +82,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@id/product_image"
             android:text="Price"
+            android:layout_marginBottom="8dp"
             android:textSize="12sp" />
 
     </RelativeLayout>

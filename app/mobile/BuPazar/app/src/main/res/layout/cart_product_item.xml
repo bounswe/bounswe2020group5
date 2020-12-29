@@ -53,14 +53,17 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/product_description"
-            android:layout_toEndOf="@id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/product_name"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@id/product_image"
+            android:gravity="fill"
             android:text="Product Description"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp"/>
+            android:textAlignment="gravity"
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,20 +83,23 @@
             android:layout_below="@id/product_brand"
             android:text="Quantity"
             android:textSize="12sp"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="2dp"/>
 
         <TextView
+            android:id="@+id/product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/product_price"
+            android:layout_below="@+id/product_description"
+            android:layout_alignBottom="@+id/product_quantity"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@id/product_image"
-            android:text="Price"
-            android:textSize="18sp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:textStyle="bold"
-            android:textColor="@color/secondary_blue"/>
+            android:text="Price"
+            android:textColor="@color/secondary_blue"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
