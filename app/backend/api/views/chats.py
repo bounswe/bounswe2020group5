@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from ..models import Message, Chat, User
-from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, PropertiesSerializer, ErrorSerializer
+from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, PropertiesSerializer, ErrorSerializer, CreateChatResponseSerializer
 from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer, ChatSuccessSerializer
 from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message, is_found_a_chat
 from rest_framework import serializers
@@ -15,10 +15,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 
 from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND,
     HTTP_200_OK,
-    HTTP_500_INTERNAL_SERVER_ERROR
+    HTTP_201_CREATED,
 )
 
 from drf_yasg.utils import swagger_auto_schema
@@ -34,29 +32,32 @@ class ChatViewSet(viewsets.GenericViewSet):
         'delete_chat': GetChatPropertySerializer,
         'delete_message':GetMessagePropertySerializer,
     }
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: CreateChatResponseSerializer, status.HTTP_200_OK: ErrorSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def create_chat(self, request):
         vendor_username = request.data.get("vendor_username")
+        product_id = request.data.get("product_id")
         user = User.objects.get(id=request.user.id)
         if not user.is_customer:
-            return Response(data={'error': 'Only customers can create a chat'}, status=HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'Only customers can create a chat'}, status=HTTP_200_OK)
         try:
             vendor = User.objects.get(username=vendor_username)
         except:
-            return Response(data={'error': 'There is not such user with that id'}, status=HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'There is not such user with that username'}, status=HTTP_200_OK)
         if not vendor.is_vendor:
-            return Response(data={'error': 'The user is not a vendor'}, status=HTTP_400_BAD_REQUEST)
-        is_present = Chat.objects.filter(vendor_id=vendor.id,customer_id=user.id)
+            return Response(data={'error': 'The user is not a vendor'}, status=HTTP_200_OK)
+        is_present = Chat.objects.filter(vendor_username=vendor_username, customer_username=user.username, product_id=product_id)
         if is_present:
-            return Response(data={'error': 'The chat with this vendor already exists'}, status=HTTP_400_BAD_REQUEST)
-        customer_id = user.id 
-        chat = create_chat(customer_id, vendor.id)
+            return Response(data={'error': 'The chat with this vendor about this product already exists'}, status=HTTP_200_OK)
+        customer_username = user.username
+        chat = create_chat(customer_username, vendor_username, product_id)
+        chat_response = ChatSerializer(chat)
         data = {
             "success": "True",
-            "chat_id": chat.id,
-            "data_created": chat.date_created
+            "chat": chat_response.data 
             }
+        print("DATA ",data)
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: PropertiesSerializer, status.HTTP_404_NOT_FOUND: ErrorSerializer})

@@ -1,12 +1,14 @@
 from django.db import models
+from django_unixdatetimefield import UnixDateTimeField
 
 class Chat(models.Model):
-    vendor_id = models.CharField(max_length=250)
-    date_created = models.DateTimeField(auto_now_add=True)
-    customer_id = models.CharField(max_length=250)
+    vendor_username = models.CharField(max_length=250)
+    customer_username = models.CharField(max_length=250)
+    product_id = models.IntegerField()
+    time = UnixDateTimeField()
 
 class Message(models.Model):
-    context = models.CharField(max_length=250)
-    date_sent = models.DateTimeField(auto_now_add=True)
+    content = models.CharField(max_length=250)
+    time = UnixDateTimeField()
+    whose_message = models.CharField(max_length=15)
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE)
-    whose_message = models.BooleanField(default=True)
