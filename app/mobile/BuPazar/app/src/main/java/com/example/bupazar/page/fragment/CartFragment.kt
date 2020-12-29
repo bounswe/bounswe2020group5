@@ -78,15 +78,17 @@ class CartFragment : Fragment() {
         cartProducts.layoutManager = LinearLayoutManager(this.context)
 
         go_to_order_page.setOnClickListener {
-            val orderFragment = OrderFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("USERDATA", userData)
-            bundle.putSerializable("price", totalPrice)
-            bundle.putSerializable("chosenCreditCard", null)
-            orderFragment.arguments = bundle
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, orderFragment)
-                commit()
+            if (productsInCart != null && productsInCart!!.size > 0) {
+                val orderFragment = OrderFragment()
+                val bundle = Bundle()
+                bundle.putSerializable("USERDATA", userData)
+                bundle.putSerializable("price", totalPrice)
+                bundle.putSerializable("chosenCreditCard", null)
+                orderFragment.arguments = bundle
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fl_wrapper, orderFragment)
+                    commit()
+                }
             }
         }
     }

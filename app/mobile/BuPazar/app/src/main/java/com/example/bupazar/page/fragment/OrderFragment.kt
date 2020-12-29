@@ -76,7 +76,7 @@ class OrderFragment : Fragment() {
         total_price_text.text = "$" + price
 
        place_order_button.setOnClickListener {
-            if (gdpr_checkbox.isChecked && !card_name_text.text.equals("Please add credit card!")) {
+            if (gdpr_checkbox.isChecked && !card_name_text.text.equals("Please add credit card!") && one_installment_checkbox.isChecked) {
                 apiService.makePurchase(authToken!!) {
                     if (it?.success == "Products in cart are successfully purchased") {
                         val successfulOrderFragment = SuccessfulOrderFragment()
