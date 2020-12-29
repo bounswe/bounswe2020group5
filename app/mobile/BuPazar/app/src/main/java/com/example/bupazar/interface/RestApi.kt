@@ -19,10 +19,74 @@ interface RestApi {
     fun userRegister(@Body userData: RegisterRequest): Call<Success>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/register_activate/")
+    fun userVerificate(@Body userData: VerificationRequest): Call<LoginResponse>
+
+    @Headers("Content-Type: application/json")
     @GET("/api/products/{id}")
     fun productDetails(@Path("id") id: Long): Call<ProductDetails>
 
     @Headers("Content-Type: application/json")
     @GET("/api/products/")
     fun allProducts(): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/send_message/")
+    fun sendMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/get_last_message/")
+    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Message>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/get_all_chats/")
+    fun getAllChats(@Header("Authorization") authToken: String): Call<Array<Chat>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/chats/create_chat/")
+    fun createChat(@Header("Authorization") authToken: String, @Body chatCreateRequest: ChatCreateRequest): Call<ChatCreateResponse>
+    
+    @Headers("Content-Type: application/json")
+    @POST("/api/cart/edit/")
+    fun addToCart(@Header("Authorization") authToken: String, @Body productData: AddToCartRequest): Call<AddToCartResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/cart/get/")
+    fun getCart(@Header("Authorization") authToken: String): Call<ProductsInCart>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/profile_update/")
+    fun editProfileInfo(@Header("Authorization") authToken: String, @Body userData: EditPersonalInfoRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/get_all_credit_cards/")
+    fun getCreditCards(@Header("Authorization") authToken: String): Call<Array<CreditCard>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/make_purchase/")
+    fun makePurchase(@Header("Authorization") authToken: String): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/credit-cards/opts/add/")
+    fun addCreditCard(@Header("Authorization") authToken: String, @Body addCreditCardRequest: AddCreditCardRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/favorites/add/")
+    fun addToFavoriteList(@Header("Authorization") authToken: String, @Body productData: AddRemoveFavoriteListRequest): Call<AddRemoveFavoriteListResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/favorites/remove/")
+    fun removeFromFavoriteList(@Header("Authorization") authToken: String, @Body productData: AddRemoveFavoriteListRequest): Call<AddRemoveFavoriteListResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/favorites/get/")
+    fun getFavoriteList(@Header("Authorization") authToken: String): Call<ProductsInFavoriteList>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/get_all_comments/")
+    fun allComments(@Body commentRequest: CommentRequest): Call<Array<CommentDetails>?>
+  
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/password_reset_request/")
+    fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
 }

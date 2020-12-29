@@ -5,28 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.bupazar.page.activity.home.HomepageActivity"
-    android:background="#fff"
-    >
+    android:background="#fff">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-
-        >
-
+        android:scrollbars="none">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar">
             </include>
-
 
             <FrameLayout
                 android:layout_below="@+id/toolbar"
@@ -37,11 +30,8 @@
                 <ImageView
                     android:id="@+id/productImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                />
-
+                    android:layout_height="300dp" />
             </FrameLayout>
-
 
             <LinearLayout
                 android:visibility="visible"
@@ -49,8 +39,7 @@
                 android:layout_below="@+id/pic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/product_name_text"
                     android:layout_width="wrap_content"
@@ -59,20 +48,16 @@
                     android:textColor="@color/text"
                     android:textSize="26dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    />
-
+                    android:layout_marginTop="16dp" />
                 <TextView
                     android:id="@+id/product_brand_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Brand: BuPazar"
-                    android:textColor="#ff5e5c"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="6dp"
-                    />
-
+                    android:layout_marginTop="6dp" />
                 <View
                     android:id="@+id/action_divider"
                     android:layout_width="match_parent"
@@ -80,19 +65,18 @@
                     android:background="@color/colordevider"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="156dp"
-                    android:layout_marginTop="16dp"
-                    />
+                    android:layout_marginTop="16dp" />
 
                 <TextView
                     android:id="@+id/product_vendor_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Brand: BuPazar"
+                    android:background="@drawable/my_chat_bubble2"
+                    android:text="VENDOR: BuPazar"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="1dp"
-                    />
+                    android:layout_marginTop="1dp" />
 
 
                 <TextView
@@ -104,8 +88,7 @@
                     android:textSize="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="16dp"
-                    />
+                    android:layout_marginBottom="16dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,8 +97,7 @@
                     android:textColor="@color/text"
                     android:textSize="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    />
+                    android:layout_marginTop="16dp" />
 
                 <TextView
                     android:id="@+id/product_description_text"
@@ -126,8 +108,7 @@
                     android:textSize="14dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="10dp"
-                    android:lineSpacingExtra="5dp"
-                    />
+                    android:lineSpacingExtra="5dp" />
             </LinearLayout>
 
 
@@ -138,13 +119,11 @@
                 android:layout_below="@id/linear1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_weight="1"
@@ -152,15 +131,12 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
                         android:layout_marginRight="30dp"
-                        android:layout_marginLeft="16dp"
-                        >
+                        android:layout_marginLeft="16dp">
                         <Spinner
                             android:id="@+id/spinner1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown"
-
-                            />
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -168,15 +144,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:layout_marginRight="100dp"
-                        >
+                        android:layout_marginRight="100dp">
                         <Spinner
                             android:id="@+id/spinner2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown"
-
-                            />
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -193,9 +166,7 @@
                         android:id="@+id/spinner3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown"
-
-                        />
+                        android:spinnerMode="dropdown" />
                 </LinearLayout>
 
 
@@ -206,20 +177,22 @@
 
 
             <LinearLayout
-                android:id="@+id/addtobag"
-                android:layout_width="match_parent"
+                android:id="@+id/addtocart"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/text"
                 android:layout_below="@+id/spinnerlinear"
-                android:layout_marginRight="190dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="16dp">
 
                 <TextView
+                    android:id="@+id/addtocart_text"
                     android:padding="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ADD  TO  BAG"
+                    android:text="ADD  TO  CART"
                     android:textColor="#fff"
                     android:textSize="17dp"
                     android:gravity="center"
@@ -227,24 +200,61 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/addtocart"
+                android:layout_alignBottom="@id/addtocart"
+                android:layout_toEndOf="@id/addtocart"
+                android:layout_marginStart="16dp"
+                android:id="@+id/change_quantity_box">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_add_24"
+                    android:id="@+id/increase_quantity_button"
+                    android:background="@color/black" />
+                <RelativeLayout
+                    android:id="@+id/quantity_text_box"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rectangle_border"
+                    android:layout_toEndOf="@id/increase_quantity_button">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/quantity_text"
+                        android:textSize="20sp"
+                        android:text="1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_remove_24"
+                    android:id="@+id/decrease_quantity_button"
+                    android:layout_toEndOf="@id/quantity_text_box"
+                    android:background="@color/black"/>
+            </RelativeLayout>
+
             <!--*******WISHLIST********-->
 
             <LinearLayout
                 android:id="@+id/wishlist"
-                android:layout_below="@+id/addtobag"
+                android:layout_below="@+id/addtocart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                >
+                android:layout_marginTop="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-
-
                     <TextView
+                        android:id="@+id/addToWishList"
                         android:layout_weight="1"
                         android:padding="16dp"
                         android:layout_width="match_parent"
@@ -254,8 +264,7 @@
                         android:drawablePadding="9dp"
                         android:textSize="14dp"
                         android:textColor="@color/text"
-                        android:text="@string/Wishlist"
-                        />
+                        android:text="@string/Wishlist" />
 
                     <TextView
                         android:layout_weight="1"
@@ -267,11 +276,32 @@
                         android:drawablePadding="9dp"
                         android:textSize="14dp"
                         android:textColor="@color/text"
-                        android:text="@string/Share"
-
-                        />
+                        android:text="@string/Share" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/wishlist"
+                android:background="@color/text"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:letterSpacing="0.09"
+                android:padding="10dp"
+                android:text="Comments"
+                android:textColor="#fff"
+                android:textSize="17dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:layout_below="@id/comment"/>
 
 
 
@@ -282,24 +312,21 @@
                 android:id="@+id/highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/higlights"
-                    />
+                    android:text="@string/higlights" />
 
                 <LinearLayout
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="55dp"
-                    >
+                    android:layout_marginBottom="55dp">
 
                     <!--*******HIGHTOP DESIGN********-->
 
@@ -308,15 +335,13 @@
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/design"
-                            android:gravity="center"
-                            />
+                            android:gravity="center" />
 
                         <TextView
                             android:layout_marginTop="11dp"
@@ -325,9 +350,7 @@
                             android:text="HIGHTOP DESIGN"
                             android:textSize="12dp"
                             android:textColor="@color/text"
-                            android:gravity="center"
-
-                            />
+                            android:gravity="center" />
                     </LinearLayout>
 
                     <!--*******LEATHER********-->
@@ -337,15 +360,13 @@
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/leather"
-                            android:gravity="center"
-                            />
+                            android:gravity="center" />
 
                         <TextView
                             android:layout_marginTop="11dp"
@@ -354,11 +375,8 @@
                             android:text="PURE LEATHER"
                             android:textSize="12dp"
                             android:textColor="@color/text"
-                            android:gravity="center"
-                            />
+                            android:gravity="center" />
                     </LinearLayout>
-
-
 
                     <!--*******SKATE********-->
 
@@ -368,14 +386,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="bottom"
-                        >
+                        android:layout_gravity="bottom">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            />
+                            android:gravity="center" />
 
                         <TextView
                             android:layout_marginTop="11dp"
@@ -384,17 +400,10 @@
                             android:text="SKATE SUITABLE"
                             android:textSize="12dp"
                             android:textColor="@color/text"
-                            android:gravity="center"
-                            />
+                            android:gravity="center" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-
-
-
-
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
