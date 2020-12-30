@@ -7,6 +7,7 @@ class Chat(models.Model):
     product_id = models.IntegerField()
     time = UnixDateTimeField()
 
+
 class Message(models.Model):
     content = models.CharField(max_length=250)
     time = UnixDateTimeField()

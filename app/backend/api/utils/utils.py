@@ -51,8 +51,8 @@ def create_chat(customer_username, vendor_username, product_id):
     c.save()
     return c
 
-def create_message(context, chat, whose_message="customer"):
-    m = Message(context=context, chat=chat, whose_message=whose_message)
+def create_message(content, chat, whose_message="customer"):
+    m = Message(content=content, chat=chat, whose_message=whose_message)
     m.save()
     return m
 
