@@ -20,6 +20,7 @@ import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import {serverUrl} from "../common/ServerUrl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,30 +92,52 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
 export default function Navbar() {
+  const [isLogged, setIsLogged] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [vendoranchorEl, setvendorAnchorEl] = React.useState(null);
+  const [anchorEljoint, setAnchorEljoint] = React.useState(null);
+  const [value, setValue] = React.useState();
+  let [isvendor,setIsVendor] = React.useState(false);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const classes = useStyles();
   let history = useHistory();
 
+
+
+
   useEffect(() => {
-    const temp = localStorage.getItem('token')
-    if (temp) {
+    const token = localStorage.getItem('token')
+
+    console.log(token)
+
+    if (token) {
       setIsLogged(true)
     }
+
+    if (token) {
+      fetch(serverUrl + 'api/auth/user_info/', {
+        method: 'POST',
+        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+      }).then(res => res.json())
+          .then(json => {
+            setIsVendor(json.is_vendor);
+
+            setIsLogged(true)
+      })
+          .catch(err => console.log(err));
+    }
+
   }, []);
+
 
   const text = {
     color: "black"
   };
 
-  let [isLogged, setIsLogged] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorEljoint, setAnchorEljoint] = React.useState(null);
-  const [value, setValue] = React.useState();
 
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  // const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -132,11 +155,20 @@ export default function Navbar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+  const handlevendorMenuClose = () => {
+    setvendorAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handlevendorMenuOpen = (event) => {
+    setvendorAnchorEl(event.currentTarget);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLogged(false);
     setAnchorEl(false);
+    setvendorAnchorEl(false)
   }
 
   const handlejointClose = () => {
@@ -213,6 +245,36 @@ export default function Navbar() {
         </StyledMenuItem>
       </StyledMenu>
   );
+  const vendormenuId = 'vendor menu';
+  const rendervendorMenu = (
+      <StyledMenu
+          id="customized-menu"
+          anchorEl={vendoranchorEl}
+          keepMounted
+          open={Boolean(vendoranchorEl)}
+          onClose={handlevendorMenuClose}
+      >
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/profile">
+            <ListItemText primaryTypographyProps={{style: text}} primary="My Account"/>
+          </Link>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="My Products"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="Messages"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/" onClick={handleLogout}>
+            <ListItemText primaryTypographyProps={{style: text}} primary="Log out"/>
+          </Link>
+        </StyledMenuItem>
+      </StyledMenu>
+  );
 
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -263,7 +325,9 @@ export default function Navbar() {
   );
   const menujointId = 'login menu';
   const renderjointMenu = (
+
       <StyledMenu
+
           id="customized-menu"
           anchorEl={anchorEljoint}
           keepMounted
@@ -319,13 +383,15 @@ export default function Navbar() {
                 }}
             />
           </div>
+
           {isLogged ? (
+
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
+                {!isvendor ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
-                </IconButton>
+                </IconButton>:null}
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <Badge color="primary">
                     <MailIcon style={{ color: '#7E7F9A' }}/>
@@ -336,6 +402,7 @@ export default function Navbar() {
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>
+                {!isvendor ?
                 <IconButton
                   edge="end"
                   aria-label="account of current user"
@@ -345,21 +412,23 @@ export default function Navbar() {
                   color="primary"
                 >
                   <AccountCircle style={{ color: '#7E7F9A' }}/>
-                </IconButton>
-              </div>
-              <div className={classes.sectionMobile}>
+                </IconButton>:
                 <IconButton
-                  aria-label="show more"
-                  aria-controls={mobileMenuId}
-                  aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
-                  color="inherit"
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={vendormenuId}
+                    aria-haspopup="true"
+                    onClick={handlevendorMenuOpen}
+                    color="primary"
                 >
-                  <MoreIcon />
-                </IconButton>
-                      </div>
+                  <AccountCircle style={{ color: '#7E7F9A' }}/>
+                </IconButton>}
+              </div>
+
+
                     </div>
                 ) :
+
                 <div className={classes.notlogged}>
                   <Button
                       style={{backgroundColor: "#0B3954"}}
@@ -375,9 +444,10 @@ export default function Navbar() {
             }
           </Toolbar>
         </AppBar>
-        {renderMobileMenu}
+
         {renderMenu}
         {renderjointMenu}
+        {rendervendorMenu}
       </div>
   );
 }

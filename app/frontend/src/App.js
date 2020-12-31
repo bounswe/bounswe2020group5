@@ -40,16 +40,8 @@ function App() {
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
-          <Route path="/profile/lists" exact component={ListsPage} />
-          <Route exact path="/profile/lists/favorites" component={Favorites} />
-          <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
-          <Route path="/payment" exact component={Payment} />
-          <Route path="/category" component={Categories} />
-          <Route path="/subcategory" exact component={Categories} />
-          <Route path="/cart" exact component={Cart} />
-
           <Route component={NoMatch} />
         </Switch>
       </div>

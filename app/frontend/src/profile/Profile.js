@@ -90,6 +90,7 @@ function Profile() {
 
   const handleClick = () => {
     setOpen(!open);
+
   };
 
   const [name, setName] = useState({
@@ -287,20 +288,48 @@ function Profile() {
                       component="nav"
                       className={classes.root}
                     >
-                      <ListItem button>
-                        <ListItemIcon>
-                          <LocalMallIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Orders"/>
-                      </ListItem>
+
                       {!isvendor ? (
+                          <div>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <LocalMallIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Orders"/>
+                            </ListItem>
                         <ListItem button component={Link} to="/profile/lists">
                             <ListItemIcon>
                               <ListIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Lists"/>
                           </ListItem>
+                          <ListItem button>
+                            <ListItemIcon>
+                              <HomeIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Addresses"/>
+                          </ListItem>
+                        <ListItem button>
+                        <ListItemIcon>
+                        <PaymentIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Saved Credit Cards"/>
+                        </ListItem>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <StarBorderIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Assessments"/>
+                            </ListItem>
+                          </div>
                       ):(
+                          <div>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <LocalMallIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="My Products"/>
+                            </ListItem>
                         <ListItem button component={Link}
                                   to="/add-product">
                           <ListItemIcon>
@@ -308,25 +337,17 @@ function Profile() {
                           </ListItemIcon>
                           <ListItemText primary="Add Product"/>
                         </ListItem>
-                      )}
-                      <ListItem button>
+                        <ListItem button>
                         <ListItemIcon>
-                          <HomeIcon/>
+                        <HomeIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Addresses"/>
-                      </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <PaymentIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Saved Credit Cards"/>
-                      </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <StarBorderIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Assessments"/>
-                      </ListItem>
+                        </ListItem>
+                            </div>
+
+
+                      )}
+
                       <ListItem button onClick={handleClick}>
                         <ListItemIcon>
                           <SettingsIcon/>
