@@ -84,6 +84,7 @@ function Profile() {
   let [emailChanged, setEmailChanged] = React.useState(false);
   let [addressChanged, setAddressChanged] = React.useState(false);
   let [usernameChanged, setUsernameChanged] = React.useState(false);
+  let [isvendor,setIsVendor] = React.useState(false);
 
   let history = useHistory();
 
@@ -164,40 +165,39 @@ function Profile() {
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
         body: JSON.stringify(data)
       }).then(res => res.json())
-        .then(json => {
-          console.log(json)
-          const success = json.success
-          if (success) {
-            alert('Your profile is updated!')
-            window.location.reload();
-            setEdit(false);
-          }
-          else {
-            alert('User with this username or email already exists');
-          }
-        })
-        .catch(err => {
-          alert('Some error has occurred')
-          console.log(err)
-        });
+          .then(json => {
+            console.log(json)
+            const success = json.success
+            if (success) {
+              alert('Your profile is updated!')
+              window.location.reload();
+              setEdit(false);
+            } else {
+              alert('User with this username or email already exists');
+            }
+          })
+          .catch(err => {
+            alert('Some error has occurred')
+            console.log(err)
+          });
     }
   }
 
   function onChange(event) {
 
-    if(event.target.id === "first_name"){
+    if (event.target.id === "first_name") {
       setNameChanged(true);
     }
-    if(event.target.id === "last_name"){
+    if (event.target.id === "last_name") {
       setSurnameChanged(true);
     }
-    if(event.target.id === "email"){
+    if (event.target.id === "email") {
       setEmailChanged(true);
     }
-    if(event.target.id === "address"){
+    if (event.target.id === "address") {
       setAddressChanged(true);
     }
-    if(event.target.id === "username"){
+    if (event.target.id === "username") {
       setUsernameChanged(true);
     }
 
@@ -226,10 +226,12 @@ function Profile() {
               username: json.username,
             }
           )
+          setIsVendor(json.is_vendor);
         }).then(() => {
+
         setLoadPage(true)
       })
-        .catch(err => console.log(err));
+          .catch(err => console.log(err));
     } else {
       alert('Please login to see profile page')
       history.push('/login')
@@ -238,26 +240,25 @@ function Profile() {
   }, []);
   return (
 
-    <div>
-      {loadPage ? (
-        <div>
-          <div className="Home">
-            <Navbar/>
-          </div>
-          <div>
-            <CategoryTab/>
-          </div>
-          <div style={{marginTop: "1rem"}}>
-            <Breadcrumbs style={{color: "#0B3954"}} separator="›">
-              <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/">
-                Home Page
-              </Link>
-              <Link style={{color: "#0B3954"}} to="/profile">
-                My Account
-              </Link>
-            </Breadcrumbs>
-          </div>
-
+      <div>
+        {loadPage ? (
+            <div>
+              <div className="Home">
+                <Navbar/>
+              </div>
+              <div>
+                <CategoryTab/>
+              </div>
+              <div style={{marginTop: "1rem"}}>
+                <Breadcrumbs style={{color: "#0B3954"}} separator="›">
+                  <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/">
+                    Home Page
+                  </Link>
+                  <Link style={{color: "#0B3954"}} to="/profile">
+                    My Account
+                  </Link>
+                </Breadcrumbs>
+              </div>
 
           <div className={classes.gridroot}>
             <Grid container>
@@ -292,12 +293,22 @@ function Profile() {
                         </ListItemIcon>
                         <ListItemText primary="Orders"/>
                       </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <ListIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Lists"/>
-                      </ListItem>
+                      {!isvendor ? (
+                        <ListItem button component={Link} to="/profile/lists">
+                            <ListItemIcon>
+                              <ListIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Lists"/>
+                          </ListItem>
+                      ):(
+                        <ListItem button component={Link}
+                                  to="/add-product">
+                          <ListItemIcon>
+                            <ListIcon/>
+                          </ListItemIcon>
+                          <ListItemText primary="Add Product"/>
+                        </ListItem>
+                      )}
                       <ListItem button>
                         <ListItemIcon>
                           <HomeIcon/>
@@ -323,141 +334,152 @@ function Profile() {
                         <ListItemText primary="Settings"/>
                         {open ? <ExpandLess/> : <ExpandMore/>}
                       </ListItem>
-                      <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                          <ListItem button className={classes.nested} component={Link}
-                                    to="/profile/changepassword">
-                            <ListItemText primary="Change Password"/>
-                          </ListItem>
-                          <ListItem button className={classes.nested}>
-                            <ListItemText primary="Personal Information"/>
-                          </ListItem>
+                          <Collapse in={open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                              <ListItem button className={classes.nested} component={Link}
+                                        to="/profile/changepassword">
+                                <ListItemText primary="Change Password"/>
+                              </ListItem>
+                              <ListItem button className={classes.nested}>
+                                <ListItemText primary="Personal Information"/>
+                              </ListItem>
+                            </List>
+                          </Collapse>
                         </List>
-                      </Collapse>
-                    </List>
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={7} style={{marginLeft: "2rem"}}>
-                <Paper className={classes.paper}>
-                  <div className={classes.grid2}>
-                    <InputBase
-                      style={{
-                        color: "black",
-                        fontSize: 30,
-                        fontWeight: "500",
-                        marginLeft: "12rem",
-                        marginBottom: "2rem"
-                      }}
-                      defaultValue="My Account"
-                      disabled={true}
-                    />
-                  </div>
-                  <div style={{marginLeft: "6rem"}}>
-                    <div>
-                      <TextField
-                        className={classes.txtfield}
-                        error={val.first_name.error}
-                        helperText={val.first_name.message}
-                        id="first_name"
-                        label="Name"
-                        variant="outlined"
-                        defaultValue={JSON.parse(JSON.stringify(name.first_name))}
-                        disabled={!edit}
-                        onChange={onChange}
-                        /*InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton onClick={() => setEdit(true)}>
-                                <EditIcon />
-                              </IconButton>
-                            </InputAdornment>
-                          )
-                        }}*/
-                      />
-                      <TextField
-                        className={classes.txtfield3}
-                        error={val.last_name.error}
-                        helperText={val.last_name.message}
-                        id="last_name"
-                        label="Surname"
-                        variant="outlined"
-                        defaultValue={JSON.parse(JSON.stringify(name.last_name))}
-                        disabled={!edit}
-                        onChange={onChange}
-                      />
-                    </div>
-                    <div>
-                      <TextField
-                        className={classes.txtfield}
-                        error={val.username.error}
-                        helperText={val.username.message}
-                        id="username"
-                        label="Username"
-                        variant="outlined"
-                        defaultValue={JSON.parse(JSON.stringify(name.username))}
-                        disabled={!edit}
-                        onChange={onChange}
-                      />
-                      <TextField
-                        className={classes.txtfield3}
-                        error={val.email.error}
-                        helperText={val.email.message}
-                        id="email"
-                        label="E-mail"
-                        variant="outlined"
-                        defaultValue={JSON.parse(JSON.stringify(name.email))}
-                        disabled={!edit}
-                        onChange={onChange}
-                      />
-                    </div>
-                    <div>
-                      <TextField
-                        className={classes.txtfield2}
-                        error={val.address.error}
-                        helperText={val.address.message}
-                        id="address"
-                        label="Address"
-                        variant="outlined"
-                        defaultValue={JSON.parse(JSON.stringify(name.address)) !== '' ?
-                          (JSON.parse(JSON.stringify(name.address))) : (' ')
-                        }
-                        disabled={!edit}
-                        multiline={true}
-                        onChange={onChange}
-                      />
-                    </div>
-                    <div>
-                      {edit ? (
-                        <Button
-                          style={{width: "20rem",marginLeft:"8rem", marginRight:"8rem", backgroundColor: "#0B3954",}}
-                          variant="contained" color="primary"
-                          onClick={handleOnClick}
-                        >
-                          Save
-                        </Button>
-                      ) :
-                        <Button
-                          style={{width: "20rem",marginLeft:"8rem", marginRight:"8rem", backgroundColor: "#0B3954",}}
-                          variant="contained" color="primary"
-                          onClick={() => setEdit(true)}
-                        >
-                          Edit
-                        </Button>
-                      }
-                    </div>
-                  </div>
-                </Paper>
-              </Grid>
-            </Grid>
-          </div>
-          <div className={classes.ftr}>
-            <Footer/>
-          </div>
-        </div>
-      ) : null}
-    </div>
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={7} style={{marginLeft: "2rem"}}>
+                    <Paper className={classes.paper}>
+                      <div className={classes.grid2}>
+                        <InputBase
+                            style={{
+                              color: "black",
+                              fontSize: 30,
+                              fontWeight: "500",
+                              marginLeft: "12rem",
+                              marginBottom: "2rem"
+                            }}
+                            defaultValue="My Account"
+                            disabled={true}
+                        />
+                      </div>
+                      <div style={{marginLeft: "6rem"}}>
+                        <div>
+                          <TextField
+                              className={classes.txtfield}
+                              error={val.first_name.error}
+                              helperText={val.first_name.message}
+                              id="first_name"
+                              label="Name"
+                              variant="outlined"
+                              defaultValue={JSON.parse(JSON.stringify(name.first_name))}
+                              disabled={!edit}
+                              onChange={onChange}
+                              /*InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton onClick={() => setEdit(true)}>
+                                      <EditIcon />
+                                    </IconButton>
+                                  </InputAdornment>
+                                )
+                              }}*/
+                          />
+                          <TextField
+                              className={classes.txtfield3}
+                              error={val.last_name.error}
+                              helperText={val.last_name.message}
+                              id="last_name"
+                              label="Surname"
+                              variant="outlined"
+                              defaultValue={JSON.parse(JSON.stringify(name.last_name))}
+                              disabled={!edit}
+                              onChange={onChange}
+                          />
+                        </div>
+                        <div>
+                          <TextField
+                              className={classes.txtfield}
+                              error={val.username.error}
+                              helperText={val.username.message}
+                              id="username"
+                              label="Username"
+                              variant="outlined"
+                              defaultValue={JSON.parse(JSON.stringify(name.username))}
+                              disabled={!edit}
+                              onChange={onChange}
+                          />
+                          <TextField
+                              className={classes.txtfield3}
+                              error={val.email.error}
+                              helperText={val.email.message}
+                              id="email"
+                              label="E-mail"
+                              variant="outlined"
+                              defaultValue={JSON.parse(JSON.stringify(name.email))}
+                              disabled={true}
+                              onChange={onChange}
+                          />
+                        </div>
+                        <div>
+                          <TextField
+                              className={classes.txtfield2}
+                              error={val.address.error}
+                              helperText={val.address.message}
+                              id="address"
+                              label="Address"
+                              variant="outlined"
+                              defaultValue={JSON.parse(JSON.stringify(name.address)) !== '' ?
+                                  (JSON.parse(JSON.stringify(name.address))) : (' ')
+                              }
+                              disabled={!edit}
+                              multiline={true}
+                              onChange={onChange}
+                          />
+                        </div>
+                        <div>
+                          {edit ? (
+                                  <Button
+                                      style={{
+                                        width: "20rem",
+                                        marginLeft: "8rem",
+                                        marginRight: "8rem",
+                                        backgroundColor: "#0B3954",
+                                      }}
+                                      variant="contained" color="primary"
+                                      onClick={handleOnClick}
+                                  >
+                                    Save
+                                  </Button>
+                              ) :
+                              <Button
+                                  style={{
+                                    width: "20rem",
+                                    marginLeft: "8rem",
+                                    marginRight: "8rem",
+                                    backgroundColor: "#0B3954",
+                                  }}
+                                  variant="contained" color="primary"
+                                  onClick={() => setEdit(true)}
+                              >
+                                Edit
+                              </Button>
+                          }
+                        </div>
+                      </div>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={classes.ftr}>
+                <Footer/>
+              </div>
+            </div>
+        ) : null}
+      </div>
   );
 }
 
 export default Profile;
+

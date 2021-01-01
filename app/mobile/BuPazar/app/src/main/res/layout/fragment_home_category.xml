@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".page.fragment.categories.CategoryHome">
+
+    <RelativeLayout
+        android:id="@+id/categoriesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/secondary_blue">
+
+        <TextView
+            android:id="@+id/categoriesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/home_amp_kitchen"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="57dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/white"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/bupazar_logo" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/kitchenware"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/categoriesTitle"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/fashionImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_kitchen" />
+
+        <TextView
+            android:id="@+id/fashionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@+id/fashionImage"
+            android:text="@string/kitchenware"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/fashionArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/beds"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/kitchenware"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/personalCareImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_double_bed" />
+
+        <TextView
+            android:id="@+id/personalCareText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@+id/personalCareImage"
+            android:text="@string/beds"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/personalCareArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/decoration"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/beds"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/homeKitchenImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_decor" />
+
+        <TextView
+            android:id="@+id/homeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@+id/homeKitchenImage"
+            android:text="@string/decoration"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/homeArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/officeFurniture"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/decoration"
+        android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/sportsImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_work_station" />
+
+        <TextView
+            android:id="@+id/sportsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="14dp"
+            android:layout_toEndOf="@+id/sportsImage"
+            android:text="@string/office_furniture"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/sportsArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -56,7 +56,7 @@ export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
         return (
 
             <List  dense className={classes.list}>
-                {listof.filter(listof => listof.includes(filterkey)).map((value) => {
+                {listof.filter(listof => listof.includes(filterkey.toLowerCase())).map((value) => {
                     const labelId = `checkbox-list-secondary-label-${value}`;
 
                     return (
@@ -66,7 +66,7 @@ export const CheckboxListSecondary  = ({listof,filterkey,isbrand}) => {
                             <ListItemSecondaryAction>
                                 <Checkbox
                                     edge="end"
-                                    onChange={handleToggle(value)}
+                                    onChange={handleToggle(value.toLowerCase())}
                                     checked={checked.indexOf(value) !== -1}
                                     inputProps={{'aria-labelledby': labelId}}
                                 />

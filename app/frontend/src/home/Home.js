@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+
+import React, {useEffect, useState} from 'react';
+
+
 import Navbar from "./Navbar";
 import CategoryTab from "../components/CategoryTab";
 import SimpleGridList from "../components/SimpleGridList";
 import InputBase from "@material-ui/core/InputBase";
-import {tileData} from '../components/tileData';
-import {tileData2} from '../components/tileData2';
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
 
@@ -12,22 +13,33 @@ import {serverUrl} from "../common/ServerUrl";
 function Home() {
 
     const [loadPage, setLoadPage] = React.useState(false);
-    const [state, setState] = useState({
-        first: [],
-        second: [],
-        product_list: '',
-    });
 
-    fetch(serverUrl + 'api/products', {
-        method: 'GET',
-    }).then(res => res.json())
+    let [bestsellers, setbestsellers] = React.useState("");
+    let [newarrivals, setnewarrivals] = React.useState("");
+    let [trending, settrending] = React.useState("");
+
+    useEffect(() => {
+
+        let homepagearrays;
+
+
+        homepagearrays = {
+            "number_of_products": 5,
+        }
+        fetch(serverUrl + 'api/products/homepage/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(homepagearrays),
+
+        }).then(res => res.json())
         .then(json => {
-            state.product_list = json;
-            state.first = state.product_list.slice(1, 7);
-            state.second = state.product_list.slice(5);
+            setbestsellers( json.best_sellers);
+            setnewarrivals(json.newest_arrivals);
+            settrending(json.trends);
             setLoadPage(true);
         })
         .catch(err => console.log(err));
+    }, []);
 
     return (
         <div>
@@ -40,15 +52,17 @@ function Home() {
                     <div>
                         <CategoryTab/>
                     </div>
-                    <div>
+                    <div style={{marginTop:'2rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{
                                 color: "black",
                                 fontSize: 30,
-                                fontWeight: "600",
+                                fontWeight: "bold",
                                 marginLeft: "3rem",
                                 marginTop: "2rem",
-                                marginBottom: "1rem"
+                                marginBottom: "1rem",
+                                fontStyle: "italic",
+                                textDecorationsStyles: "dashed",
                             }}
                             defaultValue="BESTSELLERS"
                             inputProps={{'aria-label': 'bestsellers'}}
@@ -56,17 +70,19 @@ function Home() {
                         />
                     </div>
                     <div>
-                        <SimpleGridList tileData={state.first}/>
+                        <SimpleGridList tileData={bestsellers}/>
                     </div>
-                    <div>
+                    <div style={{marginTop:'5rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{
                                 color: "black",
                                 fontSize: 30,
-                                fontWeight: "600",
+                                fontWeight: "bold",
                                 marginLeft: "3rem",
                                 marginTop: "2rem",
-                                marginBottom: "1rem"
+                                marginBottom: "1rem",
+                                fontStyle: "italic",
+
                             }}
                             defaultValue="NEW ARRIVALS"
                             inputProps={{'aria-label': 'new-arrivals'}}
@@ -74,7 +90,27 @@ function Home() {
                         />
                     </div>
                     <div>
-                        <SimpleGridList tileData={state.second}/>
+                        <SimpleGridList tileData={newarrivals}/>
+                    </div>
+                    <div style={{marginTop:'5rem',marginBottom:'1rem'}}>
+                        <InputBase
+                            style={{
+                                color: "black",
+                                fontSize: 30,
+                                fontWeight: "bold",
+                                marginLeft: "3rem",
+                                marginTop: "2rem",
+                                marginBottom: "1rem",
+                                fontStyle: "italic",
+
+                            }}
+                            defaultValue="TRENDING"
+                            inputProps={{'aria-label': 'new-arrivals'}}
+                            disabled={true}
+                        />
+                    </div>
+                    <div style={{marginBottom:'5rem'}}>
+                        <SimpleGridList tileData={trending}/>
                     </div>
                     <div>
                         <Footer/>
@@ -82,6 +118,7 @@ function Home() {
                 </div>) : null}
 
         </div>
+
 
     );
 }
