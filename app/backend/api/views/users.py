@@ -3,9 +3,9 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import User, TempUser, SocialUserDocuments
+from ..models import User, TempUser, SocialDocs
 from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer
-from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, GoogleSocialAuthSerializer
+from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, GoogleSocialAuthSerializer, FacebookSocialAuthSerializer
 from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
 from ..utils import create_user_account, create_temp_user_account, send_email
 from rest_framework import serializers
@@ -16,7 +16,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
-from bupazar.settings import PASSWORD
+from bupazar.settings import PASSWORD_G,PASSWORD_F
 
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -48,6 +48,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         'password_reset_request' : PasswordResetRequestEmailSerializer,
         'password_reset_confirm' : PasswordResetConfirmSerializer,
         'google_login': GoogleSocialAuthSerializer,
+        'facebook_login': FacebookSocialAuthSerializer,
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -63,17 +64,54 @@ class AuthViewSet(viewsets.GenericViewSet):
         last_name = data['family_name']
         user = None
         social_user = User.objects.filter(email = email)
-        social_user_document = SocialUserDocuments.objects.filter(email=email,provider='google')
+        social_user_document = SocialDocs.objects.filter(email=email,social_provider='google')
         if social_user and social_user_document:
-            user = authenticate(request, username=email, password=PASSWORD)
+            user = authenticate(request, username=email, password=PASSWORD_G)
             print("user is ",user)
         elif not social_user_document and social_user:
             return Response({'error': 'The user with this email is already registered.'},
                         status=HTTP_400_BAD_REQUEST)
         else:
-            social_user_document = SocialUserDocuments(email=email,provider='google')
+            social_user_document = SocialDocs(email=email,social_provider='google')
             social_user_document.save()
-            user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD,is_customer=True,is_vendor=False,address="Address is not defined in Google") 
+            user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_G,is_customer=True,is_vendor=False,address="Address is not defined in Google") 
+        if user == None:
+            return Response({'error': 'Invalid Credentials'},
+                        status=HTTP_404_NOT_FOUND)
+        data = AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
+    @action(methods=['POST', ], detail=False)
+    def facebook_login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated = serializer.validated_data
+        print("VALIDETED",validated)
+        print("ALL",SocialDocs.objects.all())
+        data = dict(validated)['auth_token']
+        email = data['email']
+        first_name = data['name'].split()[0]
+        last_name = data['name'].split()[1]
+        username = first_name + "_" + last_name
+        user = None
+        social_user = User.objects.filter(email = email)
+        social_user_document = SocialDocs.objects.filter(email=email,social_provider='facebook')
+        if social_user and social_user_document:
+            user = authenticate(request, username=email, password=PASSWORD_F)
+            print("user is ",user)
+        elif not social_user_document and social_user:
+            print("sdasdasdasdasdas")
+            return Response({'error': 'The user with this email is already registered.'},
+                        status=HTTP_404_NOT_FOUND)
+        else:
+            try:
+                social_user_document = SocialDocs(email=email,social_provider='facebook')
+                social_user_document.save()
+                print("social_user_document",social_user_document)
+                user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_F,is_customer=True,is_vendor=False,address="Address is not defined in Facebook") 
+            except Exception as e:
+                print("Exception is ",e)
         if user == None:
             return Response({'error': 'Invalid Credentials'},
                         status=HTTP_404_NOT_FOUND)

@@ -57,3 +57,4 @@ from .chats import PropertiesSerializer
 from .users import ErrorSerializer
 from .chats import ChatSuccessSerializer
 from .users import GoogleSocialAuthSerializer
+from .users import FacebookSocialAuthSerializer

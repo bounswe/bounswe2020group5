@@ -8,6 +8,8 @@ from rest_framework import serializers
 from ..models import Purchase
 from google.auth.transport import requests
 from google.oauth2 import id_token
+import facebook
+from bupazar.settings import G_CLIENT_ID
 
 usr = get_user_model()
 
@@ -42,15 +44,27 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             if 'accounts.google.com' in idinfo['iss']:
                 user_data = idinfo
             else:
-        except:
-            raise serializers.ValidationError("The token is either invalid or has expired. Refresh your token.")
-        try:
+                raise serializers.ValidationError("The token does not belong to google")
             is_found = user_data['sub']
         except:
             raise serializers.ValidationError('The token is invalid or expired. Please login again.')
-        if user_data['aud'] != "":
+        if user_data['aud'] != G_CLIENT_ID:
             raise AuthenticationFailed('The system does not recognize your client id')       
         return user_data
+
+class FacebookSocialAuthSerializer(serializers.Serializer):
+    """Handles serialization of facebook related data"""
+    auth_token = serializers.CharField()
+    def validate_auth_token(self, auth_token):
+        user_data = None
+        try:
+            graph = facebook.GraphAPI(access_token=auth_token)
+            user_data = graph.request('/me?fields=name,email')
+        except:
+            raise serializers.ValidationError('The token  is invalid or expired. Please login again.')
+        
+        return user_data
+
 
 class AuthUserSerializer(serializers.ModelSerializer):
     auth_token = serializers.SerializerMethodField()
