@@ -31,7 +31,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: docker build
         run: |
-          docker build ./app/frontend -t react_app
+          docker build ./app/frontend -t react_app --build-arg KEY=${{ secrets.SECRET_KEY_C }}
           echo build is completed.
 
       - name: docker tag

@@ -14,8 +14,8 @@ fs.readFile('./secrets.json', 'utf8' , (err, data) => {
 
   console.log(obj['g_client_id'])
 
-  obj['g_client_id'] = cryptr.encrypt(obj['g_client_id']);
-  obj['f_app_id'] = cryptr.encrypt(obj['f_app_id']);
+  obj['g_client_id'] = cryptr.decrypt(obj['g_client_id']);
+  obj['f_app_id'] = cryptr.decrypt(obj['f_app_id']);
 
     const data_to_write = JSON.stringify(obj);
 
