@@ -3,8 +3,7 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from rest_framework import status
 import json
-from ..serializers import ProductSerializer, AuthUserSerializer
-from ..views.products_details import product_detail 
+from ..serializers import AuthUserSerializer
 from ..models import Category, SubCategory, Vendor, Product
 from django.contrib.auth import get_user_model
 
