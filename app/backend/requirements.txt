@@ -34,3 +34,4 @@ six==1.15.0
 uritemplate==3.0.1
 urllib3==1.26.2
 facebook-sdk==3.1.0
+django-unixdatetimefield==1.2.0

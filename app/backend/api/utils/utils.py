@@ -46,13 +46,13 @@ def send_email(template,to):
             index+=1  
     return index
 
-def create_chat(customer_id, vendor_id):
-    c = Chat(customer_id=customer_id, vendor_id=vendor_id)
+def create_chat(customer_username, vendor_username, product_id):
+    c = Chat(customer_username=customer_username, vendor_username=vendor_username, product_id=product_id)
     c.save()
     return c
 
-def create_message(context, chat, whose_message=1):
-    m = Message(context=context, chat=chat, whose_message=whose_message,)
+def create_message(content, chat, whose_message="customer"):
+    m = Message(content=content, chat=chat, whose_message=whose_message)
     m.save()
     return m
 
@@ -60,9 +60,9 @@ def is_found_a_chat(chat_id,usr):
     try:
         chat = None
         if usr.is_customer:
-            chat = Chat.objects.get(id=chat_id, customer_id=usr.id)
+            chat = Chat.objects.get(id=chat_id, customer_username=usr.username)
         else:
-            chat = Chat.objects.get(id=chat_id, vendor_id=usr.id)
+            chat = Chat.objects.get(id=chat_id, vendor_username=usr.username)
         return chat
     except:
         return None

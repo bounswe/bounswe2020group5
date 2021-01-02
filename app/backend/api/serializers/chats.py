@@ -4,36 +4,40 @@ from ..models.users import User
 
 #Chat Serializer
 class ChatSerializer(serializers.ModelSerializer):
-    customer_id = serializers.SerializerMethodField('get_customer_id')
-    vendor_id = serializers.SerializerMethodField('get_vendor_id')
+
     class Meta:
         model = Chat
-        fields = ('id', 'vendor_id', 'customer_id')
+        fields = ('id', 'vendor_username', 'customer_username', 'product_id', 'time')
+
     
-    def get_customer_id(self, obj):
-        customer = User.objects.get(id=obj.customer_id)
-        return customer.first_name + " " + customer.last_name
-
-    def get_vendor_id(self, obj):
-        vendor = User.objects.get(id=obj.vendor_id)
-        return vendor.first_name + " " + vendor.last_name
-
 #Message Serializer
 class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('id', 'whose_message', 'context', 'chat')
+        fields = ('id', 'content', 'time', 'whose_message', 'chat')
+
+class ChatsWithMessagesSerializer(serializers.Serializer):
+    chat = ChatSerializer()
+    messages = MessageSerializer(many=True)
+
+class GetAllChatsResponseSerializer(serializers.Serializer):
+    success = serializers.CharField(max_length=100)
+    chats = ChatsWithMessagesSerializer(many=True)
 
 class ChatCreateSerializer(serializers.Serializer):
-    vendor_id = serializers.CharField(required=True)
+    vendor_username = serializers.CharField(required=True)
 
 class SendMessageSerializer(serializers.Serializer):
     chat_id = serializers.CharField(required=True)
-    context = serializers.CharField(required=True)
+    content = serializers.CharField(required=True)
 
 class GetChatPropertySerializer(serializers.Serializer):
     chat_id = serializers.CharField(required=True)
+
+class CreateChatResponseSerializer(serializers.Serializer):
+    success = serializers.CharField(max_length=100)
+    chat = ChatSerializer()
 
 class EmptySerializer(serializers.Serializer):
     pass
@@ -49,3 +53,11 @@ class PropertiesSerializer(serializers.Serializer):
     id = serializers.CharField(required=True)
     date_created = serializers.DateTimeField()
     success = serializers.CharField()
+
+class SendMessageResponseSerializer(serializers.Serializer):
+    success = serializers.CharField()
+    message = MessageSerializer()
+
+class ChatHistoryResponseSerializer(serializers.Serializer):
+    success = serializers.CharField()
+    messages = MessageSerializer(many=True)
