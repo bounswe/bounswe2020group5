@@ -8,6 +8,7 @@ import Badge from "@material-ui/core/Badge";
 import InputBase from "@material-ui/core/InputBase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import List from "@material-ui/core/List";
+import ReorderIcon from '@material-ui/icons/Reorder';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -327,6 +328,13 @@ function Profile() {
                             <ListItem button>
                               <ListItemIcon>
                                 <LocalMallIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Sales"/>
+                            </ListItem>
+                            <ListItem button component={Link}
+                                      to="/vendorproduct">
+                              <ListItemIcon>
+                                <ReorderIcon/>
                               </ListItemIcon>
                               <ListItemText primary="My Products"/>
                             </ListItem>

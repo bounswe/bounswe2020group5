@@ -124,8 +124,8 @@ export default function Navbar() {
       }).then(res => res.json())
           .then(json => {
             setIsVendor(json.is_vendor);
+            localStorage.setItem('isvendor',true)
 
-            setIsLogged(true)
       })
           .catch(err => console.log(err));
     }
@@ -261,7 +261,13 @@ export default function Navbar() {
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
+          <ListItemText primaryTypographyProps={{style: text}} primary="My Sales"/>
+        </StyledMenuItem>
+        <Divider/>
+        <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to="/vendorproduct">
           <ListItemText primaryTypographyProps={{style: text}} primary="My Products"/>
+          </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
@@ -389,7 +395,7 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                {!isvendor ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
+                {!localStorage.getItem('isvendor') ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
                 </IconButton>:null}
                 <IconButton aria-label="show 4 new mails" color="inherit">
@@ -445,9 +451,9 @@ export default function Navbar() {
           </Toolbar>
         </AppBar>
 
-        {renderMenu}
-        {renderjointMenu}
-        {rendervendorMenu}
+      {localStorage.getItem('isvendor')? rendervendorMenu:renderMenu}
+      {renderjointMenu}
+
       </div>
   );
 }
