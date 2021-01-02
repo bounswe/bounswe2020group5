@@ -9,6 +9,9 @@ import './Login.css'
 import { postData } from "../common/Requests";
 import Alert from '@material-ui/lab/Alert';
 import { serverUrl } from "../common/ServerUrl";
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import secrets from './secrets.json';
 //styles
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
@@ -34,15 +37,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
 function Login() {
   
   //states
   const classes = useStyles();
 
+  console.log(secrets)
+
   const [state, setState] = useState({
     password: '',
     uid: '',
+    keys: secrets
   });
+
+
 
   const [val, setVal] = useState({
     password: { error: false, message: '' },
@@ -52,6 +61,35 @@ function Login() {
   const [logged, setLogged] = useState(false); 
 
   const [alertMessage, setAlertMessage] = useState(''); 
+
+
+  const responseGoogle = (response) => {
+    console.log("Google login token is " + response.tokenId)
+    console.log("The other one is " + response.getAuthResponse().id_token)
+    console.log("Google login response is "+response);
+
+    const url = serverUrl + 'api/auth/google_login/';
+    const data = {
+      auth_token: response.tokenId,
+    }
+
+    postData(url, data)
+    .then(handleResponse)
+    .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+  }
+
+  const responseFacebook = (response) => {
+    console.log(response)
+
+    const url = serverUrl + 'api/auth/facebook_login/';
+    const data = {
+      auth_token: response.accessToken,
+    }
+
+    postData(url, data)
+    .then(handleResponse)
+    .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+  }
   
   //handlers
   function onChange(event) {
@@ -186,8 +224,13 @@ function Login() {
             </Typography>
           </div>
           <div className="button-div2">
-            <div className={classes.loginButtonRoot}>
+          <GoogleLogin
+            clientId={state.keys['g_client_id']}
+            render={renderProps => (
+              <div className={classes.loginButtonRoot}>
               <Button
+                onClick={renderProps.onClick} 
+                disabled={renderProps.disabled}
                 variant="outlined"
                 color="primary"
                 style={{ textTransform: "None" }}
@@ -196,10 +239,22 @@ function Login() {
                 Continue with Google
               </Button>
             </div>
+            )}
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
           </div>
           <div className="button-div2">
+          <FacebookLogin
+          appId={state.keys['f_app_id']}
+          
+          
+          render={renderProps => (
             <div className={classes.loginButtonRoot}>
               <Button
+                onClick={renderProps.onClick} 
                 variant="outlined"
                 color="primary"
                 style={{ textTransform: "None" }}
@@ -208,7 +263,10 @@ function Login() {
                 Continue with Facebook
             </Button>
             </div>
-          </div>
+          )}
+          callback={responseFacebook}
+        />
+         </div>
         </div>
       </div>
     </div>
