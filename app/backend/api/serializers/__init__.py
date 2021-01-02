@@ -56,5 +56,10 @@ from .chats import GetMessagePropertySerializer
 from .chats import PropertiesSerializer
 from .users import ErrorSerializer
 from .chats import ChatSuccessSerializer
+from .chats import ChatsWithMessagesSerializer
+from .chats import GetAllChatsResponseSerializer
+from .chats import CreateChatResponseSerializer
+from .chats import SendMessageResponseSerializer
+from .chats import ChatHistoryResponseSerializer
 from .users import GoogleSocialAuthSerializer
 from .users import FacebookSocialAuthSerializer
