@@ -3,9 +3,9 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import User, TempUser
+from ..models import User, TempUser, SocialUserDocuments
 from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer
-from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer
+from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, GoogleSocialAuthSerializer
 from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
 from ..utils import create_user_account, create_temp_user_account, send_email
 from rest_framework import serializers
@@ -16,6 +16,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
+from bupazar.settings import PASSWORD
 
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -45,8 +46,39 @@ class AuthViewSet(viewsets.GenericViewSet):
         'profile_update': UpdateProfileSerializer, 
         'register_activate': RegisterActivateSerializer,
         'password_reset_request' : PasswordResetRequestEmailSerializer,
-        'password_reset_confirm' : PasswordResetConfirmSerializer
+        'password_reset_confirm' : PasswordResetConfirmSerializer,
+        'google_login': GoogleSocialAuthSerializer,
     }
+
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
+    @action(methods=['POST', ], detail=False)
+    def google_login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated = serializer.validated_data
+        data = dict(validated)['auth_token']
+        email = data['email']
+        username = data['given_name'] + "_" + data['family_name']
+        first_name = data['given_name']
+        last_name = data['family_name']
+        user = None
+        social_user = User.objects.filter(email = email)
+        social_user_document = SocialUserDocuments.objects.filter(email=email,provider='google')
+        if social_user and social_user_document:
+            user = authenticate(request, username=email, password=PASSWORD)
+            print("user is ",user)
+        elif not social_user_document and social_user:
+            return Response({'error': 'The user with this email is already registered.'},
+                        status=HTTP_400_BAD_REQUEST)
+        else:
+            social_user_document = SocialUserDocuments(email=email,provider='google')
+            social_user_document.save()
+            user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD,is_customer=True,is_vendor=False,address="Address is not defined in Google") 
+        if user == None:
+            return Response({'error': 'Invalid Credentials'},
+                        status=HTTP_404_NOT_FOUND)
+        data = AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)

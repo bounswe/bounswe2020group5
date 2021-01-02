@@ -6,6 +6,8 @@ from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 from ..models import Purchase
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 usr = get_user_model()
 
@@ -29,6 +31,26 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=200, required=True)
     password = serializers.CharField(max_length=128, required=True, write_only=True)
+
+class GoogleSocialAuthSerializer(serializers.Serializer):
+    auth_token = serializers.CharField()
+    def validate_auth_token(self, auth_token):
+        user_data = None
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                auth_token, requests.Request())
+            if 'accounts.google.com' in idinfo['iss']:
+                user_data = idinfo
+            else:
+        except:
+            raise serializers.ValidationError("The token is either invalid or has expired. Refresh your token.")
+        try:
+            is_found = user_data['sub']
+        except:
+            raise serializers.ValidationError('The token is invalid or expired. Please login again.')
+        if user_data['aud'] != "":
+            raise AuthenticationFailed('The system does not recognize your client id')       
+        return user_data
 
 class AuthUserSerializer(serializers.ModelSerializer):
     auth_token = serializers.SerializerMethodField()

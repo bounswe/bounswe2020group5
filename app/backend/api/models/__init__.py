@@ -16,3 +16,4 @@ from .lists import Cart
 from .lists import ProductInCart
 from .chats import Chat
 from .chats import Message
+from .social_user_documents import SocialUserDocuments
