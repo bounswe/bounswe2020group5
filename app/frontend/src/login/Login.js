@@ -36,22 +36,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 function Login() {
   
   //states
   const classes = useStyles();
-
-  console.log(secrets)
 
   const [state, setState] = useState({
     password: '',
     uid: '',
     keys: secrets
   });
-
-
 
   const [val, setVal] = useState({
     password: { error: false, message: '' },
@@ -62,12 +56,7 @@ function Login() {
 
   const [alertMessage, setAlertMessage] = useState(''); 
 
-
   const responseGoogle = (response) => {
-    console.log("Google login token is " + response.tokenId)
-    console.log("The other one is " + response.getAuthResponse().id_token)
-    console.log("Google login response is "+response);
-
     const url = serverUrl + 'api/auth/google_login/';
     const data = {
       auth_token: response.tokenId,
@@ -145,7 +134,6 @@ function Login() {
   if (logged) {
     return <Redirect to='/' />
   }
-
   return (
     <div className="login">
       <div className="login-header">
@@ -216,7 +204,6 @@ function Login() {
             </Button>
           </div>
         </div>
-
         <div>
           <div style={{ textAlign: 'center', margin: '8px' }}>
             <Typography variant="body1" gutterBottom>
@@ -249,8 +236,6 @@ function Login() {
           <div className="button-div2">
           <FacebookLogin
           appId={state.keys['f_app_id']}
-          
-          
           render={renderProps => (
             <div className={classes.loginButtonRoot}>
               <Button
