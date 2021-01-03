@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models.chats import Chat, Message
+from ..models.chats import Chat, Message, UnreadMessages
 from ..models.users import User
 
 #Chat Serializer
@@ -7,7 +7,7 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ('id', 'vendor_username', 'customer_username', 'product_id', 'time')
+        fields = ('id', 'vendor_username', 'customer_username', 'product_id', 'created_date')
 
     
 #Message Serializer
@@ -15,7 +15,14 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('id', 'content', 'time', 'whose_message', 'chat')
+        fields = ('id', 'content', 'date_sent', 'whose_message', 'chat')
+
+#UnreadMessages Serializer
+class UnreadMessagesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UnreadMessages
+        fields = "__all__"
 
 class ChatsWithMessagesSerializer(serializers.Serializer):
     chat = ChatSerializer()
@@ -61,3 +68,6 @@ class SendMessageResponseSerializer(serializers.Serializer):
 class ChatHistoryResponseSerializer(serializers.Serializer):
     success = serializers.CharField()
     messages = MessageSerializer(many=True)
+
+class NumberOfUnreadMessagesResponseSerializer(serializers.Serializer):
+    number = serializers.IntegerField()
