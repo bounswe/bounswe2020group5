@@ -26,6 +26,9 @@ STORAGE_BUCKET_NAME = str(shared_memory["STORAGE_BUCKET_NAME"])
 PORT = int(shared_memory["PORT"])
 EMAIL = str(shared_memory["EMAIL"])
 EMAIL_PASSWORD = str(shared_memory["EMAIL_PASSWORD"])
+PASSWORD_G = str(shared_memory["PASSWORD_G"])
+PASSWORD_F = str(shared_memory["PASSWORD_F"])
+G_CLIENT_ID = str(shared_memory["G_CLIENT_ID"])
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
