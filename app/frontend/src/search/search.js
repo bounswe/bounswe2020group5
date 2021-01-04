@@ -737,7 +737,7 @@ export default function ComplexGrid() {
                             <option value='price-ascending'>Price Ascending</option>
                             <option value='price-descending'>Price Descending</option>
                             <option value='comments-ascending'>Comments Ascending</option>
-                            <option value='comments-descending>'>Comments Descending</option>
+                            <option value='comments-descending'>Comments Descending</option>
                             <option value='rating-ascending'>Rating Ascending</option>
                             <option value='rating-descending'>Rating Descending</option>
 
