@@ -63,3 +63,5 @@ from .chats import SendMessageResponseSerializer
 from .chats import ChatHistoryResponseSerializer
 from .users import GoogleSocialAuthSerializer
 from .users import FacebookSocialAuthSerializer
+from .chats import NumberOfUnreadMessagesResponseSerializer
+from .chats import UnreadMessagesSerializer

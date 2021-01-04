@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from ..models import Customer, Vendor
 from ..models import Product
 from ..models import TempUser
-from ..models import Chat, Message
+from ..models import Chat, Message, UnreadMessages
 
 def create_user_account(email, username, first_name,
                         last_name, password, is_customer, is_vendor, address, **extra_fields):
@@ -55,6 +55,11 @@ def create_message(content, chat, whose_message="customer"):
     m = Message(content=content, chat=chat, whose_message=whose_message)
     m.save()
     return m
+
+def create_unread_message(chat_id, to_whom):
+    k = UnreadMessages(chat_id=chat_id, to_whom=to_whom)
+    k.save()
+    return k
 
 def is_found_a_chat(chat_id,usr):
     try:

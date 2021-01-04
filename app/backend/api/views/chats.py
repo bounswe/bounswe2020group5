@@ -2,10 +2,12 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import Message, Chat, User
-from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, PropertiesSerializer, ErrorSerializer, CreateChatResponseSerializer, SendMessageResponseSerializer
-from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer, ChatSuccessSerializer, GetAllChatsResponseSerializer, ChatHistoryResponseSerializer
-from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message, is_found_a_chat
+from ..models import Message, Chat, User, UnreadMessages
+from ..serializers import MessageSerializer, ChatSerializer, ChatCreateSerializer, SuccessSerializer, NumberOfUnreadMessagesResponseSerializer
+from ..serializers import PropertiesSerializer, ErrorSerializer, CreateChatResponseSerializer, SendMessageResponseSerializer
+from ..serializers import SendMessageSerializer, GetChatPropertySerializer, EmptySerializer, GetMessagePropertySerializer, ChatSuccessSerializer
+from ..serializers import GetAllChatsResponseSerializer, ChatHistoryResponseSerializer, UnreadMessagesSerializer
+from ..utils import create_user_account, create_temp_user_account, send_email, create_chat, create_message, is_found_a_chat, create_unread_message
 from rest_framework import serializers
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -30,7 +32,8 @@ class ChatViewSet(viewsets.GenericViewSet):
         'get_chat_history': GetChatPropertySerializer,
         'get_all_chats': EmptySerializer,
         'delete_chat': GetChatPropertySerializer,
-        'delete_message':GetMessagePropertySerializer,
+        'delete_message': GetMessagePropertySerializer,
+        'get_unread_messages_number': EmptySerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: CreateChatResponseSerializer, status.HTTP_200_OK: ErrorSerializer})
@@ -39,7 +42,6 @@ class ChatViewSet(viewsets.GenericViewSet):
         vendor_username = request.data.get("vendor_username")
         product_id = request.data.get("product_id")
         user = User.objects.get(id=request.user.id)
-        user2 = User.objects.filter(id=request.user.id)
         if not user.is_customer:
             return Response(data={'error': 'Only customers can create a chat'}, status=HTTP_200_OK)
         try:
@@ -70,7 +72,18 @@ class ChatViewSet(viewsets.GenericViewSet):
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
             return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_202_ACCEPTED)
-        message = create_message(content,chat,usr.is_customer)
+        to_whom = ""
+        whose_message = ""
+        if usr.is_customer:
+            to_whom = "vendor"
+            whose_message = "customer"
+        else:
+            to_whom = "customer"
+            whose_message = "vendor"
+
+        create_unread_message(chat_id,to_whom)
+        
+        message = create_message(content,chat,whose_message)
         message = MessageSerializer(message)
         data = {
             "success":"True",
@@ -94,6 +107,14 @@ class ChatViewSet(viewsets.GenericViewSet):
             "success":"True",
             "message": message_contents.data[len(message_contents.data)-1]
         }
+        to_whom = ""
+        if usr.is_customer:
+            to_whom = "customer"
+        else:
+            to_whom = "vendor"
+        unread_messages = UnreadMessages.objects.filter(chat_id=chat_id,to_whom=to_whom)
+        if unread_messages:
+            unread_messages.delete()
         return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: GetAllChatsResponseSerializer, status.HTTP_202_ACCEPTED: ErrorSerializer})
@@ -102,10 +123,13 @@ class ChatViewSet(viewsets.GenericViewSet):
         user_id = request.user.id
         usr = User.objects.get(id=user_id)
         chats = None
+        to_whom = ""
         if usr.is_customer:
             chats = Chat.objects.filter(customer_username=usr.username)
+            to_whom = "customer"
         else:
             chats = Chat.objects.filter(vendor_username=usr.username)
+            to_whom = "vendor"
         if not chats:
             return Response(data={"error":"there is no chat the user is involved"}, status=status.HTTP_202_ACCEPTED)
         chats_contents = ChatSerializer(chats, many=True)
@@ -125,6 +149,7 @@ class ChatViewSet(viewsets.GenericViewSet):
             message_contents = MessageSerializer(messages, many=True)
             chat_properties_dict["messages"] = message_contents.data
             data["chats"].append(chat_properties_dict)
+            UnreadMessages.objects.filter(chat_id=id,to_whom=to_whom).delete()
         return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ChatHistoryResponseSerializer, status.HTTP_202_ACCEPTED: ErrorSerializer})
@@ -141,7 +166,40 @@ class ChatViewSet(viewsets.GenericViewSet):
             "success": "True",
             "messages": message_contents.data
         }
+        to_whom = ""
+        if usr.is_customer:
+            to_whom = "customer"
+        else:
+            to_whom = "vendor"
+        UnreadMessages.objects.filter(chat_id=id,to_whom=to_whom).delete()
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+    @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: NumberOfUnreadMessagesResponseSerializer, status.HTTP_202_ACCEPTED: ErrorSerializer})
+    @action(methods=['GET', ], detail=False, permission_classes=[IsAuthenticated, ])
+    def get_unread_messages_number(self, request):
+        usr = User.objects.get(id=request.user.id)
+        chats = None
+        to_whom = ""
+        if usr.is_customer:
+            chats = Chat.objects.filter(customer_username=usr.username)
+            to_whom = "vendor"
+        else:
+            chats = Chat.objects.filter(vendor_username=usr.username)
+            to_whom = "customer"
+        if not chats:
+            return Response(data={"error":"there is no chat the user is involved"}, status=status.HTTP_202_ACCEPTED)
+        chats_contents = ChatSerializer(chats, many=True)
+        chats_contents = chats_contents.data
+        chat_ids = []
+        number = 0
+            
+        for chat_properties in chats_contents:
+            chat_ids.append(chat_properties['id'])
+        for chat_id in chat_ids:
+            number = number + len(UnreadMessages.objects.filter(chat_id=chat_id))
+
+        return Response(data=number , status=status.HTTP_200_OK)
    
 
 
