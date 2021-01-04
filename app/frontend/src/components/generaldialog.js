@@ -54,8 +54,12 @@ const DialogActions = withStyles((theme) => ({
 export const GeneralCustomizedDialogs= ({id}) =>  {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState('');
-    let [chatid,setchatid]=React.useState('');
-    let [loadPage, setLoadPage] = React.useState(false);
+    let [messageempty,setmessageempty]=React.useState(false);
+
+    const justhandleClose = () => {
+        setOpen(false);
+
+    };
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -68,6 +72,8 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
 
     };
     const handleClose = () => {
+        {value!=='' ? setmessageempty(false):setmessageempty(true)}
+        if (!(messageempty)) {
         setOpen(false);
 
         const token = localStorage.getItem('token')
@@ -93,16 +99,14 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
                     console.log(json);
 
 
-                }).then(() => {
-                setLoadPage(true)
-            })
+                })
                 .catch(err => console.log(err));
         } else {
             alert('Please login in order to message')
         }
 
 
-    };
+    }};
 
 
     return (
@@ -137,6 +141,9 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
                 <DialogActions>
                     <Button autoFocus onClick={handleClose} color="primary">
                         SEND
+                    </Button>
+                    <Button autoFocus onClick={justhandleClose} color="primary">
+                        CANCEL
                     </Button>
                 </DialogActions>
             </Dialog>

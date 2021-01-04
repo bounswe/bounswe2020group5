@@ -217,7 +217,7 @@ const Product = (props) => {
 
                                     <Grid container alignItems={"center"} justify="center">
 
-                                        <CustomizedDialogs/>
+                                        <CustomizedDialogs vendor={state.vendor} productid={JSON.parse(JSON.stringify(id))}/>
 
                                         <IconButton onClick={handlelistcount}>
                                             {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
