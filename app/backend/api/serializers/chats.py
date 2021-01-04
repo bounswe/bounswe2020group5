@@ -34,6 +34,7 @@ class GetAllChatsResponseSerializer(serializers.Serializer):
 
 class ChatCreateSerializer(serializers.Serializer):
     vendor_username = serializers.CharField(required=True)
+    product_id = serializers.IntegerField(required=True)
 
 class SendMessageSerializer(serializers.Serializer):
     chat_id = serializers.CharField(required=True)

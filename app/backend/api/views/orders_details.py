@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
-from ..serializers import CustomerPurchasedSerializer, MessageSerializer, CustomerOrderSerializer
+from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer, CustomerOrderSerializer
 from ..models import Product, Order, Purchase, Customer, Vendor
 from rest_framework.response import Response
 
@@ -108,7 +108,7 @@ def vendor_update_status(request):
             purchase.save()
     return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageSerializer}, request_body=CustomerPurchasedSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageResponseSerializer}, request_body=CustomerPurchasedSerializer)
 @api_view(['POST'])
 @permission_classes([IsAuthCustomer])
 def customer_purchased(request):

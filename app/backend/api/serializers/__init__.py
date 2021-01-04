@@ -41,7 +41,7 @@ from .orders import CancelPurchaseSerializer
 from .orders import PurchaseSerializer
 from .orders import UpdateStatusSerializer
 from .orders import CustomerPurchasedSerializer
-from .orders import MessageSerializer
+from .orders import MessageResponseSerializer
 from .orders import CustomerOrderSerializer
 from .products import HomePageRequestSerializer
 from .products import HomePageResponseSerializer

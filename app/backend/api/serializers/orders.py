@@ -42,7 +42,7 @@ class UpdateStatusSerializer(serializers.Serializer):
 class CustomerPurchasedSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)
 
-class MessageSerializer(serializers.Serializer):
+class MessageResponseSerializer(serializers.Serializer):
     message = serializers.BooleanField()
 
 class CustomerOrderSerializer(serializers.Serializer):
