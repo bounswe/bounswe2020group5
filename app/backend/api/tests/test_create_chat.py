@@ -3,7 +3,7 @@ from ..models import TempUser, User, Chat
 from rest_framework import status
 from rest_framework.test import APITestCase
 class CreateChatTestCase(APITestCase):
-    def test_password_reset_request(self):
+    def test_create_chat(self):
         usr = User.objects.get(email="mrvyldm2@mailpoof.com")
         content = AuthUserSerializer(usr).data
         auth_token = content['auth_token']
