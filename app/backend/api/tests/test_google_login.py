@@ -10,10 +10,10 @@ class GoogleLoginTestCase(APITestCase):
         data = {
             "auth_token" : G_CLIENT_ID
         }
-        usr = id_token.verify_oauth2_token(
-                auth_token, requests.Request())
-        email = usr['auth_token']['email']
         response = self.client.post("/api/auth/google_login/",data)
+        usr = id_token.verify_oauth2_token(
+                data['auth_token'], requests.Request())
+        email = usr['auth_token']['email']
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
         social_doc = SocialDocs.objects.filter(email=email,provider="google")
         is_found = False
