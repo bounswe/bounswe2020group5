@@ -73,7 +73,8 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
 
 
             messagetovendor= {
-                "vendor_id": '108',
+                "vendor_username": 'deryapolat',
+                "product_name":'74'
             }
 
             if (token) {
@@ -83,8 +84,7 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
                     body: JSON.stringify(messagetovendor),
                 }).then(res => res.json())
                     .then(json => {
-                       setchatid(json.chat_id);
-
+                       setchatid(JSON.parse(JSON.stringify(json.chat)).id);
 
                     }).then(() => {
                     setLoadPage(true)
@@ -108,8 +108,8 @@ export const CustomizedDialogs= ({customer,vendor,isvendor}) =>  {
 
 
             createmessage= {
-                "chat_id": chatid,
-                "context":value,
+                "chat_id": '56',
+                "content":'aaa',
             }
 
             if (token) {

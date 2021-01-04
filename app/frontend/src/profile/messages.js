@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'vertical',
         alignItems:'center',
         justifyContent:'space-between',
+        marginLeft:'1rem'
+
 
     },
     reply:{
@@ -82,10 +84,9 @@ function Messages() {
     let [open, setOpen] = React.useState(false);
     let [loadPage, setLoadPage] = React.useState(false);
     let [open2, setOpen2] = React.useState('');
-    let[allchats,setallchats]=React.useState([]);
-    let chatnos =new Set();
-    let [lastmessages,setlastmessages]=React.useState([]);
-    let [lastmessagesfrom,setlastmessagesfrom]=React.useState([]);
+    let[allchats,setallchats]=React.useState();
+
+
 
     useEffect(() => {
 
@@ -96,22 +97,19 @@ function Messages() {
 
     if (token) {
         fetch(serverUrl + 'api/chats/get_all_chats/', {
-            method: 'POST',
+            method: 'GET',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: '',
+
 
         }).then(res => res.json())
             .then(json => {
-                {json.map((value) => {chatnos.add(value.id)})}
 
-                console.log(chatnos)
-                console.log('aaaa')
+                setallchats(JSON.parse(JSON.stringify(json)).chats)
                 console.log(json)
-                setallchats(json)
-
+                setLoadPage(true)
 
             }).then(() => {
-            getlastmessage(chatnos)
+
 
         })
 
@@ -189,9 +187,8 @@ function Messages() {
                     console.log(json)
                     console.log(json.context)
                     console.log('xxxxxx')
-                    setlastmessages(messageset.push(json.context))
-                    setlastmessagesfrom(lastmessagefr.push(json.whose_message))
-                    console.log(lastmessages)
+
+
                     console.log(lastmessagefr)
                     console.log('xxxxxx')
 
@@ -239,15 +236,13 @@ function Messages() {
                         <List className={classes.root}  >
 
                             {allchats.map((value,index) => {
-
-                                console.log(lastmessages)
-                                console.log(lastmessagesfrom)
-
-
                                 console.log('vvvvvvv')
 
                                 console.log(index)
-                                console.log(value.id)
+                                console.log(value)
+                                console.log(value)
+                                let vendorname=value.vendor_username
+                                let customername=value.customer_username
 
                                 console.log('lastmessages')
 
@@ -259,27 +254,28 @@ function Messages() {
 
 
                                     <ListItem  className={classes.float} key={index}>
-                                        <ListItemAvatar style={{width:'30rem'}} className={classes.reply}  >
-                                            <Avatar
-                                                alt={`Avatar n°${value + 1}`}
-                                                src={`/static/images/avatar/${value + 1}.jpg`}
-                                            />
-                                            <GeneralCustomizedDialogs id={value.customer_id} />
-                                        </ListItemAvatar>
+
                                         <ListItemText onClickCapture={()=>setOpen2(!open2)}
-                                                      onClick={()=>setindexnow(index)} primary={<span>From: {value.customer_id} To:{value.vendor_id}
-                                                      </span>} secondary={<span
-                                                      ></span>}/>
+                                                      onClick={()=>setindexnow(index)} primary={value.messages[value.messages.length-1].whose_message=='customer'?
+                                            <span style={{fontStyle:'italic',fontWeight:'bold'}}>From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}
+                                            </span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
+                                                From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}</span>}
+                                                      secondary={<span style={{color:'black'}}> {value.messages[value.messages.length-1].content}</span>}/>
 
 
-                                        { open2&&index==indexnow ? <ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
-                                        <Collapse  className={classes.float} in={open2&&index==indexnow } timeout="auto" unmountOnExit>
-                                            {[].map((value,index) => {
+                                        { open2&&index==indexnow ?<ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
+                                        <Collapse  in={open2&&index==indexnow } timeout="auto" unmountOnExit>
+                                            {value.messages.map((value,index) => {
                                          return(
                                             <List >
                                                 <ListItem  className={classes.flow}>
-                                                    <ListItemText primary={value}/>
+                                                    <ListItemText primary={value.whose_message=='customer'?
+                                                        <span style={{fontStyle:'italic',fontWeight:'bold'}}>
+                                            From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.date_sent}</span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
+                                                From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.date_sent}</span>}
+                                                                  secondary={<span style={{color:'black'}}> {value.content}</span>}/>
                                                 </ListItem>
+                                                <Divider/>
                                             </List> );})}
                                         </Collapse>
 
