@@ -6,11 +6,7 @@ COPY . /frontapp
 
 RUN npm install
 
-RUN cat src/login/secrets.json
-
 RUN cd src/login && node secrets.js $KEY
-
-RUN cat src/login/secrets.json
 
 RUN npm install -g serve
 
