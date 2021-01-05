@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 customer_user = None
 
-class CommentRatingTest(TestCase):
+class AddCreditCardTest(TestCase):
     def setUp(self):
         global customer_user
 
