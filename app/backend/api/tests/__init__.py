@@ -7,3 +7,8 @@ from .test_cancel_order import CancelOrderTest
 from .test_add_credit_card import AddCreditCardTest
 from .test_comment_rating import CommentRatingTest
 from .test_update_status import UpdateStatusTest
+from .test_create_chat import CreateChatTestCase
+from .test_google_login import GoogleLoginTestCase
+from .test_register import RegistrationTestCase
+from .test_register_activate import RegistrationActivateTestCase
+from .test_send_message import SendMessageFailTestCase
