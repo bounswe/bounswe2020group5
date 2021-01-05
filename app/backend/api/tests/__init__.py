@@ -4,3 +4,6 @@ from .test_filter_product import FilterProductTest
 from .test_product_detail import ProductDetailTest
 from .test_update_product import UpdateProductTest
 from .test_cancel_order import CancelOrderTest
+from .test_add_credit_card import AddCreditCardTest
+from .test_comment_rating import CommentRatingTest
+from .test_update_status import UpdateStatusTest
