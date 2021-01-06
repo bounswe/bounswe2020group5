@@ -41,7 +41,7 @@ from .orders import CancelPurchaseSerializer
 from .orders import PurchaseSerializer
 from .orders import UpdateStatusSerializer
 from .orders import CustomerPurchasedSerializer
-from .orders import MessageSerializer
+from .orders import MessageResponseSerializer
 from .orders import CustomerOrderSerializer
 from .products import HomePageRequestSerializer
 from .products import HomePageResponseSerializer
@@ -56,3 +56,12 @@ from .chats import GetMessagePropertySerializer
 from .chats import PropertiesSerializer
 from .users import ErrorSerializer
 from .chats import ChatSuccessSerializer
+from .chats import ChatsWithMessagesSerializer
+from .chats import GetAllChatsResponseSerializer
+from .chats import CreateChatResponseSerializer
+from .chats import SendMessageResponseSerializer
+from .chats import ChatHistoryResponseSerializer
+from .users import GoogleSocialAuthSerializer
+from .users import FacebookSocialAuthSerializer
+from .chats import NumberOfUnreadMessagesResponseSerializer
+from .chats import UnreadMessagesSerializer
