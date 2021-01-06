@@ -7,10 +7,10 @@ on:
     paths:
       - "app/frontend/**"
   branches:
-      - backend
+      - master
   pull_request:
     branches:
-      - backend
+      - master
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
