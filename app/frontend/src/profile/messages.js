@@ -202,9 +202,8 @@ function Messages() {
                             {allchats.map((value,index) => {
                                 console.log('vvvvvvv')
 
-                                console.log(index)
-                                console.log(value)
-                                console.log(value)
+                                let date=value.messages[value.messages.length-1].date_sent.split("T")[0].split("-")[2]+"-"+value.messages[value.messages.length-1].date_sent.split("T")[0].split("-")[1]+"-"+value.messages[value.messages.length-1].date_sent.split("T")[0].split("-")[0]+" "+
+                                    (parseInt(value.messages[value.messages.length-1].date_sent.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+value.messages[value.messages.length-1].date_sent.split("T")[1].split("Z")[0].split(":")[1];
                                 let vendorname=value.vendor_username
                                 let customername=value.customer_username
 
@@ -218,11 +217,15 @@ function Messages() {
 
                                         <ListItemText  onClickCapture={()=>setOpen2(!open2)}
                                                       onClick={()=>setindexnow(index)} primary={value.messages[value.messages.length-1].whose_message=='customer'?
-                                            <span className={classes.flow} style={{fontStyle:'italic',fontWeight:'bold'}}>From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}
+                                            <span className={classes.flow} style={{fontStyle:'italic',fontWeight:'bold'}}>From:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{customername.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                To:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{vendorname.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Date:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{date}</span>
                                                </span>: <span className={classes.flow} style={{fontStyle:'italic',fontWeight:'bold'}}>
-                                                From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}</span>}
-                                                      secondary={<span style={{color:'black'}}> {value.messages[value.messages.length-1].content}</span>}/>
-                                        <GeneralCustomizedDialogs id={value.id}/>
+                                                From:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{vendorname.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                To:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{customername.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Date:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{date}</span></span>}
+                                                secondary={<span style={{color:'black'}}> <br></br>{value.messages[value.messages.length-1].content}</span>}/>
+                                            <GeneralCustomizedDialogs id={value.id}/>
                                             <Tooltip style={{marginRight:'45rem', color: '#7A0010' }}  title="Go to product">
 
                                                 <Link to={"/product/"+value.product_id}>
@@ -235,17 +238,24 @@ function Messages() {
                                         </div>
 
 
-                                        { open2&&index==indexnow ?<ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
+                                        { open2&&index==indexnow ?<ExpandLess style={{marginTop:'1rem'}} onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore style={{marginTop:'1rem'}} onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
                                         <Collapse  in={open2&&index==indexnow } timeout="auto" unmountOnExit>
                                             {value.messages.map((value,index) => {
+                                                let datehistory=value.date_sent.split("T")[0].split("-")[2]+"-"+value.date_sent.split("T")[0].split("-")[1]+"-"+value.date_sent.split("T")[0].split("-")[0]+" "+
+                                                    (parseInt(value.date_sent.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+value.date_sent.split("T")[1].split("Z")[0].split(":")[1];
                                          return(
                                             <List >
                                                 <ListItem  >
                                                     <ListItemText primary={value.whose_message=='customer'?
                                                         <span style={{fontStyle:'italic',fontWeight:'bold'}}>
-                                            From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.date_sent}</span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
-                                                From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.date_sent}</span>}
-                                                                  secondary={<span style={{color:'black'}}> {value.content}</span>}/>
+                                                            From:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}> {customername.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            To:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}> {vendorname.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            Date:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}> {datehistory}</span></span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
+                                                            From:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}> {vendorname.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            To:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{customername.toUpperCase()}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            Date:&nbsp;&nbsp;&nbsp;<span  style={{color:'red'}}>{datehistory}</span></span>}
+
+                                                            secondary={<span style={{color:'black'}}> <br></br>{value.content}</span>}/>
                                                 </ListItem>
                                                 <Divider/>
                                             </List> );})}
