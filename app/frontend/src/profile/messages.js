@@ -16,6 +16,10 @@ import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
 import GeneralCustomizedDialogs from "../components/generaldialog";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
+import Tooltip from '@material-ui/core/Tooltip';
+import GridListTile from "@material-ui/core/GridListTile";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,10 +42,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'horizontal',
         alignItems:'center',
 
-
-
-
     },
+
     reply:{
         display: 'flex',
         flexDirection: 'row',
@@ -63,29 +65,11 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         color: theme.palette.text.secondary,
     },
-    txt: {
-        fontSize: 20,
-    },
-    grid2: {
-        marginBottom: "1.5rem",
-        marginLeft: "6rem",
-    },
+
     ftr: {
         marginTop: "2rem",
     },
-    txtfield: {
-        width: "14rem",
-        marginBottom: "2rem",
-    },
-    txtfield2: {
-        width: "36rem",
-        marginBottom: "2rem",
-    },
-    txtfield3: {
-        width: "20rem",
-        marginBottom: "2rem",
-        marginLeft: "2rem",
-    }
+
 }));
 
 function Messages() {
@@ -187,6 +171,7 @@ function Messages() {
 
 
     let [indexnow, setindexnow] = React.useState('');
+    let [hover,sethover]=useState(false);
 
     return (
 
@@ -238,6 +223,15 @@ function Messages() {
                                                 From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}</span>}
                                                       secondary={<span style={{color:'black'}}> {value.messages[value.messages.length-1].content}</span>}/>
                                         <GeneralCustomizedDialogs id={value.id}/>
+                                            <Tooltip style={{marginRight:'45rem', color: '#7A0010' }}  title="Go to product">
+
+                                                <Link to={"/product/"+value.product_id}>
+                                                <IconButton style={{color: '#7A0010' }} aria-label="arrow">
+                                                    <ArrowForwardOutlinedIcon fontSize="large" />
+                                                </IconButton>
+                                                </Link>
+
+                                            </Tooltip>
                                         </div>
 
 

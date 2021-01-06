@@ -118,7 +118,7 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
     return (
         <div>
             <Button size="large"  onClick={handleClickOpen} style={{
-                marginRight:'50rem',
+                marginRight:'3rem',
                 cursor: 'pointer',
                 background: '#0B3954',
                 color: 'white',

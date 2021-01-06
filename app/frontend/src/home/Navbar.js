@@ -113,8 +113,11 @@ export default function Navbar({notificationpage,messagespage}) {
       }).then(res => res.json())
           .then(json => {
 
-          console.log(json)
-          setunreadmessages(json)
+            if(JSON.parse(JSON.stringify(json)).error=="there is no chat the user is involved"){
+              console.log(json)
+            }else {
+              setunreadmessages(json)
+            }
 
 
           })
