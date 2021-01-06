@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
 import {serverUrl} from "../common/ServerUrl";
+import Messages from "../profile/messages";
 
 const styles = (theme) => ({
     root: {
@@ -63,6 +64,8 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
 
     const handleChange = (event) => {
         setValue(event.target.value);
+        setmessageempty(false)
+
     };
 
     const handleClickOpen = () => {
@@ -72,8 +75,11 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
 
     };
     const handleClose = () => {
-        {value!=='' ? setmessageempty(false):setmessageempty(true)}
-        if (!(messageempty)) {
+        if(value.length<1){
+            setmessageempty(true)
+        }
+
+        if (!(value.length<2)) {
         setOpen(false);
 
         const token = localStorage.getItem('token')
@@ -86,7 +92,7 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
 
         createmessage= {
             "chat_id": id,
-            "context":value,
+            "content":value,
         }
 
         if (token) {
@@ -97,7 +103,7 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
             }).then(res => res.json())
                 .then(json => {
                     console.log(json);
-
+                    window.location.reload();
 
                 })
                 .catch(err => console.log(err));
@@ -112,16 +118,17 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
     return (
         <div>
             <Button size="large"  onClick={handleClickOpen} style={{
-                marginRight:'2rem',
+                marginRight:'50rem',
                 cursor: 'pointer',
                 background: '#0B3954',
-                color: 'white'
+                color: 'white',
+                position:'relative'
 
             }}>
                 REPLY
             </Button>
             <Dialog  onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                <DialogTitle id="customized-dialog-title" onClose={justhandleClose}>
                     SEND MESSAGE
                 </DialogTitle>
                 <DialogContent dividers>
@@ -131,6 +138,7 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
                                    label="Please write a message "
                                    multiline
                                    rows={20}
+                                   helperText={messageempty ? 'Please write a message':''}
                                    value={value}
                                    variant="outlined"
                                    onChange={handleChange}
@@ -147,7 +155,10 @@ export const GeneralCustomizedDialogs= ({id}) =>  {
                     </Button>
                 </DialogActions>
             </Dialog>
+
         </div>
+
     );
+
 }
 export default GeneralCustomizedDialogs;

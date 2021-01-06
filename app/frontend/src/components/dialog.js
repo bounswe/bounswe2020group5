@@ -55,9 +55,8 @@ const DialogActions = withStyles((theme) => ({
 export const CustomizedDialogs= ({vendor,productid}) =>  {
     const [open, setOpen] = React.useState(false);
     const [opensnack, setOpensnack] = React.useState(false);
-    const [continuesend, setcontinuesend] = React.useState(false);
     const [value, setValue] = React.useState('');
-    let [chatid,setchatid]=React.useState('');
+
     let [messageempty,setmessageempty]=React.useState(false);
 
     const snackhandleClose = (event, reason) => {
@@ -66,11 +65,9 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
         }
 
         setOpensnack(false);
-        setcontinuesend(true);
     };
     const snackhandleopen = () => {
 
-        setcontinuesend(false);
         setOpensnack(true);
     };
 
@@ -79,7 +76,7 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
     const handleChange = (event) => {
         setValue(event.target.value);
 
-            setmessageempty(false)
+        setmessageempty(false)
 
 
 
@@ -95,9 +92,7 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
 
     };
     const handleClose = () => {
-        console.log(value)
-        console.log(productid)
-        console.log(value.length<2)
+
 
         if(value.length<1){
             setmessageempty(true)
@@ -109,10 +104,12 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
 
            messagetovendor = {
                "vendor_username": vendor,
-               "product_name": productid
+               "product_id": productid
            }
 
            if (token) {
+               let chatid
+
                fetch(serverUrl + 'api/chats/create_chat/', {
                    method: 'POST',
                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -121,35 +118,39 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
                    .then(json => {
                        console.log(json)
 
-                       setchatid(JSON.parse(JSON.stringify(json.chat)).id);
+                       if(JSON.parse(JSON.stringify(json)).error=="The chat with this vendor about this product already exists"){
+                           {snackhandleopen()}
+                       }else{
+                           console.log(JSON.parse(JSON.stringify(json.chat)).id)
+                           chatid=JSON.parse(JSON.stringify(json.chat)).id;
+                           console.log(chatid)
 
-                   }).catch(err => {snackhandleopen()} ).then(() => {
-                      if(continuesend){
+                           let createmessage;
 
-                   let createmessage;
+                           createmessage = {
+                               "chat_id": chatid,
+                               "content": value,
+                           }
 
-
-                   createmessage = {
-                       "chat_id": chatid,
-                       "content": value,
-                   }
-
-                   if (token) {
-                       fetch(serverUrl + 'api/chats/send_message/', {
-                           method: 'POST',
-                           headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-                           body: JSON.stringify(createmessage),
-                       }).then(res => res.json())
-                           .then(json => {
-                               console.log(json);
+                           if (token) {
+                               fetch(serverUrl + 'api/chats/send_message/', {
+                                   method: 'POST',
+                                   headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                                   body: JSON.stringify(createmessage),
+                               }).then(res => res.json())
+                                   .then(json => {
+                                       console.log(json);
 
 
-                           })
-                           .catch(err => console.log(err));
+                                   })
+                                   .catch(err => console.log(err));
 
-                   }
+                           }
+                       }
 
-               }}).catch(err => console.log(err));
+                   }).then(() => {
+
+               }).catch(err => console.log(err));
 
            } else {
                alert('Please login in order to message to vendor')

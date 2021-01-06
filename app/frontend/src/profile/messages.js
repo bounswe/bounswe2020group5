@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+        overflowX:'hidden'
 
     },
     float:{
@@ -29,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
         alignItems:'center',
         justifyContent:'space-between',
         marginLeft:'1rem'
+
+
+    },
+    flow:{
+        display:'flex',
+        flexDirection: 'horizontal',
+        alignItems:'center',
+
+
 
 
     },
@@ -85,6 +95,7 @@ function Messages() {
     let [loadPage, setLoadPage] = React.useState(false);
     let [open2, setOpen2] = React.useState('');
     let[allchats,setallchats]=React.useState();
+    let[showlist,setshowlist]=React.useState(true);
 
 
 
@@ -104,14 +115,19 @@ function Messages() {
         }).then(res => res.json())
             .then(json => {
 
-                setallchats(JSON.parse(JSON.stringify(json)).chats)
-                console.log(json)
+
+
+                if(JSON.parse(JSON.stringify(json)).error=='there is no chat the user is involved'){
+                    setshowlist(false)
+                }else{
+                    setallchats(JSON.parse(JSON.stringify(json)).chats)
+                    setshowlist(true)
+                }
+                console.log(JSON.parse(JSON.stringify(json)).chats)
                 setLoadPage(true)
 
-            }).then(() => {
 
-
-        })
+            })
 
             .catch(err => console.log(err));
     } else {
@@ -119,42 +135,7 @@ function Messages() {
     }
     }, []);
 
-    let[messagehistoryofid,setmessagehistoryofid]=React.useState([])
 
-    const getchathistory = (id) => {
-
-        const token = localStorage.getItem('token')
-        let messagehistory;
-
-
-
-        messagehistory= {
-            "chat_id": id,
-        }
-
-
-        console.log(token)
-
-        if (token) {
-            fetch(serverUrl + 'api/chats/get_chat_history/', {
-                method: 'POST',
-                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-                body: JSON.stringify(messagehistory),
-            }).then(res => res.json())
-                .then(json => {
-                   console.log(json)
-                    console.log('hhhhhh')
-                    setmessagehistoryofid(json)
-
-                }).then(() => {
-                setLoadPage(true)
-            })
-                .catch(err => console.log(err));
-        } else {
-            alert('Please login to see profile page')
-        }
-
-    };
 
 
 
@@ -206,10 +187,6 @@ function Messages() {
 
 
     let [indexnow, setindexnow] = React.useState('');
-    const nthElement = (arr, n = 0) => (n > 0 ? arr.slice(n, n + 1) : arr.slice(n))[0];
-    let [context, setcontext] = React.useState('');
-
-
 
     return (
 
@@ -219,7 +196,7 @@ function Messages() {
 
                 <div>
                     <div className="Home">
-                        <Navbar/>
+                        <Navbar messagespage={true}/>
                     </div>
                     <div>
                         <CategoryTab/>
@@ -233,7 +210,9 @@ function Messages() {
                                 Messsages
                             </Link>
                         </Breadcrumbs>
-                        <List className={classes.root}  >
+                        { showlist ? <List className={classes.root}  >
+                            {console.log(allchats)}
+
 
                             {allchats.map((value,index) => {
                                 console.log('vvvvvvv')
@@ -246,21 +225,20 @@ function Messages() {
 
                                 console.log('lastmessages')
 
-
-
-
-
                                 return (
 
 
                                     <ListItem  className={classes.float} key={index}>
+                                        <div className={classes.flow}>
 
-                                        <ListItemText onClickCapture={()=>setOpen2(!open2)}
+                                        <ListItemText  onClickCapture={()=>setOpen2(!open2)}
                                                       onClick={()=>setindexnow(index)} primary={value.messages[value.messages.length-1].whose_message=='customer'?
-                                            <span style={{fontStyle:'italic',fontWeight:'bold'}}>From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}
-                                            </span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
+                                            <span className={classes.flow} style={{fontStyle:'italic',fontWeight:'bold'}}>From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}
+                                               </span>: <span className={classes.flow} style={{fontStyle:'italic',fontWeight:'bold'}}>
                                                 From:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.messages[value.messages.length-1].date_sent}</span>}
                                                       secondary={<span style={{color:'black'}}> {value.messages[value.messages.length-1].content}</span>}/>
+                                        <GeneralCustomizedDialogs id={value.id}/>
+                                        </div>
 
 
                                         { open2&&index==indexnow ?<ExpandLess onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/> : <ExpandMore onClickCapture={()=>setOpen2(!open2)} onClick={()=>setindexnow(index)}/>}
@@ -268,7 +246,7 @@ function Messages() {
                                             {value.messages.map((value,index) => {
                                          return(
                                             <List >
-                                                <ListItem  className={classes.flow}>
+                                                <ListItem  >
                                                     <ListItemText primary={value.whose_message=='customer'?
                                                         <span style={{fontStyle:'italic',fontWeight:'bold'}}>
                                             From:  {customername}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:  {vendorname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:  {value.date_sent}</span>: <span style={{fontStyle:'italic',fontWeight:'bold'}}>
@@ -283,10 +261,11 @@ function Messages() {
                                     </ListItem>
 
 
+
                             );
                             })}
 
-                        </List>
+                        </List>:null}
 
                     </div>
 

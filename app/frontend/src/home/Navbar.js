@@ -19,6 +19,7 @@ import { useHistory } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
+import {serverUrl} from "../common/ServerUrl";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -93,14 +94,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Navbar() {
+export default function Navbar({notificationpage,messagespage}) {
   const classes = useStyles();
+  let [unreadmessages,setunreadmessages]=React.useState(null)
+
   let history = useHistory();
 
   useEffect(() => {
-    const temp = localStorage.getItem('token')
-    if (temp) {
+    const token = localStorage.getItem('token')
+    if (token) {
       setIsLogged(true)
+
+      fetch(serverUrl + 'api/chats/get_unread_messages_number/', {
+        method: 'GET',
+        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+
+
+      }).then(res => res.json())
+          .then(json => {
+
+          console.log(json)
+          setunreadmessages(json)
+
+
+          })
+
+          .catch(err => console.log(err));
     }
   }, []);
 
@@ -109,7 +128,7 @@ export default function Navbar() {
   };
 
   let [isLogged,setIsLogged] = useState(false);
-  let [state,setState] = useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEljoint, setAnchorEljoint] = React.useState(null);
 
@@ -118,9 +137,6 @@ export default function Navbar() {
 
 
 
-
-
- // const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -209,7 +225,10 @@ export default function Navbar() {
       </StyledMenuItem>
       <Divider/>
       <StyledMenuItem style={{background:"white"}}>
+        <Link style={{textDecoration: 'none'}} to={"/profile/messages"}>
         <ListItemText primaryTypographyProps={{ style: text }} primary="Messages" />
+        </Link>
+
       </StyledMenuItem>
       <Divider/>
       <StyledMenuItem style={{background:"white"}}>
@@ -221,46 +240,6 @@ export default function Navbar() {
   );
 
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon/>
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
   const menujointId = 'login menu';
   const renderjointMenu = (
       <StyledMenu
@@ -323,13 +302,15 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="primary">
+                <Link to={'/profile/messages'}>
+                <IconButton aria-label="show new mails" color="inherit">
+                  <Badge badgeContent={messagespage==true ? null:unreadmessages} color="primary">
                     <MailIcon style={{ color: '#7E7F9A' }}/>
                   </Badge>
                 </IconButton>
-                <IconButton aria-label="show 17 new notifications" color="inherit">
-                  <Badge badgeContent={17} color="primary">
+                </Link>
+                <IconButton aria-label="show new notifications" color="inherit">
+                  <Badge badgeContent={null} color="primary">
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>
@@ -347,7 +328,7 @@ export default function Navbar() {
               <div className={classes.sectionMobile}>
                 <IconButton
                   aria-label="show more"
-                  aria-controls={mobileMenuId}
+                  aria-controls='mobile menu'
                   aria-haspopup="true"
                   onClick={handleMobileMenuOpen}
                   color="inherit"
@@ -367,13 +348,10 @@ export default function Navbar() {
            Log In
           </Button>
 
-
-
           </div>
           }
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
       {renderMenu}
       {renderjointMenu}
     </div>
