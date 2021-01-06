@@ -6,7 +6,7 @@ on:
   push:
     paths:
       - "app/frontend/**"
-  branches:
+    branches:
       - master
   pull_request:
     branches:
