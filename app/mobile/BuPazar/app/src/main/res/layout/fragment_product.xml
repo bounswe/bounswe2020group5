@@ -243,10 +243,10 @@
 
             <LinearLayout
                 android:id="@+id/wishlist"
-                android:layout_below="@+id/addtocart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_below="@+id/addtocart"
+                android:layout_marginTop="14dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -255,28 +255,28 @@
 
                     <TextView
                         android:id="@+id/addToWishList"
-                        android:layout_weight="1"
-                        android:padding="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableLeft="@drawable/fav"
-                        android:gravity="center"
                         android:drawablePadding="9dp"
-                        android:textSize="14dp"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="@string/Wishlist"
                         android:textColor="@color/text"
-                        android:text="@string/Wishlist" />
+                        android:textSize="14dp" />
 
                     <TextView
-                        android:layout_weight="1"
-                        android:padding="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableLeft="@drawable/share"
-                        android:gravity="center"
                         android:drawablePadding="9dp"
-                        android:textSize="14dp"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="@string/Share"
                         android:textColor="@color/text"
-                        android:text="@string/Share" />
+                        android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -296,12 +296,58 @@
                 android:textColor="#fff"
                 android:textSize="17dp" />
 
+            <LinearLayout
+                android:id="@+id/rateCommentLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/comment"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@+id/commentEditTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/comment"
+                    />
+                <EditText
+                    android:id="@+id/rateEditTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:hint="@string/rate"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/addCommentView"
+                style="@style/TextDefault"
+                android:textAlignment="center"
+                android:padding="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/text"
+                android:textColor="#fff"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:letterSpacing="0.09"
+                android:text="@string/comment_and_rate"
+                android:layout_below="@id/rateCommentLinearLayout"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvComments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
-                android:layout_below="@id/comment"/>
+                android:layout_below="@id/addCommentView"/>
 
 
 

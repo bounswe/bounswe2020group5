@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.example.bupazar.page.activity.message.ChatActivity
 import com.example.bupazar.service.RestApiService
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_message_main.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_product.*
 
 
@@ -212,6 +214,18 @@ class ProductFragment : Fragment() {
                 quantity_text.setText(quantityAdded.toString())
             }
         }
+
+        addCommentView.setOnClickListener (){
+            if (commentEditTextView.text.isEmpty() || rateEditTextView.text.isEmpty()){
+                Toast.makeText(this.activity,"Please write a comment and rate", Toast.LENGTH_SHORT).show()
+            }
+            /*
+            else{
+                val apiService = RestApiService()
+            }
+             */
+        }
+
         val commentRequest = CommentRequest(
                 productId = this.productId
         )

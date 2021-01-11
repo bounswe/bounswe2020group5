@@ -82,6 +82,10 @@
     <string name="update_password">UPDATE PASSWORD</string>
     <string name="please_enter_verification_number">Please enter verification number</string>
     <string name="my_wish_list">My Wish List</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="comment_and_rate">Comment and Rate</string>
+    <string name="comment">Comment</string>
+    <string name="rate">Rate</string>
 
 
     <string-array name="sports_images">
