@@ -8,6 +8,7 @@ import Badge from "@material-ui/core/Badge";
 import InputBase from "@material-ui/core/InputBase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import List from "@material-ui/core/List";
+import ReorderIcon from '@material-ui/icons/Reorder';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -90,6 +91,7 @@ function Profile() {
 
   const handleClick = () => {
     setOpen(!open);
+
   };
 
   const [name, setName] = useState({
@@ -287,20 +289,55 @@ function Profile() {
                       component="nav"
                       className={classes.root}
                     >
-                      <ListItem button>
-                        <ListItemIcon>
-                          <LocalMallIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Orders"/>
-                      </ListItem>
+
                       {!isvendor ? (
+                          <div>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <LocalMallIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Orders"/>
+                            </ListItem>
                         <ListItem button component={Link} to="/profile/lists">
                             <ListItemIcon>
                               <ListIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Lists"/>
                           </ListItem>
+                          <ListItem button>
+                            <ListItemIcon>
+                              <HomeIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Addresses"/>
+                          </ListItem>
+                        <ListItem button>
+                        <ListItemIcon>
+                        <PaymentIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Saved Credit Cards"/>
+                        </ListItem>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <StarBorderIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Assessments"/>
+                            </ListItem>
+                          </div>
                       ):(
+                          <div>
+                            <ListItem button>
+                              <ListItemIcon>
+                                <LocalMallIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="Sales"/>
+                            </ListItem>
+                            <ListItem button component={Link}
+                                      to="/vendorproduct">
+                              <ListItemIcon>
+                                <ReorderIcon/>
+                              </ListItemIcon>
+                              <ListItemText primary="My Products"/>
+                            </ListItem>
                         <ListItem button component={Link}
                                   to="/add-product">
                           <ListItemIcon>
@@ -308,25 +345,17 @@ function Profile() {
                           </ListItemIcon>
                           <ListItemText primary="Add Product"/>
                         </ListItem>
-                      )}
-                      <ListItem button>
+                        <ListItem button>
                         <ListItemIcon>
-                          <HomeIcon/>
+                        <HomeIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Addresses"/>
-                      </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <PaymentIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Saved Credit Cards"/>
-                      </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <StarBorderIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Assessments"/>
-                      </ListItem>
+                        </ListItem>
+                            </div>
+
+
+                      )}
+
                       <ListItem button onClick={handleClick}>
                         <ListItemIcon>
                           <SettingsIcon/>

@@ -18,7 +18,8 @@ import ListPage from "./list/ListPage";
 import ListsPage from "./list/ListsPage";
 import Favorites from "./list/Favorites";
 import Cart from "./cart/Cart";
-
+import Vendorproduct from "./vendorproduct/Vendorproduct";
+import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
 
 function App() {
   return (
@@ -37,19 +38,14 @@ function App() {
           />
           <Route exact path="/product/:id" component={product} />
           <Route path="/search" component={search} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/vendorproduct" exact component={Vendorproduct} />
+          <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/profile/changepassword" component={ChangePassword} />
-          <Route path="/profile/lists" exact component={ListsPage} />
-          <Route exact path="/profile/lists/favorites" component={Favorites} />
-          <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
-          <Route path="/payment" exact component={Payment} />
-          <Route path="/category" component={Categories} />
-          <Route path="/subcategory" exact component={Categories} />
-          <Route path="/cart" exact component={Cart} />
-
           <Route component={NoMatch} />
         </Switch>
       </div>
