@@ -19,9 +19,9 @@ import {useHistory} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import SearchBar from "material-ui-search-bar";
+
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {serverUrl} from "../common/ServerUrl";
-
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -93,7 +93,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Navbar() {
+export default function Navbar({notificationpage,messagespage}) {
+
   const [isLogged, setIsLogged] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [vendoranchorEl, setvendorAnchorEl] = React.useState(null);
@@ -102,7 +103,10 @@ export default function Navbar() {
   let [isvendor,setIsVendor] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
   const classes = useStyles();
+  let [unreadmessages,setunreadmessages]=React.useState(null)
+
   let history = useHistory();
 
 
@@ -113,8 +117,28 @@ export default function Navbar() {
 
     console.log(token)
 
+
     if (token) {
       setIsLogged(true)
+
+      fetch(serverUrl + 'api/chats/get_unread_messages_number/', {
+        method: 'GET',
+        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+
+
+      }).then(res => res.json())
+          .then(json => {
+
+            if(JSON.parse(JSON.stringify(json)).error=="there is no chat the user is involved"){
+              console.log(json)
+            }else {
+              setunreadmessages(json)
+            }
+
+
+          })
+
+          .catch(err => console.log(err));
     }
 
     if (token) {
@@ -126,16 +150,21 @@ export default function Navbar() {
             setIsVendor(json.is_vendor);
             localStorage.setItem('isvendor',true)
 
+
+
       })
           .catch(err => console.log(err));
     }
 
+
   }, []);
+
 
 
   const text = {
     color: "black"
   };
+
 
 
 
@@ -211,6 +240,8 @@ export default function Navbar() {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
+
+   
       <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}
@@ -235,7 +266,9 @@ export default function Navbar() {
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to={"/profile/messages"}>
           <ListItemText primaryTypographyProps={{style: text}} primary="Messages"/>
+                </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
@@ -271,7 +304,9 @@ export default function Navbar() {
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
+          <Link style={{textDecoration: 'none'}} to={"/profile/messages"}>
           <ListItemText primaryTypographyProps={{style: text}} primary="Messages"/>
+            </Link>
         </StyledMenuItem>
         <Divider/>
         <StyledMenuItem style={{background: "white"}}>
@@ -283,52 +318,7 @@ export default function Navbar() {
   );
 
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={() => { history.push("/payment") }}>
-        <IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
-          <ShoppingCartIcon style={{ color: '#790110' }}/>
-        </IconButton>
-        <p>Cart</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton color="inherit">
-          <Badge color="secondary">
-            <MailIcon/>
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton color="inherit">
-          <Badge color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+
   const menujointId = 'login menu';
   const renderjointMenu = (
 
@@ -395,16 +385,22 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                {!isvendor ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
+
+                  {!isvendor ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
                 </IconButton>:null}
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge color="primary">
+                <Link to={'/profile/messages'}>
+                <IconButton aria-label="show new mails" color="inherit">
+                  <Badge badgeContent={messagespage==true ? null:unreadmessages} color="primary">
                     <MailIcon style={{ color: '#7E7F9A' }}/>
                   </Badge>
                 </IconButton>
-                <IconButton color="inherit">
-                  <Badge color="primary">
+                </Link>
+                <IconButton aria-label="show new notifications" color="inherit">
+                  <Badge badgeContent={null} color="primary">
+
+               
+
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>
@@ -420,16 +416,19 @@ export default function Navbar() {
                   <AccountCircle style={{ color: '#7E7F9A' }}/>
                 </IconButton>:
                 <IconButton
+
                     edge="end"
                     aria-label="account of current user"
                     aria-controls={vendormenuId}
                     aria-haspopup="true"
                     onClick={handlevendorMenuOpen}
                     color="primary"
+
                 >
                   <AccountCircle style={{ color: '#7E7F9A' }}/>
                 </IconButton>}
               </div>
+
 
 
                     </div>
@@ -452,6 +451,7 @@ export default function Navbar() {
         </AppBar>
 
       {isvendor ? rendervendorMenu:renderMenu}
+
       {renderjointMenu}
 
       </div>

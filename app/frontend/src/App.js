@@ -11,6 +11,7 @@ import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
+import messages from "./profile/messages";
 import search from "./search/search"
 import Payment from "./payment/Payment";
 import Categories from "./categories/Categories";
@@ -45,6 +46,7 @@ function App() {
           <Route path="/profile" exact component={Profile} />
           <Route path="/payment" exact component={Payment} />
           <Route path="/profile/changepassword" component={ChangePassword} />
+          <Route path="/profile/messages" component={messages} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
           <Route path="/profile/lists" exact component={ListsPage} />

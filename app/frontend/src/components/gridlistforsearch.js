@@ -4,9 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Rating from '@material-ui/lab/Rating';
 import Divider from "@material-ui/core/Divider";
 import {Link} from "react-router-dom";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,9 +77,11 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                                 subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: ${tile.price}
                                 <br></br><br></br>BY: {tile.vendor}
                                 <br></br><br></br>
+
                                 <Rating name="size-small" value={tile.rating} precision={0.1}  readOnly size="small" /> </span>}
                                 />
                                 )}
+
                     </GridListTile>
                 )))}
 
