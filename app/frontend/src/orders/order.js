@@ -6,7 +6,8 @@ import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
-import Vendorproductlist from "./Vendorproductlist";
+import Orderlist from "./orderlist";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,13 +28,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Vendorproduct() {
+export default function Order() {
     const [plist, setPlist] = useState([]);
     useEffect(() => {
-        console.log("effect");
-        console.log(plist);
         console.log(localStorage.getItem("token"))
-        fetch(serverUrl + "api/products/vendor-products/", {
+        fetch(serverUrl + "api/orders/customer-orders/", {
             headers: {
                 'Authorization': `Token ${localStorage.getItem("token")}`,
             },
@@ -48,12 +47,12 @@ export default function Vendorproduct() {
         };
     }, []);
 
-    const renderProducts = () => {
+    const renderOrders = () => {
         console.log(plist);
         return plist.map((e, i) => {
             return (
-                <Vendorproductlist
-                    product={e}
+                <Orderlist
+                    orders={e}
                 />
             );
         });
@@ -63,27 +62,27 @@ export default function Vendorproduct() {
     return (
         <div>
 
+            <div>
+                <div className="Home">
+                    <Navbar/>
+                </div>
                 <div>
-                    <div className="Home">
-                        <Navbar/>
-                    </div>
-                    <div>
-                        <CategoryTab/>
-                    </div>
-                    <div style={{marginTop: "1rem"}}>
-                        <Breadcrumbs style={{color: "#0B3954"}} separator="›">
-                            <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/">
-                                Home Page
-                            </Link>
-                            <Link style={{color: "#0B3954"}} to="/profile">
-                                My Products
-                            </Link>
-                        </Breadcrumbs>
-                    </div>
-        <React.Fragment>
-            {plist && plist.length > 0 && <Box>{renderProducts()}</Box>}
-        </React.Fragment>
-                    </div>
+                    <CategoryTab/>
+                </div>
+                <div style={{marginTop: "1rem"}}>
+                    <Breadcrumbs style={{color: "#0B3954"}} separator="›">
+                        <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/">
+                            Home Page
+                        </Link>
+                        <Link style={{color: "#0B3954"}} to="/profile">
+                            Orders
+                        </Link>
+                    </Breadcrumbs>
+                </div>
+                <React.Fragment>
+                    {plist && plist.length > 0 && <Box>{renderOrders()}</Box>}
+                </React.Fragment>
+            </div>
         </div>
     );
 }

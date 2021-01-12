@@ -12,6 +12,7 @@ import {
 import React, { useState } from "react";
 import { Rating } from "@material-ui/lab";
 import {Link} from "react-router-dom";
+import GridListTile from "@material-ui/core/GridListTile";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,15 +42,18 @@ export default function Vendorproductlist(props) {
     const classes = useStyles();
 
 
+
     return (
         <Paper className={classes.paper}>
             <Grid container spacing={4}>
                 <Grid justify="center" item container xs={3}>
-                    <img
-                        style={{ maxHeight: 200 }}
-                        src={props.product.image_url}
-                        alt="product image"
-                    />
+                    <Link to={{pathname: `product/${props.product.id}`}}>
+                        <img
+                            style={{ maxHeight: 200, maxWidth:330 }}
+                            src={props.product[0].image_url}
+                            alt="product image"
+                        />
+                    </Link>
                 </Grid>
                 <Grid
                     item
@@ -62,30 +66,34 @@ export default function Vendorproductlist(props) {
                     </Typography>
                     <Divider variant="middle" />
                     <Typography gutterBottom style={{ margin: 16 }} variant="body1">
-                        {props.product.description}
+                        {props.product.description.length > 250 ? props.product.description.substring(0,250)+' .....':props.product.description }
                     </Typography>
                     <Box
                         style={{
                             position: "absolute",
-                            bottom: 0,
+                            top:180,
+                            bottom: 10,
+                            left:30,
                             right: 550,
                             display: "flex",
                         }}
                     >
+
                         <Typography
                             gutterBottom
                             variant="h5"
                             style={{marginRight:5,marginBottom: 40}}
                         >
-                             $
+                            $
                         </Typography>
                         <Typography
                             gutterBottom
                             variant="h5"
                             style={{
                                 marginBottom: 40,
+                                marginRight:5,
+                                marginLeft:5,
                                 textDecorationLine: "line-through",
-                                marginLeft: 0,
                                 color: "#A93226",
                             }}
                         >
@@ -133,27 +141,27 @@ export default function Vendorproductlist(props) {
 
                     </Box>
                     <Box style={{marginRight:'0.7rem'}}
-                        className={classes.box}>
+                         className={classes.box}>
                         {<span>Stock: </span>}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button
-                                size="small"
+                        <Button
+                            size="small"
 
-                                variant="outlined"
-                            >
-                                 {props.product.stock}
-                            </Button>
+                            variant="outlined"
+                        >
+                            {props.product.stock}
+                        </Button>
 
                     </Box>
 
                     <Box className={classes.box}>
                         <Link style={{ textDecoration: 'none' }}  to={{pathname: 'vendorproduct/vendoreditproduct',state: { product: props.product}}}>
-                        <Button style={{marginTop:'1rem',marginLeft:'1rem'}}
-                            size="medium"
-                            variant="contained"
-                        >
-                            {<span>EDIT PRODUCT</span>}
+                            <Button style={{marginTop:'1rem',marginLeft:'1rem'}}
+                                    size="medium"
+                                    variant="contained"
+                            >
+                                {<span>EDIT PRODUCT</span>}
 
-                        </Button>
+                            </Button>
                         </Link>
 
                     </Box>
