@@ -395,7 +395,7 @@ export default function Navbar() {
             <div className={classes.logged}>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                {!localStorage.getItem('isvendor') ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
+                {!isvendor ?<IconButton aria-label="cart" onClick={() => { history.push("/payment") }}>
                   <ShoppingCartIcon style={{ color: '#7A0010' }}/>
                 </IconButton>:null}
                 <IconButton aria-label="show 4 new mails" color="inherit">
@@ -451,7 +451,7 @@ export default function Navbar() {
           </Toolbar>
         </AppBar>
 
-      {localStorage.getItem('isvendor')? rendervendorMenu:renderMenu}
+      {isvendor ? rendervendorMenu:renderMenu}
       {renderjointMenu}
 
       </div>
