@@ -1,11 +1,16 @@
-package com.example.bupazar.page.fragment
+package com.example.bupazar.page.fragment.categories
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.bupazar.R
+import com.example.bupazar.page.activity.home.HomepageActivity
+import kotlinx.android.synthetic.main.fragment_fashion_category.*
+import kotlinx.android.synthetic.main.fragment_hobbie_category.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -14,10 +19,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CategoriesFragment.newInstance] factory method to
+ * Use the [CategoryHobbie.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CategoriesFragment : Fragment() {
+class CategoryHobbie : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +40,23 @@ class CategoriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        return inflater.inflate(R.layout.fragment_hobbie_category, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        bookMagazine.setOnClickListener() {
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
+        }
+
+        musicalInstrument.setOnClickListener() {
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
+        }
+
+        art.setOnClickListener() {
+            Toast.makeText(this.activity,"This feature will be implemented soon.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
@@ -45,12 +66,12 @@ class CategoriesFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoriesFragment.
+         * @return A new instance of fragment CategoryHobbie.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CategoriesFragment().apply {
+            CategoryHobbie().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

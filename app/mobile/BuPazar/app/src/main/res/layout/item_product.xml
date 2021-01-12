@@ -7,7 +7,7 @@
     android:background="@drawable/item_border">
 
     <ImageView
-        android:id="@+id/ivProduct"
+        android:id="@+id/product_image"
         android:layout_width="196dp"
         android:layout_height="180dp"
         android:layout_marginTop="8dp"
@@ -23,8 +23,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_empty_fav_icon"
-        android:layout_alignTop="@id/ivProduct"
-        android:layout_alignEnd="@id/ivProduct"
+        android:layout_alignTop="@id/product_image"
+        android:layout_alignEnd="@id/product_image"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/round_border" />
@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/product_name"
-        android:layout_below="@id/ivProduct"
+        android:layout_below="@id/product_image"
         android:text="Product Name"
-        android:layout_alignStart="@id/ivProduct"
+        android:layout_alignStart="@id/product_image"
         android:textSize="16sp"/>
 
     <TextView

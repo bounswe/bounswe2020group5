@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_shadow_end_color"
+    tools:context=".page.fragment.register.AuthFragment">
+
+    <EditText
+        android:id="@+id/verificationTextView"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="280dp"
+        android:textSize="16sp"
+        android:hint="@string/please_enter_verification_number"
+        android:inputType="textPassword"
+        />
+    <Button
+        android:id="@+id/enterButton"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondary_blue"
+        style="@style/ButtonPrimary"
+        android:text="Enter"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/verificationTextView"
+        android:layout_marginTop="16dp"
+        />
+
+
+</RelativeLayout>

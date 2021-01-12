@@ -11,8 +11,17 @@ import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CssBaseline } from '@material-ui/core';
-import search from "./search/search";
 import messages from "./profile/messages";
+import search from "./search/search"
+import Payment from "./payment/Payment";
+import Categories from "./categories/Categories";
+import ListPage from "./list/ListPage";
+import ListsPage from "./list/ListsPage";
+import Favorites from "./list/Favorites";
+import Cart from "./cart/Cart";
+import Vendorproduct from "./vendorproduct/Vendorproduct";
+import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
+
 function App() {
   return (
     <React.Fragment>
@@ -30,12 +39,21 @@ function App() {
           />
           <Route exact path="/product/:id" component={product} />
           <Route path="/search" component={search} />
+          <Route path="/cart" exact component={Cart} />
+          <Route path="/vendorproduct" exact component={Vendorproduct} />
+          <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
+          <Route path="/payment" exact component={Payment} />
           <Route path="/profile/changepassword" component={ChangePassword} />
           <Route path="/profile/messages" component={messages} />
           <Route path="/home" render={() => <Redirect to="/" />} />
           <Route path="/add-product" exact component={AddProduct} />
+          <Route path="/profile/lists" exact component={ListsPage} />
+          <Route exact path="/profile/lists/favorites" component={Favorites} />
+          <Route exact path="/profile/lists/:id" component={ListPage} />
+          <Route path="/category" component={Categories} />
+          <Route path="/subcategory" exact component={Categories} />
           <Route component={NoMatch} />
         </Switch>
       </div>
