@@ -21,6 +21,7 @@ import Favorites from "./list/Favorites";
 import Cart from "./cart/Cart";
 import Vendorproduct from "./vendorproduct/Vendorproduct";
 import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
+import Address from "./payment/Address";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/category" component={Categories} />
           <Route path="/subcategory" exact component={Categories} />
+          <Route path="/address" exact component={Address} />
           <Route component={NoMatch} />
         </Switch>
       </div>
