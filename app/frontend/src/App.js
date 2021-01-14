@@ -55,7 +55,6 @@ function App() {
           <Route exact path="/profile/lists/:id" component={ListPage} />
           <Route path="/category" component={Categories} />
           <Route path="/subcategory" exact component={Categories} />
-          <Route path="/address" exact component={Address} />
           <Route component={NoMatch} />
         </Switch>
       </div>
