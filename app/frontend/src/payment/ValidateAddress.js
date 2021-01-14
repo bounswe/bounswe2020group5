@@ -9,7 +9,6 @@ export default function validateEditProfile(state) {
   }
 
   if (state.address_1 === '') {
-    console.log("nasıl")
     validation.address_1 = { error: true, message: 'Required' }
   }
   if (state.address_2 === '') {
@@ -21,6 +20,10 @@ export default function validateEditProfile(state) {
   if (state.address_4 === '') {
     validation.address_4 = { error: true, message: 'Required' }
   }
+  if ((/[A-Z]/.test(state.address_4)) || /[a-z]/.test(state.address_4)) {
+    validation.address_4 = { error: true, message: 'Only number' }
+  }
+
   if (state.address_5 === '') {
     validation.address_5 = { error: true, message: 'Required' }
   }
