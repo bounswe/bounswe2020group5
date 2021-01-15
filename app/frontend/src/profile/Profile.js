@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,Component} from 'react';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import {Link} from "react-router-dom";
@@ -29,6 +29,9 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
+import MapContainer from "../components/googlemap";
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "2rem",
   },
   paper: {
+    height: "50rem",
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary,
+  },
+  paper2: {
     height: "30rem",
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
@@ -76,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Profile() {
 
+
   const classes = useStyles();
   let [open, setOpen] = React.useState(false);
   let [loadPage, setLoadPage] = React.useState(false);
@@ -86,6 +95,8 @@ function Profile() {
   let [addressChanged, setAddressChanged] = React.useState(false);
   let [usernameChanged, setUsernameChanged] = React.useState(false);
   let [isvendor,setIsVendor] = React.useState(false);
+  let [latt, setlat] = React.useState();
+  let [lngg, setlng] = React.useState();
 
   let history = useHistory();
 
@@ -185,6 +196,7 @@ function Profile() {
     }
   }
 
+
   function onChange(event) {
 
     if (event.target.id === "first_name") {
@@ -208,11 +220,33 @@ function Profile() {
     setName(mutableState)
   }
 
+  function componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+          console.log(position);
+          console.log(position.coords.longitude);
+          console.log(parseFloat(position.coords.longitude));
+          setlat(parseFloat(position.coords.latitude));
+          setlng(parseFloat(position.coords.longitude));
+
+
+
+        },
+        function(error) {
+          console.error("Error Code = " + error.code + " - " + error.message);
+        }
+    );
+  }
+
+
+
 
   useEffect(() => {
     const token = localStorage.getItem('token')
 
+
     console.log(token)
+    componentDidMount()
 
     if (token) {
       fetch(serverUrl + 'api/auth/user_info/', {
@@ -240,14 +274,18 @@ function Profile() {
     }
 
   }, []);
+
   return (
 
       <div>
         {loadPage ? (
+
+
             <div>
               <div className="Home">
                 <Navbar/>
               </div>
+
               <div>
                 <CategoryTab/>
               </div>
@@ -262,10 +300,11 @@ function Profile() {
                 </Breadcrumbs>
               </div>
 
+
           <div className={classes.gridroot}>
             <Grid container>
               <Grid item xs={3}>
-                <Paper className={classes.paper}>
+                <Paper className={classes.paper2}>
                   <div style={{marginLeft: "1rem"}}>
                     <IconButton>
                       <Badge>
@@ -466,8 +505,9 @@ function Profile() {
                               multiline={true}
                               onChange={onChange}
                           />
+                          <MapContainer  lat={latt} lng={lngg}/>
                         </div>
-                        <div>
+                        <div  style={{marginTop:'2rem'}} >
                           {edit ? (
                                   <Button
                                       style={{
