@@ -29,6 +29,8 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "2rem",
   },
   paper: {
-    height: "30rem",
+    height: "42rem",
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
   },
@@ -60,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2rem",
   },
   txtfield: {
-    width: "14rem",
+    width: "16rem",
     marginBottom: "2rem",
   },
   txtfield2: {
@@ -98,15 +100,24 @@ function Profile() {
     first_name: '',
     last_name: '',
     email:'',
-    address:'',
     username:'',
+    address_1:'',
+    address_2:'',
+    address_3:'',
+    address_4:'',
+    address_5:'',
   });
   const [val, setVal] = useState({
     first_name: { error: false, message: '' },
     last_name: { error: false, message: '' },
     email: { error: false, message: '' },
-    address: { error: false, message: '' },
+    address_1: { error: false, message: '' },
+    address_2: { error: false, message: '' },
+    address_3: { error: false, message: '' },
+    address_4: { error: false, message: '' },
+    address_5: { error: false, message: '' },
     username: { error: false, message: '' },
+
   });
 
 
@@ -117,7 +128,6 @@ function Profile() {
     let newVal = (validate(name, val));
     setVal(newVal)
     let valCheck = true;
-
 
     for (const key in newVal) {
       if (newVal.hasOwnProperty(key)) {
@@ -133,7 +143,7 @@ function Profile() {
         data = {
           first_name : name.first_name,
           last_name : name.last_name,
-          address : name.address,
+          address : name.address_1+"/"+name.address_2+"/"+name.address_3+"/"+name.address_4+"/"+name.address_5,
         }
       }
       else if(usernameChanged && !emailChanged){
@@ -141,7 +151,7 @@ function Profile() {
           username : name.username,
           first_name : name.first_name,
           last_name : name.last_name,
-          address : name.address,
+          address : name.address_1+"/"+name.address_2+"/"+name.address_3+"/"+name.address_4+"/"+name.address_5,
         }
       }
       else if(!usernameChanged && emailChanged){
@@ -149,7 +159,7 @@ function Profile() {
           email : name.email,
           first_name : name.first_name,
           last_name : name.last_name,
-          address : name.address,
+          address : name.address_1+"/"+name.address_2+"/"+name.address_3+"/"+name.address_4+"/"+name.address_5,
         }
       }
       else{
@@ -158,7 +168,7 @@ function Profile() {
           username : name.username,
           first_name : name.first_name,
           last_name : name.last_name,
-          address : name.address,
+          address : name.address_1+"/"+name.address_2+"/"+name.address_3+"/"+name.address_4+"/"+name.address_5,
         }
       }
 
@@ -224,13 +234,17 @@ function Profile() {
               first_name: json.first_name,
               last_name: json.last_name,
               email: json.email,
-              address: json.address,
-              username: json.username,
+              address_1: json.address.split("/")[0],
+              address_2: json.address.split("/")[1],
+              address_3: json.address.split("/")[2],
+              address_4: json.address.split("/")[3],
+              address_5: json.address.split("/")[4],
+
+            username: json.username,
             }
           )
           setIsVendor(json.is_vendor);
         }).then(() => {
-
         setLoadPage(true)
       })
           .catch(err => console.log(err));
@@ -451,7 +465,7 @@ function Profile() {
                               onChange={onChange}
                           />
                         </div>
-                        <div>
+                        {/*<div>
                           <TextField
                               className={classes.txtfield2}
                               error={val.address.error}
@@ -466,14 +480,107 @@ function Profile() {
                               multiline={true}
                               onChange={onChange}
                           />
-                        </div>
-                        <div>
+                        </div>*/}
+                        <Grid container spacing={3}>
+                        <Grid item xs={10}>
+                          <TextField
+                            required
+                            error={val.address_1.error}
+                            helperText={val.address_1.message}
+                            id="address_1"
+                            name="address1"
+                            label="Address line 1"
+                            fullWidth
+                            variant="outlined"
+                            autoComplete="shipping address-line1"
+                            disabled={!edit}
+                            defaultValue={JSON.parse(JSON.stringify(name.address_1)) !== '' ?
+                              (JSON.parse(JSON.stringify(name.address_1))) : (' ')
+                            }
+                            onChange={onChange}
+
+                          />
+                        </Grid>
+                        <Grid item xs={10} sm={5}>
+                          <TextField
+                            required
+                            error={val.address_2.error}
+                            helperText={val.address_2.message}
+                            id="address_2"
+                            name="city"
+                            label="City"
+                            fullWidth
+                            variant="outlined"
+                            autoComplete="shipping address-level2"
+                            disabled={!edit}
+                            onChange={onChange}
+                            defaultValue={JSON.parse(JSON.stringify(name.address_2)) !== '' ?
+                              (JSON.parse(JSON.stringify(name.address_2))) : (' ')
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={10} sm={5}>
+                          <TextField
+                            required
+                            id="address_3"
+                            error={val.address_3.error}
+                            helperText={val.address_3.message}
+                            disabled={!edit}
+                            variant="outlined"
+                            name="state"
+                            label="State/Province/Region"
+                            fullWidth
+                            onChange={onChange}
+                            defaultValue={JSON.parse(JSON.stringify(name.address_3)) !== '' ?
+                              (JSON.parse(JSON.stringify(name.address_3))) : (' ')
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={10} sm={5}>
+                          <TextField
+                            required
+                            error={val.address_4.error}
+                            helperText={val.address_4.message}
+                            id="address_4"
+                            name="zip"
+                            label="Zip / Postal code"
+                            fullWidth
+                            variant="outlined"
+                            autoComplete="shipping postal-code"
+                            disabled={!edit}
+                            onChange={onChange}
+                            defaultValue={JSON.parse(JSON.stringify(name.address_4)) !== '' ?
+                              (JSON.parse(JSON.stringify(name.address_4))) : (' ')
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={10} sm={5}>
+                          <TextField
+                            required
+                            error={val.address_5.error}
+                            helperText={val.address_5.message}
+                            id="address_5"
+                            name="country"
+                            label="Country"
+                            fullWidth
+                            variant="outlined"
+                            autoComplete="shipping country"
+                            disabled={!edit}
+                            onChange={onChange}
+                            defaultValue={JSON.parse(JSON.stringify(name.address_5)) !== '' ?
+                              (JSON.parse(JSON.stringify(name.address_5))) : (' ')
+                            }
+                          />
+                        </Grid>
+                        </Grid>
+                        <div style={{marginTop:"1rem"}}>
                           {edit ? (
                                   <Button
                                       style={{
                                         width: "20rem",
                                         marginLeft: "8rem",
                                         marginRight: "8rem",
+                                        marginTop: "1rem",
                                         backgroundColor: "#0B3954",
                                       }}
                                       variant="contained" color="primary"
