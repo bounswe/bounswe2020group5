@@ -21,7 +21,7 @@ import Favorites from "./list/Favorites";
 import Cart from "./cart/Cart";
 import Vendorproduct from "./vendorproduct/Vendorproduct";
 import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
-import Address from "./payment/Address";
+
 
 function App() {
   return (
