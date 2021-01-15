@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
-  
+
   //states
   const classes = useStyles();
 
@@ -52,23 +52,34 @@ function Login() {
     uid: { error: false, message: '' },
   });
 
-  const [logged, setLogged] = useState(false); 
+  const [logged, setLogged] = useState(false);
 
-  const [alertMessage, setAlertMessage] = useState(''); 
+  const [alertMessage, setAlertMessage] = useState('');
 
-  const responseGoogle = (response) => {
+  const responseGoogleSuccess = (response) => {
     const url = serverUrl + 'api/auth/google_login/';
     const data = {
       auth_token: response.tokenId,
     }
 
     postData(url, data)
-    .then(handleResponse)
-    .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+      .then(handleResponse)
+      .catch((rej) => { setAlertMessage('Some error has occured'); console.log(rej) })
+  }
+
+  const responseGoogleFail = (response) => {
+    setLogged(false);
+    console.log('Google response is not successfull');
   }
 
   const responseFacebook = (response) => {
-    console.log(response)
+    console.log("responseFacebook", response)
+    if (response.status == "unknown") {
+      setLogged(false);
+      console.log('Facebook response is not successfull');
+      return;
+    }
+    console.log("Facebook response is successfull")
 
     const url = serverUrl + 'api/auth/facebook_login/';
     const data = {
@@ -76,10 +87,16 @@ function Login() {
     }
 
     postData(url, data)
-    .then(handleResponse)
-    .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+      .then(handleResponse)
+      .catch((rej) => { setAlertMessage('Some error has occured'); console.log(rej) })
   }
-  
+
+
+
+
+
+
+
   //handlers
   function onChange(event) {
     var mutableState = state
@@ -96,7 +113,7 @@ function Login() {
     for (const key in newVal) {
       if (newVal.hasOwnProperty(key)) {
         const element = newVal[key];
-        if (element.error){
+        if (element.error) {
           valCheck = false;
         }
       }
@@ -108,10 +125,10 @@ function Login() {
         email: state.uid,
         password: state.password,
       }
-      
+
       postData(url, data)
         .then(handleResponse)
-        .catch((rej) => {setAlertMessage('Some error has occured'); console.log(rej)})
+        .catch((rej) => { setAlertMessage('Some error has occured'); console.log(rej) })
     }
   }
 
@@ -145,7 +162,7 @@ function Login() {
         <Typography className="h5-style" variant="h5" gutterBottom>
           Welcome to bupazar
         </Typography>
-        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none'}}>
+        <div className={classes.alertRoot} style={{ display: alertMessage ? 'block' : 'none' }}>
           <Alert severity="error">{alertMessage}</Alert>
         </div>
         <form className={classes.loginFormRoot} noValidate autoComplete="off">
@@ -156,7 +173,7 @@ function Login() {
               variant="outlined"
               error={val.uid.error}
               helperText={val.uid.message}
-              onChange={onChange}            />
+              onChange={onChange} />
           </div>
           <div className="password">
             <TextField
@@ -167,7 +184,7 @@ function Login() {
               variant="outlined"
               error={val.password.error}
               helperText={val.password.message}
-              onChange={onChange}            />
+              onChange={onChange} />
           </div>
         </form>
         <div className="button-div">
@@ -211,47 +228,48 @@ function Login() {
             </Typography>
           </div>
           <div className="button-div2">
-          <GoogleLogin
-            clientId={state.keys['g_client_id']}
-            render={renderProps => (
-              <div className={classes.loginButtonRoot}>
-              <Button
-                onClick={renderProps.onClick} 
-                disabled={renderProps.disabled}
-                variant="outlined"
-                color="primary"
-                style={{ textTransform: "None" }}
-                startIcon={<img src="/img/google-icon.svg" alt="google icon" />}
-              >
-                Continue with Google
+            <GoogleLogin
+              clientId={state.keys['g_client_id']}
+              render={renderProps => (
+                <div className={classes.loginButtonRoot}>
+                  <Button
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    variant="outlined"
+                    color="primary"
+                    style={{ textTransform: "None" }}
+                    startIcon={<img src="/img/google-icon.svg" alt="google icon" />}
+                  >
+                    Continue with Google
               </Button>
-            </div>
-            )}
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-          />
+                </div>
+              )}
+              buttonText="Login"
+              onSuccess={responseGoogleSuccess}
+              onFailure={responseGoogleFail}
+              cookiePolicy={'single_host_origin'}
+            />
           </div>
           <div className="button-div2">
-          <FacebookLogin
-          appId={state.keys['f_app_id']}
-          render={renderProps => (
-            <div className={classes.loginButtonRoot}>
-              <Button
-                onClick={renderProps.onClick} 
-                variant="outlined"
-                color="primary"
-                style={{ textTransform: "None" }}
-                startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
-              >
-                Continue with Facebook
+            <FacebookLogin
+              appId={state.keys['f_app_id']}
+              render={renderProps => (
+                <div className={classes.loginButtonRoot}>
+                  <Button
+                    onClick={renderProps.onClick}
+                    variant="outlined"
+                    color="primary"
+                    style={{ textTransform: "None" }}
+                    startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
+                  >
+                    Continue with Facebook
             </Button>
-            </div>
-          )}
-          callback={responseFacebook}
-        />
-         </div>
+                </div>
+              )}
+              callback={responseFacebook}
+
+            />
+          </div>
         </div>
       </div>
     </div>
