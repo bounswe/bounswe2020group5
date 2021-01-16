@@ -72,6 +72,7 @@ const Product = (props) => {
     let [countclickamount, setcount] = useState(1);
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
+    const vendor = localStorage.getItem('is_vendor')
     const [mylists, setMylists] = React.useState([]);
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
@@ -89,7 +90,7 @@ const Product = (props) => {
 
     useEffect(() => {
 
-        if (token) {
+        if (token && !vendor) {
             Promise.all([
                 fetch(serverUrl + 'api/orders/customer-purchased/', {
                     method: 'POST',
@@ -334,7 +335,7 @@ const Product = (props) => {
                                 <Grid container justify="center">
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
-                                {token ? (
+                                {token && !vendor ? (
 
                                     <Grid container alignItems={"center"} justify="center">
 
@@ -489,7 +490,8 @@ const Product = (props) => {
                                         <Divider/>
 
                                     </Grid>
-                                    <Grid style={{marginBottom: "1rem", marginTop: "1rem", marginLeft: "20rem"}}>
+                                    {token && !vendor ? (
+                                        <Grid style={{marginBottom: "1rem", marginTop: "1rem", marginLeft: "20rem"}}>
                                         <div>
                                             <ButtonGroup style={{marginLeft: "9rem"}} variant="text"
                                                          aria-label="text primary button group">
@@ -526,10 +528,8 @@ const Product = (props) => {
                                                     {message}
                                                 </Alert>
                                             </Snackbar>
-
-
                                         </div>
-                                    </Grid>
+                                    </Grid>):null}
                                 </Grid>
                             </Grid>
                         </Grid>
