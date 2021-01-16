@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Vendorproductlist(props) {
     const classes = useStyles();
+    console.log(props.product)
 
 
 
@@ -50,7 +51,7 @@ export default function Vendorproductlist(props) {
                     <Link to={{pathname: `product/${props.product.id}`}}>
                         <img
                             style={{ maxHeight: 200, maxWidth:330 }}
-                            src={props.product[0].image_url}
+                            src={props.product.image_url}
                             alt="product image"
                         />
                     </Link>

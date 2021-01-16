@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef} from 'react';
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import {Link} from "react-router-dom";
@@ -29,11 +29,10 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import MapContainer from "../components/googlemap";
 import Geocoder from "react-native-geocoding";
 import Tooltip from "@material-ui/core/Tooltip";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -279,12 +278,12 @@ function Profile() {
     mutableState[event.target.id] = event.target.value
     setName(mutableState)
   }
+
   function componentDidMount() {
     navigator.geolocation.getCurrentPosition(
         function(position) {
           console.log(position);
           console.log(position.coords.longitude);
-          console.log(parseFloat(position.coords.longitude));
           setlat(position.coords.latitude);
           setlng(position.coords.longitude);
           Geocoder.from(position.coords.latitude, position.coords.longitude)
@@ -293,18 +292,16 @@ function Profile() {
                 var addressComponent = json.results[0].formatted_address;
                 setaddress(addressComponent)
 
-                console.log(addressComponent.toString().split(',')[addressComponent.toString().split(',').length-2].split('/')[1].split(',')[0])
-                console.log(addressComponent.toString().split(' ')[addressComponent.toString().split(' ').length-1])
                 setgooadd1(addressComponent.toString().split(',')[0]+','+
-                    addressComponent.toString().split(',')[1])
-                setgooadd2(addressComponent.toString().split(',')[2].split('/')[1].split(',')[0])
-                setgooadd3(addressComponent.toString().split(',')[2].split('/')[0].split(' ')
-                    [addressComponent.toString().split(',')[2].split('/')[0].split(' ').length-1])
-                setgooadd4(addressComponent.toString().split(',')[2].split('/')[0].split(' ')
-                    [addressComponent.toString().split(',')[2].split('/')[0].split(' ').length-2])
-                setgooadd5(addressComponent.toString().split(' ')[addressComponent.toString().split(' ').length-1])
-                console.log('aaaaaaaaaaaaaaaa');
-                console.log(addressComponent);
+                   addressComponent.toString().split(',')[1])
+                setgooadd2(addressComponent.toString().split(',')
+                   [addressComponent.toString().split(',').length-2].split('/')[1].split(',')[0])
+                setgooadd3(addressComponent.toString().split(',')[addressComponent.toString().split(',').length-2].split('/')[0].split(' ')
+                   [addressComponent.toString().split(',')[addressComponent.toString().split(',').length-2].split('/')[0].split(' ').length-1])
+                setgooadd4(addressComponent.toString().split(',')[addressComponent.toString().split(',').length-2].split('/')[0].split(' ')
+                   [addressComponent.toString().split(',')[addressComponent.toString().split(',').length-2].split('/')[0].split(' ').length-2])
+                setgooadd5(addressComponent.toString().split(',')[addressComponent.toString().split(',').length-1].split(' ')[1])
+
 
               })
               .catch(error => console.warn(error));
@@ -315,15 +312,15 @@ function Profile() {
         }
     );
   }
-
-
-
-
+  const isMounted = useRef(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token')
     componentDidMount()
     console.log(token)
+    isMounted.current = true;
+
+
 
     if (token) {
       fetch(serverUrl + 'api/auth/user_info/', {
@@ -331,28 +328,44 @@ function Profile() {
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
       }).then(res => res.json())
           .then(json => {
-            setName({
-                  first_name: json.first_name,
-                  last_name: json.last_name,
-                  email: json.email,
-                  address_1: json.address.split("/")[0],
-                  address_2: json.address.split("/")[1],
-                  address_3: json.address.split("/")[2],
-                  address_4: json.address.split("/")[3],
-                  address_5: json.address.split("/")[4],
+            {json.address.split('/').length>2 ?
+                setName({
+                  first_name: JSON.parse(JSON.stringify(json.first_name)),
+                  last_name: JSON.parse(JSON.stringify(json.last_name)),
+                  email: JSON.parse(JSON.stringify(json.email)),
+                  address_1: JSON.parse(JSON.stringify(json.address.split("/")[0])),
+                  address_2: JSON.parse(JSON.stringify(json.address.split("/")[1])),
+                  address_3: JSON.parse(JSON.stringify(json.address.split("/")[2])),
+                  address_4: JSON.parse(JSON.stringify(json.address.split("/")[3])),
+                  address_5: JSON.parse(JSON.stringify(json.address.split("/")[4])),
+                  username: JSON.parse(JSON.stringify(json.username)),
+                })
+                :
+                setName({
+                  first_name: JSON.parse(JSON.stringify(json.first_name)),
+                  last_name: JSON.parse(JSON.stringify(json.last_name)),
+                  email: JSON.parse(JSON.stringify(json.email)),
+                  address_1: ' ',
+                  address_2: ' ',
+                  address_3: ' ',
+                  address_4: ' ',
+                  address_5: ' ',
+                  username: JSON.parse(JSON.stringify(json.username)),
+                })
+            }
 
-                  username: json.username,
-                }
-            )
             setIsVendor(json.is_vendor);
           }).then(() => {
         setLoadPage(true)
+      }).then(json => {
       })
           .catch(err => console.log(err));
     } else {
       alert('Please login to see profile page')
       history.push('/login')
     }
+    return () => isMounted.current = false;
+
 
   }, []);
   return (
@@ -394,7 +407,7 @@ function Profile() {
                               marginTop: "1.5rem",
                               marginBottom: "1rem"
                             }}
-                            defaultValue={JSON.parse(JSON.stringify(name.first_name)) + ' ' + JSON.parse(JSON.stringify(name.last_name))}
+                            defaultValue={name.first_name + ' ' + name.last_name}
                             inputProps={{'aria-label': 'new-arrivals'}}
                             disabled={true}
                         />
@@ -503,7 +516,7 @@ function Profile() {
                               id="first_name"
                               label="Name"
                               variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.first_name))}
+                              defaultValue={name.first_name}
                               disabled={!edit}
                               onChange={onChange}
                               /*InputProps={{
@@ -523,7 +536,7 @@ function Profile() {
                               id="last_name"
                               label="Surname"
                               variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.last_name))}
+                              defaultValue={name.last_name}
                               disabled={!edit}
                               onChange={onChange}
                           />
@@ -536,7 +549,7 @@ function Profile() {
                               id="username"
                               label="Username"
                               variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.username))}
+                              defaultValue={name.username}
                               disabled={!edit}
                               onChange={onChange}
                           />
@@ -547,7 +560,7 @@ function Profile() {
                               id="email"
                               label="E-mail"
                               variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.email))}
+                              defaultValue={name.email}
                               disabled={true}
                               onChange={onChange}
                           />
@@ -581,9 +594,7 @@ function Profile() {
                                 variant="outlined"
                                 autoComplete="shipping address-line1"
                                 disabled={!edit}
-                                defaultValue={JSON.parse(JSON.stringify(name.address_1)) !== '' ?
-                                    (JSON.parse(JSON.stringify(name.address_1))) : (' ')
-                                }
+                                defaultValue={name.address_1}
                                 onChange={onChange}
 
                             />
@@ -601,9 +612,8 @@ function Profile() {
                                 autoComplete="shipping address-level2"
                                 disabled={!edit}
                                 onChange={onChange}
-                                defaultValue={JSON.parse(JSON.stringify(name.address_2)) !== '' ?
-                                    (JSON.parse(JSON.stringify(name.address_2))) : (' ')
-                                }
+                                defaultValue={name.address_2}
+
                             />
                           </Grid>
                           <Grid item xs={10} sm={5}>
@@ -618,9 +628,7 @@ function Profile() {
                                 label="State/Province/Region"
                                 fullWidth
                                 onChange={onChange}
-                                defaultValue={JSON.parse(JSON.stringify(name.address_3)) !== '' ?
-                                    (JSON.parse(JSON.stringify(name.address_3))) : (' ')
-                                }
+                                defaultValue={name.address_3}
                             />
                           </Grid>
                           <Grid item xs={10} sm={5}>
@@ -636,9 +644,7 @@ function Profile() {
                                 autoComplete="shipping postal-code"
                                 disabled={!edit}
                                 onChange={onChange}
-                                defaultValue={JSON.parse(JSON.stringify(name.address_4)) !== '' ?
-                                    (JSON.parse(JSON.stringify(name.address_4))) : (' ')
-                                }
+                                defaultValue={name.address_4}
                             />
                           </Grid>
                           <Grid item xs={10} sm={5}>
@@ -654,9 +660,7 @@ function Profile() {
                                 autoComplete="shipping country"
                                 disabled={!edit}
                                 onChange={onChange}
-                                defaultValue={JSON.parse(JSON.stringify(name.address_5)) !== '' ?
-                                    (JSON.parse(JSON.stringify(name.address_5))) : (' ')
-                                }
+                                defaultValue={name.address_5}
                             />
                           </Grid>
                         </Grid>
@@ -711,7 +715,7 @@ function Profile() {
                               <Button
                                   style={{
                                     width: "20rem",
-                                    marginLeft: "8rem",
+                                    marginLeft: "10rem",
                                     marginRight: "8rem",
                                     backgroundColor: "#0B3954",
                                   }}
