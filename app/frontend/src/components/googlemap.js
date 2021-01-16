@@ -1,21 +1,11 @@
 import React, {useState} from 'react';
 import { GoogleMap, LoadScript,Marker,InfoWindow } from '@react-google-maps/api';
-import Geocoder from 'react-native-geocoding';
 
-
-export const MapContainer = ({lat,lng}) => {
-    Geocoder.init("AIzaSyAMFkjk7UKH5zfJuVCzYbt5l_H4EP4CmiA")
+export const MapContainer = ({lat,lng,address}) => {
     console.log(lat)
     console.log(lng)
+    console.log(address)
     const [ selected, setSelected ] = useState({});
-
-    Geocoder.from(lat, lng)
-        .then(json => {
-            console.log(json)
-            var addressComponent = json.results[0].address_components[0];
-            console.log(addressComponent);
-        })
-        .catch(error => console.warn(error));
 
 
     const onSelect = item => {
@@ -24,7 +14,7 @@ export const MapContainer = ({lat,lng}) => {
 
     const mapStyles = {
         height: "40vh",
-        width: "80%"
+        width: "83%"
     };
 
     const defaultCenter = {
@@ -32,7 +22,7 @@ export const MapContainer = ({lat,lng}) => {
     }
     const locations = [
         {
-            name: "Location 1",
+            name: address,
             location: {
                 lat: lat,
                 lng: lng
