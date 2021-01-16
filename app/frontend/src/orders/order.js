@@ -40,7 +40,6 @@ export default function Order() {
             .then((response) => response.json())
             .then((data) => {
                 setPlist(data);
-                console.log(data);
             });
         return () => {
             console.log("cleanup");
@@ -48,7 +47,6 @@ export default function Order() {
     }, []);
 
     const renderOrders = () => {
-        console.log(plist);
         return plist.map((e, i) => {
             return (
                 <Orderlist
@@ -74,7 +72,7 @@ export default function Order() {
                         <Link style={{marginLeft: "3rem", color: "#0B3954"}} to="/">
                             Home Page
                         </Link>
-                        <Link style={{color: "#0B3954"}} to="/profile">
+                        <Link style={{color: "#0B3954"}} to="/orders">
                             Orders
                         </Link>
                     </Breadcrumbs>
