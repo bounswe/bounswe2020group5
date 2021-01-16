@@ -35,6 +35,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -327,6 +328,7 @@ function Profile() {
         method: 'POST',
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
       }).then(res => res.json())
+
           .then(json => {
             {json.address.split('/').length>2 ?
                 setName({
@@ -683,13 +685,16 @@ function Profile() {
 
                       <div  style={{marginTop:'2rem'}} >
 
+
                           {edit ? (
                               <div style={{display:'flex',flexDirection:'row'}}>
                                   <Button
                                       style={{
                                         width: "20rem",
+
                                         marginLeft: "1rem",
                                         marginRight: "1rem",
+
                                         marginTop: "1rem",
                                         backgroundColor: "#0B3954",
                                       }}
