@@ -11,7 +11,8 @@ from rest_framework.response import Response
 @api_view(['GET'])
 @permission_classes([IsAuthVendor])
 def get_vendor_purchases(request):
-    purchases = Purchase.objects.filter(vendor=request.user)
+    vendor = Vendor.objects.get(user=request.user)
+    purchases = Purchase.objects.filter(vendor=vendor)
     content = PurchaseSerializer(purchases, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
