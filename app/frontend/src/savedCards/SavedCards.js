@@ -25,6 +25,9 @@ import Cards from "react-credit-cards";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Moment from "moment";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,13 +48,26 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     width:"400",
     textAlign:"center",
-
+  },
+  paper3: {
+    backgroundColor: "white",
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    width:"400",
+    textAlign:"center",
   },
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: "0.5"
+    opacity: "1"
+  },
+  modal2: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: "1"
   },
 }));
 
@@ -61,17 +77,75 @@ export default function ListPage() {
   const token = localStorage.getItem('token')
   const [loadPage, setLoadPage] = React.useState(false);
   const [allCards, setAllCards] = React.useState([]);
-  const [faves, setFaves] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [openAdd, setOpenAdd] = React.useState(false);
+  let [selectedDate, setSelectedDate] = React.useState(null);
+  let [focus, setFocus] = React.useState('');
+  let [cardOwner, setCardOwner] = React.useState('');
+  let [cardNumber, setCardNumber] = React.useState('');
+  let [expirationDate, setExpirationDate] = React.useState('');
+  let [cvc, setCvc] = React.useState('');
+  let [cardName, setCardName] = React.useState('');
+  let [errorCardNumber, setErrorCardNumber] = React.useState(false);
+  let [errorCardName, setErrorCardName] = React.useState(false);
+  let [errorCardOwner, setErrorCardOwner] = React.useState(false);
+  let [errorCvc, setErrorCvc] = React.useState(false);
+  let [errorDate, setErrorDate] = React.useState(false);
+  let [CardMsg, setCardMsg] = React.useState('');
+  let [CVCMsg, setCVCMsg] = React.useState('');
+  let [dateMsg, setDateMsg] = React.useState('');
+
   const [cardInfo, setCardInfo] = React.useState({
     cvc:'',
     expiration_date: '',
     card_owner:'',
     card_number:'',
     card_name: '',
+    card_id: '',
+  })
+  const [newCardInfo, setNewCardInfo] = React.useState({
+    cvc:'',
+    expiration_date: '',
+    card_owner:'',
+    card_number:'',
+    card_name: '',
+    card_id: '',
   })
 
   let history = useHistory();
+
+
+  const handleInputFocus = (e) => {
+    setFocus(e.target.name)
+  }
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if(name === "number"){
+      let newVal = value
+      if(value.length<20){
+        if(value.length===4 || value.length===9 || value.length===14){
+          newVal = value + " "
+        }
+        console.log(newVal)
+        setCardNumber(newVal)
+
+      }
+    }
+    else if(name==="name"){
+      setCardOwner(value)
+    }
+    else if(name === "cardname"){
+      setCardName(value)
+    }
+    else if(name === "cvc"){
+      if(value.length<4){
+        setCvc(value)
+      }
+    }
+  }
 
   const handleClick = (cardID) => {
     console.log(cardID)
@@ -85,6 +159,7 @@ export default function ListPage() {
         cardInfo.expiration_date = json.expiration_date
         cardInfo.cvc = json.cvc_security_number
         cardInfo.card_name = json.name
+        cardInfo.card_id = json.id
         console.log(json)
       }).then(()=>{
         setOpen(true)
@@ -95,8 +170,120 @@ export default function ListPage() {
       });
   };
 
-  const handleDelete = () => {
+  const handleClickAdd = () => {
+    setOpenAdd(true)
+  }
 
+  const handleDelete = () => {
+    let data = {
+      creditcard_id : cardInfo.card_id
+    }
+    fetch(serverUrl + 'api/credit-cards/opts/delete/', {
+      method: 'POST',
+      headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+      .then(json => {
+        console.log(json)
+      }).then(() => {
+        setOpen(false)
+        window.location.reload();
+    })
+      .catch(err => console.log(err));
+  }
+
+  const handleSave = () => {
+    let valCheck = true
+
+    if(cardNumber === ''){
+      setErrorCardNumber(true)
+      setCardMsg('Card number is required')
+      valCheck = false;
+    }
+    else if(cardNumber.length < 19){
+      setErrorCardNumber(true)
+      setCardMsg('Not in the correct form')
+      valCheck = false;
+    }
+    else if(!/[0-9]{16}/.test(cardNumber.replaceAll(" ",""))){
+      setErrorCardNumber(true)
+      setCardMsg('Only integer values')
+      valCheck = false;
+    }
+    else{
+      setErrorCardNumber(false)
+    }
+
+    if(cardOwner === ''){
+      setErrorCardOwner(true);
+      valCheck = false;
+    }
+    else{
+      setErrorCardOwner(false)
+    }
+    if(cardName === ''){
+      setErrorCardName(true);
+      valCheck = false;
+    }
+    else{
+      setErrorCardName(false)
+    }
+
+    if(cvc === ''){
+      setErrorCvc(true)
+      setCVCMsg("CVC is required")
+      valCheck = false;
+    }
+    else if(cvc.length <3){
+      setErrorCvc(true)
+      setCVCMsg("Not in correct form")
+      valCheck = false;
+    }
+    else{
+      setErrorCvc(false)
+    }
+    if(parseInt(Moment(selectedDate).format('MM/YY').toString().split("/")[1]) < 20){
+      setErrorDate(true)
+      setDateMsg("Date can not be in the past")
+      valCheck = false
+    }
+    else if(Moment(selectedDate).format('MM/YY').toString()==="Invalid date"){
+      setErrorDate(true)
+      setDateMsg("Expiry date is required")
+      valCheck = false
+    }
+    else{
+      setErrorDate(false)
+    }
+
+    if(valCheck){
+      const token = localStorage.getItem('token')
+      let data = {
+        name: cardName,
+        card_owner: cardOwner,
+        card_number: cardNumber,
+        expiration_date: Moment(selectedDate).format('MM/YY').toString(),
+        cvc_security_number: cvc,
+      }
+
+      fetch(serverUrl + 'api/credit-cards/opts/add/', {
+        method: 'POST',
+        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+
+      }).then(res => res.json())
+        .then(json => {
+          if(json.success){
+            alert("Your card is successfully added to the system.")
+          }
+          else{
+            alert(json.error)
+          }
+          setOpenAdd(false)
+          window.location.reload()
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   useEffect(() => {
@@ -179,11 +366,113 @@ export default function ListPage() {
             backgroundColor: "#0B3954",
           }}
           variant="contained" color="primary"
-          onClick={() => handleDelete}
+          onClick={handleDelete}
         >
           Delete
         </Button>
       </div>
+    </div>
+  );
+
+  const bodyAdd = (
+    <div className={classes.paper3} >
+      <div>
+        <Cards
+          cvc={cvc}
+          expiry={Moment(selectedDate).format('MM/YY')}
+          focused={focus}
+          name={cardOwner}
+          number={cardNumber}
+        />
+      </div>
+
+      <div>
+        <TextField
+          style={{width:"20rem", marginTop:"1rem"}}
+          name="cardname"
+          label="Card Name"
+          inputProps={{ pattern: "[\d| ]{16,22}" }}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          value={cardName}
+          variant="outlined"
+          error={errorCardName}
+          helperText={errorCardName && "Card name is required"}
+        />
+      </div>
+      <div>
+        <TextField
+          style={{width:"20rem", marginTop:"1rem"}}
+          name="number"
+          label="Card Number"
+          inputProps={{ pattern: "[\d| ]{16,22}" }}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          value={cardNumber}
+          variant="outlined"
+          error={errorCardNumber}
+          helperText={errorCardNumber && CardMsg}
+        />
+      </div>
+      <div>
+        <TextField
+          style={{width:"20rem", marginTop:"1rem"}}
+          name="name"
+          label="Card Owner"
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          value={cardOwner}
+          variant="outlined"
+          error={errorCardOwner}
+          helperText={errorCardOwner && "Card owner is required"}
+        />
+      </div>
+      <div>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            style={{width:"9rem", marginTop:"1rem"}}
+            variant="inline"
+            format="MM/yy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Expiry Date"
+            value={selectedDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+            keyboardIcon
+            open={false}
+            disablePast
+            error={errorDate}
+            helperText={errorDate && dateMsg}
+          />
+        </MuiPickersUtilsProvider>
+        <TextField
+          style={{width:"9rem", marginTop:"1rem",marginLeft:"2rem"}}
+          name="cvc"
+          inputProps={{ pattern: "\d{3,4}" }}
+          label="CVC"
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          value={cvc}
+          error={errorCvc}
+          helperText={errorCvc && CVCMsg}
+        />
+      </div>
+      <Button
+        style={{
+          width: "20rem",
+          marginLeft: "10rem",
+          marginRight: "10rem",
+          marginTop: "2rem",
+          backgroundColor: "#0B3954",
+        }}
+        variant="contained" color="primary"
+        onClick={handleSave}
+      >
+        Save Card
+      </Button>
     </div>
   );
 
@@ -228,7 +517,6 @@ export default function ListPage() {
                         <Modal
                           className={classes.modal}
                           open={open}
-                          transparent={true}
                           onClose={() => setOpen(false)}
                           aria-labelledby="simple-modal-title"
                           aria-describedby="simple-modal-description"
@@ -238,6 +526,28 @@ export default function ListPage() {
                       <Divider/>
                     </Box>
                 ))}
+                <Button
+                  style={{
+                    width: "20rem",
+                    marginLeft: "10rem",
+                    marginRight: "10rem",
+                    marginTop: "2rem",
+                    backgroundColor: "#0B3954",
+                  }}
+                  variant="contained" color="primary"
+                  onClick={handleClickAdd}
+                >
+                  Add New Credit Card
+                </Button>
+                <Modal
+                  className={classes.modal2}
+                  open={openAdd}
+                  onClose={() => setOpenAdd(false)}
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                >
+                  {bodyAdd}
+                </Modal>
               </List>) : null}
           </Paper>
         </Grid>
