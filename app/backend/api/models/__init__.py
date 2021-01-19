@@ -18,3 +18,4 @@ from .chats import Chat
 from .chats import Message
 from .social_documents import SocialDocs
 from .chats import UnreadMessages
+from .search_history import SearchHistory

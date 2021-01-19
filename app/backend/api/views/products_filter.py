@@ -4,12 +4,13 @@ from drf_yasg.utils import swagger_auto_schema
 from ..serializers import FilterProductSerializer, ProductSerializer, ProductSearchSerializer, SortProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Product, User, Vendor
+from ..models import Product, User, Vendor, SearchHistory
 from django.db.models import Max
 from nltk.stem import PorterStemmer
 from django.db.models import Q
 import operator
 from datamuse import datamuse
+from django.core.exceptions import ObjectDoesNotExist
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
@@ -66,6 +67,19 @@ def search_products(request):
         for product in products_datamuse:
             if product not in products:
                 products.append(product)
+
+    # Add prodcuts to search history if user is authenticated
+    if (not request.user.is_anonymous) and products:
+        user = request.user
+
+        search_history = SearchHistory.objects.filter(user=user).first()
+        if search_history:
+            search_history.delete()
+
+        search_history = SearchHistory(user=user)
+        search_history.save()
+        for product in products:
+            search_history.products.add(product)   
 
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
