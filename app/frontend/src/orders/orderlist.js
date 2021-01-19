@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import {serverUrl} from "../common/ServerUrl";
 import {useHistory} from "react-router-dom";
 import {Favorite} from "@material-ui/icons";
+import Statusupdate from "../components/vendorstatusupdate";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,7 @@ export default function Orderlist(props) {
     const token = localStorage.getItem('token')
     let history = useHistory();
 
+
     const HandleCancel = (order, event) => {
         fetch(serverUrl + 'api/orders/customer-cancel/', {
             method: 'POST',
@@ -78,6 +80,13 @@ export default function Orderlist(props) {
                 } else alert("Cancel failed")
             })
     };
+    const Cancelinfo=()=>{
+        if(props.orders.purchases[0].status=='Vcancelled'){
+            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY VENDOR</span>
+        }else if(props.orders.purchases[0].status=='Ccancelled'){
+            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY CUSTOMER</span>
+        }
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -86,9 +95,16 @@ export default function Orderlist(props) {
                     <Paper style={{backgroundColor: 'rgba(11, 57, 84,0.15)'}} className={classes.paperinner}>
                         Order {props.orders.order_id}
                     </Paper>
-                    <IconButton className={classes.iconbutton} onClick={(event) => HandleCancel(props.orders, event)}>
+                    {!(props.orders.purchases[0].status=='Vcancelled'||props.orders.purchases[0].status=='Ccancelled')?<IconButton style={{marginRight:"15rem"}}className={classes.iconbutton} onClick={(event) => HandleCancel(props.vendororders.id, event)}>
                         <CancelIcon style={{marginRight:"0.5rem"}}/> Cancel Order
-                    </IconButton>
+                    </IconButton>:<span style={{marginRight:"40rem"}}></span>}
+                    <div>
+                        <React.Fragment>
+                            { <Box>{Cancelinfo()}</Box>}
+                        </React.Fragment>
+
+                    </div>
+
                 </Grid>
                 {props.orders.purchases.map((e, index) => {
                     return (

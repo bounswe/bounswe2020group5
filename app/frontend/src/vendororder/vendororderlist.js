@@ -88,20 +88,35 @@ export default function Vendororderlist(props) {
             })
     };
 
+    const Cancelorupdateinfo=(id,status)=>{
+        if(status=='Vcancelled'){
+            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY VENDOR</span>
+        }else if(status=='Ccancelled'){
+            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY CUSTOMER</span>
+        }else {
+            return <Statusupdate orderid={id}/>
+        }
+    };
+
     return (
         <Paper className={classes.paper}>
             <Grid>
                 <Grid  className={classes.papertop}>
                     <div>
-                    <Paper className={classes.paperinner} style={{width:"7rem",backgroundColor: 'rgba(11, 57, 84,0.15)'}} >
-                        Order {props.vendororders.id}
+                    <Paper className={classes.paperinner} style={{width:"16rem",backgroundColor: 'rgba(11, 57, 84,0.15)'}} >
+                        Order No: {props.vendororders.order}&nbsp;&nbsp;&nbsp;Purchase No: {props.vendororders.id}
                     </Paper>
                     </div>
-                    <IconButton style={{marginRight:"22rem"}}className={classes.iconbutton} onClick={(event) => HandleCancel(props.vendororders.id, event)}>
+                    {!(props.vendororders.status=='Vcancelled'||props.vendororders.status=='Ccancelled')?
+                        <IconButton style={{marginRight:"15rem"}}className={classes.iconbutton}
+                        onClick={(event) => HandleCancel(props.vendororders.id, event)}>
                         <CancelIcon style={{marginRight:"0.5rem"}}/> Cancel Order
-                    </IconButton>
+                    </IconButton>:<span style={{marginRight:"25rem"}}></span>}
                     <div>
-                        <Statusupdate orderid={props.vendororders.id} />
+                        <React.Fragment>
+                            { <Box>{Cancelorupdateinfo(props.vendororders.id,props.vendororders.status)}</Box>}
+                        </React.Fragment>
+
                     </div>
 
 

@@ -35,11 +35,13 @@ export const Statusupdate= ({orderid}) => {
         setChecked((prev) => !prev);
     };
 
-    const HandleUpdate = (status) => {
+    const HandleUpdate = (status,event) => {
         const token = localStorage.getItem('token')
+        console.log(orderid)
+        console.log(status)
         let dataupdate;
         dataupdate = {
-            "order_id": orderid,
+            "purchase_id":parseInt(orderid),
             "status":status
 
         }
@@ -50,12 +52,12 @@ export const Statusupdate= ({orderid}) => {
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
             body: JSON.stringify(dataupdate),
         }).then(res => res.json())
-            .then(json => {
+            .then(json=> {
                 if(json.success){
-                    alert("Order Status Updated")
+                    alert("Order Status has been successfully updated")
                     window.location.reload()
                 } else alert("Cancel failed")
-            })
+            }).catch(err=>console.log(err))
     };
 
     return (
@@ -71,7 +73,7 @@ export const Statusupdate= ({orderid}) => {
                             variant="contained"
                             style={{color:'white',backgroundColor:"#0B3954"}}
                             size="small"
-                            onClick={HandleUpdate("OrderTaken")}
+                            onClick={(event) =>HandleUpdate("OrderTaken",event)}
                             className={classes.button}
                             startIcon={<SaveIcon />}
                         >
@@ -90,7 +92,7 @@ export const Statusupdate= ({orderid}) => {
                         variant="contained"
                         style={{color:'white',backgroundColor:'#7E7F9A'}}
                         size="small"
-                        onClick={HandleUpdate("Preparing")}
+                        onClick={(event) =>HandleUpdate("Preparing",event)}
                         className={classes.button}
                         startIcon={<TimelapseIcon />}
                     >
@@ -101,13 +103,13 @@ export const Statusupdate= ({orderid}) => {
                 <Grow
                     in={checked}
                     style={{ transformOrigin: '0 0 0' }}
-                    {...(checked ? { timeout: 1000 } : {})}
+                    {...(checked ? { timeout: 1500 } : {})}
                 >
                     <Button
                         variant="contained"
                         style={{color:'white',backgroundColor:'#F3DE8A'}}
                         size="small"
-                        onClick={HandleUpdate("Ship")}
+                        onClick={(event) =>HandleUpdate("Ship",event)}
                         className={classes.button}
                         startIcon={<LocalShippingIcon />}
                     >
@@ -118,14 +120,14 @@ export const Statusupdate= ({orderid}) => {
                 <Grow
                     in={checked}
                     style={{ transformOrigin: '0 0 0' }}
-                    {...(checked ? { timeout: 1000 } : {})}
+                    {...(checked ? { timeout: 2000 } : {})}
                 >
 
                     <Button
                         variant="contained"
                         style={{color:'white',backgroundColor:'#7A0010'}}
                         size="small"
-                        onClick={HandleUpdate("Delivered")}
+                        onClick={(event) =>HandleUpdate("Delivered",event)}
                         className={classes.button}
                         startIcon={<DoneAllIcon />}
                     >
