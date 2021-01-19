@@ -25,11 +25,15 @@ import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+
+import CustomizedDialogs from "../components/dialog";
+
 import {Link} from "react-router-dom";
 import Input from "@material-ui/core/Input";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,6 +68,7 @@ const Product = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
+    let [messageclick, setmessageclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
@@ -330,7 +335,11 @@ const Product = (props) => {
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
                                 {token ? (
+
                                     <Grid container alignItems={"center"} justify="center">
+
+                                        <CustomizedDialogs vendor={state.vendor} productid={JSON.parse(JSON.stringify(id))}/>
+
                                         <IconButton onClick={handlelistcount}>
                                             {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
                                                 <TurnedInNotIcon fontSize={"large"}/>}
