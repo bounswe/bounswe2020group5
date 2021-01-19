@@ -99,12 +99,12 @@ def vendor_update_status(request):
     serializer = UpdateStatusSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     purhcase_id = serializer.validated_data['purchase_id']
-    status = serializer.validated_data['status']
+    new_status = serializer.validated_data['status']
     purchase = Purchase.objects.get(id=purhcase_id)
     if purchase.status == 'Ccancelled' or purchase.status == 'Vcancelled':
         return Response(data={'error': 'Order is cancelled.'}, status=status.HTTP_400_BAD_REQUEST)
-    if purchase.status != status:
-        purchase.status = status
+    if purchase.status != new_status:
+        purchase.status = new_status
         purchase.save()
     return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
 
