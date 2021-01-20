@@ -19,6 +19,7 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 router.register(r'auth', AuthViewSet, basename='auth')
+router.register(r'admin', AdminViewSet, basename='admin')
 router.register(r'products/opts', ProductOptViewSet, basename='products/opts')
 router.register(r'product-lists', ProductListViewSet, basename='product-lists')
 router.register(r'product-lists/opts', ProductListOptViewSet, basename='product-lists/opts')
@@ -30,6 +31,7 @@ router.register(r'credit-cards/opts', CreditCardOptsViewSet, basename='credit-ca
 router.register(r'purchases', PurchaseViewSet, basename='purchases')
 router.register(r'orders', PurchaseOptsViewSet, basename='orders')
 router.register(r'chats', ChatViewSet, basename='chats')
+
 
 
 urlpatterns = [

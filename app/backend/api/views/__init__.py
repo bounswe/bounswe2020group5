@@ -26,3 +26,4 @@ from .orders_details import get_customer_orders
 from .orders_details import vendor_update_status
 from .orders_details import customer_purchased
 from .chats import ChatViewSet
+from .admins import AdminViewSet

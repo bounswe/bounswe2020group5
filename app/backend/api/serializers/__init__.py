@@ -65,3 +65,7 @@ from .users import GoogleSocialAuthSerializer
 from .users import FacebookSocialAuthSerializer
 from .chats import NumberOfUnreadMessagesResponseSerializer
 from .chats import UnreadMessagesSerializer
+from .admins import IsAdminResponseSerializer
+from .admins import AdminSerializer
+from .admins import AssignSerializer
+from .admins import CommentIdSerializer
