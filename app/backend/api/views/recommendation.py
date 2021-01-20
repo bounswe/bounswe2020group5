@@ -14,8 +14,8 @@ Recommends products for both guest and customer users,
 Based on search history, cart, product lists and purchases for authenticated customer,
 Supports semantically similar products with datamuse API   
 """
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)})
-@api_view(['POST'])
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer(many=True)})
+@api_view(['GET'])
 @permission_classes([AllowAny])
 def recommend_products(request):
     number_of_products = 15
@@ -124,7 +124,8 @@ def recommend_products(request):
             diff = number_of_products - len(products)
             products_difference = Product.objects.order_by('-number_of_sales')[:diff]
             for product in products_difference:
-                products.append(product)
+                if product not in products:
+                    products.append(product)
         
         content = ProductSerializer(products[:number_of_products], many=True)
         return Response(data=content.data, status=status.HTTP_200_OK)
