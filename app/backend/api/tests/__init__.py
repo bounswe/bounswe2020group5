@@ -12,3 +12,8 @@ from .test_google_login import GoogleLoginTestCase
 from .test_register import RegistrationTestCase
 from .test_register_activate import RegistrationActivateTestCase
 from .test_send_message import SendMessageFailTestCase
+from .test_admin_delete_comment import AdminDeleteCommentTest
+from .test_admin_delete_user_by_comment_id import AdminDeleteUserByCommentIdTest
+from .test_assign_admin import AssignAdminTest
+from .test_is_admin import IsAdminTest
+from .test_block_user import BlockUserTest
