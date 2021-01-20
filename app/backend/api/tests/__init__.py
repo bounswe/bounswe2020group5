@@ -17,3 +17,5 @@ from .test_admin_delete_user_by_comment_id import AdminDeleteUserByCommentIdTest
 from .test_assign_admin import AssignAdminTest
 from .test_is_admin import IsAdminTest
 from .test_block_user import BlockUserTest
+from .test_recommend_product import RecommendProductTest
+

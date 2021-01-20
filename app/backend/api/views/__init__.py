@@ -27,3 +27,4 @@ from .orders_details import vendor_update_status
 from .orders_details import customer_purchased
 from .chats import ChatViewSet
 from .admins import AdminViewSet
+from .recommendation import recommend_products
