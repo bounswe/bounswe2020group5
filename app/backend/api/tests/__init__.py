@@ -12,3 +12,4 @@ from .test_google_login import GoogleLoginTestCase
 from .test_register import RegistrationTestCase
 from .test_register_activate import RegistrationActivateTestCase
 from .test_send_message import SendMessageFailTestCase
+from .test_recommend_product import RecommendProductTest

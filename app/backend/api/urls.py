@@ -43,6 +43,7 @@ urlpatterns = [
     path('products/filter/', filter_products),
     path('products/search/', search_products),
     path('products/sort/', sort_products),
+    path('products/recommend/', recommend_products),
     path('products/homepage/', get_homepage_products),
     path('products/vendor-products/', get_vendor_products),
     path('orders/vendor-orders/', get_vendor_purchases),
