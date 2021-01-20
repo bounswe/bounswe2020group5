@@ -53,7 +53,7 @@ def search_products(request):
             if product not in products:
                 products.append(product)
 
-    datamuse_api = api = datamuse.Datamuse()
+    datamuse_api = datamuse.Datamuse()
     keyword_list = datamuse_api.words(ml=query, max=5)
     Q_datamuse = Q()
     for keyword in keyword_list:
