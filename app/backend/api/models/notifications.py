@@ -1,9 +1,9 @@
 from django.db import models
-from datetime import datetime 
 import json
 from enum import Enum 
 from .users import User
 from .orders import Order
+from .products import Product
 
 
 class NotificationType(Enum):
@@ -18,7 +18,7 @@ class NotificationType(Enum):
 
 class Notification(models.Model):
     text = models.TextField()
-    notificationType = models.IntegerField(choices=CustomerTypes.choices())
+    notificationType = models.IntegerField(choices=NotificationType.choices())
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     createdAt = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

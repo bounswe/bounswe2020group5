@@ -20,3 +20,5 @@ from .social_documents import SocialDocs
 from .chats import UnreadMessages
 from .search_history import SearchHistory
 from .admins import Admin
+from .notifications import Notification
+from .notifications import NotificationType
