@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+        marginLeft: "1rem",
+        marginRight: "1rem"
     },
     chip: {
         backgroundColor: "#0B3954",

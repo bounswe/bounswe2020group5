@@ -46,7 +46,7 @@ export default function Vendorproductlist(props) {
             <Grid container spacing={4}>
                 <Grid justify="center" item container xs={3}>
                     <img
-                        style={{ maxHeight: 200 }}
+                        style={{ maxHeight: 200 , maxWidth: 300}}
                         src={props.product.image_url}
                         alt="product image"
                     />
@@ -61,14 +61,17 @@ export default function Vendorproductlist(props) {
                         {props.product.name}
                     </Typography>
                     <Divider variant="middle" />
-                    <Typography gutterBottom style={{ margin: 16 }} variant="body1">
-                        {props.product.description}
-                    </Typography>
+                    {props.product.description.length > 220 ? (
+                        <Typography gutterBottom style={{ marginTop: 10 }} variant="body1">
+                            {props.product.description.substr(0,220) + "..."}
+                        </Typography>) :
+                        (<Typography gutterBottom style={{ marginTop: 10 }} variant="body1">
+                            {props.product.description}
+                        </Typography>)}
                     <Box
                         style={{
                             position: "absolute",
                             bottom: 0,
-                            right: 550,
                             display: "flex",
                         }}
                     >
