@@ -28,3 +28,4 @@ from .orders_details import customer_purchased
 from .chats import ChatViewSet
 from .admins import AdminViewSet
 from .recommendation import recommend_products
+from .notifications import NotificationViewSet

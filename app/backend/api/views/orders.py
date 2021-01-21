@@ -88,6 +88,7 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
             unit_price = product.price * (1 - product.discount/100)
             product.number_of_sales += amount
             product.stock -= amount
+            
             product.save()
             purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
                                     unit_price=unit_price, order=order, status='OrderTaken')

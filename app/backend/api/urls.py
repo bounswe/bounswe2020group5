@@ -31,6 +31,7 @@ router.register(r'credit-cards/opts', CreditCardOptsViewSet, basename='credit-ca
 router.register(r'purchases', PurchaseViewSet, basename='purchases')
 router.register(r'orders', PurchaseOptsViewSet, basename='orders')
 router.register(r'chats', ChatViewSet, basename='chats')
+router.register(r'notifications', NotificationViewSet, basename='notifications')
 
 
 

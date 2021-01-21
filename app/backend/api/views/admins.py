@@ -104,3 +104,8 @@ class AdminViewSet(viewsets.GenericViewSet):
         # deleting the user
         user.delete()
         return Response(data={"success":"customer user is assigned"}, status=status.HTTP_201_CREATED) 
+        
+    def get_serializer_class(self):
+        if self.action in self.serializer_classes.keys():
+            return self.serializer_classes[self.action]
+        return super().get_serializer_class()
