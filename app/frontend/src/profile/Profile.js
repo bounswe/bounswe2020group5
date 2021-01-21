@@ -665,23 +665,26 @@ function Profile() {
                                 defaultValue={name.address_5}
                             />
                           </Grid>
-                        </Grid>
-                        <div style={{marginTop:'2rem',display:'flex',flexDirection:'row'}}>
-                        <MapContainer   lat={latt} lng={lngg} address={address}/>
-                          {edit ?(<Tooltip title="Direct Address Edit to Current Location"><IconButton
-                              onClick={()=>handlegoogleaddress()}
-                              style={{
-                                width: "5rem",
-                                height: "5rem",
-                                marginTop:'0rem',
-                                marginLeft: "1rem",
-                                marginRight: "1rem",
-                                color: "#a71325"
+                          <Grid item xs={10} >
+                            <div style={{marginTop:'2rem',display:'flex',flexDirection:'row'}}>
+                              <MapContainer   lat={latt} lng={lngg} address={address}/>
+                              {edit ?(<Tooltip title="Direct Address Edit to Current Location"><IconButton
+                                  onClick={()=>handlegoogleaddress()}
+                                  style={{
+                                    width: "5rem",
+                                    height: "5rem",
+                                    marginTop:'0rem',
+                                    marginLeft: "0.5rem",
+                                    marginRight: "0.5rem",
+                                    color: "#a71325"
 
-                              }}aria-label="home">
-                            <HomeIcon fontSize="large" />
-                          </IconButton></Tooltip>):'' }
-                        </div>
+                                  }}aria-label="home">
+                                <HomeIcon fontSize="large" />
+                              </IconButton></Tooltip>):'' }
+                            </div>
+
+                          </Grid>
+                        </Grid>
 
                       <div  style={{marginTop:'2rem'}} >
 

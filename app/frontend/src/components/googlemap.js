@@ -14,7 +14,7 @@ export const MapContainer = ({lat,lng,address}) => {
 
     const mapStyles = {
         height: "40vh",
-        width: "83%"
+        width: "100%"
     };
 
     const defaultCenter = {
