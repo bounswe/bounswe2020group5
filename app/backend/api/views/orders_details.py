@@ -4,7 +4,8 @@ from rest_framework import status
 from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
 from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer, CustomerOrderSerializer
-from ..models import Product, Order, Purchase, Customer, Vendor
+from ..serializers import AddVendorRatingSerializer, VendorRatingSerializer, VendorRatingInProductPageSerializer, VendorRatingResponseSerializer
+from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating
 from rest_framework.response import Response
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
@@ -121,3 +122,66 @@ def customer_purchased(request):
         if not(purchase.status == 'Ccancelled' or purchase.status == 'Vcancelled'):
             return Response(data={'message': True}, status=status.HTTP_200_OK)
     return Response(data={'message': False}, status=status.HTTP_200_OK)
+
+# This function allows customers to give rating score to vendors
+# If no rating is given before, creates a new VendorRating entry in the table
+# Otherwise, updates the corresponding entry
+@swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer}, request_body=AddVendorRatingSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def add_vendor_rating(request):
+    serializer = AddVendorRatingSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    rating_score = serializer.validated_data['rating_score']
+    purchase = Purchase.objects.get(id=purchase_id)
+    # Allow customer to give rating to a vendor if the order is delivered
+    if purchase.status == 'Delivered':
+        vendor_rating = VendorRating(vendor=purchase.vendor, rating_score=rating_score)
+        vendor_rating.save()
+        return Response(data={'success': 'Vendor rating is successfully given.'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response(data={'error': 'Vendor rating cannot be given.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+# This function allows displaying average rating of the vendor in product pages
+# Depending on the product_id, it retrieves the corresponding VendorRating
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: VendorRatingResponseSerializer}, request_body=VendorRatingInProductPageSerializer)
+@api_view(['POST'])
+@permission_classes([])
+def avg_vendor_rating_product_page(request):
+    serializer = VendorRatingInProductPageSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    product_id = serializer.validated_data['product_id']
+    product = Product.objects.get(id=product_id)
+    # If no vendor rating is given, return 0 as response
+    vendor_ratings = VendorRating.objects.filter(vendor=product.vendor)
+    total_rating = 0
+    number_of_rates = 0
+    if len(vendor_ratings) == 0:
+        number_of_rates = 1
+    else:
+        for vendor_rating in vendor_ratings:
+            total_rating += vendor_rating.rating_score
+            number_of_rates += 1
+    avg_score = round(total_rating / number_of_rates, 1)
+    return Response(data={'score': avg_score}, status=status.HTTP_200_OK)
+
+# This function allows displaying average rating of the vendor in product pages
+# Depending on the requested vendor user, it retrieves the corresponding VendorRating
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: VendorRatingResponseSerializer})
+@api_view(['POST'])
+@permission_classes([IsAuthVendor])
+def avg_vendor_rating_profile_page(request):
+    vendor = Vendor.objects.get(user=request.user)
+    # If no vendor rating is given, return 0 as response
+    vendor_ratings = VendorRating.objects.filter(vendor=vendor)
+    total_rating = 0
+    number_of_rates = 0
+    if len(vendor_ratings) == 0:
+        number_of_rates = 1
+    else:
+        for vendor_rating in vendor_ratings:
+            total_rating += vendor_rating.rating_score
+            number_of_rates += 1
+    avg_score = round(total_rating / number_of_rates, 1)
+    return Response(data={'score': avg_score}, status=status.HTTP_200_OK)

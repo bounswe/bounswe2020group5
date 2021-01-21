@@ -53,5 +53,8 @@ urlpatterns = [
     path('orders/customer-cancel/', customer_cancel_order),
     path('orders/customer-orders/', get_customer_orders),
     path('orders/update-status/', vendor_update_status),
-    path('orders/customer-purchased/', customer_purchased)
+    path('orders/customer-purchased/', customer_purchased),
+    path('orders/add-vendor-rating/', add_vendor_rating),
+    path('orders/avg-rating-product-page/', avg_vendor_rating_product_page),
+    path('orders/avg-rating-profile-page/', avg_vendor_rating_profile_page)
 ]

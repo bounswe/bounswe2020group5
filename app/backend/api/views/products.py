@@ -18,7 +18,8 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         'delete': DeleteProductSerializer,
         'update_product' : UpdateProductSerializer,
         'add_comment': ProductAddCommentSerializer,
-        'get_all_comments': ProductAllCommentsSerializer
+        'get_all_comments': ProductAllCommentsSerializer,
+        'get_user_comments': EmptySerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
@@ -131,6 +132,15 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         comment_contents = CommentSerializer(comments, many=True)
         return Response(data=comment_contents.data, status=status.HTTP_200_OK)
         
+    # Takes the requesting customer user and finds all comments given by that user
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @action(methods=['POST'], detail=False, queryset = "", permission_classes=[IsAuthCustomer, ])
+    def get_user_comments(self, request):
+        customer = Customer.objects.get(user=request.user)
+        comments = Comment.objects.filter(customer=customer)
+        comment_contents = CommentSerializer(comments, many=True)
+        return Response(data=comment_contents.data, status=status.HTTP_200_OK)
+
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]

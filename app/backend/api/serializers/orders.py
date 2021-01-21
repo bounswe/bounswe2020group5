@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Customer, CreditCard, Purchase
+from ..models import Customer, CreditCard, Purchase, VendorRating
 from ..serializers import ProductSerializer
 
 # CreditCard Serializer
@@ -49,3 +49,18 @@ class CustomerOrderSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     purchases = serializers.ListField(child = PurchaseSerializer())
 
+# Vendor Rating Serializer
+class VendorRatingSerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = VendorRating
+        fields = ('id', 'vendor', 'rating_score')
+
+class AddVendorRatingSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+    rating_score = serializers.IntegerField(required=True)
+
+class VendorRatingInProductPageSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+
+class VendorRatingResponseSerializer(serializers.Serializer):
+    score = serializers.IntegerField()

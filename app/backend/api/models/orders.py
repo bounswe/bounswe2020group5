@@ -22,3 +22,8 @@ class Purchase(models.Model):
     unit_price = models.FloatField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
+
+# Vendor Rating Model
+class VendorRating(models.Model):
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    rating_score = models.IntegerField()
