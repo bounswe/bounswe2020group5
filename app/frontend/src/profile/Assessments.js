@@ -48,6 +48,7 @@ export default function Assessments() {
         }).then(res => res.json())
             .then(json => {
                 setReviews(json);
+                console.log(json);
                 setLoadPage(true); //render
             }).then(() => {}).catch(err => console.log(err));
     }, []);
@@ -71,7 +72,7 @@ export default function Assessments() {
             </Breadcrumbs>
             {loadPage ? (
                 <Grid container justify="center" spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={9}>
                         <Paper className={classes.paper}>
                             <Typography variant="h4" gutterBottom>
                                 <Box color={"#0B3954"} fontWeight="fontWeightBold" m={1}>
@@ -82,13 +83,19 @@ export default function Assessments() {
                                 {Object.keys(reviews).map((review, index) => (
                                     <Box style={{marginTop: "2rem", marginBottom: "2rem"}} key={index}>
                                         <Grid container>
-                                            <Grid item xs={9} >
-                                                <Rating name="read-only" value={reviews[review].rating_score} precision={0.1} readOnly/>
-                                                <Typography style={{marginTop:"0.8rem", marginBottom:"0.8rem"}} >{reviews[review].comment_text}</Typography>
+                                            <Grid item xs={2}>
+                                                <Link to={{pathname: `/product/${reviews[review].product.id}`}} style={{textDecoration: "none", color: "black"}}>
+                                                    <img style={{margin:"1rem", width: "8rem", height: "8rem"}} src={reviews[review].product.image_url} alt={reviews[review].product.id}/>
+                                                </Link>
                                             </Grid>
-                                            <Grid item xs={3} style={{marginTop: "1rem"}}>
-                                                <Link to={{pathname: `/product/${reviews[review].product}`}} style={{ marginLeft:"5rem", textDecoration: "none", color: "black"}}>
-                                                    <ArrowForwardIcon style={{fontSize:30, color:"#0B3954"}}/>
+                                            <Grid item xs={8} >
+                                                <Typography style={{marginTop:"0.5rem", marginBottom:"1.5rem", fontWeight:"bold", fontSize:"20px"}} >{reviews[review].product.name}</Typography>
+                                                <Rating name="read-only" value={reviews[review].rating_score} precision={0.1} readOnly/>
+                                                <Typography style={{marginTop:"0.5rem", marginBottom:"0.5rem"}} >{reviews[review].comment_text}</Typography>
+                                            </Grid>
+                                            <Grid item xs={2} style={{marginTop: "2rem"}}>
+                                                <Link to={{pathname: `/product/${reviews[review].product.id}`}} style={{ marginLeft:"5rem", textDecoration: "none", color: "black"}}>
+                                                    <ArrowForwardIcon style={{fontSize:50, color:"#0B3954"}}/>
                                                 </Link>
                                             </Grid>
                                         </Grid>
