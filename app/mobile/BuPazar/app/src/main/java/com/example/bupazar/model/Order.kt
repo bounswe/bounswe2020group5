@@ -16,5 +16,5 @@ data class Purchase(
     @SerializedName("product") val product: ProductDetails?,
     @SerializedName("amount") val amount: Long?,
     @SerializedName("unit_price") val unit_price: Float?,
-    @SerializedName("status") val status: String?,
+    @SerializedName("status") var status: String?,
 ) : Serializable

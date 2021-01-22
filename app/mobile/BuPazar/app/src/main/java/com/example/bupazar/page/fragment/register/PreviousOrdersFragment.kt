@@ -5,13 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.model.CreditCardAdapter
 import com.example.bupazar.model.LoginResponse
+import com.example.bupazar.model.Order
+import com.example.bupazar.page.fragment.OrderFragment
+import com.example.bupazar.service.RestApiService
+import kotlinx.android.synthetic.main.fragment_pay_with_another_card.*
 
 class PreviousOrdersFragment : Fragment() {
 
     private var userData: LoginResponse? = null
     private var authToken: String? = null
+    private var orders: Array<Order>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
