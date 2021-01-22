@@ -23,3 +23,4 @@ from .admins import Admin
 from .orders import VendorRating
 from .notifications import Notification
 from .notifications import NotificationType
+from .alarm import PriceAlarm
