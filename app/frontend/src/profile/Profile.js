@@ -12,13 +12,10 @@ import ReorderIcon from '@material-ui/icons/Reorder';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import Collapse from "@material-ui/core/Collapse";
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import ListIcon from '@material-ui/icons/List';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
 import PaymentIcon from '@material-ui/icons/Payment';
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
@@ -29,9 +26,8 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-
+import LockIcon from '@material-ui/icons/Lock';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -318,12 +314,6 @@ function Profile() {
                             </ListItemIcon>
                             <ListItemText primary="Lists"/>
                           </ListItem>
-                          <ListItem button>
-                            <ListItemIcon>
-                              <HomeIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Addresses"/>
-                          </ListItem>
                         <ListItem button>
                         <ListItemIcon>
                         <PaymentIcon/>
@@ -355,7 +345,7 @@ function Profile() {
                         <ListItem button component={Link}
                                   to="/add-product">
                           <ListItemIcon>
-                            <ListIcon/>
+                            <AddCircleIcon/>
                           </ListItemIcon>
                           <ListItemText primary="Add Product"/>
                         </ListItem>
@@ -369,25 +359,12 @@ function Profile() {
 
 
                       )}
-
-                      <ListItem button onClick={handleClick}>
+                      <ListItem button component={Link} to="/profile/changepassword">
                         <ListItemIcon>
-                          <SettingsIcon/>
+                          <LockIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Settings"/>
-                        {open ? <ExpandLess/> : <ExpandMore/>}
+                        <ListItemText primary="Change Password"/>
                       </ListItem>
-                          <Collapse in={open} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                              <ListItem button className={classes.nested} component={Link}
-                                        to="/profile/changepassword">
-                                <ListItemText primary="Change Password"/>
-                              </ListItem>
-                              <ListItem button className={classes.nested}>
-                                <ListItemText primary="Personal Information"/>
-                              </ListItem>
-                            </List>
-                          </Collapse>
                         </List>
                       </div>
                     </Paper>
@@ -408,55 +385,51 @@ function Profile() {
                         />
                       </div>
                       <div style={{marginLeft: "6rem"}}>
-                        <div>
+                        <Grid container spacing={3}>
+                        <Grid item xs={10} sm={5}>
                           <TextField
-                              className={classes.txtfield}
                               error={val.first_name.error}
                               helperText={val.first_name.message}
                               id="first_name"
                               label="Name"
+                              fullWidth
                               variant="outlined"
                               defaultValue={JSON.parse(JSON.stringify(name.first_name))}
                               disabled={!edit}
                               onChange={onChange}
-                              /*InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton onClick={() => setEdit(true)}>
-                                      <EditIcon />
-                                    </IconButton>
-                                  </InputAdornment>
-                                )
-                              }}*/
                           />
+                          </Grid>
+                          <Grid item xs={10} sm={5}>
                           <TextField
-                              className={classes.txtfield3}
                               error={val.last_name.error}
                               helperText={val.last_name.message}
                               id="last_name"
+                              fullWidth
                               label="Surname"
                               variant="outlined"
                               defaultValue={JSON.parse(JSON.stringify(name.last_name))}
                               disabled={!edit}
                               onChange={onChange}
                           />
-                        </div>
-                        <div>
+                          </Grid>
+                          <Grid item xs={10} sm={5}>
                           <TextField
-                              className={classes.txtfield}
                               error={val.username.error}
                               helperText={val.username.message}
                               id="username"
                               label="Username"
+                              fullWidth
                               variant="outlined"
                               defaultValue={JSON.parse(JSON.stringify(name.username))}
                               disabled={!edit}
                               onChange={onChange}
                           />
+                          </Grid>
+                          <Grid item xs={10} sm={5}>
                           <TextField
-                              className={classes.txtfield3}
                               error={val.email.error}
                               helperText={val.email.message}
+                              fullWidth
                               id="email"
                               label="E-mail"
                               variant="outlined"
@@ -464,24 +437,7 @@ function Profile() {
                               disabled={true}
                               onChange={onChange}
                           />
-                        </div>
-                        {/*<div>
-                          <TextField
-                              className={classes.txtfield2}
-                              error={val.address.error}
-                              helperText={val.address.message}
-                              id="address"
-                              label="Address"
-                              variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.address)) !== '' ?
-                                  (JSON.parse(JSON.stringify(name.address))) : (' ')
-                              }
-                              disabled={!edit}
-                              multiline={true}
-                              onChange={onChange}
-                          />
-                        </div>*/}
-                        <Grid container spacing={3}>
+                          </Grid>
                         <Grid item xs={10}>
                           <TextField
                             required
