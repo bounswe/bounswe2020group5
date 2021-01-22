@@ -198,6 +198,7 @@ export default function Navbar({notificationpage,messagespage}) {
     setIsLogged(false);
     setAnchorEl(false);
     setvendorAnchorEl(false)
+    window.location.reload();
   }
 
   const handlejointClose = () => {
@@ -241,7 +242,7 @@ export default function Navbar({notificationpage,messagespage}) {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
 
-   
+
       <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}
@@ -399,7 +400,7 @@ export default function Navbar({notificationpage,messagespage}) {
                 <IconButton aria-label="show new notifications" color="inherit">
                   <Badge badgeContent={null} color="primary">
 
-               
+
 
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
