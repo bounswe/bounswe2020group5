@@ -85,40 +85,74 @@ export default function ComplexGrid() {
     let uniquevendor=new Set();
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
 
         let searchproductdata;
-
 
         searchproductdata = {
             "query": localStorage.getItem('searchkey'),
         }
-        fetch(serverUrl + 'api/products/search/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(searchproductdata),
 
-        }).then(res => res.json())
-            .then(json => {
-                setStatepro ( json);
-                setLoadPage(true);
-                setinitialstate(json)
+        if(!(token==null)) {
+            console.log('login')
+            fetch(serverUrl + 'api/products/search/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify(searchproductdata),
 
-                filledidproducts = json.map((product) => (product.id));
-                setselectid(filledidproducts)
+            }).then(res => res.json())
+                .then(json => {
+                    setStatepro(json);
+                    setLoadPage(true);
+                    setinitialstate(json)
 
-                filledbrandlist=json.map((product) => (product.brand));
-                filledbrandlist.forEach(b => uniquebrand.add(b.toLowerCase()));
-                filledbrandlist=Array.from(uniquebrand);
-                setselectbrand(filledbrandlist);
+                    filledidproducts = json.map((product) => (product.id));
+                    setselectid(filledidproducts)
 
-                filledvendorlist=json.map((product) => (product.vendor));
-                filledvendorlist.forEach(v => uniquevendor.add(v.toLowerCase()));
-                filledvendorlist=Array.from(uniquevendor);
-                setselectvendor(filledvendorlist);
+                    filledbrandlist = json.map((product) => (product.brand));
+                    filledbrandlist.forEach(b => uniquebrand.add(b.toLowerCase()));
+                    filledbrandlist = Array.from(uniquebrand);
+                    setselectbrand(filledbrandlist);
+
+                    filledvendorlist = json.map((product) => (product.vendor));
+                    filledvendorlist.forEach(v => uniquevendor.add(v.toLowerCase()));
+                    filledvendorlist = Array.from(uniquevendor);
+                    setselectvendor(filledvendorlist);
 
 
-            })
-            .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+        }else{
+            console.log('notlogin')
+            fetch(serverUrl + 'api/products/search/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify(searchproductdata),
+
+            }).then(res => res.json())
+                .then(json => {
+                    setStatepro(json);
+                    setLoadPage(true);
+                    setinitialstate(json)
+
+                    filledidproducts = json.map((product) => (product.id));
+                    setselectid(filledidproducts)
+
+                    filledbrandlist = json.map((product) => (product.brand));
+                    filledbrandlist.forEach(b => uniquebrand.add(b.toLowerCase()));
+                    filledbrandlist = Array.from(uniquebrand);
+                    setselectbrand(filledbrandlist);
+
+                    filledvendorlist = json.map((product) => (product.vendor));
+                    filledvendorlist.forEach(v => uniquevendor.add(v.toLowerCase()));
+                    filledvendorlist = Array.from(uniquevendor);
+                    setselectvendor(filledvendorlist);
+
+
+                })
+                .catch(err => console.log(err));
+
+        }
 
 
     }, []);
