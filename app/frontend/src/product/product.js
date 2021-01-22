@@ -82,6 +82,7 @@ const Product = (props) => {
         price: '',
         imgsrc: '',
         rating: '',
+        vendorrating: '',
         temp_comment: '',
         comments: [],
         newlist: "",
@@ -116,7 +117,8 @@ const Product = (props) => {
 
         }
 
-        Promise.all([fetch(serverUrl + 'api/products/' + id, {
+        Promise.all([
+            fetch(serverUrl + 'api/products/' + id, {
             method: 'GET',
         }).then(res => res.json())
             .then(json => {
@@ -128,14 +130,24 @@ const Product = (props) => {
                 state.description = json.description;
                 state.imgsrc = json.image_url;
                 state.rating = json.rating;
-            }), fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+            }),
+            fetch(serverUrl + 'api/products/opts/get_all_comments/', {
             method: 'POST',
             body: JSON.stringify({product_id: id}),
             headers: {'Content-Type': 'application/json'},
         }).then(res => res.json())
             .then(json => {
                 state.comments = json;
-            })]).then(() => {
+            }),
+            fetch(serverUrl + 'api/orders/avg-rating-product-page/', {
+                method: 'POST',
+                body: JSON.stringify({product_id: id}),
+                headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json())
+                .then(json => {
+                    state.vendorrating = json.score.toFixed(1);
+                })
+        ]).then(() => {
             setLoadPage1(true);
             //json response
         }).catch((err) => {
@@ -478,11 +490,14 @@ const Product = (props) => {
                                             gutterBottom>
                                             Vendor:
                                         </Typography>
-                                        <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
+                                        <Typography style={{marginLeft: "1rem", marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
                                                     color="textSecondary">
                                             {state.vendor}
                                         </Typography>
+                                        {state.vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
+                                            state.vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
+                                                    (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>)}
                                         <Divider/>
                                         <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
                                                     variant="body2"
