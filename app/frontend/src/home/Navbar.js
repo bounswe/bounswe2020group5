@@ -195,6 +195,7 @@ export default function Navbar({notificationpage,messagespage}) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('is_vendor');
     setIsLogged(false);
     setAnchorEl(false);
     setvendorAnchorEl(false)
