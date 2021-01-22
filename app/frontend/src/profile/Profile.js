@@ -307,7 +307,7 @@ function Profile() {
             function (error) {
                 console.error("Error Code = " + error.code + " - " + error.message);
             }
-        );
+        , []);
     }
 
     const isMounted = useRef(false);
@@ -473,7 +473,7 @@ function Profile() {
                                         </div>
                                     ) : (
                                         <div>
-                                            <div style={{marginLeft: "1rem"}}>
+                                            <div>
                                                 <IconButton>
                                                     <Badge>
                                                         <AccountCircleOutlinedIcon
@@ -490,9 +490,9 @@ function Profile() {
                                                     inputProps={{'aria-label': 'new-arrivals'}}
                                                     disabled={true}
                                                 />
-                                                {vendorrating>=8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>):
-                                                    vendorrating>=5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>):
-                                                        (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>)}
+                                                {vendorrating>=8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>):
+                                                    vendorrating>=5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>):
+                                                        (<Button style={{background:"#a71325", fontSize:"1rem", color:"white", display: 'inline-block'}} variant="contained" disabled>{vendorrating}</Button>)}
                                             </div>
                                             <List
                                                 component="nav"
