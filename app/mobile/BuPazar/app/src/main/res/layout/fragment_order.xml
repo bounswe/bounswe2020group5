@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/address_header_bar"
-            android:id="@+id/card_number_bar"
+            android:id="@+id/order_items_bar"
             android:background="@drawable/rectangle_border">
 
             <RelativeLayout
@@ -134,7 +134,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/card_name_text"
+                    android:id="@+id/order_id_text"
                     android:text="Yasar's Mastercard"
                     android:padding="8dp"/>
             </RelativeLayout>

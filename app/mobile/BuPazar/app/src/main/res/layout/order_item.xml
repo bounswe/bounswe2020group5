@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rectangle_border"
+        android:id="@+id/address_box">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/order_header_bar">
+
+            <TextView
+                android:id="@+id/order_id_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:text="Order ID: #23"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/secondary_blue"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_id_text"
+                android:layout_marginTop="2dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Price: 144.00 TL"
+                android:layout_marginBottom="4dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/order_header_bar"
+            android:id="@+id/order_items_bar"
+            android:background="@drawable/rectangle_border">
+
+            <ImageView
+                android:id="@+id/order_status_image"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_check_24"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/order_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/order_status_image"
+                android:text="Order Delivered"
+                android:layout_marginStart="2dp"
+                android:layout_alignTop="@id/order_status_image"
+                android:layout_marginTop="2.5dp"
+                android:textColor="#1DA61E"
+                android:textSize="14sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_status_text"
+                android:layout_marginTop="4dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignStart="@id/order_status_image"
+                android:layout_marginEnd="8dp"
+                android:scrollbars="horizontal"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -36,13 +36,13 @@ class OrderFragment : Fragment() {
         apiService.getCreditCards(authToken!!) {
             creditCards = it
             if (chosenCreditCard != null) {
-                card_name_text.text = chosenCreditCard!!.name
+                order_id_text.text = chosenCreditCard!!.name
             }
             else if (creditCards == null || creditCards!!.size == 0) {
-                card_name_text.text = "Please add credit card!"
+                order_id_text.text = "Please add credit card!"
             }
             else {
-                card_name_text.text = creditCards?.get(0)?.name
+                order_id_text.text = creditCards?.get(0)?.name
             }
         }
     }
@@ -62,13 +62,13 @@ class OrderFragment : Fragment() {
         apiService.getCreditCards(authToken!!) {
             creditCards = it
             if (chosenCreditCard != null) {
-                card_name_text.text = chosenCreditCard!!.name
+                order_id_text.text = chosenCreditCard!!.name
             }
             else if (creditCards == null || creditCards!!.size == 0) {
-                card_name_text.text = "Please add credit card!"
+                order_id_text.text = "Please add credit card!"
             }
             else {
-                card_name_text.text = creditCards?.get(0)?.name
+                order_id_text.text = creditCards?.get(0)?.name
             }
         }
         address_text.setText(userData!!.address)
@@ -76,7 +76,7 @@ class OrderFragment : Fragment() {
         total_price_text.text = "$" + price
 
        place_order_button.setOnClickListener {
-            if (gdpr_checkbox.isChecked && !card_name_text.text.equals("Please add credit card!")) {
+            if (gdpr_checkbox.isChecked && !order_id_text.text.equals("Please add credit card!")) {
                 apiService.makePurchase(authToken!!) {
                     if (it?.success == "Products in cart are successfully purchased") {
                         val successfulOrderFragment = SuccessfulOrderFragment()
@@ -91,7 +91,7 @@ class OrderFragment : Fragment() {
                     }
                 }
             }
-            else if (card_name_text.text.equals("Please add credit card!")) {
+            else if (order_id_text.text.equals("Please add credit card!")) {
                 Toast.makeText(this.activity,"Please add credit card!", Toast.LENGTH_SHORT).show()
             }
             else {

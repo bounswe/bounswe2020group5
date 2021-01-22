@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.model.*
@@ -70,12 +69,12 @@ class PayWithAnotherCardFragment : Fragment() {
         val apiService = RestApiService()
 
         add_new_card_button.setOnClickListener {
-            val newCreditCard = AddCreditCardRequest(name = card_name_text.text.toString(), cardOwner = card_owner_text.text.toString(),
+            val newCreditCard = AddCreditCardRequest(name = order_id_text.text.toString(), cardOwner = card_owner_text.text.toString(),
                 cardNumber = card_number_text.text.toString(), expirationDate = expiration_text.text.toString(), cvc = cvc_text.text.toString())
 
             apiService.addCreditCard(authToken!!, newCreditCard) {
                 apiService.getCreditCards(authToken!!) {
-                    chosenCreditCard = it?.get(it.size - 1) ?: CreditCard(-1, card_name_text.text.toString(), customer = -1, cardOwner = card_owner_text.text.toString(),
+                    chosenCreditCard = it?.get(it.size - 1) ?: CreditCard(-1, order_id_text.text.toString(), customer = -1, cardOwner = card_owner_text.text.toString(),
                         cardNumber = card_number_text.text.toString(), expirationDate = expiration_text.text.toString(), cvc = cvc_text.text.toString())
 
                     val orderFragment = OrderFragment()

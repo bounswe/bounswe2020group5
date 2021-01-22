@@ -42,6 +42,7 @@ class MyAccountFragment : Fragment() {
             var intent=Intent(this.activity, MessageMainActivity::class.java)
             startActivity(intent)
         }
+
         personalInfoLayout.setOnClickListener {
             val profilePage = ProfilePageFragment()
             val bundle = Bundle()
