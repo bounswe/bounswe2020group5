@@ -89,4 +89,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/orders/customer-orders/")
+    fun getPreviousOrders(@Header("Authorization") authToken: String): Call<PreviousOrders>
 }
