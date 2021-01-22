@@ -32,3 +32,4 @@ from .orders_details import add_vendor_rating
 from .orders_details import avg_vendor_rating_product_page
 from .orders_details import avg_vendor_rating_profile_page
 from .notifications import NotificationViewSet
+from .notifications import my_notifications

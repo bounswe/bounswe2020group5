@@ -11,6 +11,7 @@ class NotificationType(Enum):
     STOCK_RENEWED = 2
     ORDER_STATUS_CHANGED = 3
     NEW_DISCOUNT = 4
+    PRICE_ALARM = 5
 
     @classmethod
     def choices(cls):
