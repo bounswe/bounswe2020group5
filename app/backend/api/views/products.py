@@ -124,7 +124,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         product.save()
         return Response(data={'success': 'Comment added, Rating is given'}, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: CommentSerializer(many=True)})
     @action(methods=['POST'], detail=False, queryset = "", permission_classes=[])
     def get_all_comments(self, request):
         product_id = request.data.get("product_id")
@@ -133,7 +133,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         return Response(data=comment_contents.data, status=status.HTTP_200_OK)
         
     # Takes the requesting customer user and finds all comments given by that user
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: CommentSerializer(many=True)})
     @action(methods=['POST'], detail=False, queryset = "", permission_classes=[IsAuthCustomer, ])
     def get_user_comments(self, request):
         customer = Customer.objects.get(user=request.user)
