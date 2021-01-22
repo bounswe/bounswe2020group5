@@ -76,4 +76,4 @@ from .orders import VendorRatingResponseSerializer
 from .notifications import NotificationSerializer
 from .alarm import SetPriceAlarmSerializer
 from .alarm import DeletePriceAlarmSerializer
-from .alarm import PriceAlarm
+from .alarm import PriceAlarmSerializer
