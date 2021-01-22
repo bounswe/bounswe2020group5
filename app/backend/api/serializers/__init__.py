@@ -69,5 +69,9 @@ from .admins import IsAdminResponseSerializer
 from .admins import AdminSerializer
 from .admins import AssignSerializer
 from .admins import CommentIdSerializer
+from .orders import VendorRatingSerializer
+from .orders import AddVendorRatingSerializer
+from .orders import VendorRatingInProductPageSerializer
+from .orders import VendorRatingResponseSerializer
 from .notifications import NotificationSerializer
 
