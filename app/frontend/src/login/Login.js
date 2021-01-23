@@ -12,22 +12,8 @@ import { serverUrl } from "../common/ServerUrl";
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import secrets from './secrets.json';
-import FacebookAuth from 'react-facebook-auth';
+
 //styles
-
-
-const MyFacebookButton = ({ onClick }) => (
-  <Button className="button-div"
-    variant="outlined"
-    color="primary"
-    style={{ textTransform: "None" }}
-    startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
-  >
-    Continue with Facebook
-  </Button>
-
-);
-
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
     "& .MuiTextField-root": {
