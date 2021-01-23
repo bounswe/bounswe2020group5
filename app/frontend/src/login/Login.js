@@ -12,7 +12,22 @@ import { serverUrl } from "../common/ServerUrl";
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import secrets from './secrets.json';
+import FacebookAuth from 'react-facebook-auth';
 //styles
+
+
+const MyFacebookButton = ({ onClick }) => (
+  <Button className="button-div"
+    variant="outlined"
+    color="primary"
+    style={{ textTransform: "None" }}
+    startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
+  >
+    Continue with Facebook
+  </Button>
+
+);
+
 const useStyles = makeStyles((theme) => ({
   loginFormRoot: {
     "& .MuiTextField-root": {
@@ -38,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
 
-  //states
+
   const classes = useStyles();
+
+  console.log("classes.loginButtonRoot is " + classes.loginButtonRoot)
 
   const [state, setState] = useState({
     password: '',
@@ -140,7 +157,8 @@ function Login() {
         localStorage.setItem('token', token);
         setLogged(true);
       } else {
-        setAlertMessage('Invalid credentials');
+        console.log("error message is " + res.error)
+        setAlertMessage(res.error);
       }
     } catch (error) {
       setAlertMessage('Some error has occured');
@@ -247,27 +265,7 @@ function Login() {
               buttonText="Login"
               onSuccess={responseGoogleSuccess}
               onFailure={responseGoogleFail}
-              cookiePolicy={'single_host_origin'}
-            />
-          </div>
-          <div className="button-div2">
-            <FacebookLogin
-              appId={state.keys['f_app_id']}
-              render={renderProps => (
-                <div className={classes.loginButtonRoot}>
-                  <Button
-                    onClick={renderProps.onClick}
-                    variant="outlined"
-                    color="primary"
-                    style={{ textTransform: "None" }}
-                    startIcon={<img src="/img/facebook-icon.svg" alt="facebook icon" />}
-                  >
-                    Continue with Facebook
-            </Button>
-                </div>
-              )}
-              callback={responseFacebook}
-
+              cookiePolicy={'none'}
             />
           </div>
         </div>
