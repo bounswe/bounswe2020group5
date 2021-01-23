@@ -58,7 +58,7 @@ urlpatterns = [
     path('orders/add-vendor-rating/', add_vendor_rating),
     path('orders/avg-rating-product-page/', avg_vendor_rating_product_page),
     path('orders/avg-rating-profile-page/', avg_vendor_rating_profile_page),
-    path('notifications/my-notifications/', my_notifications),
+    path('notifications/my/notifications/', my_notifications),
     path('alarms/set-price-alarm/', set_price_alarm),
     path('alarms/delete-price-alarm/', delete_price_alarm),
     path('alarms/my-price-alarms/', my_price_alarms),

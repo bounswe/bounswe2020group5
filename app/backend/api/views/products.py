@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
 from api.custom_permissions import IsAuthCustomer, IsAuthVendor
+from ..models import PriceAlarm, Notification, NotificationType
 
 class ProductOptViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
@@ -78,6 +79,17 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             if 'name' in data:
                 product.name = data['name']
             if 'price' in data:
+                alarms = PriceAlarm.objects.filter(product=product)
+
+                # check all alarms contains updated product to notify customers 
+                for alarm in alarms:
+                    if data['price'] < alarm.price:
+                        new_price = data['price'] 
+                        text = f'Price of {product.name} go down to {new_price}.'
+                        notification_type = NotificationType.PRICE_ALARM
+                        notification = Notification(text= text, notificationType=notification_type.value , user=alarm.customer.user, product=product, order=None)
+                        notification.save()
+
                 product.price = data['price']
             if 'stock' in data:
                 product.stock = data['stock']
