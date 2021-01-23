@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from ..models import User, TempUser, SocialDocs, PasswordChangedDate, LoginFailInfos, BannedUser
-from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer
+from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer, ErrorSerializer
 from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, GoogleSocialAuthSerializer, FacebookSocialAuthSerializer
 from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
 from ..utils import create_user_account, create_temp_user_account, send_email
@@ -20,6 +20,7 @@ from django.contrib.sites.shortcuts import get_current_site
 import datetime
 from bupazar.settings import PASSWORD_G,PASSWORD_F
 
+date_format = "%d/%m/%Y, %H:%M:%S"
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
@@ -69,7 +70,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         social_user_document = SocialDocs.objects.filter(email=email,social_provider='google')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_G)
-            print("user is ",user)
         elif not social_user_document and social_user:
             return Response({'error': 'The user with this email is already registered.'},
                         status=HTTP_400_BAD_REQUEST)
@@ -89,8 +89,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated = serializer.validated_data
-        print("VALIDETED",validated)
-        print("ALL",SocialDocs.objects.all())
         data = dict(validated)['auth_token']
         email = data['email']
         first_name = data['name'].split()[0]
@@ -101,16 +99,13 @@ class AuthViewSet(viewsets.GenericViewSet):
         social_user_document = SocialDocs.objects.filter(email=email,social_provider='facebook')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_F)
-            print("user is ",user)
         elif not social_user_document and social_user:
-            print("sdasdasdasdasdas")
             return Response({'error': 'The user with this email is already registered.'},
                         status=HTTP_404_NOT_FOUND)
         else:
             try:
                 social_user_document = SocialDocs(email=email,social_provider='facebook')
                 social_user_document.save()
-                print("social_user_document",social_user_document)
                 user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_F,is_customer=True,is_vendor=False,address="Address is not defined in Facebook") 
             except Exception as e:
                 print("Exception is ",e)
@@ -128,6 +123,10 @@ class AuthViewSet(viewsets.GenericViewSet):
         if email is None or password is None:
             return Response({'error': 'Please provide both email and password'},
                         status=HTTP_400_BAD_REQUEST)
+        ui = BannedUser.objects.filter(email=email)
+        if ui:
+            return Response({'error': 'Your are currently banned please check your email'},
+                        status=HTTP_400_BAD_REQUEST)
         user = authenticate(request, username=email, password=password)
   
         if not user:
@@ -136,13 +135,10 @@ class AuthViewSet(viewsets.GenericViewSet):
                 try:
                     fail_infos = LoginFailInfos.objects.get(email=email)
                     if fail_infos.fail_times == 2:
-                        print("fail_times 2")
                         usr_to_ban = User.objects.get(email=email)
                         b = BannedUser(email=email,user=usr_to_ban)
                         b.save()
-                        print("1")
                         user = User.objects.get(email=email)
-                        print("2")
                         uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
                         token = PasswordResetTokenGenerator().make_token(user)
                         current_site = get_current_site(
@@ -151,7 +147,6 @@ class AuthViewSet(viewsets.GenericViewSet):
                         link = 'http://'+current_site +"/"+ relativeLink
                         template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
                         send_mail("Change your password", template , "bupazar451@gmail.com", [email])
-                        print("email sent")
                         fail_infos.delete()
                         return Response({'error': 'you are banned check your email'}, status=HTTP_404_NOT_FOUND)
                     fail_infos.fail_times = fail_infos.fail_times + 1
@@ -163,26 +158,20 @@ class AuthViewSet(viewsets.GenericViewSet):
             return Response({'error': 'Invalid Credentials'},
                         status=HTTP_404_NOT_FOUND)
         
-        now = datetime.datetime.now().strftime('%Y:%m:%d')
-        date_format = "%Y:%m:%d"
-        joined_date = user.date_joined.strftime('%Y:%m:%d')
-        diff = 0
+        now = datetime.datetime.now().strftime(date_format)
         try:
             password_info = PasswordChangedDate.objects.get(email=email)
-            last_change_time = password_info.last_change.strftime('%Y:%m:%d')
-
-            a = datetime.datetime.strptime(last_change_time, date_format)
-            b = datetime.datetime.strptime(now, date_format)
-
-            if int(b-a) > 30:
-                print("The user should change his or her password")
+            last_change_time = password_info.last_change
+            date_1 = datetime.datetime.strptime(last_change_time, date_format)
+            date_2 = datetime.datetime.strptime(now, date_format)
+            time_delta = (date_2 - date_1)
+            total_seconds = time_delta.total_seconds()
+            minutes = total_seconds//60
+            if minutes > 43200:
                 template = render_to_string('password_change_warning.html', {'name': user.username})
                 send_mail("Change your password", template , "bupazar451@gmail.com", [str(user.email)])
-                print("Email is sent")
-        except:
-            pass
-
-        
+        except Exception as e:
+            print(" callculating the diff between two date is crashed since "+e)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
     
@@ -238,7 +227,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = create_user_account(**validated_user_account)
 
         try:
-            lc = validated_user_account['date_joined'].strftime('%Y:%m:%d')
+            lc = validated_user_account['date_joined'].strftime(date_format)
             p = PasswordChangedDate(email=validated_user_account['email'], last_change=lc, user=user)
             p.save()
             print("PasswordChangedDate is created")
@@ -257,9 +246,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
         try:
-            password_info = PasswordChangedDate.objects.get(email=email)
-            password_info.last_change = datetime.datetime.now().strftime('%Y:%m:%d')
-            password_info.save()
+            now_is = datetime.datetime.now().strftime(date_format)
+            PasswordChangedDate.objects.filter(email=request.user.email).update(last_change=now_is)
         except:
             pass
         return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_200_OK)
@@ -343,9 +331,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             try:
                 banned_user = BannedUser.objects.filter(email=user.email)
                 banned_user.delete()
-                password_info = PasswordChangedDate.objects.get(email=user.email)
-                password_info.last_change = datetime.datetime.now().strftime('%Y:%m:%d')
-                password_info.save()
+                now_is = datetime.datetime.now().strftime(date_format)
+                PasswordChangedDate.objects.filter(email=user.email).update(last_change=now_is)
             except Exception as e:
                 print("banned_user and PasswordChangedDate are crashed since ",e)
             data = AuthUserSerializer(user).data
