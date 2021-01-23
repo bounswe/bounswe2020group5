@@ -89,4 +89,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/add_comment/")
+    fun addComment(@Header("Authorization") authToken: String, @Body commnentData: AddComment): Call<Success>
 }
