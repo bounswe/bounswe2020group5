@@ -90,7 +90,7 @@ const Product = (props) => {
 
     useEffect(() => {
 
-        if (token && !vendor) {
+        if (token && vendor==="false") {
             Promise.all([
                 fetch(serverUrl + 'api/orders/customer-purchased/', {
                     method: 'POST',
@@ -335,7 +335,7 @@ const Product = (props) => {
                                 <Grid container justify="center">
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
-                                {token && !vendor ? (
+                                {token && vendor==="false" ? (
 
                                     <Grid container alignItems={"center"} justify="center">
 
@@ -490,7 +490,7 @@ const Product = (props) => {
                                         <Divider/>
 
                                     </Grid>
-                                    {token && !vendor ? (
+                                    {token && vendor==="false" ? (
                                         <Grid style={{marginBottom: "1rem", marginTop: "1rem", marginLeft: "20rem"}}>
                                         <div>
                                             <ButtonGroup style={{marginLeft: "9rem"}} variant="text"

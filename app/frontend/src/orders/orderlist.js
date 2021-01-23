@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    ButtonGroup,
     Divider,
     Grid,
     IconButton,
@@ -9,12 +8,13 @@ import {
     Paper,
     Typography,
 } from "@material-ui/core";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import CancelIcon from '@material-ui/icons/Cancel';
 import {serverUrl} from "../common/ServerUrl";
-import {useHistory} from "react-router-dom";
-import {Favorite} from "@material-ui/icons";
-import Statusupdate from "../components/vendorstatusupdate";
+import {Link, useHistory} from "react-router-dom";
+import Rating from "@material-ui/lab/Rating";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,8 +64,30 @@ const useStyles = makeStyles((theme) => ({
 export default function Orderlist(props) {
     const classes = useStyles();
     const token = localStorage.getItem('token')
-    let history = useHistory();
+    const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+    const [stars, setStars] = React.useState(0);
+    const [total, setTotal] = React.useState(0);
 
+    useEffect(() => {
+        let temp = 0;
+        props.orders.purchases.map((e, index) => {
+            temp += e.unit_price;
+        });
+        setTotal(temp.toFixed(2));
+    }, []);
+
+    let history = useHistory();
+    console.log(props.orders.purchases);
+
+    const snackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen1(false);
+        setOpen2(false);
+    };
 
     const HandleCancel = (order, event) => {
         fetch(serverUrl + 'api/orders/customer-cancel/', {
@@ -80,11 +102,35 @@ export default function Orderlist(props) {
                 } else alert("Cancel failed")
             })
     };
+
+    const rateVendor = (pid, stars) => {
+        setStars(stars);
+        fetch(serverUrl + 'api/orders/add-vendor-rating/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'purchase_id': pid , 'rating_score': stars}),
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    setMessage(json.success);
+                    setOpen1(true);
+                } else  {
+                    setMessage("Vendor rating failed.");
+                    setOpen2(true);
+                }
+            })
+    };
+
+
     const Cancelinfo=()=>{
         if(props.orders.purchases[0].status=='Vcancelled'){
-            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY VENDOR</span>
+            return <Paper style={{backgroundColor: 'white', color:'#7A0010', fontWeight:'bold'}} className={classes.paperinner}>
+                ORDER CANCELLED BY VENDOR
+            </Paper>
         }else if(props.orders.purchases[0].status=='Ccancelled'){
-            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY CUSTOMER</span>
+            return <Paper style={{backgroundColor: 'white', color:'#7A0010', fontWeight:'bold'}} className={classes.paperinner}>
+                ORDER CANCELLED BY CUSTOMER
+            </Paper>
         }
     };
 
@@ -92,30 +138,29 @@ export default function Orderlist(props) {
         <Paper className={classes.paper}>
             <Grid>
                 <Grid container>
-                    <Paper style={{backgroundColor: 'rgba(11, 57, 84,0.15)'}} className={classes.paperinner}>
+                    <Paper style={{backgroundColor: '#0B3954', color:'white', fontWeight:'bold'}} className={classes.paperinner}>
                         Order {props.orders.order_id}
                     </Paper>
-                    {!(props.orders.purchases[0].status=='Vcancelled'||props.orders.purchases[0].status=='Ccancelled')?<IconButton style={{marginRight:"15rem"}}className={classes.iconbutton} onClick={(event) => HandleCancel(props.vendororders.id, event)}>
+                    {!(props.orders.purchases[0].status=='Vcancelled'||props.orders.purchases[0].status=='Ccancelled')?
+                        <IconButton style={{marginRight:"15rem", fontWeight:"bold"}}className={classes.iconbutton} onClick={(event) => HandleCancel(props.vendororders.id, event)}>
                         <CancelIcon style={{marginRight:"0.5rem"}}/> Cancel Order
-                    </IconButton>:<span style={{marginRight:"40rem"}}></span>}
-                    <div>
-                        <React.Fragment>
-                            { <Box>{Cancelinfo()}</Box>}
-                        </React.Fragment>
-
-                    </div>
+                    </IconButton>:<React.Fragment>
+                        {Cancelinfo()}
+                    </React.Fragment>}
 
                 </Grid>
                 {props.orders.purchases.map((e, index) => {
                     return (
                         <Paper className={classes.paperinner}>
                             <Grid container spacing={4}>
-                                <Grid justify="center" item container xs={3}>
+                                <Grid justify="center" item container xs={2}>
+                                    <Link to={{pathname: `/product/${e.product.id}`}} style={{textDecoration: "none", color: "black"}}>
                                     <img
-                                        style={{maxHeight: 200, maxWidth: 330}}
+                                        style={{maxHeight: 200, maxWidth: 200}}
                                         src={e.product.image_url}
                                         alt="product image"
                                     />
+                                    </Link>
                                 </Grid>
                                 <Grid
                                     item
@@ -123,7 +168,7 @@ export default function Orderlist(props) {
                                     container
                                     xs={6}
                                 >
-                                    <Typography gutterBottom variant="h4">
+                                    <Typography gutterBottom variant="h5">
                                         {e.product.name}
                                     </Typography>
                                     <Divider variant="middle"/>
@@ -140,15 +185,15 @@ export default function Orderlist(props) {
                                     >
                                         <Typography
                                             gutterBottom
-                                            variant="h5"
+                                            variant="h6"
                                             style={{marginRight: 15, marginBottom: 40, color: "#229954"}}
                                         >
                                             &nbsp;$&nbsp;
-                                            {(parseFloat(e.product.price) * (100 - e.product.discount)) / 100}
+                                            {(e.unit_price).toFixed(2)}
                                         </Typography>
                                         <Typography
                                             gutterBottom
-                                            variant="h5"
+                                            variant="h6"
                                             style={{marginRight: 5, marginBottom: 40}}
                                         >
                                             &nbsp;AMOUNT&nbsp;:&nbsp;{e.amount}
@@ -161,7 +206,7 @@ export default function Orderlist(props) {
                                     direction="column"
                                     alignItems="center"
                                     justify="center"
-                                    xs={3}
+                                    xs={4}
                                 >
 
                                     <Box style={{marginRight: '0.7rem'}}
@@ -169,15 +214,54 @@ export default function Orderlist(props) {
                                         {<span>Order Status: </span>}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <Button
                                             size="small"
+                                            disabled
                                             variant="outlined"
+                                            style={{
+                                                backgroundColor: "white",
+                                                color:"black",
+                                            }}
                                         >
                                             {JSON.parse(JSON.stringify(e.status))}
                                         </Button>
                                     </Box>
-
+                                            {e.status === "Delivered" ? (
+                                                <Paper variant="outlined" style={{borderColor:"#7A0010"}}className={classes.paperinner}>
+                                                    <div style={{marginLeft:"0.5rem", marginRight:"0.5rem"}}>
+                                                        <Typography  >Please give a rating to <Typography style={{fontWeight:'bold'}}> {e.product.vendor}</Typography></Typography>
+                                                        <Rating
+                                                            style={{marginTop:"0.5rem"}}
+                                                            id="temp_rating"
+                                                            name="temp_rating"
+                                                            value={stars}
+                                                            max={10}
+                                                            onChange={(event, newValue) => {
+                                                                rateVendor(e.id, newValue);
+                                                            }}
+                                                        />
+                                                        <Snackbar open={open1} autoHideDuration={6000} onClose={snackbarClose}>
+                                                            <Alert onClose={snackbarClose} severity="success">
+                                                                {message}
+                                                            </Alert>
+                                                        </Snackbar>
+                                                        <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
+                                                            <Alert onClose={snackbarClose} severity="error">
+                                                                {message}
+                                                            </Alert>
+                                                        </Snackbar>
+                                                    </div>
+                                                </Paper>
+                                            ):null}
                                 </Grid>
-                            </Grid></Paper>);
+                            </Grid>
+                        </Paper>
+                    );
                 })}
+
+                <Grid container justify="flex-end" style={{marginRight:"5rem"}}>
+                    <Paper style={{backgroundColor: 'white', color:'#0B3954', fontWeight:'bold', fontSize:20}} className={classes.paperinner}>
+                        Total cost: ${total}
+                    </Paper>
+                </Grid>
             </Grid>
         </Paper>
     );
