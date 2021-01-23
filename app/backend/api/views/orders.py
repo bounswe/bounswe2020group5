@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from ..models import Customer, CreditCard, Purchase, Cart, ProductInCart, Order
+from ..models import Customer, CreditCard, Purchase, Cart, ProductInCart, Order, Notification, NotificationType
 from ..serializers import CreditCardSerializer, AddCreditCardSerializer, DeleteCreditCardSerializer, SuccessSerializer
 from .. serializers import PurchaseSerializer, EmptySerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -93,6 +93,11 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
             purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
                                     unit_price=unit_price, order=order, status='OrderTaken')
             purchase.save()
+        # Create a notification about the new order.
+        text = f'Your order {order.id} is taken by the vendor. You can check the status of your order from orders page.'
+        notification_type = NotificationType.ORDER_STATUS_CHANGED
+        order_notification = Notification(text=text, notificationType=notification_type, user=request.user, product=None, order=order)
+        order_notification.save()
         ProductInCart.objects.filter(cart=cart).delete()
         return Response(data={'success': 'Products in cart are successfully purchased'}, status=status.HTTP_201_CREATED)
 
