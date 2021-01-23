@@ -76,7 +76,7 @@ export default function ComplexGrid() {
     let [selectid,setselectid]=React.useState([]);
     let [branddata,setbranddata]=React.useState(true);
     let [vendordata,setvendordata]=React.useState(true);
-
+    let [pricedata,setpricedata]=React.useState(true);
 
     let filledidproducts;
     let filledbrandlist;
@@ -86,6 +86,7 @@ export default function ComplexGrid() {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
+        sessionStorage.clear()
 
         let searchproductdata;
 
@@ -168,14 +169,18 @@ export default function ComplexGrid() {
         let datavendor;
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
 
-        if(vendorkeys==null){
-            vendorkeys=0
+        if(vendorkeys===null){
+
+            vendorkeys=[]
+
         }
 
-        if (vendorkeys===0){
+        if (vendorkeys.length===0){
             setvendordata(false);
-            vendorkeys=[];
+
             if(statepro.length===0){
+                console.log('aa')
+
                 setvendordata(true);
             }
         }else{
@@ -210,7 +215,7 @@ export default function ComplexGrid() {
                 }
 
                 setLoadPage(true);
-                sessionStorage.setItem('vendorlist',JSON.stringify([]))
+
 
             })
             .catch(err => {
@@ -222,42 +227,51 @@ export default function ComplexGrid() {
     const pricefilterclick = () => {
         let dataprice;
         let error;
-        dataprice = {
-            "product_ids": selectid,
-            "filter_data":[{
-                "filter_by":"price_range",
-                "data":{
-                    "lower_limit":priceleast,
-                    "upper_limit":pricemost,
-                }
-            },
-            ]
-        }
-        fetch(serverUrl + 'api/products/filter/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(dataprice)
-        }).then(res => res.json())
-            .then(json => {
-                error=json.error
 
-                if(error==='No products found'){
 
-                    setStatepro([])}
-                else{
-                    if(priceleast!==pricemost){
-                    if(dataprice.length!==0) {
-                        if(statepro.length!==0){
-                        setStatepro(json)
-                    }}
-                }}
-                    setLoadPage(true);
+       if( Number.isInteger(parseInt(priceleast))&& Number.isInteger(parseInt(pricemost))&&parseInt(priceleast)<parseInt(pricemost)){
+           setpricedata(true)
+           dataprice = {
+               "product_ids": selectid,
+               "filter_data":[{
+                   "filter_by":"price_range",
+                   "data":{
+                       "lower_limit":priceleast,
+                       "upper_limit":pricemost,
+                   }
+               },
+               ]
+           }
+           fetch(serverUrl + 'api/products/filter/', {
+               method: 'POST',
+               headers: {'Content-Type': 'application/json'},
+               body: JSON.stringify(dataprice)
+           }).then(res => res.json())
+               .then(json => {
+                   error=json.error
 
-            })
-            .catch(err => {
-                alert('Some error has occurred')
-                console.log(err)
-            });
+                   if(error==='No products found'){
+
+                       setStatepro([])}
+                   else{
+
+                           if(dataprice.length!==0) {
+
+                                   setStatepro(json)
+                               }}
+
+                   setLoadPage(true);
+
+               })
+               .catch(err => {
+                   alert('Some error has occurred')
+                   console.log(err)
+               });
+
+
+       }else{
+           setpricedata(false)
+       }
 
     };
     const starfilterclick = () => {
@@ -283,9 +297,9 @@ export default function ComplexGrid() {
                     setStatepro([])}
                 else{
                     if(datastar.length!==0) {
-                        if(statepro.length!==0){
+
                             setStatepro(json)
-                        }}
+                        }
                 }
                 setLoadPage(true);
 
@@ -323,9 +337,9 @@ export default function ComplexGrid() {
                     else{
 
                     if(datadiscount.length!==0) {
-                        if(statepro.length!==0){
+
                             setStatepro(json)
-                        }}
+                        }
 
                 }
 
@@ -389,7 +403,7 @@ export default function ComplexGrid() {
                     }
                 }
                 setLoadPage(true);
-                sessionStorage.setItem('brandlist',JSON.stringify([]))
+
 
             })
             .catch(err => {
@@ -411,6 +425,7 @@ export default function ComplexGrid() {
 
 
         var vendorkeys=JSON.parse(sessionStorage.getItem('vendorlist'));
+        console.log(vendorkeys)
 
         if(brandkeys===null){
             brandkeys=[]
@@ -440,12 +455,23 @@ export default function ComplexGrid() {
             applyallvendor=true
         }
 
-        if(priceleast===pricemost){
-
-            applyallprice=false
-        }else{
+        if( Number.isInteger(parseInt(priceleast))&& Number.isInteger(parseInt(pricemost))&&parseInt(priceleast)<parseInt(pricemost)){
             applyallprice=true
+
+
+        }else{
+            applyallprice=false
+
         }
+        if( Number.isInteger(parseInt(priceleast))&& Number.isInteger(parseInt(pricemost))&&
+            ((parseInt(priceleast)<parseInt(pricemost))||(parseInt(priceleast)<parseInt(pricemost)))){
+            setpricedata(true)
+
+        }else{
+
+            setpricedata(false)
+        }
+
 
 
         if(applyallbrand===true){
@@ -489,6 +515,7 @@ export default function ComplexGrid() {
             "product_ids": selectid,
             "filter_data":filterdata,
         }
+        console.log(filterdata)
 
         fetch(serverUrl + 'api/products/filter/', {
             method: 'POST',
@@ -497,6 +524,7 @@ export default function ComplexGrid() {
         }).then(res => res.json())
             .then(json => {
                 error=json.error
+                console.log(error)
 
                 if(error==='No products found'){
                     setStatepro([])
@@ -504,7 +532,7 @@ export default function ComplexGrid() {
 
 
                     if(dataall.length!==0) {
-                        if(statepro.length!==0){
+                        if(filterdata.length!==0){
                             setStatepro(json)
                         }}
 
@@ -686,7 +714,10 @@ export default function ComplexGrid() {
 
                         <TextField
                             id="filled-name"
-
+                            FormHelperTextProps={{
+                                className: classes.helperText
+                            }}
+                            helperText={pricedata ? '':'Incorrect'}
                             value={priceleast}
                             onChange={handleChangePriceleast}
                             variant="outlined"
@@ -695,7 +726,10 @@ export default function ComplexGrid() {
                         <Typography component="legend"> <bd>-</bd> </Typography>
                     <TextField style={{marginRight:'0.5rem'}}
                             id="filled-name"
-
+                               FormHelperTextProps={{
+                                   className: classes.helperText
+                               }}
+                               helperText={pricedata ? '':'Range'}
                             value={pricemost}
                             onChange={handleChangePricemost}
                             variant="outlined"
