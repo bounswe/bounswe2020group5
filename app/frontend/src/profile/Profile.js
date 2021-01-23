@@ -324,7 +324,7 @@ function Profile() {
                             </ListItemIcon>
                             <ListItemText primary="Addresses"/>
                           </ListItem>
-                        <ListItem button>
+                        <ListItem button component={Link} to="/profile/savedcards" >
                         <ListItemIcon>
                         <PaymentIcon/>
                         </ListItemIcon>
