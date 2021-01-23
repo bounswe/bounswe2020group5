@@ -7,12 +7,8 @@ import {serverUrl} from "../common/ServerUrl";
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Footer from "../components/Footer";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import TurnedInIcon from '@material-ui/icons/TurnedIn';
-import {ExpandLess, ExpandMore, Favorite} from "@material-ui/icons";
 import {Link, useHistory} from "react-router-dom";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import CreditCardIcon from '@material-ui/icons/CreditCard';
@@ -20,7 +16,6 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
-import Collapse from "@material-ui/core/Collapse";
 import Cards from "react-credit-cards";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
@@ -129,7 +124,6 @@ export default function ListPage() {
         if(value.length===4 || value.length===9 || value.length===14){
           newVal = value + " "
         }
-        console.log(newVal)
         setCardNumber(newVal)
 
       }
@@ -148,7 +142,6 @@ export default function ListPage() {
   }
 
   const handleClick = (cardID) => {
-    console.log(cardID)
     fetch(serverUrl + 'api/credit-cards/'+cardID, {
       method: 'GET',
       headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -160,7 +153,6 @@ export default function ListPage() {
         cardInfo.cvc = json.cvc_security_number
         cardInfo.card_name = json.name
         cardInfo.card_id = json.id
-        console.log(json)
       }).then(()=>{
         setOpen(true)
     })
