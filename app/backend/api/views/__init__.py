@@ -33,3 +33,6 @@ from .orders_details import avg_vendor_rating_product_page
 from .orders_details import avg_vendor_rating_profile_page
 from .notifications import NotificationViewSet
 from .notifications import my_notifications
+from .alarm import set_price_alarm
+from .alarm import delete_price_alarm
+from .alarm import my_price_alarms

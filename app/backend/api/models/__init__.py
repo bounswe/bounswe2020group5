@@ -26,3 +26,5 @@ from .notifications import NotificationType
 from .banned_users import BannedUser
 from .login_fail_infos import LoginFailInfos
 from .password_infos import PasswordChangedDate
+from .alarm import PriceAlarm
+

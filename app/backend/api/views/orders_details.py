@@ -57,15 +57,7 @@ def customer_cancel_order(request):
     purchases = Purchase.objects.filter(order=order)
 
     for purchase in purchases:
-        if purchase.status == 'Ccancelled':
-            return Response(data={'error': 'Order is already cancelled by customer'}, status=status.HTTP_400_BAD_REQUEST) 
-        elif purchase.status == 'Vcancelled':
-            return Response(data={'error': 'Order is already cancelled by vendor'}, status=status.HTTP_400_BAD_REQUEST)
-        elif purchase.status == 'Ship':
-            return Response(data={'error': 'Order is already at shipment stage'}, status=status.HTTP_400_BAD_REQUEST)
-        elif purchase.status == 'Delivered':
-            return Response(data={'error': 'Order is already delivered by customer'}, status=status.HTTP_400_BAD_REQUEST)
-        elif purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
+        if purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
               purchase.status = 'Ccancelled'
               purchase.save()
               product_id = purchase.product_id
@@ -74,6 +66,8 @@ def customer_cancel_order(request):
               product.stock += product_amount
               product.number_of_sales -= product_amount
               product.save()
+        else:
+            continue
     
     return Response(data={'success': 'Order is successfully canceled.'}, status=status.HTTP_200_OK)
 
