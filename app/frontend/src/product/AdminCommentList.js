@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Box from "@material-ui/core/Box";
 import { Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
+import BlockIcon from "@material-ui/icons/Block";
+import { serverUrl } from "../common/ServerUrl";
+import { Alert } from "@material-ui/lab";
+import { postData } from "../common/Requests";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +32,60 @@ const useStyles = makeStyles((theme) => ({
       color: "rgba(0, 0, 0, 1)", // (default alpha is 0.38)
     },
   },
+  button: {
+    margin: theme.spacing(2),
+    background: "#0B3954",
+  },
 }));
 
 export const AdminCommentList = ({ commentList }) => {
   const classes = useStyles();
+  const [alertMessage, setAlertMessage] = useState("");
+
+  function handleResponse(res) {
+    try {
+      const token = res.success;
+      if (token) {
+        // console.log(token)
+        //setLogged(true);
+      } else {
+        setAlertMessage("Some error has occured");
+        console.log(res);
+      }
+    } catch (error) {
+      setAlertMessage("Some error has occured");
+    }
+  }
+
+  function handleDelete(id) {
+    const url = serverUrl + "api/admin/delete_comment/";
+
+    const data = {
+      comment_id: id,
+    };
+
+    postDataToken2(url, data)
+      .then(handleResponse)
+      .catch((rej) => {
+        console.log(rej);
+        setAlertMessage("Some error has occured");
+      });
+  }
+
+  function handleBan(id) {
+    const url = serverUrl + "api/admin/delete_user_by_comment_id/";
+
+    const data = {
+      comment_id: id,
+    };
+
+    postDataToken2(url, data)
+      .then(handleResponse)
+      .catch((rej) => {
+        console.log(rej);
+        setAlertMessage("Some error has occured");
+      });
+  }
 
   return (
     <div>
@@ -65,12 +119,27 @@ export const AdminCommentList = ({ commentList }) => {
               </Typography>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
+                onClick={() => handleDelete(comment.comment_id)}
               >
-                Delete
+                Delete Comment
               </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={<BlockIcon />}
+                onClick={() => handleBan(comment.comment_id)}
+              >
+                Ban User
+              </Button>
+              {alertMessage && (
+                <Alert className={classes.alert} severity="error">
+                  {alertMessage}
+                </Alert>
+              )}
               <Divider />
             </Box>
           ))}
