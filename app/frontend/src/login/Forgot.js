@@ -46,7 +46,6 @@ export default function Forgot() {
   const [alertMessage, setAlertMessage] = useState("");
   const [logged, setLogged] = useState(false);
   const [number, setNumber] = useState("");
-  const [number2, setNumber2] = useState("");
   const [error, setError] = useState("");
 
   function handleResponse(res) {
@@ -67,8 +66,7 @@ export default function Forgot() {
     const url = serverUrl + "api/auth/password_reset_request/";
 
     const data = {
-      new_password: number,
-      new_password_again: number2,
+      email: number,
     };
 
     postData(url, data)
@@ -85,15 +83,6 @@ export default function Forgot() {
     } else {
       setError("");
       setNumber(event.target.value);
-    }
-  }
-
-  function onChange2(event) {
-    if (!event.target.value) {
-      setError("Required");
-    } else {
-      setError("");
-      setNumber2(event.target.value);
     }
   }
 
@@ -141,19 +130,6 @@ export default function Forgot() {
               error={error}
               helperText={error}
               onChange={onChange}
-            />
-          </Grid>
-          <Grid item xs={2} />
-          <Grid item xs={2} />
-          <Grid item xs={8}>
-            <TextField
-              className={classes.field}
-              id="verification-code-field"
-              label="Email Address"
-              variant="outlined"
-              error={error}
-              helperText={error}
-              onChange={onChange2}
             />
           </Grid>
           <Grid item xs={2} />
