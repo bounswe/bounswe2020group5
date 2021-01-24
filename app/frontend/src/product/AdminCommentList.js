@@ -5,6 +5,8 @@ import Box from "@material-ui/core/Box";
 import { Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const CommentList = ({ commentList }) => {
+export const AdminCommentList = ({ commentList }) => {
   const classes = useStyles();
 
   return (
@@ -61,6 +63,14 @@ export const CommentList = ({ commentList }) => {
               <Typography variant="subtitle1" gutterBottom>
                 {comment.comment_text}
               </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
               <Divider />
             </Box>
           ))}
@@ -69,4 +79,4 @@ export const CommentList = ({ commentList }) => {
     </div>
   );
 };
-export default CommentList;
+export default AdminCommentList;
