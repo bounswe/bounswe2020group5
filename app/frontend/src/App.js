@@ -22,7 +22,7 @@ import Cart from "./cart/Cart";
 import Vendorproduct from "./vendorproduct/Vendorproduct";
 import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
 import Assessments from "./profile/Assessments";
-
+import SavedCards from "./savedCards/SavedCards";
 
 function App() {
   return (
@@ -57,6 +57,7 @@ function App() {
           <Route exact path="/profile/assessments" component={Assessments} />
           <Route path="/category" component={Categories} />
           <Route path="/subcategory" exact component={Categories} />
+          <Route path="/profile/savedcards" exact component={SavedCards} />
           <Route component={NoMatch} />
         </Switch>
       </div>

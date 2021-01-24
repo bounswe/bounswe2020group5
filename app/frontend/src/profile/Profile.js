@@ -321,12 +321,12 @@ function Profile() {
                                                         </ListItemIcon>
                                                         <ListItemText primary="Addresses"/>
                                                     </ListItem>
-                                                    <ListItem button>
-                                                        <ListItemIcon>
-                                                            <PaymentIcon/>
-                                                        </ListItemIcon>
-                                                        <ListItemText primary="Saved Credit Cards"/>
-                                                    </ListItem>
+                                                    <ListItem button component={Link} to="/profile/savedcards" >
+                                                      <ListItemIcon>
+                                                        <PaymentIcon/>
+                                                      </ListItemIcon>
+                                                      <ListItemText primary="Saved Credit Cards"/>
+                                                     </ListItem>
                                                     <ListItem button component={Link} to="/profile/assessments">
                                                         <ListItemIcon>
                                                             <StarBorderIcon/>
@@ -461,23 +461,7 @@ function Profile() {
                                                 disabled={true}
                                                 onChange={onChange}
                                             />
-                                        </div>
-                                        {/*<div>
-                          <TextField
-                              className={classes.txtfield2}
-                              error={val.address.error}
-                              helperText={val.address.message}
-                              id="address"
-                              label="Address"
-                              variant="outlined"
-                              defaultValue={JSON.parse(JSON.stringify(name.address)) !== '' ?
-                                  (JSON.parse(JSON.stringify(name.address))) : (' ')
-                              }
-                              disabled={!edit}
-                              multiline={true}
-                              onChange={onChange}
-                          />
-                        </div>*/}
+                                        </div>   
                                         <Grid container spacing={3}>
                                             <Grid item xs={10}>
                                                 <TextField
