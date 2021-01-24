@@ -2,8 +2,6 @@ import { Box, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import { serverUrl } from "../common/ServerUrl";
 import { useState, useEffect } from "react";
-import Navbar from "../home/Navbar";
-import CategoryTab from "../components/CategoryTab";
 import CartProduct from "./CartProduct";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +52,7 @@ export default function Cart() {
           key={e.product.id}
           product={e.product}
           cnt={e.count}
-        ></CartProduct>
+        />
       );
     });
   };
@@ -62,8 +60,6 @@ export default function Cart() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Navbar />
-      <CategoryTab />
       {plist && plist.length > 0 && <Box>{renderProducts()}</Box>}
     </React.Fragment>
   );

@@ -25,9 +25,15 @@ import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+
+import CustomizedDialogs from "../components/dialog";
+
 import {Link} from "react-router-dom";
 import Input from "@material-ui/core/Input";
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,16 +68,21 @@ const Product = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
+    let [messageclick, setmessageclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
     let [purchased, setPurchased] = useState(false);
     const token = localStorage.getItem('token')
     const [mylists, setMylists] = React.useState([]);
+    const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+    const [message, setMessage] = React.useState("");
 
     const [state, setState] = useState({
         name: '',
         price: '',
         imgsrc: '',
         rating: '',
+        vendorrating: '',
         temp_comment: '',
         comments: [],
         newlist: "",
@@ -96,7 +107,7 @@ const Product = (props) => {
                     .then(json => {
                         for (let j = 0; j < json.products.length; j++) {
                             console.log(json.products[j]);
-                            if (""+json.products[j].id === id)
+                            if ("" + json.products[j].id === id)
                                 setheartclick(true);
                         }
                     })
@@ -106,7 +117,8 @@ const Product = (props) => {
 
         }
 
-        Promise.all([fetch(serverUrl + 'api/products/' + id, {
+        Promise.all([
+            fetch(serverUrl + 'api/products/' + id, {
             method: 'GET',
         }).then(res => res.json())
             .then(json => {
@@ -118,14 +130,24 @@ const Product = (props) => {
                 state.description = json.description;
                 state.imgsrc = json.image_url;
                 state.rating = json.rating;
-            }), fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+            }),
+            fetch(serverUrl + 'api/products/opts/get_all_comments/', {
             method: 'POST',
             body: JSON.stringify({product_id: id}),
             headers: {'Content-Type': 'application/json'},
         }).then(res => res.json())
             .then(json => {
                 state.comments = json;
-            })]).then(() => {
+            }),
+            fetch(serverUrl + 'api/orders/avg-rating-product-page/', {
+                method: 'POST',
+                body: JSON.stringify({product_id: id}),
+                headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json())
+                .then(json => {
+                    state.vendorrating = json.score.toFixed(1);
+                })
+        ]).then(() => {
             setLoadPage1(true);
             //json response
         }).catch((err) => {
@@ -166,7 +188,7 @@ const Product = (props) => {
         }).then(res => res.json())
             .then(json => {
                 if (json.ok) {
-                    if (json.message==="product added") alert("Product has been added to your list")
+                    if (json.message === "product added") alert("Product has been added to your list")
                     else alert(json.message)
                     setlistclick(true);
                 } else alert(json.message)
@@ -194,6 +216,14 @@ const Product = (props) => {
         setState(mutableState)
         await addtolist(temp);
     }
+
+    const snackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen1(false);
+        setOpen2(false);
+    };
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -246,7 +276,15 @@ const Product = (props) => {
             method: 'POST',
             body: JSON.stringify({product_id: id, count: countclickamount}),
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-        }).then(res => res.json()).then(json => {}).catch(err => console.log(err));
+        }).then(res => res.json()).then(json => {
+            if (json.ok) {
+                setMessage(json.message);
+                setOpen1(true);
+            } else {
+                setMessage(json.message);
+                setOpen2(true);
+            }
+        }).catch(err => console.log(err));
     }
 
     function handleOnButtonClick() {
@@ -258,27 +296,31 @@ const Product = (props) => {
             rating_score: stars,
         }
 
-        Promise.all([fetch(serverUrl + 'api/products/opts/add_comment/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        }).then(res => res.json())
-            .then(json => {
-                const success = json.success
-                if (success) {
-                    window.location.reload()
-                    alert('Your review is posted!');
-                } else alert('Your review could not be posted!')
-            }),
-            fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+        if (data.rating_score == 0) {
+            alert("You forgot to give a rating. Min. rating allowed is 1.")
+        } else {
+            Promise.all([fetch(serverUrl + 'api/products/opts/add_comment/', {
                 method: 'POST',
-                body: JSON.stringify({product_id: id}),
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
             }).then(res => res.json())
                 .then(json => {
-                    state.comments = json;
-                })]).then(
-        ).catch(err => console.log(err));
+                    const success = json.success
+                    if (success) {
+                        window.location.reload()
+                        alert('Your review is posted!');
+                    } else alert('Your review could not be posted!')
+                }),
+                fetch(serverUrl + 'api/products/opts/get_all_comments/', {
+                    method: 'POST',
+                    body: JSON.stringify({product_id: id}),
+                    headers: {'Content-Type': 'application/json'},
+                }).then(res => res.json())
+                    .then(json => {
+                        state.comments = json;
+                    })]).then(
+            ).catch(err => console.log(err));
+        }
     }
 
 
@@ -309,7 +351,12 @@ const Product = (props) => {
                                     <Rating name="read-only" value={state.rating} precision={0.1} readOnly/>
                                 </Grid>
                                 {token ? (
+
                                     <Grid container alignItems={"center"} justify="center">
+
+                                        <CustomizedDialogs vendor={state.vendor}
+                                                           productid={JSON.parse(JSON.stringify(id))}/>
+
                                         <IconButton onClick={handlelistcount}>
                                             {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
                                                 <TurnedInNotIcon fontSize={"large"}/>}
@@ -330,13 +377,15 @@ const Product = (props) => {
                                             <Divider/>
                                             {mylists.map(list => (
                                                 <Box>
-                                                    <MenuItem key={list.id} onClick={(event) => addtolist(list, event)}>{list.name}</MenuItem>
+                                                    <MenuItem key={list.id}
+                                                              onClick={(event) => addtolist(list, event)}>{list.name}</MenuItem>
                                                     <Divider/>
                                                 </Box>
                                             ))}
                                         </Menu>
                                         <IconButton onClick={handleclickheart}>
-                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> : <FavoriteBorderIcon fontSize={"large"}/>}
+                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
+                                                <FavoriteBorderIcon fontSize={"large"}/>}
                                         </IconButton>
                                     </Grid>) : null}
                             </Grid>
@@ -364,51 +413,51 @@ const Product = (props) => {
                                         <Divider/>
                                         {state.discount > 0 ? (
                                             <div>
-                                                 <Grid container direction="row" alignItems="center">
-                                                        <Grid item>
-                                                            <div>
-                                                                <Typography style={{
-                                                                    marginTop: "4rem",
-                                                                    marginBottom: "2rem",
-                                                                    display: 'inline-block'
-                                                                }} variant="body2"
-                                                                            gutterBottom>
-                                                                    Price: $
-                                                                </Typography>
-                                                                <Typography style={{
-                                                                    marginTop: "4rem",
-                                                                    marginBottom: "2rem",
-                                                                    display: 'inline-block'
-                                                                }}
-                                                                            variant="body2" color="textSecondary">
-                                                                    {state.price}
-                                                                </Typography>
-                                                            </div>
-                                                            <div>
-                                                                <Typography style={{
-                                                                    marginBottom: "2rem",
-                                                                    display: 'inline-block',
-                                                                    color: "red"
-                                                                }} variant="body2"
-                                                                            gutterBottom>
-                                                                    Discounted Price: $
-                                                                </Typography>
-                                                                <Typography style={{
-                                                                    marginBottom: "2rem",
-                                                                    display: 'inline-block',
-                                                                    color: "red"
-                                                                }}
-                                                                            variant="body2" color="textSecondary">
-                                                                    {(state.price - state.price * state.discount / 100).toFixed(2)}
-                                                                </Typography>
-                                                            </div>
+                                                <Grid container direction="row" alignItems="center">
+                                                    <Grid item>
+                                                        <div>
+                                                            <Typography style={{
+                                                                marginTop: "4rem",
+                                                                marginBottom: "2rem",
+                                                                display: 'inline-block'
+                                                            }} variant="body2"
+                                                                        gutterBottom>
+                                                                Price: $
+                                                            </Typography>
+                                                            <Typography style={{
+                                                                marginTop: "4rem",
+                                                                marginBottom: "2rem",
+                                                                display: 'inline-block'
+                                                            }}
+                                                                        variant="body2" color="textSecondary">
+                                                                {state.price}
+                                                            </Typography>
+                                                        </div>
+                                                        <div>
+                                                            <Typography style={{
+                                                                marginBottom: "2rem",
+                                                                display: 'inline-block',
+                                                                color: "red"
+                                                            }} variant="body2"
+                                                                        gutterBottom>
+                                                                Discounted Price: $
+                                                            </Typography>
+                                                            <Typography style={{
+                                                                marginBottom: "2rem",
+                                                                display: 'inline-block',
+                                                                color: "red"
+                                                            }}
+                                                                        variant="body2" color="textSecondary">
+                                                                {(state.price - state.price * state.discount / 100).toFixed(2)}
+                                                            </Typography>
+                                                        </div>
 
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <img style={{width: "4rem", height: "4rem"}}
-                                                                 src="/img/discount.png" alt="discount icon"/>
-                                                        </Grid>
                                                     </Grid>
+                                                    <Grid item>
+                                                        <img style={{width: "4rem", height: "4rem"}}
+                                                             src="/img/discount.png" alt="discount icon"/>
+                                                    </Grid>
+                                                </Grid>
                                             </div>
                                         ) : (
                                             <div>
@@ -441,11 +490,14 @@ const Product = (props) => {
                                             gutterBottom>
                                             Vendor:
                                         </Typography>
-                                        <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
+                                        <Typography style={{marginLeft: "1rem", marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
                                                     color="textSecondary">
                                             {state.vendor}
                                         </Typography>
+                                        {state.vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
+                                            state.vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
+                                                    (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>)}
                                         <Divider/>
                                         <Typography style={{marginTop: "4rem", marginBottom: "2rem"}}
                                                     variant="body2"
@@ -476,7 +528,7 @@ const Product = (props) => {
                                                     <RemoveIcon/>
                                                 </IconButton>
                                             </ButtonGroup>
-                                            <Button  onClick={addtocart} size="large" variant="contained" style={{
+                                            <Button onClick={addtocart} size="large" variant="contained" style={{
                                                 marginLeft: "9.1rem",
                                                 marginTop: "1rem",
                                                 marginBottom: "1rem",
@@ -486,6 +538,18 @@ const Product = (props) => {
                                             }}>
                                                 ADD TO CART
                                             </Button>
+                                            <Snackbar open={open1} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="success">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+                                            <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="error">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+
+
                                         </div>
                                     </Grid>
                                 </Grid>
