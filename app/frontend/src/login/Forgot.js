@@ -97,7 +97,7 @@ export default function Forgot() {
           <Grid item xs={2} />
           <Grid item xs={10} className={classes.header}>
             <Typography variant="h4" gutterBottom>
-              Email Verification
+              Password Reset
             </Typography>
           </Grid>
           <Grid item xs={2} />
