@@ -1,10 +1,12 @@
 FROM node:15.2.1
-
+ARG KEY
 WORKDIR /frontapp
 
 COPY . /frontapp
 
 RUN npm install
+
+RUN cd src/login && node secrets.js $KEY
 
 RUN npm install -g serve
 
