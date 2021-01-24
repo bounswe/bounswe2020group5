@@ -10,7 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import BlockIcon from "@material-ui/icons/Block";
 import { serverUrl } from "../common/ServerUrl";
 import { Alert } from "@material-ui/lab";
-import { postData } from "../common/Requests";
+import { postDataToken2 } from "../common/Requests";
 
 const useStyles = makeStyles((theme) => ({
   root: {
