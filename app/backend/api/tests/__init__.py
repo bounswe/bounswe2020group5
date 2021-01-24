@@ -19,4 +19,5 @@ from .test_is_admin import IsAdminTest
 from .test_block_user import BlockUserTest
 from .test_recommend_product import RecommendProductTest
 from .test_set_price_alarm import SetPriceAlarmTest
-
+from .test_delete_price_alarm import DeletePriceAlarmTest
+from .test_my_price_alarms import MyPriceAlarmTest

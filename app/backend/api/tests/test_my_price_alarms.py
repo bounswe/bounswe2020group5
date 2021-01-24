@@ -3,24 +3,24 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from rest_framework import status
 import json
-from ..serializers import AuthUserSerializer
-from ..models import Category, SubCategory, Vendor, Product
+from ..serializers import AuthUserSerializer, PriceAlarmSerializer
+from ..models import Category, SubCategory, Vendor, Product, Customer, PriceAlarm
 from django.contrib.auth import get_user_model
-from ..views import set_price_alarm
+from ..views import my_price_alarms
 
 customer_user = None
-product_id = None
+price_alarm = None
 price = 200
 price_below = 150
 stock = 7
 discount = 5
 
 """
-Unit test for setting price alarm to notify if price of product goes down to set price.
+Unit test for getting price alarms of authenticated customers.
 """
-class SetPriceAlarmTest(TestCase):
+class MyPriceAlarmTest(TestCase):
     def setUp(self):
-        global product_id, price, stock, discount, customer_user
+        global price, stock, discount, price_below, customer_user, price_alarm
 
         self.client = APIClient()
         category = Category.objects.create(name='category_test')
@@ -32,21 +32,17 @@ class SetPriceAlarmTest(TestCase):
                                         subcategory=subcategory, vendor=vendor, brand='TestBrand', discount=discount)
         customer_user = get_user_model().objects.create_user(username='ismets', email='ismets@hotmail.com', password='Sifre123',
                                     first_name='Ismet', last_name='Sari', is_customer=True, address='Sirinevler')
-        
-        product_id = product.id
+        customer = Customer.objects.create(user=customer_user)
+        price_alarm = PriceAlarm.objects.create(customer=customer, product=product, price=price_below)
 
-    def test_set_price_alarm(self):
-        global customer_user, product_id, price_below
+    def test_my_price_alarms(self):
+        global customer_user, price_alarm
 
+        price_alarms = PriceAlarmSerializer(price_alarm, many=True)
         content = AuthUserSerializer(customer_user).data
         auth_token = content['auth_token']
 
-        body = {
-            'product_id' : product_id,
-            'price' : price_below
-        }
-
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {auth_token}')
-        response = self.client.post(reverse(set_price_alarm), body, 'json')
+        response = self.client.get(reverse(my_price_alarms))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data['success'], 'Alarm is successfully set.')
+        self.assertEqual(response.data, price_alarms.data)
