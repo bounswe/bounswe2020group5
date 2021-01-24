@@ -1,13 +1,13 @@
-import {Box, makeStyles, Paper} from "@material-ui/core";
+import { Box, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
-import {serverUrl} from "../common/ServerUrl";
-import {useState, useEffect} from "react";
+import { serverUrl } from "../common/ServerUrl";
+import { useState, useEffect } from "react";
 import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
-import Vendorproductlist from "./Vendorproductlist";
-import ProductTypes from "./VendorProductTypes";
+import Orderlist from "./orderlist";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,15 +28,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Vendorproduct() {
+export default function Order() {
     const [plist, setPlist] = useState([]);
-    const [typelist, setTypelist] = useState([]);
-
     useEffect(() => {
-        console.log("effect");
-        console.log(plist);
         console.log(localStorage.getItem("token"))
-        fetch(serverUrl + "api/products/vendor-products/", {
+        fetch(serverUrl + "api/orders/customer-orders/", {
             headers: {
                 'Authorization': `Token ${localStorage.getItem("token")}`,
             },
@@ -45,29 +41,18 @@ export default function Vendorproduct() {
             .then((data) => {
                 setPlist(data);
                 console.log(data);
-                gatherTypes(data);
             });
         return () => {
             console.log("cleanup");
         };
     }, []);
 
-    const gatherTypes = (plist) => {
-        let alltypes = [];
-        Object.keys(plist).forEach(function (key) {
-            if (alltypes.indexOf(plist[key].subcategory) <= 0) {
-                alltypes.push(plist[key].subcategory)
-            }
-        });
-        setTypelist(alltypes);
-    }
-
-    const renderProducts = () => {
+    const renderOrders = () => {
         console.log(plist);
         return plist.map((e, i) => {
             return (
-                <Vendorproductlist
-                    product={e}
+                <Orderlist
+                    orders={e}
                 />
             );
         });
@@ -76,12 +61,12 @@ export default function Vendorproduct() {
     const classes = useStyles();
     return (
         <div>
+
             <div>
                 <div className="Home">
                     <Navbar/>
                 </div>
                 <div>
-
                     <CategoryTab/>
                 </div>
                 <div style={{marginTop: "1rem"}}>
@@ -90,13 +75,12 @@ export default function Vendorproduct() {
                             Home Page
                         </Link>
                         <Link style={{color: "#0B3954"}} to="/profile">
-                            My Products
+                            Orders
                         </Link>
                     </Breadcrumbs>
                 </div>
-                <ProductTypes typeslist={typelist}/>
                 <React.Fragment>
-                    {plist && plist.length > 0 && <Box>{renderProducts()}</Box>}
+                    {plist && plist.length > 0 && <Box>{renderOrders()}</Box>}
                 </React.Fragment>
             </div>
         </div>

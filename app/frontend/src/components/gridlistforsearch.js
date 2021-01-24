@@ -64,7 +64,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
 
                             {tile.discount >0 ? (
                                 <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
-                                                  title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.substr(0, 22).toUpperCase() }
+                                                  title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.substr(0, 20).toUpperCase()}{tile.name.length>20? "...":''}
                                                       <span style={{color: "red",fontSize:"1.2rem"}} > &nbsp; &nbsp; %{tile.discount} </span> <Divider/>  <br></br> </span>}
                                                   subtitle={<span  style={{color: "black",fontSize:"0.9rem"}}>PRICE: ${tile.price} <span style={{color: "red",fontSize:"0.9rem"}} > &nbsp; ---> &nbsp;  ${(tile.price - tile.price * tile.discount / 100).toFixed(2)} </span>
                                                       <br></br><br></br>BY: {tile.vendor}
@@ -73,7 +73,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                                 />
                                 ): (
                                 <GridListTileBar  style={{ backgroundColor:'rgb(211,211,211,.7)',width:"22rem",height:"10rem"}}
-                                title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.toUpperCase() } <Divider/>  <br></br> </span>}
+                                title={<span style={{color:'black',fontSize:"1.2rem", width:"max-component"}}>{tile.name.substr(0, 28).toUpperCase() }{tile.name.length>28? "...":''} <Divider/>  <br></br> </span>}
                                 subtitle={<span  style={{color: "black",fontSize:"0.8rem"}}>PRICE: ${tile.price}
                                 <br></br><br></br>BY: {tile.vendor}
                                 <br></br><br></br>
