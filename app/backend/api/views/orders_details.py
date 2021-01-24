@@ -5,7 +5,7 @@ from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
 from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer, CustomerOrderSerializer
 from ..serializers import AddVendorRatingSerializer, VendorRatingSerializer, VendorRatingInProductPageSerializer, VendorRatingResponseSerializer
-from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating
+from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating, Notification, NotificationType, User
 from rest_framework.response import Response
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
@@ -35,14 +35,21 @@ def vendor_cancel_purchase(request):
     elif purchase.status == 'Delivered':
         return Response(data={'error': 'Purchase is already delivered by customer'}, status=status.HTTP_400_BAD_REQUEST)
     elif purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
-            purchase.status = 'Vcancelled'
-            purchase.save()
-            product_id = purchase.product_id
-            product_amount = purchase.amount
-            product = Product.objects.get(id=product_id)
-            product.stock += product_amount
-            product.number_of_sales -= product_amount
-            product.save()
+        purchase.status = 'Vcancelled'
+        purchase.save()
+        product_id = purchase.product_id
+        product_amount = purchase.amount
+        product = Product.objects.get(id=product_id)
+        product.stock += product_amount
+        product.number_of_sales -= product_amount
+        product.save()
+        # Create a notification to customer when an order is cancelled by the vendor
+        order = Order.objects.get(id=purchase.order_id)
+        text = f'The {product.name} in your order {order.id} is cancelled by the vendor.'
+        notification_type = NotificationType.ORDER_STATUS_CHANGED
+        user = User.objects.get(id=purchase.customer_id)
+        cancel_notification = Notification(text=text, notificationType=notification_type.value, user=user, product=product, order=order)
+        cancel_notification.save()
 
     return Response(data={'success': 'Purchase is successfully canceled.'}, status=status.HTTP_200_OK)
         
@@ -77,6 +84,7 @@ def customer_cancel_order(request):
 def get_customer_orders(request):
     customer = Customer.objects.get(user=request.user)
     my_orders = Order.objects.filter(customer=customer)
+    my_orders = my_orders.order_by('-date')
     order_list = []
     for order in my_orders:
         content = {}
@@ -101,6 +109,21 @@ def vendor_update_status(request):
     if purchase.status != new_status:
         purchase.status = new_status
         purchase.save()
+        # Create a new notification for the customer when the status of an order is changed by the vendor.
+        text = ""
+        order = Order.objects.get(id=purchase.order_id)
+        if new_status == 'OrderTaken':
+            text = "Your order is taken by the vendor."
+        elif new_status == 'Preparing':
+            text = f'The {purchase.product.name} in your order {order.id} is in preparation phase.'
+        elif new_status == 'Ship':
+            text = f'The {purchase.product.name} in your order {order.id} is shipped by the vendor.'
+        elif new_status == 'Delivered':
+            text = f'The {purchase.product.name} in your order {order.id} is delivered. Have a nice day.'
+        notification_type = NotificationType.ORDER_STATUS_CHANGED
+        user = User.objects.get(id=purchase.customer_id)
+        status_change_notification = Notification(text=text, notificationType=notification_type.value, user=user, product=purchase.product, order=order)
+        status_change_notification.save()
     return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageResponseSerializer}, request_body=CustomerPurchasedSerializer)
