@@ -23,6 +23,21 @@ class RestApiService {
         )
     }
 
+    fun googleLogin(authTokenRequest: AuthTokenRequest, onResult: (LoginResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.googleLogin(authTokenRequest).enqueue(
+                object : Callback<LoginResponse> {
+                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                        val user = response.body()
+                        onResult(user)
+                    }
+                }
+        )
+    }
+
     fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userRegister(userData).enqueue(
