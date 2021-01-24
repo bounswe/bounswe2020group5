@@ -94,6 +94,7 @@ function Login() {
       if (token) {
         console.log(token)
         localStorage.setItem('token', token);
+        localStorage.setItem('is_vendor', res.is_vendor);
         setLogged(true);
       } else {
         setAlertMessage('Invalid credentials');
