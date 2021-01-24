@@ -20,7 +20,7 @@ from django.contrib.sites.shortcuts import get_current_site
 import datetime
 from bupazar.settings import PASSWORD_G,PASSWORD_F
 
-date_format = "%d/%m/%Y, %H:%M:%S"
+date_format = "%Y-%m-%d %H:%M:%S"
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
@@ -157,21 +157,25 @@ class AuthViewSet(viewsets.GenericViewSet):
                     fi.save()
             return Response({'error': 'Invalid Credentials'},
                         status=HTTP_404_NOT_FOUND)
-        
+
         now = datetime.datetime.now().strftime(date_format)
+        last_change_time = ""
         try:
             password_info = PasswordChangedDate.objects.get(email=email)
             last_change_time = password_info.last_change
-            date_1 = datetime.datetime.strptime(last_change_time, date_format)
-            date_2 = datetime.datetime.strptime(now, date_format)
-            time_delta = (date_2 - date_1)
-            total_seconds = time_delta.total_seconds()
-            minutes = total_seconds//60
-            if minutes > 43200:
-                template = render_to_string('password_change_warning.html', {'name': user.username})
-                send_mail("Change your password", template , "bupazar451@gmail.com", [str(user.email)])
-        except Exception as e:
-            print(" callculating the diff between two date is crashed since "+e)
+        except:
+            l = user.date_joined.strftime(date_format)
+            last_change_time = l
+            p = PasswordChangedDate(email=email,last_change=l,user=user)
+            p.save()
+        date_1 = datetime.datetime.strptime(last_change_time, date_format)
+        date_2 = datetime.datetime.strptime(now, date_format)
+        time_delta = (date_2 - date_1)
+        total_seconds = time_delta.total_seconds()
+        minutes = total_seconds//60
+        if minutes > 43200:
+            template = render_to_string('password_change_warning.html', {'name': user.username})
+            send_mail("Change your password", template , "bupazar451@gmail.com", [str(user.email)])
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
     
@@ -332,7 +336,12 @@ class AuthViewSet(viewsets.GenericViewSet):
                 banned_user = BannedUser.objects.filter(email=user.email)
                 banned_user.delete()
                 now_is = datetime.datetime.now().strftime(date_format)
-                PasswordChangedDate.objects.filter(email=user.email).update(last_change=now_is)
+                p = PasswordChangedDate.objects.filter(email=user.email)
+                if p:
+                    p.update(last_change=now_is)
+                else:
+                    pc = PasswordChangedDate(email=user.email,last_change=now_is,user=user)
+                    pc.save()
             except Exception as e:
                 print("banned_user and PasswordChangedDate are crashed since ",e)
             data = AuthUserSerializer(user).data
