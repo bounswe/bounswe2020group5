@@ -28,6 +28,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Cart from "../cart/Cart";
+import Checkbox from "@material-ui/core/Checkbox";
+import validate from "./ValidateAddress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -135,6 +137,22 @@ function Payment() {
   let [dateMsg, setDateMsg] = React.useState('');
 
 
+  const [add, setAdd] = useState({
+    address_1:'',
+    address_2:'',
+    address_3:'',
+    address_4:'',
+    address_5:'',
+  });
+  const [val, setVal] = useState({
+    address_1: { error: false, message: '' },
+    address_2: { error: false, message: '' },
+    address_3: { error: false, message: '' },
+    address_4: { error: false, message: '' },
+    address_5: { error: false, message: '' },
+    username: { error: false, message: '' },
+  });
+
 
 
   let history = useHistory();
@@ -196,7 +214,9 @@ function Payment() {
       });
   }
   function onChange(event) {
-    setAddress(event.target.value)
+    let mutableState = add
+    mutableState[event.target.id] = event.target.value
+    setAdd(mutableState)
   }
 
   function getSteps() {
@@ -209,7 +229,22 @@ function Payment() {
       address : address,
     }
 
-    if(data.address!==""){
+    let newVal = (validate(add, val));
+    setVal(newVal)
+    let valCheck = true;
+
+    for (const key in newVal) {
+      if (newVal.hasOwnProperty(key)) {
+        const element = newVal[key];
+        if (element.error) {
+          console.log(element)
+          console.log("error")
+          valCheck = false;
+        }
+      }
+    }
+
+    if(valCheck){
       fetch(serverUrl + 'api/auth/profile_update/', {
         method: 'POST',
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -231,9 +266,6 @@ function Payment() {
           console.log(err)
         });
     }
-    else{
-      alert("Address field cannot be empty.Please enter an address")
-    }
   }
 
   function getStepContent(stepIndex) {
@@ -254,26 +286,102 @@ function Payment() {
                 </div>
                 <div style={{width:"50rem",margin:"auto",background:"#0B3954",borderRadius:"1rem",height:"4rem",
                   textAlign:"center",color:"white"}}>
-                  <p>You can edit your address from your profile page or continue with your registered address.
+                  <p>You can edit your address or continue with your registered address.
                     To continue the payment process with your registered address, please proceed to the next step.</p>
                 </div>
-                <div style={{width:"30rem",margin:"auto",marginTop:"5rem"}}>
-                  <TextField
-                    style={{width:"30rem"}}
-                    //error={val.address.error}
-                    //helperText={val.address.message}
-                    id="address"
-                    label="Address"
-                    rows={5}
-                    variant="outlined"
-                    disabled={!edit}
-                    multiline
-                    onChange={onChange}
-                    defaultValue={JSON.parse(JSON.stringify(address)) !== '' ?
-                      (JSON.parse(JSON.stringify(address))) : (' ')
-                    }
-                  />
-                </div>
+                <Grid container spacing={3}>
+                  <Grid item xs={10} >
+                    <TextField
+                      style={{marginLeft:"5rem", marginTop:"3rem"}}
+                      required
+                      error={val.address_1.error}
+                      helperText={val.address_1.message}
+                      id="address_1"
+                      name="address1"
+                      label="Address line 1"
+                      fullWidth
+                      variant="outlined"
+                      autoComplete="shipping address-line1"
+                      disabled={!edit}
+                      defaultValue={JSON.parse(JSON.stringify(add.address_1)) !== '' ?
+                        (JSON.parse(JSON.stringify(add.address_1))) : (' ')
+                      }
+                      onChange={onChange}
+                    />
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <TextField
+                      style={{marginLeft:"5rem"}}
+                      required
+                      error={val.address_2.error}
+                      helperText={val.address_2.message}
+                      id="address_2"
+                      name="city"
+                      label="City"
+                      fullWidth
+                      variant="outlined"
+                      autoComplete="shipping address-level2"
+                      disabled={!edit}
+                      onChange={onChange}
+                      defaultValue={JSON.parse(JSON.stringify(add.address_2)) !== '' ?
+                        (JSON.parse(JSON.stringify(add.address_2))) : (' ')
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <TextField style={{marginLeft:"5rem"}} required
+                               id="address_3"
+                               error={val.address_3.error}
+                               helperText={val.address_3.message}
+                               disabled={!edit}
+                               variant="outlined"
+                               name="state"
+                               label="State/Province/Region"
+                               fullWidth
+                               onChange={onChange}
+                               defaultValue={JSON.parse(JSON.stringify(add.address_3)) !== '' ?
+                                 (JSON.parse(JSON.stringify(add.address_3))) : (' ')
+                               } />
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <TextField
+                      style={{marginLeft:"5rem"}}
+                      required
+                      error={val.address_4.error}
+                      helperText={val.address_4.message}
+                      id="address_4"
+                      name="zip"
+                      label="Zip / Postal code"
+                      fullWidth
+                      variant="outlined"
+                      autoComplete="shipping postal-code"
+                      disabled={!edit}
+                      onChange={onChange}
+                      defaultValue={JSON.parse(JSON.stringify(add.address_4)) !== '' ?
+                        (JSON.parse(JSON.stringify(add.address_4))) : (' ')
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <TextField
+                      style={{marginLeft:"5rem"}}
+                      required
+                      error={val.address_5.error}
+                      helperText={val.address_5.message}
+                      id="address_5"
+                      name="country"
+                      label="Country"
+                      fullWidth
+                      variant="outlined"
+                      autoComplete="shipping country"
+                      disabled={!edit}
+                      onChange={onChange}
+                      defaultValue={JSON.parse(JSON.stringify(add.address_5)) !== '' ?
+                        (JSON.parse(JSON.stringify(add.address_5))) : (' ')
+                      }
+                    />
+                  </Grid>
+                </Grid>
                 <div style={{width:"20rem",margin:"auto"}}>
                   {edit ? (
                       <Button
@@ -524,6 +632,13 @@ function Payment() {
         .then(json => {
           setVendor(json.is_vendor)
           setAddress(json.address)
+          setAdd({
+            address_1: json.address.split("/")[0],
+            address_2: json.address.split("/")[1],
+            address_3: json.address.split("/")[2],
+            address_4: json.address.split("/")[3],
+            address_5: json.address.split("/")[4]
+          })
         }).then(() => {
         setLoadPage(true)
       })

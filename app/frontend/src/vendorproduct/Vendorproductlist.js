@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Vendorproductlist(props) {
     const classes = useStyles();
+    console.log(props.product)
 
 
 
@@ -47,13 +48,15 @@ export default function Vendorproductlist(props) {
         <Paper className={classes.paper}>
             <Grid container spacing={4}>
                 <Grid justify="center" item container xs={3}>
+
                     <Link to={{pathname: `product/${props.product.id}`}}>
                         <img
                             style={{ maxHeight: 200, maxWidth:330 }}
-                            src={props.product[0].image_url}
+                            src={props.product.image_url}
                             alt="product image"
                         />
                     </Link>
+
                 </Grid>
                 <Grid
                     item
@@ -65,6 +68,7 @@ export default function Vendorproductlist(props) {
                         {props.product.name}
                     </Typography>
                     <Divider variant="middle" />
+
                     <Typography gutterBottom style={{ margin: 16 }} variant="body1">
                         {props.product.description.length > 250 ? props.product.description.substring(0,250)+' .....':props.product.description }
                     </Typography>
@@ -75,6 +79,7 @@ export default function Vendorproductlist(props) {
                             bottom: 10,
                             left:30,
                             right: 550,
+
                             display: "flex",
                         }}
                     >

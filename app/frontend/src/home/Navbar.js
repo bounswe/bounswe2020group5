@@ -187,12 +187,15 @@ export default function Navbar({notificationpage, messagespage}) {
         setvendorAnchorEl(event.currentTarget);
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsLogged(false);
-        setAnchorEl(false);
-        setvendorAnchorEl(false)
-    }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('is_vendor');
+    setIsLogged(false);
+    setAnchorEl(false);
+    setvendorAnchorEl(false)
+    window.location.reload();
+  }
 
     const handlejointClose = () => {
         setAnchorEljoint(null);
@@ -312,7 +315,6 @@ export default function Navbar({notificationpage, messagespage}) {
             </StyledMenuItem>
         </StyledMenu>
     );
-
 
     const menujointId = 'login menu';
     const renderjointMenu = (
