@@ -82,7 +82,7 @@ def stock_end_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product in your cart is no longer in stock',
+            text=f'{product.name} in your cart is no longer in stock',
             notificationType=NotificationType.STOCK_ENDED.value,
             user=user.user, 
             product=product)       
@@ -93,7 +93,7 @@ def stock_end_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product in your favorites is no longer in stock',
+            text=f'{product.name} from your favorites is no longer in stock',
             notificationType=NotificationType.STOCK_ENDED.value,
             user=user.user, 
             product=product)       
@@ -104,7 +104,7 @@ def stock_end_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product in your lists is no longer in stock',
+            text=f'{product.name} from your list is no longer in stock',
             notificationType=NotificationType.STOCK_ENDED.value,
             user=user.user, 
             product=product)       
@@ -118,7 +118,7 @@ def stock_replenish_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product in your cart is now in stock ',
+            text=f'{product.name} in your cart is now in stock ',
             notificationType=NotificationType.STOCK_RENEWED.value,
             user=user.user, 
             product=product)       
@@ -129,7 +129,7 @@ def stock_replenish_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product from your favorites is now in stock',
+            text=f'{product.name} from your favorites is now in stock',
             notificationType=NotificationType.STOCK_RENEWED.value,
             user=user.user, 
             product=product)       
@@ -140,7 +140,7 @@ def stock_replenish_notifications(product):
     users = Customer.objects.filter(pk__in=user_ids)
     for user in users:
         new_notification = Notification(
-            text='A product from your lists is now in stock',
+            text=f'{product.name} from your list is now in stock',
             notificationType=NotificationType.STOCK_RENEWED.value,
             user=user.user, 
             product=product)       
