@@ -36,3 +36,5 @@ from .notifications import my_notifications
 from .alarm import set_price_alarm
 from .alarm import delete_price_alarm
 from .alarm import my_price_alarms
+from .orders_details import add_shipment
+from .orders_details import get_shipment
