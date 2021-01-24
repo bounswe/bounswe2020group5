@@ -18,7 +18,7 @@ class MessageMainActivity : AppCompatActivity() {
 
         createChats()
 
-        btnCreateChat.setOnClickListener() {
+/*        btnCreateChat.setOnClickListener() {
             val chatCreateRequest = ChatCreateRequest(
                      vendorUsername.text.toString()
             )
@@ -33,7 +33,7 @@ class MessageMainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
-        }
+        } */
     }
 
     private fun createChats() {
@@ -43,11 +43,10 @@ class MessageMainActivity : AppCompatActivity() {
 
             }
             else {
-                val chats: Array<Chat> = it
                 val chatAdapter =  ChatAdapter(this, it)
                 chatList.adapter = chatAdapter
                 chatList.layoutManager = GridLayoutManager(this, 1)
-                chatAdapter!!.onItemClick = { chat ->
+                chatAdapter.onItemClick = { chat ->
                     var intent = Intent(this, ChatActivity::class.java)
                     intent.putExtra("chatId", chat.chatId)
                     startActivity(intent)
