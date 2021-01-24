@@ -21,7 +21,7 @@ def product_detail(request, pk):
     content = ProductSerializer(product).data
     return Response(data=content, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer(many=True)})
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_products(request):
@@ -29,7 +29,7 @@ def get_products(request):
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=CategoryProductsSeriazlier)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=CategoryProductsSeriazlier)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_category_products(request):
@@ -56,7 +56,7 @@ def get_category_products(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=SubCategoryProductsSeriazlier)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=SubCategoryProductsSeriazlier)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_subcategory_products(request):
@@ -93,7 +93,7 @@ def get_homepage_products(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer})
+@swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer(many=True)})
 @api_view(['GET'])
 @permission_classes([IsAuthVendor])
 def get_vendor_products(request):

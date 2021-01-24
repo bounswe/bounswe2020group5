@@ -12,7 +12,7 @@ import operator
 from datamuse import datamuse
 from django.core.exceptions import ObjectDoesNotExist
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=ProductSearchSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def search_products(request):
@@ -84,7 +84,7 @@ def search_products(request):
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=FilterProductSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=FilterProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def filter_products(request):
@@ -155,7 +155,7 @@ def filter_products(request):
     content = ProductSerializer(Products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=SortProductSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=SortProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def sort_products(request):
