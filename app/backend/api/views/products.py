@@ -96,7 +96,25 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             if 'description' in data:
                 product.description = data['description']
             if 'discount' in data:
+                old_discount = product.discount
                 product.discount = data['discount']
+                if old_discount < data['discount']:
+                        text = f'Discount of {product.name} is increased to {product.discount}.'
+                        users_set = set()
+                        favori_lists = FavoriteList.objects.filter(products = product)
+                        for fl in favori_lists:
+                            users_set.add(fl.user)
+                        product_lists = ProductList.objects.filter(products = product)
+                        for pl in product_lists:
+                            users_set.add(pl.user)
+                        product_in_carts = ProductInCart.objects.filter(product = product)
+                        for pc in product_in_carts:        
+                            users_set.add(pc.cart.user)
+
+                        for usr in users_set:
+                            notification_type = NotificationType.NEW_DISCOUNT
+                            notification = Notification(text= text, notificationType=notification_type.value , user=usr, product=product, order=None)
+                            notification.save()
 
             product.save()
             return Response(data={'success': 'Successfully updated product'}, status=status.HTTP_200_OK)
