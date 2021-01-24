@@ -275,21 +275,21 @@ const Product = (props) => {
 
     const Alarmsetted = () => {
         handleClose();
-
         fetch(serverUrl + 'api/alarms/set-price-alarm/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
             body: JSON.stringify({'product_id': id,'price':parseInt(state.alarmprice)})
         }).then(res => res.json())
             .then(json => {
-                alert("Alarm is successfully setted. ")
+                alert("Alarm is successfully setted according to the given value. ")
                 console.log(json)
             }).then(()=>setalarmclick(true)).catch((err) => {
             console.log(err);
         }, [])
     };
-    const Alarmdelete= (event) => {
+    const Alarmdelete= () => {
        handleClose();
+
         fetch(serverUrl + 'api/alarms/delete-price-alarm/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -298,7 +298,6 @@ const Product = (props) => {
             .then(json => {
                 alert("Alarm is successfully removed.")
                 console.log(json)
-
             }).then(()=>setalarmclick(false)).catch((err) => {
             console.log(err);
         }, [])
@@ -447,16 +446,20 @@ const Product = (props) => {
                                             <MenuItem style={{height:'3rem',width:'20rem'}}>
                                                 <Input id="alarmprice" defaultValue={defaultalarmprice}
                                                        placeholder="Alarm Price" onChange={onChange}/>
-                                                <IconButton aria-label="add" >
-                                                    <CheckBoxIcon onClick={Alarmsetted} style={{ marginLeft: "0.5rem",color: "#0B3954"}}
-                                                                fontSize={"large"}/>
-                                                </IconButton>
-                                                {alarmclick ?
+
+                                                {!(alarmclick)? <Button aria-label="add"
+                                                                      onClick={Alarmsetted} style={{ marginLeft: "0.5rem",height:'1.8rem',backgroundColor: "#0B3954",color:'white'}}>
+                                                    Add
+                                                </Button>:<div>
+                                                    <Button aria-label="add"
+                                                            onClick={Alarmsetted} style={{ marginLeft: "0.5rem",marginRight: "0.5rem",height:'1.8rem',backgroundColor: "#0B3954",color:'white'}}>
+                                                       Edit
+                                                    </Button>
                                                     <Button aria-label="delete"
                                                     onClick={Alarmdelete} style={{height:'1.8rem',color:'white',
                                                         backgroundColor: "#7A0010", marginRight: "0.5rem"}}>
                                                     Remove
-                                                </Button>:""}
+                                                    </Button></div>}
 
                                             </MenuItem>
 
