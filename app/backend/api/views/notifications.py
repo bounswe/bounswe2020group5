@@ -31,6 +31,7 @@ class NotificationViewSet(viewsets.GenericViewSet):
     def my(self, request):
         user = request.user
         notifications = Notification.objects.filter(user=user)
+        notifications = notifications.order_by('-createdAt')
         content = NotificationSerializer(notifications, many=True)
         return Response(data=content.data, status=status.HTTP_200_OK)
 

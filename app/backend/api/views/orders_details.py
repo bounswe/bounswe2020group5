@@ -225,7 +225,7 @@ def add_shipment(request):
         cargo_no = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
         shipment = Shipment(purchase=purchase, cargo_no=cargo_no, cargo_company=cargo_company)
         shipment.save()
-        return Response(data={'cargo_no': cargo_no}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'cargo_no': cargo_no}, status=status.HTTP_201_CREATED)
     else:
         return Response(data={'error': 'Unable to ship this order.'}, status=status.HTTP_400_BAD_REQUEST)
 
