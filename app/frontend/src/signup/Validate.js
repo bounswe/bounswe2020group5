@@ -7,7 +7,11 @@ export default function validate(state) {
         lname: { error: false, message: '' },
         email: { error: false, message: '' },
         uname: { error: false, message: '' },
-        address: { error: false, message: '' },
+        address_1: { error: false, message: '' },
+        address_2: { error: false, message: '' },
+        address_3: { error: false, message: '' },
+        address_4: { error: false, message: '' },
+        address_5: { error: false, message: '' },
     }
 
 
@@ -39,8 +43,20 @@ export default function validate(state) {
         validation.uname = { error: true, message: 'Required' }
     }
 
-    if (state.address === '') {
-        validation.address = { error: true, message: 'Required' }
+    if (state.address_1 === '') {
+        validation.address_1 = { error: true, message: 'Required' }
+    }
+    if (state.address_2 === '') {
+        validation.address_2 = { error: true, message: 'Required' }
+    }
+    if (state.address_3 === '') {
+        validation.address_3 = { error: true, message: 'Required' }
+    }
+    if (state.address_4 === '') {
+        validation.address_4 = { error: true, message: 'Required' }
+    }
+    if (state.address_5 === '') {
+        validation.address_5 = { error: true, message: 'Required' }
     }
     
     return validation
