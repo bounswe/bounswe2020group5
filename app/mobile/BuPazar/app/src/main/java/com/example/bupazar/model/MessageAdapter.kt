@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.bupazar.R
+import com.example.bupazar.User
 import kotlinx.android.synthetic.main.my_message.view.*
 import kotlinx.android.synthetic.main.other_message.view.*
 
@@ -30,7 +31,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(message.isCustomerMessage!!) {
+        return if(message.whoseMessage == "customer") {
             VIEW_TYPE_MY_MESSAGE
         }
         else {
@@ -58,19 +59,20 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
 
         override fun bind(message: Message) {
             messageText.text = message.content
-//            timeText.text = DateUtils.fromMillisToTimeString(message.time)
+            timeText.text = message.dateSent?.takeLast(9)?.take(5)
         }
     }
 
     inner class OtherMessageViewHolder (view: View) : MessageViewHolder(view) {
+        private var otherUsernameText: TextView = view.txtOtherUser
         private var messageText: TextView = view.txtOtherMessage
-        private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.content
-//            userText.text = message.user
-//            timeText.text = DateUtils.fromMillisToTimeString(message.time)
+            timeText.text = message.dateSent?.takeLast(9)?.take(5)
+            otherUsernameText.text = "Vendor"
+
         }
     }
 }

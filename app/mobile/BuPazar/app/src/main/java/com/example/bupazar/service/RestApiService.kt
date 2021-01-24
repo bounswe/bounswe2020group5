@@ -285,7 +285,7 @@ class RestApiService {
                     onResult(null)
                 }
                 override fun onResponse( call: Call<GetLastMessageResponse>, response: Response<GetLastMessageResponse>) {
-                    val message = response.body()?.chat
+                    val message = response.body()?.message
                     onResult(message)
                 }
             }

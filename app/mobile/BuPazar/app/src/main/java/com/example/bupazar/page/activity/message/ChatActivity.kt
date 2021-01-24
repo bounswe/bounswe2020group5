@@ -75,7 +75,6 @@ class ChatActivity : AppCompatActivity() {
             if (it?.messageId != null && (it.messageId!=lastMessageId)) {
                 runOnUiThread {
                     adapter.addMessage(it)
-                    // scroll the RecyclerView to the last added element
                     messageList.scrollToPosition(adapter.itemCount - 1);
                 }
                 lastMessageId = it.messageId!!
