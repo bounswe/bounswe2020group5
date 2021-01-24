@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
-from ..models import Customer, CreditCard, Purchase, Cart, ProductInCart, Order, Notification, NotificationType
+from ..models import Customer, CreditCard, Purchase, Cart, ProductInCart, Order, Notification, NotificationType, FavoriteList, ProductList
 from ..serializers import CreditCardSerializer, AddCreditCardSerializer, DeleteCreditCardSerializer, SuccessSerializer
 from .. serializers import PurchaseSerializer, EmptySerializer
+from ..utils import stock_end_notifications, stock_replenish_notifications
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -87,8 +88,10 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
             vendor = product.vendor
             unit_price = product.price * (1 - product.discount/100)
             product.number_of_sales += amount
+            stock_before_update = product.stock
             product.stock -= amount
-            
+            if product.stock == 0 and stock_before_update != 0:
+                stock_end_notifications(product)
             product.save()
             purchase = Purchase(customer=customer, vendor=vendor, product=product, amount=amount, 
                                     unit_price=unit_price, order=order, status='OrderTaken')

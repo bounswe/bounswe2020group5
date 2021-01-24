@@ -1,11 +1,11 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase, ProductInCart, Cart, FavoriteList
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer, ProductListResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
-from ..utils import create_product
+from ..utils import create_product, stock_end_notifications, stock_replenish_notifications
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
@@ -92,7 +92,16 @@ class ProductOptViewSet(viewsets.GenericViewSet):
 
                 product.price = data['price']
             if 'stock' in data:
-                product.stock = data['stock']
+                new_stock = data['stock']
+                if new_stock < 0:
+                    return Response(data={'error': 'Stock cannot be negative.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                if new_stock == 0 and product.stock != 0:
+                    stock_end_notifications(product)
+                elif new_stock > 0 and product.stock == 0:
+                    stock_replenish_notifications(product)
+
+                product.stock = new_stock
             if 'description' in data:
                 product.description = data['description']
             if 'discount' in data:

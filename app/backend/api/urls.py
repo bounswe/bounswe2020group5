@@ -60,7 +60,6 @@ urlpatterns = [
     path('orders/avg-rating-profile-page/', avg_vendor_rating_profile_page),
     path('orders/add-shipment/', add_shipment),
     path('orders/get-shipment/', get_shipment),
-    path('notifications/my/notifications/', my_notifications),
     path('alarms/set-price-alarm/', set_price_alarm),
     path('alarms/delete-price-alarm/', delete_price_alarm),
     path('alarms/my-price-alarms/', my_price_alarms),
