@@ -48,12 +48,14 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "2rem",
     },
     paper: {
+
         height: "35rem",
         padding: theme.spacing(2),
         color: theme.palette.text.secondary,
     },
     paper2: {
         height: "60rem",
+
         padding: theme.spacing(2),
         color: theme.palette.text.secondary,
     },
@@ -108,6 +110,7 @@ function Profile() {
     Geocoder.init("AIzaSyAMFkjk7UKH5zfJuVCzYbt5l_H4EP4CmiA")
 
 
+
     let history = useHistory();
 
     const handleClick = () => {
@@ -115,7 +118,9 @@ function Profile() {
 
     };
 
+
     let [name, setName] = useState({
+
         first_name: '',
         last_name: '',
         email: '',
@@ -126,7 +131,9 @@ function Profile() {
         address_4: '',
         address_5: '',
     });
+
     let [val, setVal] = useState({
+
         first_name: {error: false, message: ''},
         last_name: {error: false, message: ''},
         email: {error: false, message: ''},
@@ -138,6 +145,7 @@ function Profile() {
         username: {error: false, message: ''},
 
     });
+
 
     function handlegoogleaddress() {
         let mutableState = name
@@ -271,10 +279,12 @@ function Profile() {
             setUsernameChanged(true);
         }
 
+
         let mutableState = name
         mutableState[event.target.id] = event.target.value
         setName(mutableState)
     }
+
 
     function componentDidMount() {
         navigator.geolocation.getCurrentPosition(
@@ -319,12 +329,14 @@ function Profile() {
         isMounted.current = true;
 
 
+
         if (token) {
             fetch(serverUrl + 'api/auth/user_info/', {
                 method: 'POST',
                 headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
             }).then(res => res.json())
                 .then(json => {
+
                     {
                         json.address.split('/').length > 2 ?
                             setName({
@@ -369,10 +381,12 @@ function Profile() {
                 .catch(err => console.log(err));
 
 
+
         } else {
             alert('Please login to see profile page')
             history.push('/login')
         }
+
         return () => isMounted.current = false;
 
 
@@ -441,14 +455,16 @@ function Profile() {
                                                     <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
                                                                   primary="Lists"/>
                                                 </ListItem>
-                                                <ListItem button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button 
+                                                    component={Link} to="/profile/savedcards" >
                                                     <ListItemIcon>
                                                         <PaymentIcon/>
                                                     </ListItemIcon>
                                                     <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
                                                                   primary="Saved Credit Cards"/>
                                                 </ListItem>
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button
+                                                     component={Link} to="/profile/assessments">
                                                     <ListItemIcon>
                                                         <StarBorderIcon/>
                                                     </ListItemIcon>
@@ -543,6 +559,7 @@ function Profile() {
                             </Grid>
                             <Grid item xs={7} style={{marginLeft: "2rem"}}>
                                 <Paper className={classes.paper2}>
+
                                     <div className={classes.grid2}>
                                         <InputBase
                                             style={{
@@ -565,7 +582,9 @@ function Profile() {
                                                 id="first_name"
                                                 label="Name"
                                                 variant="outlined"
+
                                                 defaultValue={name.first_name}
+
                                                 disabled={!edit}
                                                 onChange={onChange}
                                                 /*InputProps={{
@@ -585,7 +604,9 @@ function Profile() {
                                                 id="last_name"
                                                 label="Surname"
                                                 variant="outlined"
+
                                                 defaultValue={name.last_name}
+
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
@@ -598,7 +619,9 @@ function Profile() {
                                                 id="username"
                                                 label="Username"
                                                 variant="outlined"
+
                                                 defaultValue={name.username}
+
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
@@ -609,6 +632,7 @@ function Profile() {
                                                 id="email"
                                                 label="E-mail"
                                                 variant="outlined"
+
                                                 defaultValue={name.email}
                                                 disabled={true}
                                                 onChange={onChange}
@@ -630,6 +654,7 @@ function Profile() {
                               onChange={onChange}
                           />
                         </div>*/}
+
                                         <Grid container spacing={3}>
                                             <Grid item xs={10}>
                                                 <TextField
@@ -643,7 +668,9 @@ function Profile() {
                                                     variant="outlined"
                                                     autoComplete="shipping address-line1"
                                                     disabled={!edit}
+
                                                     defaultValue={name.address_1}
+
                                                     onChange={onChange}
 
                                                 />
@@ -661,7 +688,8 @@ function Profile() {
                                                     autoComplete="shipping address-level2"
                                                     disabled={!edit}
                                                     onChange={onChange}
-                                                    defaultValue={name.address_2}
+                                  defaultValue={name.address_2}
+
 
                                                 />
                                             </Grid>
@@ -677,7 +705,9 @@ function Profile() {
                                                     label="State/Province/Region"
                                                     fullWidth
                                                     onChange={onChange}
+
                                                     defaultValue={name.address_3}
+
                                                 />
                                             </Grid>
                                             <Grid item xs={10} sm={5}>
@@ -693,7 +723,9 @@ function Profile() {
                                                     autoComplete="shipping postal-code"
                                                     disabled={!edit}
                                                     onChange={onChange}
+
                                                     defaultValue={name.address_4}
+
                                                 />
                                             </Grid>
                                             <Grid item xs={10} sm={5}>
@@ -771,7 +803,9 @@ function Profile() {
                                                 <Button
                                                     style={{
                                                         width: "20rem",
+
                                                         marginLeft: "10rem",
+
                                                         marginRight: "8rem",
                                                         backgroundColor: "#0B3954",
                                                     }}
