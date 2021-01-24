@@ -7,6 +7,7 @@ from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer
 from ..serializers import AddVendorRatingSerializer, VendorRatingSerializer, VendorRatingInProductPageSerializer, VendorRatingResponseSerializer
 from ..serializers import ShipmentSerializer, AddShipmentSerializer, ShipmentCargoNoSerializer, GetShipmentSerializer
 from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating, Notification, NotificationType, User, Shipment
+from ..utils import stock_end_notifications, stock_replenish_notifications
 from rest_framework.response import Response
 import string, random
 
@@ -42,7 +43,10 @@ def vendor_cancel_purchase(request):
         product_id = purchase.product_id
         product_amount = purchase.amount
         product = Product.objects.get(id=product_id)
+        stock_before = product.stock
         product.stock += product_amount
+        if stock_before == 0 and product.stock > 0:
+            stock_replenish_notifications(product)
         product.number_of_sales -= product_amount
         product.save()
         # Create a notification to customer when an order is cancelled by the vendor
@@ -67,14 +71,17 @@ def customer_cancel_order(request):
 
     for purchase in purchases:
         if purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
-              purchase.status = 'Ccancelled'
-              purchase.save()
-              product_id = purchase.product_id
-              product_amount = purchase.amount
-              product = Product.objects.get(id=product_id)
-              product.stock += product_amount
-              product.number_of_sales -= product_amount
-              product.save()
+            purchase.status = 'Ccancelled'
+            purchase.save()
+            product_id = purchase.product_id
+            product_amount = purchase.amount
+            product = Product.objects.get(id=product_id)
+            stock_before = product.stock
+            product.stock += product_amount
+            if stock_before == 0 and product.stock > 0:
+                stock_replenish_notifications(product)
+            product.number_of_sales -= product_amount
+            product.save()
         else:
             continue
     
