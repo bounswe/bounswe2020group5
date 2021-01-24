@@ -24,3 +24,4 @@ from .orders import VendorRating
 from .notifications import Notification
 from .notifications import NotificationType
 from .alarm import PriceAlarm
+from .orders import Shipment

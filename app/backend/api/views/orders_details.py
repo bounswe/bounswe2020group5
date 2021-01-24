@@ -5,8 +5,10 @@ from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
 from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer, CustomerOrderSerializer
 from ..serializers import AddVendorRatingSerializer, VendorRatingSerializer, VendorRatingInProductPageSerializer, VendorRatingResponseSerializer
-from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating, Notification, NotificationType, User
+from ..serializers import ShipmentSerializer, AddShipmentSerializer, ShipmentCargoNoSerializer, GetShipmentSerializer
+from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating, Notification, NotificationType, User, Shipment
 from rest_framework.response import Response
+import string, random
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
 @api_view(['GET'])
@@ -202,3 +204,31 @@ def avg_vendor_rating_profile_page(request):
             number_of_rates += 1
     avg_score = round(total_rating / number_of_rates, 1)
     return Response(data={'score': avg_score}, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ShipmentCargoNoSerializer}, request_body=AddShipmentSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthVendor])
+def add_shipment(request):
+    serializer = AddShipmentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    cargo_company = serializer.validated_data['cargo_company']
+    purchase = Purchase.objects.get(id=purchase_id)
+    if purchase.status == "Preparing":
+        cargo_no = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        shipment = Shipment(purchase=purchase, cargo_no=cargo_no, cargo_company=cargo_company)
+        shipment.save()
+        return Response(data={'cargo_no': cargo_no}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(data={'error': 'Unable to ship this order.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ShipmentSerializer}, request_body=GetShipmentSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def get_shipment(request):
+    serializer = GetShipmentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    shipment = Shipment.objects.get(purchase_id=purchase_id)
+    shipment_contents = ShipmentSerializer(shipment)
+    return Response(data=shipment_contents.data, status=status.HTTP_200_OK)
