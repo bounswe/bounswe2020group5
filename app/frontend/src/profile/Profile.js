@@ -12,13 +12,10 @@ import ReorderIcon from '@material-ui/icons/Reorder';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import Collapse from "@material-ui/core/Collapse";
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import ListIcon from '@material-ui/icons/List';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
 import PaymentIcon from '@material-ui/icons/Payment';
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
@@ -29,6 +26,8 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
+import LockIcon from '@material-ui/icons/Lock';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MapContainer from "../components/googlemap";
 import Geocoder from "react-native-geocoding";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -470,21 +469,13 @@ function Profile() {
                                                     </ListItemIcon>
                                                     <ListItemText primary="Assessments"/>
                                                 </ListItem>
-                                                <ListItem button style={{marginTop: '2rem'}} onClick={handleClick}>
-                                                    <ListItemIcon>
-                                                        <SettingsIcon/>
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Settings"/>
-                                                    {open ? <ExpandLess/> : <ExpandMore/>}
+                                                <ListItem button component={Link} to="/profile/changepassword">
+                                                  <ListItemIcon>
+                                                    <LockIcon/>
+                                                  </ListItemIcon>
+                                                  <ListItemText primary="Change Password"/>
                                                 </ListItem>
-                                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                                    <List component="div" disablePadding>
-                                                        <ListItem button className={classes.nested} component={Link}
-                                                                  to="/profile/changepassword">
-                                                            <ListItemText primary="Change Password"/>
-                                                        </ListItem>
-                                                    </List>
-                                                </Collapse>
+                                               
                                             </List>
                                         </div>
                                     ) : (
@@ -532,25 +523,17 @@ function Profile() {
                                                           component={Link}
                                                           to="/add-product">
                                                     <ListItemIcon>
-                                                        <ListIcon/>
+                                                        <AddCircleIcon/>
                                                     </ListItemIcon>
                                                     <ListItemText primary="Add Product"/>
                                                 </ListItem>
-                                                <ListItem button style={{marginTop: '2rem'}} onClick={handleClick}>
-                                                    <ListItemIcon>
-                                                        <SettingsIcon/>
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Settings"/>
-                                                    {open ? <ExpandLess/> : <ExpandMore/>}
+                                                <ListItem button component={Link} to="/profile/changepassword">
+                                                  <ListItemIcon>
+                                                    <LockIcon/>
+                                                  </ListItemIcon>
+                                                  <ListItemText primary="Change Password"/>
                                                 </ListItem>
-                                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                                    <List component="div" disablePadding>
-                                                        <ListItem button className={classes.nested} component={Link}
-                                                                  to="/profile/changepassword">
-                                                            <ListItemText primary="Change Password"/>
-                                                        </ListItem>
-                                                    </List>
-                                                </Collapse>
+                                                
                                             </List>
                                         </div>
 
@@ -574,9 +557,10 @@ function Profile() {
                                         />
                                     </div>
                                     <div style={{marginLeft: "6rem"}}>
-                                        <div>
+                                      <Grid container spacing={3}>
+                                        <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield}
+                                               fullWidth
                                                 error={val.first_name.error}
                                                 helperText={val.first_name.message}
                                                 id="first_name"
@@ -597,8 +581,10 @@ function Profile() {
                                                   )
                                                 }}*/
                                             />
+                                            </Grid>
+                                            <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield3}
+                                                fullWidth
                                                 error={val.last_name.error}
                                                 helperText={val.last_name.message}
                                                 id="last_name"
@@ -610,10 +596,10 @@ function Profile() {
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
-                                        </div>
-                                        <div>
+                                            </Grid>
+                                        <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield}
+                                                fullWidth
                                                 error={val.username.error}
                                                 helperText={val.username.message}
                                                 id="username"
@@ -625,8 +611,10 @@ function Profile() {
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
+                                                  </Grid>
+                                            <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield3}
+                                                fullWidth
                                                 error={val.email.error}
                                                 helperText={val.email.message}
                                                 id="email"
@@ -637,7 +625,7 @@ function Profile() {
                                                 disabled={true}
                                                 onChange={onChange}
                                             />
-                                        </div>
+                                        </Grid>
                                         {/*<div>
                           <TextField
                               className={classes.txtfield2}
@@ -655,7 +643,8 @@ function Profile() {
                           />
                         </div>*/}
 
-                                        <Grid container spacing={3}>
+
+                                        
                                             <Grid item xs={10}>
                                                 <TextField
                                                     required
