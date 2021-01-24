@@ -27,8 +27,8 @@ def set_price_alarm(request):
         alarm.price = price
     else:
         alarm = PriceAlarm(customer=customer, product=product, price=price)
-        alarm.save()
     
+    alarm.save()
     return Response(data={'success': 'Alarm is successfully set.'}, status=status.HTTP_200_OK)
 
 """
@@ -38,7 +38,7 @@ Deletes price alarm in terms of product for customers
 @api_view(['POST'])
 @permission_classes([IsAuthCustomer])
 def delete_price_alarm(request):
-    serializer = SetPriceAlarmSerializer(data=request.data)
+    serializer = DeletePriceAlarmSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = request.user
     product_id = serializer.validated_data['product_id']

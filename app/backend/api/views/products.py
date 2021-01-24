@@ -85,7 +85,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
                 for alarm in alarms:
                     if data['price'] < alarm.price:
                         new_price = data['price'] 
-                        text = f'Price of {product.name} go down to {new_price}.'
+                        text = f'Price of {product.name} went down from {product.price} to {new_price}.'
                         notification_type = NotificationType.PRICE_ALARM
                         notification = Notification(text= text, notificationType=notification_type.value , user=alarm.customer.user, product=product, order=None)
                         notification.save()
