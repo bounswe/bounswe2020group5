@@ -24,7 +24,7 @@ import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
 import order from "./orders/order";
 import Assessments from "./profile/Assessments";
 import SavedCards from "./savedCards/SavedCards";
-
+import Notifications from "./notifications/Notifications";
 
 function App() {
   return (
@@ -61,6 +61,8 @@ function App() {
           <Route path="/category" component={Categories} />
           <Route path="/subcategory" exact component={Categories} />
           <Route path="/profile/savedcards" exact component={SavedCards} />
+          <Route path="/notifications" exact component={Notifications} />
+
           <Route component={NoMatch} />
         </Switch>
       </div>

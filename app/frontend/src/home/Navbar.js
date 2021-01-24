@@ -397,6 +397,7 @@ export default function Navbar({notificationpage,messagespage}) {
                   </Badge>
                 </IconButton>
                 </Link>
+                <Link to={'/notifications'}>
                 <IconButton aria-label="show new notifications" color="inherit">
                   <Badge badgeContent={null} color="primary">
 
@@ -405,6 +406,7 @@ export default function Navbar({notificationpage,messagespage}) {
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>
+                </Link>
                 {!isvendor ?
                 <IconButton
                   edge="end"
