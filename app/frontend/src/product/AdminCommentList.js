@@ -122,7 +122,7 @@ export const AdminCommentList = ({ commentList }) => {
                 color="primary"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
-                onClick={() => handleDelete(comment.comment_id)}
+                onClick={() => handleDelete(comment.id)}
               >
                 Delete Comment
               </Button>
@@ -131,7 +131,7 @@ export const AdminCommentList = ({ commentList }) => {
                 color="primary"
                 className={classes.button}
                 startIcon={<BlockIcon />}
-                onClick={() => handleBan(comment.comment_id)}
+                onClick={() => handleBan(comment.id)}
               >
                 Ban User
               </Button>
