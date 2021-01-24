@@ -24,6 +24,8 @@ import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
 import order from "./orders/order";
 import Assessments from "./profile/Assessments";
 import SavedCards from "./savedCards/SavedCards";
+import Forgot from "./login/Forgot";
+import ForgotChange from "./login/ForgotChange";
 
 
 function App() {
@@ -61,6 +63,8 @@ function App() {
           <Route path="/category" component={Categories} />
           <Route path="/subcategory" exact component={Categories} />
           <Route path="/profile/savedcards" exact component={SavedCards} />
+          <Route path="/forgot/enter/email" exact component={Forgot} />
+          <Route path="/forgot" component={ForgotChange} />
           <Route component={NoMatch} />
         </Switch>
       </div>
