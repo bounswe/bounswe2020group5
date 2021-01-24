@@ -79,7 +79,7 @@ const Product = (props) => {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
-    const [defaultalarmprice, setdefaultalarmprice] = React.useState();
+    let [defaultalarmprice, setdefaultalarmprice] = React.useState();
 
     let [state, setState] = useState({
         name: '',
