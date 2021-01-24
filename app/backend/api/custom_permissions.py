@@ -19,7 +19,7 @@ class IsAuthVendor(BasePermission):
 
 class IsAuthAdmin(BasePermission):
     """
-    Allows access only to authenticated vendors.
+    Allows access only to authenticated admins.
     """
 
     def has_permission(self, request, view):

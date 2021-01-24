@@ -113,7 +113,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
 
                         for usr in users_set:
                             notification_type = NotificationType.NEW_DISCOUNT
-                            notification = Notification(text= text, notificationType=notification_type.value , user=usr, product=product, order=None)
+                            notification = Notification(text= text, notificationType=notification_type.value , user=usr.user, product=product, order=None)
                             notification.save()
 
             product.save()
