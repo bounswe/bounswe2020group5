@@ -120,7 +120,7 @@ def recommend_products(request):
             if product in products:
                 products.remove(product)
 
-        if len(products) < 15:
+        if len(products) < number_of_products:
             diff = number_of_products - len(products)
             products_difference = Product.objects.order_by('-number_of_sales')[:diff]
             for product in products_difference:

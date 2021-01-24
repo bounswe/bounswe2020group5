@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase, FavoriteList, ProductInCart
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer, ProductListResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
@@ -85,7 +85,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
                 for alarm in alarms:
                     if data['price'] < alarm.price:
                         new_price = data['price'] 
-                        text = f'Price of {product.name} go down to {new_price}.'
+                        text = f'Price of {product.name} went down from {product.price} to {new_price}.'
                         notification_type = NotificationType.PRICE_ALARM
                         notification = Notification(text= text, notificationType=notification_type.value , user=alarm.customer.user, product=product, order=None)
                         notification.save()

@@ -27,8 +27,8 @@ def set_price_alarm(request):
         alarm.price = price
     else:
         alarm = PriceAlarm(customer=customer, product=product, price=price)
-        alarm.save()
     
+    alarm.save()
     return Response(data={'success': 'Alarm is successfully set.'}, status=status.HTTP_200_OK)
 
 """
