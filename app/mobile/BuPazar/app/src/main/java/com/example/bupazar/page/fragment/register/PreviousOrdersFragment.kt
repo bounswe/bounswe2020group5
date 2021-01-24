@@ -10,9 +10,11 @@ import com.example.bupazar.R
 import com.example.bupazar.model.CreditCardAdapter
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.Order
+import com.example.bupazar.model.PreviousOrdersAdapter
 import com.example.bupazar.page.fragment.OrderFragment
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_pay_with_another_card.*
+import kotlinx.android.synthetic.main.fragment_previous_orders.*
 
 class PreviousOrdersFragment : Fragment() {
 
@@ -25,6 +27,17 @@ class PreviousOrdersFragment : Fragment() {
         arguments?.let {
             userData = arguments?.getSerializable("USERDATA") as LoginResponse
             authToken = "Token " + userData!!.authToken
+        }
+        val apiService = RestApiService()
+        apiService.getPreviousOrders(authToken!!){
+            orders = it
+            if (orders != null && orders!!.size > 0) {
+                val previousOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
+                    PreviousOrdersAdapter(it1, it2) }
+                }
+                previous_orders_rview.adapter = previousOrdersAdapter
+                previous_orders_rview.layoutManager = LinearLayoutManager(this.context)
+            }
         }
     }
 

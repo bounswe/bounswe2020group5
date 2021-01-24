@@ -6,26 +6,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".page.fragment.register.PreviousOrdersFragment">
 
-    <TextView
-        android:id="@+id/previous_orders_title"
+    <RelativeLayout
+        android:id="@+id/previous_orders_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Previous Orders"
-        android:textSize="20sp"
-        android:textColor="@color/secondary_blue"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:textStyle="bold"/>
+        android:background="@color/secondary_blue"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/previous_orders_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/previous_orders"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/previous_orders_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            app:srcCompat="@drawable/ic_baseline_order_white" />
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/previous_orders_rview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/previous_orders_title"
-        android:layout_alignStart="@id/previous_orders_title"
-        android:layout_marginEnd="16dp"
+        android:layout_below="@id/previous_orders_title_bar"
+        android:layout_alignParentStart="true"
         android:layout_marginTop="8dp"/>
 
 </RelativeLayout>

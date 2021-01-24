@@ -2,14 +2,22 @@ package com.example.bupazar.model
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.LinearLayout.HORIZONTAL
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.credit_card_item.view.*
 import kotlinx.android.synthetic.main.credit_card_item.view.order_id_text
+import kotlinx.android.synthetic.main.fragment_previous_orders.*
 import kotlinx.android.synthetic.main.order_item.view.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class PreviousOrdersAdapter(private val context: Context, private val previousOrders: Array<Order>) : RecyclerView.Adapter<PreviousOrdersAdapter.ViewHolder>() {
@@ -29,12 +37,18 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        @SuppressLint("ResourceAsColor")
+
+        @SuppressLint("ResourceAsColor", "WrongConstant")
         fun bind(order: Order) {
             var totalPrice: Float = 0f
             var orderStatus: Int = 3
+            var photoURLs = mutableListOf<String>()
+            var i: Int = 0
+
             if (order.purchases != null) {
                 for (purchase in order.purchases) {
+                    photoURLs.add(purchase.product!!.imageUrl!!)
+                    i += 1
                     var currentOrderStatus: Int = 4
                     totalPrice += purchase.amount!! * purchase.unit_price!!
                     purchase.status = purchase.status!!.toLowerCase()
@@ -56,7 +70,8 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
                 }
             }
             itemView.order_id_text.text = "Order ID: #" + order.order_id.toString()
-            itemView.order_price_text.text = "Price: " + "%.2f".format(totalPrice) + "$"
+            itemView.order_price_text.text = "Price: " + "%.2f".format(totalPrice) + " $"
+
             if (orderStatus == 0) {
                 itemView.order_status_image.setImageResource(R.drawable.ic_baseline_hourglass_top_24)
                 itemView.order_status_text.text = "Order taken"
@@ -74,6 +89,18 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
             }
             else if (orderStatus == 1) {
                 itemView.order_status_text.text = "Order delivered"
+            }
+
+            var order_photos_rview = itemView.order_item_photos_rview
+
+            var photoURLsArray: Array<String> = photoURLs.toTypedArray()
+
+            if (photoURLsArray != null && photoURLsArray!!.size > 0) {
+                val orderPhotosAdapter = context?.let { it1 -> photoURLsArray?.let { it2 ->
+                    OrderPhotosAdapter(it1, it2) }
+                }
+                order_photos_rview.adapter = orderPhotosAdapter
+                order_photos_rview.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             }
         }
     }
