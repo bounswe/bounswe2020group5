@@ -51,7 +51,7 @@ export default function ForgotChange() {
 
   function handleResponse(res) {
     try {
-      const token = res.success;
+      const token = res.auth_token;
       if (token) {
         // console.log(token)
         setLogged(true);
@@ -64,7 +64,7 @@ export default function ForgotChange() {
     }
   }
   function handleOnClick() {
-    const url = serverUrl + "api/auth/password_reset_request/";
+    const url = serverUrl + "api/auth/password_reset_confirm/?" + window.location.href.split("?")[1];
 
     const data = {
       new_password: number,
@@ -98,7 +98,8 @@ export default function ForgotChange() {
   }
 
   if (logged) {
-    console.log("Successfully mail sent");
+    console.log("Successfully changed password");
+    return <Redirect to="/login" />;
   }
 
   return (
@@ -108,13 +109,13 @@ export default function ForgotChange() {
           <Grid item xs={2} />
           <Grid item xs={10} className={classes.header}>
             <Typography variant="h4" gutterBottom>
-              Email Verification
+              Password Reset
             </Typography>
           </Grid>
           <Grid item xs={2} />
           <Grid item xs={10}>
             <Typography variant="body1" gutterBottom>
-              Please enter your email address below:
+              Please enter your new password below:
             </Typography>
           </Grid>
           <Grid item xs={2} />
@@ -126,7 +127,7 @@ export default function ForgotChange() {
             )}
             {logged && (
               <Alert className={classes.alert} severity="success">
-                Successfully mail sent
+                Successfully changed password
               </Alert>
             )}
           </Grid>
@@ -136,7 +137,8 @@ export default function ForgotChange() {
             <TextField
               className={classes.field}
               id="verification-code-field"
-              label="Email Address"
+              label="Password"
+              type="password"
               variant="outlined"
               error={error}
               helperText={error}
@@ -149,8 +151,9 @@ export default function ForgotChange() {
             <TextField
               className={classes.field}
               id="verification-code-field"
-              label="Email Address"
+              label="Confirm"
               variant="outlined"
+              type="password"
               error={error}
               helperText={error}
               onChange={onChange2}
@@ -165,7 +168,7 @@ export default function ForgotChange() {
               className={classes.button}
               onClick={handleOnClick}
             >
-              Send Mail
+              Confirm
             </Button>
           </Grid>
           <Grid item xs={2} />
