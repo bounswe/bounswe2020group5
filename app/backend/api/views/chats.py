@@ -183,10 +183,10 @@ class ChatViewSet(viewsets.GenericViewSet):
         to_whom = ""
         if usr.is_customer:
             chats = Chat.objects.filter(customer_username=usr.username)
-            to_whom = "vendor"
+            to_whom = "customer"
         else:
             chats = Chat.objects.filter(vendor_username=usr.username)
-            to_whom = "customer"
+            to_whom = "vendor"
         if not chats:
             return Response(data={"error":"there is no chat the user is involved"}, status=status.HTTP_202_ACCEPTED)
         chats_contents = ChatSerializer(chats, many=True)
@@ -197,7 +197,7 @@ class ChatViewSet(viewsets.GenericViewSet):
         for chat_properties in chats_contents:
             chat_ids.append(chat_properties['id'])
         for chat_id in chat_ids:
-            number = number + len(UnreadMessages.objects.filter(chat_id=chat_id))
+            number = number + len(UnreadMessages.objects.filter(chat_id=chat_id, to_whom=to_whom))
 
         return Response(data=number , status=status.HTTP_200_OK)
    
