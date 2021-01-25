@@ -215,7 +215,7 @@ export default function Navbar({notificationpage, messagespage}) {
         setIsLogged(false);
         setAnchorEl(false);
         setvendorAnchorEl(false)
-        window.location.reload();
+        history.push("/")
     }
 
     const handlejointClose = () => {
