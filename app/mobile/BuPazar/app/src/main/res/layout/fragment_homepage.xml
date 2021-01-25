@@ -40,20 +40,59 @@
 
 
     <ImageView
-        android:id="@+id/banner"
+        android:id="@+id/newArrivals"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:layout_below="@id/topBar"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/homepage_banner"/>
+        android:src="@drawable/new_arrivals"
+        android:background="@color/quinary_purple"
+        android:padding="1dp"/>
+
+
+    <ImageView
+        android:id="@+id/bestSellersProducts"
+        android:layout_width="187dp"
+        android:layout_height="109dp"
+        android:layout_below="@id/newArrivals"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/best" />
+
+    <ImageView
+        android:id="@+id/trending"
+        android:layout_width="187dp"
+        android:layout_height="109dp"
+        android:layout_below="@id/newArrivals"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toEndOf="@id/bestSellersProducts"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/trends" />
+
+    <ImageView
+        android:id="@+id/recommended"
+        android:layout_width="385dp"
+        android:layout_height="167dp"
+        android:layout_below="@id/trending"
+        android:layout_marginTop="-1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/recommendeds"
+        android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/banner"/>
+        android:layout_below="@id/recommended"/>
 
 </RelativeLayout>
