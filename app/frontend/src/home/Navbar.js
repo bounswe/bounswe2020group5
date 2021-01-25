@@ -106,6 +106,9 @@ export default function Navbar({notificationpage, messagespage}) {
 
     const classes = useStyles();
     let [unreadmessages, setunreadmessages] = React.useState(null)
+    let [notifications, setNotifications] = React.useState("");
+    var len;
+    let [unseen, setUnseen] = React.useState(0)
 
     let history = useHistory();
 
@@ -138,6 +141,24 @@ export default function Navbar({notificationpage, messagespage}) {
 
                 .catch(err => console.log(err));
         }
+        if(token){
+        fetch(serverUrl + 'api/notifications/my/', {
+            method: 'GET',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+        }).then(res => res.json())
+            .then(json => {
+                notifications = json;
+                len = Object.keys(JSON.parse(JSON.stringify(json))).length
+            }).then(() => {
+            var i;
+            for(i=0; i<len; i++){
+                setNotifications(notifications)
+                if(!notifications[i].isSeen){
+                    setUnseen(unseen+1)
+                }
+            }
+        }).catch(err => console.log(err ));}
+
 
         if (token) {
             fetch(serverUrl + 'api/auth/user_info/', {
@@ -188,14 +209,14 @@ export default function Navbar({notificationpage, messagespage}) {
     };
 
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('is_vendor');
-    setIsLogged(false);
-    setAnchorEl(false);
-    setvendorAnchorEl(false)
-    window.location.reload();
-  }
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('is_vendor');
+        setIsLogged(false);
+        setAnchorEl(false);
+        setvendorAnchorEl(false)
+        window.location.reload();
+    }
 
     const handlejointClose = () => {
         setAnchorEljoint(null);
@@ -396,14 +417,16 @@ export default function Navbar({notificationpage, messagespage}) {
                                             </Badge>
                                         </IconButton>
                                     </Link>
-                                    <IconButton aria-label="show new notifications" color="inherit">
-                                        <Badge badgeContent={null} color="primary">
+                                    {!isvendor ?<div style={{display:'flex',flexDirection:'row'}}>
+                                    <Link to={'/notifications'}>
+                                        <IconButton aria-label="show new notifications" color="inherit">
+                                            <Badge badgeContent={notificationpage==true ? null:unseen} color="primary">
+                                                <NotificationsIcon style={{ color: '#7E7F9A' }} />
+                                            </Badge>
+                                        </IconButton>
+                                    </Link>
 
 
-                                            <NotificationsIcon style={{color: '#7E7F9A'}}/>
-                                        </Badge>
-                                    </IconButton>
-                                    {!isvendor ?
                                         <IconButton
                                             edge="end"
                                             aria-label="account of current user"
@@ -413,7 +436,7 @@ export default function Navbar({notificationpage, messagespage}) {
                                             color="primary"
                                         >
                                             <AccountCircle style={{color: '#7E7F9A'}}/>
-                                        </IconButton> :
+                                        </IconButton> </div>:
                                         <IconButton
 
                                             edge="end"
