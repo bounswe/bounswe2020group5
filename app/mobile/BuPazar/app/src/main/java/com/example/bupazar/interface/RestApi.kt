@@ -7,6 +7,7 @@ import com.example.bupazar.model.RegisterRequest
 import com.example.bupazar.model.*
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
 
 interface RestApi {
 
@@ -41,6 +42,14 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/products/category/")
     fun CategoryProducts(@Body categoryRequest: CategoryRequest): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @GET(" /api/products/recommend/")
+    fun recommendedProducts(@Header("Authorization") authToken: String): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @POST(" /api/products/homepage/")
+    fun featuredProducts(@Body featuredProductsRequest: FeaturedProductsRequest): Call<FeaturedProductsValue>
 
     @Headers("Content-Type: application/json")
     @POST("/api/chats/send_message/")
@@ -103,6 +112,11 @@ interface RestApi {
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/add_comment/")
+    fun addComment(@Header("Authorization") authToken: String, @Body commnentData: AddComment): Call<Success>
+
+    @Headers("Content-Type: application/json")
     @GET("/api/orders/customer-orders/")
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+
 }

@@ -23,6 +23,7 @@
         android:backgroundTint="@color/secondary_blue"
         style="@style/ButtonPrimary"
         android:text="Enter"
+        android:background="@drawable/round"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/verificationTextView"
         android:layout_marginTop="16dp"

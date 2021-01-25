@@ -7,7 +7,7 @@
     <color name="tertiary_yellow">#F3DE8A</color>
     <color name="quaternary_pink">#EB9486</color>
     <color name="quinary_purple">#7E7F9A</color>
-
+    <color name="green">#29a348</color>
     <color name="colorTextDefault">#131313</color>
     <color name="colorTextLabelDefault">#353535</color>
     <color name="colorTextHintDefault">#434343</color>

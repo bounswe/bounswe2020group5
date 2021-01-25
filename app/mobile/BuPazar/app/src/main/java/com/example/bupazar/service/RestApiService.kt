@@ -1,11 +1,13 @@
 package com.example.bupazar.service
 
 import com.example.bupazar.User
+import com.example.bupazar.User.Companion.authToken
 import com.example.bupazar.`interface`.RestApi
 import com.example.bupazar.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class RestApiService {
     fun userLogin(userData: LoginRequest, onResult: (LoginResponse?) -> Unit){
@@ -227,6 +229,38 @@ class RestApiService {
         )
     }
 
+    fun recommendedProducts(authToken : String, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.recommendedProducts("Token $authToken").enqueue(
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val recommendedProducts = response.body()
+                        onResult(recommendedProducts)
+                    }
+                }
+        )
+    }
+
+    fun featuredProducts(featuredProductsRequest: FeaturedProductsRequest, onResult: (FeaturedProductsValue?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.featuredProducts(featuredProductsRequest).enqueue(
+            object : Callback<FeaturedProductsValue> {
+                override fun onFailure(call: Call<FeaturedProductsValue>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<FeaturedProductsValue>, response: Response<FeaturedProductsValue>) {
+                    val featuredProducts = response.body()
+                    onResult(featuredProducts!!)
+                }
+            }
+        )
+    }
+
     fun allComments(commentRequest: CommentRequest, onResult: (Array<CommentDetails>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.allComments(commentRequest).enqueue(
@@ -332,12 +366,26 @@ class RestApiService {
                 override fun onFailure(call: Call<Success>, t: Throwable) {
                     onResult(null)
                 }
-
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val user = response.body()
                     onResult(user)
                 }
             }
+        )
+    }
+
+    fun addComment(commentData: AddComment, onResult: (Success?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addComment("Token ${User.authToken}", commentData).enqueue(
+                object : Callback<Success> {
+                    override fun onFailure(call: Call<Success>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                        val success = response.body()
+                        onResult(success)
+                    }
+              }
         )
     }
 

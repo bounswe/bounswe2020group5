@@ -42,7 +42,6 @@ class CategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO subCategories should show related products
         electronics.setOnClickListener(){
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper,  CategoryElectronics())

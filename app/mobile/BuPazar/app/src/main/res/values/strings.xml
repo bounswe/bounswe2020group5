@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="appName">BuPazar!</string>
     <string name="username">E-mail Address</string>
-    <string name="username_hint">E-mail address</string>
+    <string name="username_hint">E-Mail Address</string>
     <string name="password">Password</string>
     <string name="password_hint">Password</string>
     <string name="forgot_password">Forgot your password?</string>
@@ -82,9 +82,20 @@
     <string name="update_password">UPDATE PASSWORD</string>
     <string name="please_enter_verification_number">Please enter verification number</string>
     <string name="my_wish_list">My Wish List</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="comment_and_rate">Comment and Rate</string>
+    <string name="comment">Comment</string>
+    <string name="rate">Rate</string>
+    <string name="e_mail_address">E-mail address</string>
+    <string name="first_name">First Name</string>
+    <string name="customer">Customer</string>
+    <string name="vendor">Vendor</string>
+
+
     <string name="previous_orders">Previous Orders</string>
     <string name="default_web_client_id">517640995797-en9ph1bng2bb99bo3k1v5p0b2cig69rb.apps.googleusercontent.com</string>
     <string name="show_all">Show All</string>
+
 
 
     <string-array name="sports_images">

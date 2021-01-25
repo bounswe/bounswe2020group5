@@ -4,12 +4,12 @@ import android.app.Application
 
 class User:Application() {
     companion object {
-        lateinit var userName: String
-        lateinit var firstName: String
-        lateinit var lastName: String
-        lateinit var userEmail: String
-        lateinit var address: String
-        lateinit var authToken: String
+        var userName: String? = null
+        var firstName: String? = null
+        var lastName: String? = null
+        var userEmail: String? = null
+        var address: String? = null
+        var authToken: String? = null
         var isVendor: Boolean = false
     }
 }

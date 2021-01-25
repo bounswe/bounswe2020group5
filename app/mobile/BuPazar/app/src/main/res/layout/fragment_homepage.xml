@@ -40,20 +40,53 @@
 
 
     <ImageView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:id="@+id/newArrivals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/topBar"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/homepage_banner"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        />
+
+    <ImageView
+        android:id="@+id/bestSellersProducts"
+        android:layout_width="185dp"
+        android:layout_height="108dp"
+        android:layout_below="@id/newArrivals"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/homepage_banner" />
+    <ImageView
+        android:id="@+id/trending"
+        android:layout_width="185dp"
+        android:layout_height="108dp"
+        android:layout_below="@id/newArrivals"
+        android:layout_toEndOf="@+id/bestSellersProducts"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/homepage_banner"/>
+
+    <ImageView
+        android:id="@+id/recommended"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:layout_below="@id/trending"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/homepage_banner"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/banner"/>
+        android:layout_below="@id/recommended"/>
 
 </RelativeLayout>
