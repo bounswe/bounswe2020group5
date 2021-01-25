@@ -280,7 +280,7 @@ export default function Orderlist(props) {
                                     <Link to={{pathname: `/product/${e.product.id}`}}
                                           style={{textDecoration: "none", color: "black"}}>
                                         <img
-                                            style={{maxHeight: 200, maxWidth: 200}}
+                                            style={{height: 200, width: 200}}
                                             src={e.product.image_url}
                                             alt="product image"
                                         />
