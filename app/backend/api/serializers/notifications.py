@@ -15,9 +15,12 @@ class NotificationSerializer(serializers.ModelSerializer):
         return obj.user.username
     
     def get_product(self, obj):
-        content = ProductSerializer(obj.product).data
-        return content
-
+        try:
+            content = ProductSerializer(obj.product).data
+            return content
+        except:
+            return None
+            
     def get_notificationType(self, obj):
         content = ''
         if obj.notificationType == NotificationType.STOCK_ENDED.value:
