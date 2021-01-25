@@ -25,14 +25,15 @@ import CommentList from "./CommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import Popover from "@material-ui/core/Popover";
 import CustomizedDialogs from "../components/dialog";
-
-import {Link} from "react-router-dom";
+import AlarmIcon from '@material-ui/icons/Alarm';
+import AlarmOutlinedIcon from '@material-ui/icons/AlarmOutlined';
 import Input from "@material-ui/core/Input";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +67,9 @@ const Product = (props) => {
     const [checked, setChecked] = React.useState(false);
     const [stars, setStars] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchoralarm, setAnchoraelalarm] = React.useState(null);
     let [heartclick, setheartclick] = useState(false);
+    let [alarmclick, setalarmclick] = useState(false);
     let [listclick, setlistclick] = useState(false);
     let [messageclick, setmessageclick] = useState(false);
     let [countclickamount, setcount] = useState(1);
@@ -77,8 +80,9 @@ const Product = (props) => {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
+    let [defaultalarmprice, setdefaultalarmprice] = React.useState();
 
-    const [state, setState] = useState({
+    let [state, setState] = useState({
         name: '',
         price: '',
         imgsrc: '',
@@ -87,6 +91,7 @@ const Product = (props) => {
         temp_comment: '',
         comments: [],
         newlist: "",
+        alarmprice:'',
     });
 
     useEffect(() => {
@@ -110,6 +115,20 @@ const Product = (props) => {
                             console.log(json.products[j]);
                             if ("" + json.products[j].id === id)
                                 setheartclick(true);
+
+                        }
+                    }),
+                fetch(serverUrl + 'api/alarms/my-price-alarms/', {
+                    method: 'GET',
+                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+                }).then(res => res.json())
+                    .then(json => {
+                        console.log(json)
+                        for (let j = 0; j < json.length; j++) {
+
+                            if (""+json[j].product.id === id)
+                                setalarmclick(true);
+                                setdefaultalarmprice(json[j].price)
                         }
                     })
             ]).catch((err) => {
@@ -228,6 +247,7 @@ const Product = (props) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+        setAnchoraelalarm(null)
     };
 
     const handleclickheart = () => {
@@ -260,6 +280,40 @@ const Product = (props) => {
             })
             setheartclick(true);
         }
+    };
+
+    const handlealarmclick = (event) => {
+        setAnchoraelalarm(event.currentTarget)
+    };
+
+    const Alarmsetted = () => {
+        handleClose();
+        fetch(serverUrl + 'api/alarms/set-price-alarm/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'product_id': id,'price':parseInt(state.alarmprice)})
+        }).then(res => res.json())
+            .then(json => {
+                alert("Alarm is successfully setted according to the given value. ")
+                console.log(json)
+            }).then(()=>setalarmclick(true)).catch((err) => {
+            console.log(err);
+        }, [])
+    };
+    const Alarmdelete= () => {
+       handleClose();
+
+        fetch(serverUrl + 'api/alarms/delete-price-alarm/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'product_id': id})
+        }).then(res => res.json())
+            .then(json => {
+                alert("Alarm is successfully removed.")
+                console.log(json)
+            }).then(()=>setalarmclick(false)).catch((err) => {
+            console.log(err);
+        }, [])
     };
 
     function onChange(event) {
@@ -358,8 +412,8 @@ const Product = (props) => {
                                         <CustomizedDialogs vendor={state.vendor}
                                                            productid={JSON.parse(JSON.stringify(id))}/>
 
-                                        <IconButton onClick={handlelistcount}>
-                                            {listclick ? <TurnedInIcon style={{color: "#0B3954"}} fontSize={"large"}/> :
+                                        <IconButton style={{height:'3rem',width:'3rem',marginRight:'1rem'}} onClick={handlelistcount}>
+                                            {listclick ? <TurnedInIcon style={{color: "#7E7F9A"}} fontSize={"large"}/> :
                                                 <TurnedInNotIcon fontSize={"large"}/>}
                                         </IconButton>
                                         <Menu
@@ -384,10 +438,53 @@ const Product = (props) => {
                                                 </Box>
                                             ))}
                                         </Menu>
-                                        <IconButton onClick={handleclickheart}>
-                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> :
-                                                <FavoriteBorderIcon fontSize={"large"}/>}
+
+                                        <IconButton style={{height:'3rem',width:'3rem',marginRight:'1rem'}} onClick={handleclickheart}>
+                                            {heartclick ? <Favorite style={{color: "#7A0010"}} fontSize={"large"}/> : <FavoriteBorderIcon fontSize={"large"}/>}
+
                                         </IconButton>
+                                        <div>
+                                        <IconButton aria-describedby={'simple-popover'} style={{height:'3rem',width:'3rem'}} onClick={handlealarmclick}>
+                                            {alarmclick ? <AlarmIcon style={{color: "#EB9486",fontWeight: "bold"}} fontSize={"large"}/> : <AlarmOutlinedIcon fontSize={"large"}/>}
+                                        </IconButton>
+
+                                        <Popover
+                                            id="simple-popover"
+                                            anchorEl={anchoralarm}
+                                            keepMounted
+                                            open={Boolean(anchoralarm)}
+                                            onClose={handleClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'left',
+                                            }}
+                                        >
+
+                                            <MenuItem style={{height:'3rem',width:'20rem'}}>
+                                                <Input id="alarmprice" defaultValue={defaultalarmprice}
+                                                       placeholder="Alarm Price" onChange={onChange}/>
+
+                                                {!(alarmclick)? <Button aria-label="add"
+                                                                      onClick={Alarmsetted} style={{ marginLeft: "0.5rem",height:'1.8rem',backgroundColor: "#0B3954",color:'white'}}>
+                                                    Add
+                                                </Button>:<div>
+                                                    <Button aria-label="add"
+                                                            onClick={Alarmsetted} style={{ marginLeft: "0.5rem",marginRight: "0.5rem",height:'1.8rem',backgroundColor: "#0B3954",color:'white'}}>
+                                                       Edit
+                                                    </Button>
+                                                    <Button aria-label="delete"
+                                                    onClick={Alarmdelete} style={{height:'1.8rem',color:'white',
+                                                        backgroundColor: "#7A0010", marginRight: "0.5rem"}}>
+                                                    Remove
+                                                    </Button></div>}
+
+                                            </MenuItem>
+
+                                        </Popover></div>
                                     </Grid>) : null}
                             </Grid>
 
