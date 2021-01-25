@@ -99,7 +99,8 @@
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForgotPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForgotPassword"
+        android:background="@drawable/round" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -115,7 +116,9 @@
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        android:background="@drawable/round"
+        />
 
 
     <Button
@@ -132,7 +135,9 @@
         android:text="@string/guest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
+        android:background="@drawable/round"
+        />
 
     <Button
         android:id="@+id/google_login_btn"
@@ -145,14 +150,13 @@
         android:layout_marginRight="32dp"
         android:layout_centerInParent="true"
         android:background="@drawable/round_border"
-        android:drawableStart="@drawable/google_icon"
-        android:drawableLeft="@drawable/google_icon"
+        android:drawableStart="@drawable/ic_search"
+        android:drawableLeft="@drawable/ic_search"
         android:drawablePadding="8dp"
         android:padding="8dp"
         android:text="Sign in with Google"
         android:textAllCaps="false"
         android:textColor="@color/GoogleTextColor"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGuest" />

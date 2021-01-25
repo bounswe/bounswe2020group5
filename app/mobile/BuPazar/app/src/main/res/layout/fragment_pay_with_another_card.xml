@@ -64,7 +64,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorTextWhite"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
@@ -91,7 +91,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorTextWhite"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
@@ -118,7 +118,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorTextWhite"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
@@ -149,6 +149,7 @@
                 android:layout_marginStart="12dp"
                 android:textSize="14sp"
                 android:text="Expiration Date: "
+                android:textColor="@color/black"
                 android:id="@+id/expiration_date_header"
                 android:layout_centerVertical="true"/>
 
@@ -169,6 +170,7 @@
                     android:id="@+id/expiration_text"
                     android:fontFamily="sans-serif-light"
                     android:text="##/##"
+                    android:background="@color/colorTextWhite"
                     android:textSize="18sp"
                     android:padding="4dp"/>
             </RelativeLayout>
@@ -179,6 +181,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="14sp"
                 android:text="CVC: "
+                android:textColor="@color/black"
                 android:layout_toStartOf="@id/cvc_grey_cover"/>
 
             <RelativeLayout
@@ -199,7 +202,9 @@
                     android:padding="4dp"
                     android:fontFamily="sans-serif-light"
                     android:text="###"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:background="@color/colorTextWhite"
+                    />
             </RelativeLayout>
 
         </RelativeLayout>

@@ -355,4 +355,36 @@ class RestApiService {
             }
         )
     }
+  
+    fun subCategoryProducts(subCategoryRequest: SubCategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.subCategoryProducts(subCategoryRequest).enqueue(
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val all_products = response.body()
+                        onResult(all_products)
+                    }
+                }
+        )
+    }
+
+    fun CategoryProducts(categoryRequest: CategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.CategoryProducts(categoryRequest).enqueue(
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val all_products = response.body()
+                        onResult(all_products)
+                    }
+                }
+        )
+    }
 }

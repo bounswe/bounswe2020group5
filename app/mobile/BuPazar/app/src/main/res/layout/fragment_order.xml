@@ -22,6 +22,7 @@
             android:id="@+id/address_header_bar">
 
             <TextView
+                android:id="@+id/shipping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -33,6 +34,13 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16sp"
+                android:layout_toEndOf="@id/shipping"
+                android:src="@drawable/ic_shipping" />
 
         </RelativeLayout>
 
@@ -46,7 +54,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorTextWhite"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
@@ -83,6 +91,7 @@
             android:background="@drawable/rectangle_border">
 
             <TextView
+                android:id="@+id/paymentInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -94,6 +103,15 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16sp"
+                android:layout_toEndOf="@id/paymentInfo"
+                android:src="@drawable/ic_cashless_payment" />
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,7 +134,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorTextWhite"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
@@ -127,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/card_name_text"
                     android:text="Yasar's Mastercard"
+                    android:textColor="@color/black"
                     android:padding="8dp"/>
             </RelativeLayout>
 
@@ -150,6 +169,7 @@
             android:id="@+id/installment_header_bar">
 
             <TextView
+                android:id="@+id/installment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -161,6 +181,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16sp"
+                android:layout_toEndOf="@id/installment"
+                android:src="@drawable/ic_installment" />
 
         </RelativeLayout>
 
@@ -185,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="One Installment"
+                android:textColor="@color/black"
                 android:layout_toEndOf="@id/one_installment_checkbox"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"/>
@@ -193,6 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="###"
+                android:textColor="@color/black"
                 android:id="@+id/installment_price"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -219,7 +249,8 @@
         android:layout_toEndOf="@id/gdpr_checkbox"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:text="By clicking this box I agree to the terms of GDPR"/>
+        android:text="By clicking this box I agree to the terms of GDPR"
+        android:textColor="@color/black"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -237,6 +268,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/total_text"
             android:text="Total"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:layout_alignTop="@id/place_order_button"
             android:layout_alignParentStart="true"

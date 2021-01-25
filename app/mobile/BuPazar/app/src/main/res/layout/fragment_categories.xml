@@ -55,7 +55,7 @@
             app:srcCompat="@drawable/ic_plug" />
 
         <TextView
-            android:id="@+id/electronicstext"
+            android:id="@+id/smartPhoneText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -96,7 +96,7 @@
             app:srcCompat="@drawable/ic_clothes" />
 
         <TextView
-            android:id="@+id/fashionText"
+            android:id="@+id/whiteAppliancesText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -137,7 +137,7 @@
             app:srcCompat="@drawable/ic_personal_care" />
 
         <TextView
-            android:id="@+id/personalCareText"
+            android:id="@+id/pcTabletText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -177,7 +177,7 @@
             app:srcCompat="@drawable/ic_living_room" />
 
         <TextView
-            android:id="@+id/homeText"
+            android:id="@+id/photoCameraText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
