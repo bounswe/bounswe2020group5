@@ -35,6 +35,14 @@ interface RestApi {
     fun allProducts(): Call<Array<ProductDetails>?>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/products/subcategory/")
+    fun subCategoryProducts(@Body subCategoryRequest: SubCategoryRequest): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/category/")
+    fun CategoryProducts(@Body categoryRequest: CategoryRequest): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/chats/send_message/")
     fun sendMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Success>
 
