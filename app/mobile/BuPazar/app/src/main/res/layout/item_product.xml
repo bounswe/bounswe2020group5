@@ -20,6 +20,7 @@
         android:backgroundTint="@color/black"/>
 
     <ImageView
+        android:id="@+id/hearth"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_empty_fav_icon"
