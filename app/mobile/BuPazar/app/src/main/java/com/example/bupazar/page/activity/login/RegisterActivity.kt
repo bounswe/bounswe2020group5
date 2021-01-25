@@ -26,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.fragment_register)
-        progressBarHide()
+        //progressBarHide()
 
         val bundle = Bundle()
 
@@ -37,7 +37,7 @@ class RegisterActivity : AppCompatActivity() {
         authFragment.arguments = bundle
 
         buttonRegister.setOnClickListener() {
-            progressBarShow()
+            //progressBarShow()
 
             if (usernameTextView.text.isEmpty() || passwordEditTextView.text.isEmpty() || mailEditTextView.text.isEmpty() || firstNameEditTextView.text.isEmpty()
                 || surnameEditTextView.text.isEmpty()){
@@ -58,11 +58,11 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 apiService.userRegister(userInfo) {
                     if(it?.success == null){
-                        progressBarHide()
+                        //progressBarHide()
                         Toast.makeText(this@RegisterActivity,"Register credentials are not valid" , Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        progressBarHide()
+                        //progressBarHide()
                         setContentView(R.layout.fragment_auth)
                         enterButton.setOnClickListener(){
                             val verificationInfo = VerificationRequest(
@@ -88,11 +88,13 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-
+/*
     private fun progressBarShow(){
         progress_Bar.visibility = View.VISIBLE
     }
     private fun progressBarHide(){
         progress_Bar.visibility = View.INVISIBLE
     }
+    */
+
 }
