@@ -19,6 +19,7 @@ class MyAccountFragment : Fragment() {
     var userData : LoginResponse? = null
     lateinit var userNameTextView: TextView
     lateinit var mailTextView: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
