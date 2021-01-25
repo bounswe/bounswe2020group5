@@ -181,6 +181,7 @@ class ProductFragment : Fragment() {
                     }
                     else{
                         Toast.makeText(this.activity, "Comment is added.", Toast.LENGTH_SHORT).show()
+                        //TODO: page reload
                     }
                 }
             }

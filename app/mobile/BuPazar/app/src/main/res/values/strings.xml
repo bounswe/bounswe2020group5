@@ -86,6 +86,11 @@
     <string name="comment_and_rate">Comment and Rate</string>
     <string name="comment">Comment</string>
     <string name="rate">Rate</string>
+    <string name="e_mail_address">E-mail address</string>
+    <string name="first_name">First Name</string>
+    <string name="customer">Customer</string>
+    <string name="vendor">Vendor</string>
+
 
 
     <string-array name="sports_images">

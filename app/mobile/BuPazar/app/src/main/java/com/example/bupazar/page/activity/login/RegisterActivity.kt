@@ -43,6 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                 || surnameEditTextView.text.isEmpty()){
                 Toast.makeText(this@RegisterActivity,"All the blanks should be filled", Toast.LENGTH_SHORT).show()
             }
+
             else {
                 val apiService = RestApiService()
                 val userInfo = RegisterRequest(
@@ -50,10 +51,10 @@ class RegisterActivity : AppCompatActivity() {
                     username = usernameEditTextView.text.toString(),
                     userFirstName = firstNameEditTextView.text.toString(),
                     userLastName = surnameEditTextView.text.toString(),
-                    userIsCustomer = true,
-                    userIsVendor = false,
+                    userIsCustomer = radio_customer.isChecked,
+                    userIsVendor = radio_vendor.isChecked,
                     userPassword = passwordEditTextView.text.toString(),
-                    userAddress = "address",
+                    userAddress = addressEditTextView.text.toString(),
                 )
                 apiService.userRegister(userInfo) {
                     if(it?.success == null){
