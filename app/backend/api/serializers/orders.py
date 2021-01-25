@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Customer, CreditCard, Purchase
+from ..models import Customer, CreditCard, Purchase, VendorRating, Shipment
 from ..serializers import ProductSerializer
 
 # CreditCard Serializer
@@ -36,7 +36,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
         return ProductSerializer(obj.product).data
 
 class UpdateStatusSerializer(serializers.Serializer):
-    order_id = serializers.IntegerField(required=True)
+    purchase_id = serializers.IntegerField(required=True)
     status = serializers.CharField(max_length=100, required=True)
 
 class CustomerPurchasedSerializer(serializers.Serializer):
@@ -49,3 +49,38 @@ class CustomerOrderSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     purchases = serializers.ListField(child = PurchaseSerializer())
 
+# Vendor Rating Serializer
+class VendorRatingSerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = VendorRating
+        fields = ('id', 'vendor', 'rating_score')
+
+class AddVendorRatingSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+    rating_score = serializers.IntegerField(required=True)
+
+class VendorRatingInProductPageSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField(required=True)
+
+class VendorRatingResponseSerializer(serializers.Serializer):
+    score = serializers.IntegerField()
+
+#Shipment Serializer
+class ShipmentSerializer(serializers.ModelSerializer):
+    purchase = serializers.SerializerMethodField('get_purchase')
+    class Meta:
+        model = Shipment
+        fields = ('id', 'purchase', 'date', 'cargo_no', 'cargo_company')
+    
+    def get_purchase(self, obj):
+        return PurchaseSerializer(obj.purchase).data
+
+class AddShipmentSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+    cargo_company = serializers.CharField(required=True)
+
+class GetShipmentSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+
+class ShipmentCargoNoSerializer(serializers.Serializer):
+    cargo_no = serializers.CharField(required=True)

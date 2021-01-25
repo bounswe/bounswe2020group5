@@ -26,3 +26,14 @@ from .orders_details import get_customer_orders
 from .orders_details import vendor_update_status
 from .orders_details import customer_purchased
 from .chats import ChatViewSet
+from .admins import AdminViewSet
+from .recommendation import recommend_products
+from .orders_details import add_vendor_rating
+from .orders_details import avg_vendor_rating_product_page
+from .orders_details import avg_vendor_rating_profile_page
+from .notifications import NotificationViewSet
+from .alarm import set_price_alarm
+from .alarm import delete_price_alarm
+from .alarm import my_price_alarms
+from .orders_details import add_shipment
+from .orders_details import get_shipment

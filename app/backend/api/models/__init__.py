@@ -18,3 +18,10 @@ from .chats import Chat
 from .chats import Message
 from .social_documents import SocialDocs
 from .chats import UnreadMessages
+from .search_history import SearchHistory
+from .admins import Admin
+from .orders import VendorRating
+from .notifications import Notification
+from .notifications import NotificationType
+from .alarm import PriceAlarm
+from .orders import Shipment

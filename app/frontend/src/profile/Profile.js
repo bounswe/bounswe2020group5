@@ -12,13 +12,10 @@ import ReorderIcon from '@material-ui/icons/Reorder';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import Collapse from "@material-ui/core/Collapse";
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import ListIcon from '@material-ui/icons/List';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
 import PaymentIcon from '@material-ui/icons/Payment';
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
@@ -29,6 +26,8 @@ import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import validate from "./ValidateEditProfile";
+import LockIcon from '@material-ui/icons/Lock';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MapContainer from "../components/googlemap";
 import Geocoder from "react-native-geocoding";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -48,12 +47,14 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "2rem",
     },
     paper: {
+
         height: "35rem",
         padding: theme.spacing(2),
         color: theme.palette.text.secondary,
     },
     paper2: {
         height: "60rem",
+
         padding: theme.spacing(2),
         color: theme.palette.text.secondary,
     },
@@ -108,6 +109,7 @@ function Profile() {
     Geocoder.init("AIzaSyAMFkjk7UKH5zfJuVCzYbt5l_H4EP4CmiA")
 
 
+
     let history = useHistory();
 
     const handleClick = () => {
@@ -115,7 +117,9 @@ function Profile() {
 
     };
 
+
     let [name, setName] = useState({
+
         first_name: '',
         last_name: '',
         email: '',
@@ -126,7 +130,9 @@ function Profile() {
         address_4: '',
         address_5: '',
     });
+
     let [val, setVal] = useState({
+
         first_name: {error: false, message: ''},
         last_name: {error: false, message: ''},
         email: {error: false, message: ''},
@@ -138,6 +144,7 @@ function Profile() {
         username: {error: false, message: ''},
 
     });
+
 
     function handlegoogleaddress() {
         let mutableState = name
@@ -276,6 +283,7 @@ function Profile() {
         setName(mutableState)
     }
 
+
     function componentDidMount() {
         navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -325,6 +333,7 @@ function Profile() {
                 headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
             }).then(res => res.json())
                 .then(json => {
+
                     {
                         json.address.split('/').length > 2 ?
                             setName({
@@ -369,10 +378,13 @@ function Profile() {
                 .catch(err => console.log(err));
 
 
+
         } else {
             alert('Please login to see profile page')
             history.push('/login')
         }
+
+
         return () => isMounted.current = false;
 
 
@@ -427,7 +439,7 @@ function Profile() {
                                                 component="nav"
                                                 className={classes.root}
                                             >
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button component={Link} to="/orders">
                                                     <ListItemIcon>
                                                         <LocalMallIcon/>
                                                     </ListItemIcon>
@@ -441,34 +453,28 @@ function Profile() {
                                                     <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
                                                                   primary="Lists"/>
                                                 </ListItem>
-                                                <ListItem button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button 
+                                                    component={Link} to="/profile/savedcards" >
                                                     <ListItemIcon>
                                                         <PaymentIcon/>
                                                     </ListItemIcon>
                                                     <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
                                                                   primary="Saved Credit Cards"/>
                                                 </ListItem>
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button
+                                                     component={Link} to="/profile/assessments">
                                                     <ListItemIcon>
                                                         <StarBorderIcon/>
                                                     </ListItemIcon>
                                                     <ListItemText primary="Assessments"/>
                                                 </ListItem>
-                                                <ListItem button style={{marginTop: '2rem'}} onClick={handleClick}>
-                                                    <ListItemIcon>
-                                                        <SettingsIcon/>
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Settings"/>
-                                                    {open ? <ExpandLess/> : <ExpandMore/>}
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/profile/changepassword">
+                                                  <ListItemIcon>
+                                                    <LockIcon/>
+                                                  </ListItemIcon>
+                                                  <ListItemText primary="Change Password"/>
                                                 </ListItem>
-                                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                                    <List component="div" disablePadding>
-                                                        <ListItem button className={classes.nested} component={Link}
-                                                                  to="/profile/changepassword">
-                                                            <ListItemText primary="Change Password"/>
-                                                        </ListItem>
-                                                    </List>
-                                                </Collapse>
+                                               
                                             </List>
                                         </div>
                                     ) : (
@@ -498,7 +504,7 @@ function Profile() {
                                                 component="nav"
                                                 className={classes.root}
                                             >
-                                                <ListItem button>
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/vendororders">
                                                     <ListItemIcon>
                                                         <LocalMallIcon/>
                                                     </ListItemIcon>
@@ -516,25 +522,17 @@ function Profile() {
                                                           component={Link}
                                                           to="/add-product">
                                                     <ListItemIcon>
-                                                        <ListIcon/>
+                                                        <AddCircleIcon/>
                                                     </ListItemIcon>
                                                     <ListItemText primary="Add Product"/>
                                                 </ListItem>
-                                                <ListItem button style={{marginTop: '2rem'}} onClick={handleClick}>
-                                                    <ListItemIcon>
-                                                        <SettingsIcon/>
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Settings"/>
-                                                    {open ? <ExpandLess/> : <ExpandMore/>}
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/profile/changepassword">
+                                                  <ListItemIcon>
+                                                    <LockIcon/>
+                                                  </ListItemIcon>
+                                                  <ListItemText primary="Change Password"/>
                                                 </ListItem>
-                                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                                    <List component="div" disablePadding>
-                                                        <ListItem button className={classes.nested} component={Link}
-                                                                  to="/profile/changepassword">
-                                                            <ListItemText primary="Change Password"/>
-                                                        </ListItem>
-                                                    </List>
-                                                </Collapse>
+                                                
                                             </List>
                                         </div>
 
@@ -557,9 +555,10 @@ function Profile() {
                                         />
                                     </div>
                                     <div style={{marginLeft: "6rem"}}>
-                                        <div>
+                                      <Grid container spacing={3}>
+                                        <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield}
+                                               fullWidth
                                                 error={val.first_name.error}
                                                 helperText={val.first_name.message}
                                                 id="first_name"
@@ -578,8 +577,10 @@ function Profile() {
                                                   )
                                                 }}*/
                                             />
+                                            </Grid>
+                                            <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield3}
+                                                fullWidth
                                                 error={val.last_name.error}
                                                 helperText={val.last_name.message}
                                                 id="last_name"
@@ -589,21 +590,24 @@ function Profile() {
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
-                                        </div>
-                                        <div>
+                                            </Grid>
+                                        <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield}
+                                                fullWidth
                                                 error={val.username.error}
                                                 helperText={val.username.message}
                                                 id="username"
                                                 label="Username"
                                                 variant="outlined"
                                                 defaultValue={name.username}
+
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
+                                                  </Grid>
+                                            <Grid item xs={10} sm={5}>
                                             <TextField
-                                                className={classes.txtfield3}
+                                                fullWidth
                                                 error={val.email.error}
                                                 helperText={val.email.message}
                                                 id="email"
@@ -613,7 +617,7 @@ function Profile() {
                                                 disabled={true}
                                                 onChange={onChange}
                                             />
-                                        </div>
+                                        </Grid>
                                         {/*<div>
                           <TextField
                               className={classes.txtfield2}
@@ -630,7 +634,9 @@ function Profile() {
                               onChange={onChange}
                           />
                         </div>*/}
-                                        <Grid container spacing={3}>
+
+
+                                        
                                             <Grid item xs={10}>
                                                 <TextField
                                                     required
@@ -643,7 +649,9 @@ function Profile() {
                                                     variant="outlined"
                                                     autoComplete="shipping address-line1"
                                                     disabled={!edit}
+
                                                     defaultValue={name.address_1}
+
                                                     onChange={onChange}
 
                                                 />
@@ -661,7 +669,8 @@ function Profile() {
                                                     autoComplete="shipping address-level2"
                                                     disabled={!edit}
                                                     onChange={onChange}
-                                                    defaultValue={name.address_2}
+                                  defaultValue={name.address_2}
+
 
                                                 />
                                             </Grid>
@@ -677,7 +686,9 @@ function Profile() {
                                                     label="State/Province/Region"
                                                     fullWidth
                                                     onChange={onChange}
+
                                                     defaultValue={name.address_3}
+
                                                 />
                                             </Grid>
                                             <Grid item xs={10} sm={5}>
@@ -693,7 +704,9 @@ function Profile() {
                                                     autoComplete="shipping postal-code"
                                                     disabled={!edit}
                                                     onChange={onChange}
+
                                                     defaultValue={name.address_4}
+
                                                 />
                                             </Grid>
                                             <Grid item xs={10} sm={5}>
@@ -766,7 +779,6 @@ function Profile() {
                                                             onClick={() => setEdit(false)}
                                                         >Cancel
                                                         </Button></div>
-
                                                 ) :
                                                 <Button
                                                     style={{
