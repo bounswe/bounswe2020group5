@@ -332,12 +332,26 @@ class RestApiService {
                 override fun onFailure(call: Call<Success>, t: Throwable) {
                     onResult(null)
                 }
-
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val user = response.body()
                     onResult(user)
                 }
             }
+        )
+    }
+
+    fun addComment(commentData: AddComment, onResult: (Success?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addComment("Token ${User.authToken}", commentData).enqueue(
+                object : Callback<Success> {
+                    override fun onFailure(call: Call<Success>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                        val success = response.body()
+                        onResult(success)
+                    }
+              }
         )
     }
 

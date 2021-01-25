@@ -103,6 +103,11 @@ interface RestApi {
     fun forgotPassword(@Body userMail: ForgotPasswordRequest): Call<ForgotPasswordRequest>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/products/opts/add_comment/")
+    fun addComment(@Header("Authorization") authToken: String, @Body commnentData: AddComment): Call<Success>
+
+    @Headers("Content-Type: application/json")
     @GET("/api/orders/customer-orders/")
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+
 }
