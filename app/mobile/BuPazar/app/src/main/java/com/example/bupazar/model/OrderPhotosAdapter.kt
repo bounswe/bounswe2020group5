@@ -1,6 +1,5 @@
 package com.example.bupazar.model
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bupazar.R
-import kotlinx.android.synthetic.main.credit_card_item.view.*
-import kotlinx.android.synthetic.main.credit_card_item.view.order_id_text
-import kotlinx.android.synthetic.main.item_product.view.*
-import kotlinx.android.synthetic.main.order_item.view.*
 import kotlinx.android.synthetic.main.order_photo_item.view.*
 
 

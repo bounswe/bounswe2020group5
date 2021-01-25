@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.credit_card_item.view.*
 
-
 class CreditCardAdapter(private val context: Context, private val creditCards: Array<CreditCard>) : RecyclerView.Adapter<CreditCardAdapter.ViewHolder>() {
 
     var onItemClick: ((CreditCard) -> Unit)? = null
@@ -29,7 +28,7 @@ class CreditCardAdapter(private val context: Context, private val creditCards: A
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(creditCard: CreditCard) {
-            itemView.order_id_text.text = creditCard.name
+            itemView.card_name_text.text = creditCard.name
             itemView.card_number_text.text = creditCard.cardNumber
             itemView.expiration_text.text = creditCard.expirationDate
             itemView.cvc_text.text = creditCard.cvc
