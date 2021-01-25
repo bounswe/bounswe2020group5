@@ -15,6 +15,10 @@ interface RestApi {
     fun userLogin(@Body userData: LoginRequest): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/google_login/")
+    fun googleLogin(@Body authTokenRequest: AuthTokenRequest): Call<LoginResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/auth/register/")
     fun userRegister(@Body userData: RegisterRequest): Call<Success>
 

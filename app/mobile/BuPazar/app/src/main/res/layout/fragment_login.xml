@@ -117,6 +117,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
+
     <Button
         android:id="@+id/buttonGuest"
         android:backgroundTint="@color/secondary_blue"
@@ -132,5 +133,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
+
+    <Button
+        android:id="@+id/google_login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/google_icon"
+        android:drawableLeft="@drawable/google_icon"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Sign in with Google"
+        android:textAllCaps="false"
+        android:textColor="@color/GoogleTextColor"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGuest" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
