@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
@@ -48,6 +49,18 @@ class HomepageFragment : Fragment() {
                             commit()
                     }
                 }
+
+                searchBarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        productAdapter.filter.filter(newText)
+                        return false
+                    }
+
+                })
             }
         }
 
