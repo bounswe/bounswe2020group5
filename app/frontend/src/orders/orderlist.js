@@ -75,6 +75,8 @@ export default function Orderlist(props) {
     const [total, setTotal] = React.useState(0);
     const [canCancel, setCanCancel] = React.useState(false);
     const [dialogOpen, setDialog] = React.useState(false);
+    const [openreturn, setOpenreturn] = React.useState(false);
+
 
     const handleClickOpen = () => {
         setDialog(true);
@@ -82,6 +84,14 @@ export default function Orderlist(props) {
 
     const handleClose = () => {
         setDialog(false);
+    };
+
+    const handleClickOpenretuen = () => {
+        setOpenreturn(true);
+    };
+
+    const handleCloseretuen = () => {
+        setOpenreturn(false);
     };
 
     useEffect(() => {
@@ -93,6 +103,7 @@ export default function Orderlist(props) {
             }
         });
         setTotal(temp.toFixed(2));
+
     }, []);
 
     const snackbarClose = (event, reason) => {
@@ -118,6 +129,71 @@ export default function Orderlist(props) {
                 } else alert("Cancel failed")
             })
     };
+    const HandleShip = (purchase) =>{
+        setDialog(false);
+        console.log('mmmmmmm')
+        console.log(purchase.purchase)
+        let[date,setdate]=React.useState()
+        let[cargonum,setcargonum]=React.useState()
+        let[cargo,setcargo]=React.useState()
+        fetch(serverUrl + 'api/orders/get-shipment/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'purchase_id': parseInt(purchase.purchase)}),
+        }).then(res => res.json())
+            .then(json => {
+                console.log('jjjjjjjjjjjjj')
+                console.log(json)
+                setdate(json.date.split("T")[0].split("-")[2]+"-"+json.date.split("T")[0].split("-")[1]+"-"+json.date.split("T")[0].split("-")[0]+" "+
+                    (parseInt(json.date.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+json.date.split("T")[1].split("Z")[0].split(":")[1]);
+                setcargonum(json.cargo_no);
+                setcargo(json.cargo_company);
+
+
+
+            })
+
+        return (
+            <Typography style={{fontWeight:'bold',color:"black",marginTop:'1rem'}}>
+                <span>{'Shipment Date: '+date}</span><br></br>
+                <span>{'Track Number: '+cargonum}</span><br></br>
+                <span>{'Company: '+cargo}</span>
+
+
+            </Typography>
+        );
+    }
+    const HandleDeliver = (purchase) =>{
+
+        console.log('mmmmmmm')
+        console.log(purchase.purchase)
+        let[date,setdate]=React.useState()
+        let[cargonum,setcargonum]=React.useState()
+        let[cargo,setcargo]=React.useState()
+        fetch(serverUrl + 'api/orders/get-shipment/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'purchase_id': parseInt(purchase.purchase)}),
+        }).then(res => res.json())
+            .then(json => {
+                console.log('jjjjjjjjjjjjj')
+                console.log(json)
+                setdate(json.date.split("T")[0].split("-")[2]+"-"+json.date.split("T")[0].split("-")[1]+"-"+json.date.split("T")[0].split("-")[0]+" "+
+                    (parseInt(json.date.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+json.date.split("T")[1].split("Z")[0].split(":")[1]);
+                setcargonum(json.cargo_no);
+                setcargo(json.cargo_company);
+
+
+
+            })
+
+        return (
+            <Typography style={{fontWeight:'bold',color:"black",marginTop:'1rem'}}>
+                {'You can return your purchase with '+cargonum+' code from '+cargo+" courier center."}
+            </Typography>
+        );
+    }
+
 
     const rateVendor = (pid, stars) => {
         setStars(stars);
@@ -256,7 +332,7 @@ export default function Orderlist(props) {
                                     justify="center"
                                     xs={4}
                                 >
-
+                                    {!(e.status === "Delivered" )?
                                     <Box style={{marginRight: '0.7rem'}}
                                          className={classes.box}>
                                         {<span>Order Status: </span>}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -271,7 +347,55 @@ export default function Orderlist(props) {
                                         >
                                             {JSON.parse(JSON.stringify(e.status))}
                                         </Button>
-                                    </Box>
+                                    </Box>:
+                                    <div style={{flexDirection:'row',display:'flex'}}>
+
+                                        <Box style={{marginRight: '0.7rem'}}
+                                             className={classes.box}>
+                                            {<span>Order Status: </span>}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <Button
+                                                size="small"
+                                                disabled
+                                                variant="outlined"
+                                                style={{
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                }}
+                                            >
+                                                {JSON.parse(JSON.stringify(e.status))}
+                                            </Button>
+                                        </Box>
+                                        <Button
+                                            size="small"
+                                            onClick={handleClickOpenretuen}
+                                            variant="outlined"
+                                            style={{
+                                                backgroundColor:'#7E7F9A',
+                                                color: "white",
+                                            }}
+                                        >
+                                            RETURN
+                                        </Button>
+                                        <Dialog
+                                            open={openreturn}
+                                            onClose={handleCloseretuen}
+                                            aria-labelledby="alert-dialog-title"
+                                            aria-describedby="alert-dialog-description"
+                                        >
+                                            <DialogTitle id="alert-dialog-title">{"Return Procedure"}</DialogTitle>
+                                            <DialogContent>
+                                                <DialogContentText id="alert-dialog-description">
+                                                    <HandleDeliver purchase={e.id} />
+                                                </DialogContentText>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button onClick={handleCloseretuen} color="primary">
+                                                    OK
+                                                </Button>
+
+                                            </DialogActions>
+                                        </Dialog>
+                                    </div>}
                                     {e.status === "Delivered" ? (
                                         <Paper variant="outlined" style={{borderColor: "#7A0010"}}
                                                className={classes.paperinner}>
@@ -298,6 +422,16 @@ export default function Orderlist(props) {
                                                         {message}
                                                     </Alert>
                                                 </Snackbar>
+                                            </div>
+                                        </Paper>
+                                    ) : null}
+                                    {e.status === "Ship" ? (
+                                        <Paper variant="outlined" style={{borderColor: "#7A0010"}}
+                                               className={classes.paperinner}>
+                                            <div style={{marginLeft: "0.5rem", marginRight: "0.5rem"}}>
+                                                <Typography style={{color:'red'}}>Ship Information </Typography>
+                                                <HandleShip purchase={e.id} />
+
                                             </div>
                                         </Paper>
                                     ) : null}

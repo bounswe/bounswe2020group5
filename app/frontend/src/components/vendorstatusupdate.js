@@ -102,7 +102,7 @@ export const Statusupdate= ({orderid,priorstatus}) => {
                 if(json.success){
                     alert("Order Status has been successfully updated")
                     window.location.reload()
-                } else alert("amannn")
+                } else alert("")
             }).catch(err=>console.log(err))
     };
 
