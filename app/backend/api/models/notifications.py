@@ -24,4 +24,5 @@ class Notification(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    isSeen = models.BooleanField(default=False)
 

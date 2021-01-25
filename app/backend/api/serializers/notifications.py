@@ -9,15 +9,18 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('text', 'notificationType', 'user', 'createdAt', 'product', 'order')
+        fields = ('id', 'text', 'notificationType', 'user', 'createdAt', 'product', 'order', 'isSeen')
     
     def get_user(self, obj):
         return obj.user.username
     
     def get_product(self, obj):
-        content = ProductSerializer(obj.product).data
-        return content
-
+        try:
+            content = ProductSerializer(obj.product).data
+            return content
+        except:
+            return None
+            
     def get_notificationType(self, obj):
         content = ''
         if obj.notificationType == NotificationType.STOCK_ENDED.value:
@@ -32,3 +35,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             content = NotificationType.PRICE_ALARM.name
         
         return content
+
+class SetNotificationSeenSerializer(serializers.Serializer):
+    notification_id = serializers.IntegerField(required=True)
+
