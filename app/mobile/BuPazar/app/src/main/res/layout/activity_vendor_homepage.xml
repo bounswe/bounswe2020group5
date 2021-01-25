@@ -255,60 +255,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/helpLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/personalInfoLayout"
-        android:background="@drawable/transparent_rectangle_border">
-
-        <ImageView
-            android:id="@+id/helpImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_help_24" />
-
-        <TextView
-            android:id="@+id/helpText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Help"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_toEndOf="@+id/helpImage"
-            android:layout_alignParentTop="true"/>
-
-        <TextView
-            android:id="@+id/helpSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="12dp"
-            android:text="Frequently asked questions"
-            android:textColor="@color/black"
-            android:layout_toEndOf="@id/helpImage"
-            android:layout_below="@id/helpText" />
-
-        <ImageView
-            android:id="@+id/rightArrow5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/addProductLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/helpLayout"
+        android:layout_below="@id/personalInfoLayout"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
@@ -318,7 +268,7 @@
             android:layout_marginStart="18dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_check_24" />
+            app:srcCompat="@drawable/ic_add_to_cart" />
 
         <TextView
             android:id="@+id/addProductText"
@@ -339,7 +289,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
-            android:text="Frequently asked questions"
+            android:text="Add a new product to your store"
             android:textColor="@color/black"
             android:layout_toEndOf="@id/addProductImage"
             android:layout_below="@id/addProductText" />
