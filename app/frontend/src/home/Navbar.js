@@ -58,13 +58,6 @@ const useStyles = makeStyles((theme) => ({
         color: '#7E7F9A',
     },
 
-  const classes = useStyles();
-  let [unreadmessages,setunreadmessages]=React.useState(null)
-  let [notifications, setNotifications] = React.useState("");
-  var len;
-  let [unseen, setUnseen] = React.useState(0)
-  let history = useHistory();
-
 
     inputRoot: {
         color: 'black',
@@ -100,7 +93,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export default function Navbar({notificationpage, messagespage}) {
 
     const [isLogged, setIsLogged] = useState(false);
@@ -114,60 +106,76 @@ export default function Navbar({notificationpage, messagespage}) {
 
     const classes = useStyles();
     let [unreadmessages, setunreadmessages] = React.useState(null)
-
+    let [notifications, setNotifications] = React.useState("");
+    var len;
+    let [unseen, setUnseen] = React.useState(0)
 
     let history = useHistory();
-
 
 
     useEffect(() => {
         const token = localStorage.getItem('token')
 
+        console.log(token)
 
-      fetch(serverUrl + 'api/chats/get_unread_messages_number/', {
-        method: 'GET',
-        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-      }).then(res => res.json())
-          .then(json => {
-            if(JSON.parse(JSON.stringify(json)).error=="there is no chat the user is involved"){
-              console.log(json)
-            }else {
-              setunreadmessages(json)
+
+        if (token) {
+            setIsLogged(true)
+
+            fetch(serverUrl + 'api/chats/get_unread_messages_number/', {
+                method: 'GET',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+
+
+            }).then(res => res.json())
+                .then(json => {
+
+                    if (JSON.parse(JSON.stringify(json)).error == "there is no chat the user is involved") {
+                        console.log(json)
+                    } else {
+                        setunreadmessages(json)
+                    }
+
+
+                })
+
+                .catch(err => console.log(err));
+        }
+        if(token){
+        fetch(serverUrl + 'api/notifications/my/', {
+            method: 'GET',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+        }).then(res => res.json())
+            .then(json => {
+                notifications = json;
+                len = Object.keys(JSON.parse(JSON.stringify(json))).length
+            }).then(() => {
+            var i;
+            for(i=0; i<len; i++){
+                setNotifications(notifications)
+                if(!notifications[i].isSeen){
+                    setUnseen(unseen+1)
+                }
             }
-          }).catch(err => console.log(err));
+        }).catch(err => console.log(err ));}
 
 
-      fetch(serverUrl + 'api/notifications/my/', {
-        method: 'GET',
-        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
-      }).then(res => res.json())
-        .then(json => {
-          notifications = json;
-          len = Object.keys(JSON.parse(JSON.stringify(json))).length
-        }).then(() => {
-          var i;
-          for(i=0; i<len; i++){
-            setNotifications(notifications)
-            if(!notifications[i].isSeen){
-              setUnseen(unseen+1)
-            }
-          }
-        }).catch(err => console.log(err ));
+        if (token) {
+            fetch(serverUrl + 'api/auth/user_info/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+            }).then(res => res.json())
+                .then(json => {
+                    setIsVendor(json.is_vendor);
+                    localStorage.setItem('isvendor', true)
 
-    }
 
-    if (token) {
-      fetch(serverUrl + 'api/auth/user_info/', {
-        method: 'POST',
-        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
-      }).then(res => res.json())
-          .then(json => {
-            setIsVendor(json.is_vendor);
-            localStorage.setItem('isvendor',true)
-      }).catch(err => console.log(err));
-    }
-  }, []);
+                })
+                .catch(err => console.log(err));
+        }
 
+
+    }, []);
 
 
     const text = {
@@ -182,7 +190,6 @@ export default function Navbar({notificationpage, messagespage}) {
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
     };
-
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -202,14 +209,14 @@ export default function Navbar({notificationpage, messagespage}) {
     };
 
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('is_vendor');
-    setIsLogged(false);
-    setAnchorEl(false);
-    setvendorAnchorEl(false)
-    window.location.reload();
-  }
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('is_vendor');
+        setIsLogged(false);
+        setAnchorEl(false);
+        setvendorAnchorEl(false)
+        window.location.reload();
+    }
 
     const handlejointClose = () => {
         setAnchorEljoint(null);
@@ -222,7 +229,6 @@ export default function Navbar({notificationpage, messagespage}) {
         paper: {
             border: '1px solid #d3d4d5',
         },
-
     })((props) => (
         <Menu
             elevation={0}
@@ -271,7 +277,6 @@ export default function Navbar({notificationpage, messagespage}) {
                 <Link style={{textDecoration: 'none'}} to="/orders">
                     <ListItemText primaryTypographyProps={{style: text}} primary="My Orders"/>
                 </Link>
-
             </StyledMenuItem>
             <Divider/>
             <StyledMenuItem style={{background: "white"}}>
@@ -331,7 +336,6 @@ export default function Navbar({notificationpage, messagespage}) {
             </StyledMenuItem>
         </StyledMenu>
     );
-
 
     const menujointId = 'login menu';
     const renderjointMenu = (
@@ -413,14 +417,16 @@ export default function Navbar({notificationpage, messagespage}) {
                                             </Badge>
                                         </IconButton>
                                     </Link>
+                                    {!isvendor ?<div style={{display:'flex',flexDirection:'row'}}>
                                     <Link to={'/notifications'}>
-                                      <IconButton aria-label="show new notifications" color="inherit">
-                                        <Badge badgeContent={notificationpage==true ? null:unseen} color="primary">
-                                          <NotificationsIcon style={{ color: '#7E7F9A' }} />
-                                        </Badge>
-                                      </IconButton>
-                                      </Link>
-                                    {!isvendor ?
+                                        <IconButton aria-label="show new notifications" color="inherit">
+                                            <Badge badgeContent={notificationpage==true ? null:unseen} color="primary">
+                                                <NotificationsIcon style={{ color: '#7E7F9A' }} />
+                                            </Badge>
+                                        </IconButton>
+                                    </Link>
+
+
                                         <IconButton
                                             edge="end"
                                             aria-label="account of current user"
@@ -430,7 +436,7 @@ export default function Navbar({notificationpage, messagespage}) {
                                             color="primary"
                                         >
                                             <AccountCircle style={{color: '#7E7F9A'}}/>
-                                        </IconButton> :
+                                        </IconButton> </div>:
                                         <IconButton
 
                                             edge="end"
