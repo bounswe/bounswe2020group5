@@ -2,8 +2,7 @@ package com.example.bupazar.model
 
 import com.google.gson.annotations.SerializedName
 
-
-data class ChatCreateResponse(
-        @SerializedName("chat") val chat: Chat?,
+data class GetLastMessageResponse(
+        @SerializedName("message") val message: Message?,
         @SerializedName("success") val success: String?,
 )

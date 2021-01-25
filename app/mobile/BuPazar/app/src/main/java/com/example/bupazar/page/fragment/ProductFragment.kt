@@ -65,16 +65,17 @@ class ProductFragment : Fragment() {
                     .into(productImageView);
 
                 var vendorUsername = it.vendor
+                var productId = it.productId
                 product_vendor_text.setOnClickListener() {
-                    val apiService = RestApiService()
                     val chatCreateRequest = ChatCreateRequest(
+                        productId,
                         vendorUsername
                     )
                     apiService.chatCreate(chatCreateRequest) {
-                        if(it?.chatId != null) {
+                        if(it?.chat?.chatId != null) {
                             //                    createChats() // Uncomment it if you wanna update the chat list before changing the intent
                             var intent = Intent(this.activity, ChatActivity::class.java)
-                            intent.putExtra("chatId", it.chatId)
+                            intent.putExtra("chatId", it.chat.chatId)
                             startActivity(intent)
                         }
                     }
@@ -88,24 +89,23 @@ class ProductFragment : Fragment() {
             }
             else {
                 var productsInCart = it.cartProducts
-                if (productsInCart != null) {
-                    for (cartProduct in productsInCart.iterator()) {
-                        if (cartProduct.product.productId == productId) {
-                            addtocart_text.setText("REMOVE FROM CART")
-                            this.context?.let { it1 ->
-                                ContextCompat.getColor(
+                for (cartProduct in productsInCart.iterator()) {
+                    if (cartProduct.product.productId == productId) {
+                        addtocart_text.setText("REMOVE FROM CART")
+                        this.context?.let { it1 ->
+                            ContextCompat.getColor(
                                     it1,
                                     R.color.secondary_blue
-                                )
-                            }?.let { it2 ->
-                                addtocart.setBackgroundColor(
+                            )
+                        }?.let { it2 ->
+                            addtocart.setBackgroundColor(
                                     it2
-                                )
-                            }
-                            change_quantity_box.visibility = View.INVISIBLE
-                            addedToCart = true
+                            )
                         }
+                        change_quantity_box.visibility = View.INVISIBLE
+                        addedToCart = true
                     }
+
                 }
             }
         }

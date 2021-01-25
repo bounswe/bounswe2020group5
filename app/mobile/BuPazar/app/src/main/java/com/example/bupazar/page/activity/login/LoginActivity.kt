@@ -59,7 +59,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                         User.address = it.address!!
                         User.firstName = it.firstName!!
                         User.lastName = it.lastName!!
-                        User.userEmail = it.userEmail!!
+                        User.userEmail = it.userEmail
                         intent.putExtra("USERDATA", it)
                         startActivity(intent)
                     }
@@ -191,7 +191,7 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                     User.address = it.address!!
                     User.firstName = it.firstName!!
                     User.lastName = it.lastName!!
-                    User.userEmail = it.userEmail!!
+                    User.userEmail = it.userEmail
                     intent.putExtra("USERDATA", it)
                     startActivity(intent)
                 }

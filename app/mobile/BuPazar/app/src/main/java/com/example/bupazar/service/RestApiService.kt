@@ -280,12 +280,12 @@ class RestApiService {
     fun getLastMessage(authToken : String, chatRequest : ChatRequest, onResult: (Message?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getLastMessage("Token $authToken", chatRequest).enqueue(
-            object : Callback<Message> {
-                override fun onFailure(call: Call<Message>, t: Throwable) {
+            object : Callback<GetLastMessageResponse> {
+                override fun onFailure(call: Call<GetLastMessageResponse>, t: Throwable) {
                     onResult(null)
                 }
-                override fun onResponse( call: Call<Message>, response: Response<Message>) {
-                    val message = response.body()
+                override fun onResponse( call: Call<GetLastMessageResponse>, response: Response<GetLastMessageResponse>) {
+                    val message = response.body()?.message
                     onResult(message)
                 }
             }
@@ -295,12 +295,12 @@ class RestApiService {
     fun getAllChats(onResult: (Array<Chat>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getAllChats("Token ${User.authToken}").enqueue(
-                object : Callback<Array<Chat>?> {
-                    override fun onFailure(call: Call<Array<Chat>?>, t: Throwable) {
+                object : Callback<GetAllChatResponse> {
+                    override fun onFailure(call: Call<GetAllChatResponse>, t: Throwable) {
                         onResult(null)
                     }
-                    override fun onResponse( call: Call<Array<Chat>?>, response: Response<Array<Chat>?>) {
-                        val allChats = response.body()
+                    override fun onResponse( call: Call<GetAllChatResponse>, response: Response<GetAllChatResponse>) {
+                        val allChats = response.body()?.chats
                         onResult(allChats)
                     }
                 }

@@ -48,11 +48,11 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("/api/chats/get_last_message/")
-    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Message>
+    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<GetLastMessageResponse>
 
     @Headers("Content-Type: application/json")
-    @POST("/api/chats/get_all_chats/")
-    fun getAllChats(@Header("Authorization") authToken: String): Call<Array<Chat>?>
+    @GET("/api/chats/get_all_chats/")
+    fun getAllChats(@Header("Authorization") authToken: String): Call<GetAllChatResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/api/chats/create_chat/")
