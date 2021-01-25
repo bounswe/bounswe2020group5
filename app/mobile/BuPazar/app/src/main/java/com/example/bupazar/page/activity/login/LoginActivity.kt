@@ -53,15 +53,23 @@ class LoginActivity : BaseActivity(), ActivityChangeListener {
                         Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        var intent = Intent(this, HomepageActivity::class.java)
                         User.authToken = it.authToken!!
                         User.userName = it.userName!!
                         User.address = it.address!!
                         User.firstName = it.firstName!!
                         User.lastName = it.lastName!!
                         User.userEmail = it.userEmail
-                        intent.putExtra("USERDATA", it)
-                        startActivity(intent)
+                        User.isVendor = it.isVendor!!
+                        if(User.isVendor) {
+                            var intent = Intent(this, VendorHomepageActivity::class.java)
+                            intent.putExtra("USERDATA", it)
+                            startActivity(intent)
+                        }
+                        else {
+                            var intent = Intent(this, HomepageActivity::class.java)
+                            intent.putExtra("USERDATA", it)
+                            startActivity(intent)
+                        }
                     }
                 }
             }

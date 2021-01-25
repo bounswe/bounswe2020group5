@@ -9,6 +9,7 @@ class User:Application() {
         lateinit var lastName: String
         lateinit var userEmail: String
         lateinit var address: String
-        lateinit var authToken: String // Suppress the warning, IDE gives error for this line(getter sette) onu sessize al (kayacana yaz burada sorun cikarsa)
+        lateinit var authToken: String
+        var isVendor: Boolean = false
     }
 }
