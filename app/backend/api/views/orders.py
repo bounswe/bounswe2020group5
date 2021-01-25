@@ -99,7 +99,7 @@ class PurchaseOptsViewSet(viewsets.GenericViewSet):
         # Create a notification about the new order.
         text = f'Your order {order.id} is taken by the vendor. You can check the status of your order from orders page.'
         notification_type = NotificationType.ORDER_STATUS_CHANGED
-        order_notification = Notification(text=text, notificationType=notification_type, user=request.user, product=None, order=order)
+        order_notification = Notification(text=text, notificationType=notification_type.value, user=request.user, product=None, order=order)
         order_notification.save()
         ProductInCart.objects.filter(cart=cart).delete()
         return Response(data={'success': 'Products in cart are successfully purchased'}, status=status.HTTP_201_CREATED)
