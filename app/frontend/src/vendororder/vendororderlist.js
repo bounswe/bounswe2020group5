@@ -94,7 +94,7 @@ export default function Vendororderlist(props) {
         }else if(status=='Ccancelled'){
             return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY CUSTOMER</span>
         }else {
-            return <Statusupdate orderid={id}/>
+            return <Statusupdate orderid={id} priorstatus={status}/>
         }
     };
 
@@ -107,7 +107,8 @@ export default function Vendororderlist(props) {
                         Order No: {props.vendororders.order}&nbsp;&nbsp;&nbsp;Purchase No: {props.vendororders.id}
                     </Paper>
                     </div>
-                    {!(props.vendororders.status=='Vcancelled'||props.vendororders.status=='Ccancelled')?
+                    {!(props.vendororders.status=='Vcancelled'||props.vendororders.status=='Ccancelled'||
+                        props.vendororders.status=='Ship'||props.vendororders.status=='Delivered')?
                         <IconButton style={{marginRight:"15rem"}}className={classes.iconbutton}
                         onClick={(event) => HandleCancel(props.vendororders.id, event)}>
                         <CancelIcon style={{marginRight:"0.5rem"}}/> Cancel Order
