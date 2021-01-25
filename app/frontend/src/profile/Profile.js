@@ -508,7 +508,7 @@ function Profile() {
                                                     <ListItemIcon>
                                                         <LocalMallIcon/>
                                                     </ListItemIcon>
-                                                    <ListItemText primary="Sales"/>
+                                                    <ListItemText primary="My Orders"/>
                                                 </ListItem>
                                                 <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}}
                                                           component={Link}

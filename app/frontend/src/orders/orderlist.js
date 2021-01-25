@@ -125,14 +125,12 @@ export default function Orderlist(props) {
             .then(json => {
                 if (json.success) {
                     alert("Your order has been cancelled")
-                    //window.location.reload()
+                    window.location.reload()
                 } else alert("Cancel failed")
             })
     };
     const HandleShip = (purchase) =>{
         setDialog(false);
-        console.log('mmmmmmm')
-        console.log(purchase.purchase)
         let[date,setdate]=React.useState()
         let[cargonum,setcargonum]=React.useState()
         let[cargo,setcargo]=React.useState()
@@ -142,15 +140,10 @@ export default function Orderlist(props) {
             body: JSON.stringify({'purchase_id': parseInt(purchase.purchase)}),
         }).then(res => res.json())
             .then(json => {
-                console.log('jjjjjjjjjjjjj')
-                console.log(json)
                 setdate(json.date.split("T")[0].split("-")[2]+"-"+json.date.split("T")[0].split("-")[1]+"-"+json.date.split("T")[0].split("-")[0]+" "+
                     (parseInt(json.date.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+json.date.split("T")[1].split("Z")[0].split(":")[1]);
                 setcargonum(json.cargo_no);
                 setcargo(json.cargo_company);
-
-
-
             })
 
         return (
@@ -158,15 +151,11 @@ export default function Orderlist(props) {
                 <span>{'Shipment Date: '+date}</span><br></br>
                 <span>{'Track Number: '+cargonum}</span><br></br>
                 <span>{'Company: '+cargo}</span>
-
-
             </Typography>
         );
     }
     const HandleDeliver = (purchase) =>{
 
-        console.log('mmmmmmm')
-        console.log(purchase.purchase)
         let[date,setdate]=React.useState()
         let[cargonum,setcargonum]=React.useState()
         let[cargo,setcargo]=React.useState()
@@ -176,15 +165,10 @@ export default function Orderlist(props) {
             body: JSON.stringify({'purchase_id': parseInt(purchase.purchase)}),
         }).then(res => res.json())
             .then(json => {
-                console.log('jjjjjjjjjjjjj')
-                console.log(json)
                 setdate(json.date.split("T")[0].split("-")[2]+"-"+json.date.split("T")[0].split("-")[1]+"-"+json.date.split("T")[0].split("-")[0]+" "+
                     (parseInt(json.date.split("T")[1].split("Z")[0].split(":")[0])+3)+":"+json.date.split("T")[1].split("Z")[0].split(":")[1]);
                 setcargonum(json.cargo_no);
                 setcargo(json.cargo_company);
-
-
-
             })
 
         return (
@@ -215,12 +199,12 @@ export default function Orderlist(props) {
 
 
     const Cancelinfo = () => {
-        if (props.orders.purchases[0].status == 'Vcancelled') {
+        if (props.orders.purchases[0].status === 'Vcancelled') {
             return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
                           className={classes.paperinner}>
                 ORDER CANCELLED BY VENDOR
             </Paper>
-        } else if (props.orders.purchases[0].status == 'Ccancelled') {
+        } else if (props.orders.purchases[0].status === 'Ccancelled') {
             return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
                           className={classes.paperinner}>
                 ORDER CANCELLED BY CUSTOMER
@@ -252,7 +236,7 @@ export default function Orderlist(props) {
                                 <DialogContent>
                                     <DialogContentText id="alert-dialog-description">
                                         When you cancel an order, all of the products that haven't shipped yet will be
-                                        cancelled. Do you want to continue?
+                                        cancelled. If you want to cancel a purchase that is already shipped or delivered, you should follow the return procedure. Do you want to continue?
                                     </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>

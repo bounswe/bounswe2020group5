@@ -70,11 +70,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Vendororderlist(props) {
     const classes = useStyles();
     const token = localStorage.getItem('token')
-    console.log(props.vendororders)
-
 
     const HandleCancel = (purchaseid, event) => {
-        console.log( parseInt(purchaseid))
         fetch(serverUrl + 'api/orders/vendor-cancel/', {
             method: 'POST',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -90,9 +87,15 @@ export default function Vendororderlist(props) {
 
     const Cancelorupdateinfo=(id,status)=>{
         if(status=='Vcancelled'){
-            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY VENDOR</span>
+            return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
+                          className={classes.paperinner}>
+                ORDER CANCELLED BY VENDOR
+            </Paper>
         }else if(status=='Ccancelled'){
-            return <span style={{fontSize: "200%",color:'#7A0010',fontWeight:'bold'}}> (X) CANCELLED BY CUSTOMER</span>
+            return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
+                          className={classes.paperinner}>
+                ORDER CANCELLED BY CUSTOMER
+            </Paper>
         }else {
             return <Statusupdate orderid={id} priorstatus={status}/>
         }

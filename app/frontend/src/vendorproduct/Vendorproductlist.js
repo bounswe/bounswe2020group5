@@ -40,9 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Vendorproductlist(props) {
     const classes = useStyles();
-    console.log(props.product)
-
-
 
     return (
         <Paper className={classes.paper}>

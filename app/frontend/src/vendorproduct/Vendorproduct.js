@@ -55,7 +55,7 @@ export default function Vendorproduct() {
     const gatherTypes = (plist) => {
         let alltypes = [];
         Object.keys(plist).forEach(function (key) {
-            if (alltypes.indexOf(plist[key].subcategory) <= 0) {
+            if (alltypes.indexOf(plist[key].subcategory) < 0) {
                 alltypes.push(plist[key].subcategory)
             }
         });

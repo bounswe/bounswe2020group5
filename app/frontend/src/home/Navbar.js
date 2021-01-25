@@ -314,7 +314,9 @@ export default function Navbar({notificationpage, messagespage}) {
             </StyledMenuItem>
             <Divider/>
             <StyledMenuItem style={{background: "white"}}>
-                <ListItemText primaryTypographyProps={{style: text}} primary="My Sales"/>
+                <Link style={{textDecoration: 'none'}} to="/vendororders">
+                    <ListItemText primaryTypographyProps={{style: text}} primary="My Orders"/>
+                </Link>
             </StyledMenuItem>
             <Divider/>
             <StyledMenuItem style={{background: "white"}}>
