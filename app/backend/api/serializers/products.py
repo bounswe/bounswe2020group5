@@ -90,6 +90,7 @@ class ProductListResponseSerializer(ResponseSerializer):
 #Comment Serializer
 class CommentSerializer(serializers.ModelSerializer):
     customer = serializers.SerializerMethodField('get_customer')
+    product = serializers.SerializerMethodField('get_product')
     
     class Meta:
         model = Comment
@@ -103,6 +104,10 @@ class CommentSerializer(serializers.ModelSerializer):
             last_name = customer.last_name[0] + "*"*len(customer.last_name[1:])
             
         return first_name + " " + last_name
+
+    def get_product(self, obj):
+        content = ProductSerializer(obj.product).data
+        return content
 
 class ProductAddCommentSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(required=True)

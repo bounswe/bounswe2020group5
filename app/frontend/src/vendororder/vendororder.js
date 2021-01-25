@@ -6,7 +6,8 @@ import Navbar from "../home/Navbar";
 import CategoryTab from "../components/CategoryTab";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
-import Orderlist from "./orderlist";
+import Vendororderlist from "./vendororderlist";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
     },
     nested: {
         paddingLeft: theme.spacing(4),
+    },
+    paper2: {
+
+        alignItems:'flex-end',
+        flexDirection: "column",
+        display: "flex",
     },
     paper: {
         marginTop: theme.spacing(10),
@@ -28,19 +35,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Order() {
+export default function Vendororder() {
     const [plist, setPlist] = useState([]);
     useEffect(() => {
-        console.log(localStorage.getItem("token"))
-        fetch(serverUrl + "api/orders/customer-orders/", {
-            headers: {
-                'Authorization': `Token ${localStorage.getItem("token")}`,
-            },
+        const token = localStorage.getItem('token')
+        fetch(serverUrl + "api/orders/vendor-orders/", {
+            method: 'GET',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 setPlist(data);
-                console.log(data);
             });
         return () => {
             console.log("cleanup");
@@ -50,8 +57,8 @@ export default function Order() {
     const renderOrders = () => {
         return plist.map((e, i) => {
             return (
-                <Orderlist
-                    orders={e}
+                <Vendororderlist
+                    vendororders={e}
                 />
             );
         });
@@ -78,6 +85,9 @@ export default function Order() {
                         </Link>
                     </Breadcrumbs>
                 </div>
+                <div className={classes.paper2} style={{color:'red',marginBottom:"1rem",marginRight:"2rem",fontWeight:'bold'}}>
+
+                    *** &nbsp;In order to create a better experience for customers, updating is enabled for each upcoming status step.</div>
                 <React.Fragment>
                     {plist && plist.length > 0 && <Box>{renderOrders()}</Box>}
                 </React.Fragment>

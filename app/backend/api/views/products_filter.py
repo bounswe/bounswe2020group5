@@ -4,14 +4,15 @@ from drf_yasg.utils import swagger_auto_schema
 from ..serializers import FilterProductSerializer, ProductSerializer, ProductSearchSerializer, SortProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Product, User, Vendor
+from ..models import Product, User, Vendor, SearchHistory
 from django.db.models import Max
 from nltk.stem import PorterStemmer
 from django.db.models import Q
 import operator
 from datamuse import datamuse
+from django.core.exceptions import ObjectDoesNotExist
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=ProductSearchSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def search_products(request):
@@ -52,7 +53,7 @@ def search_products(request):
             if product not in products:
                 products.append(product)
 
-    datamuse_api = api = datamuse.Datamuse()
+    datamuse_api = datamuse.Datamuse()
     keyword_list = datamuse_api.words(ml=query, max=5)
     Q_datamuse = Q()
     for keyword in keyword_list:
@@ -67,10 +68,23 @@ def search_products(request):
             if product not in products:
                 products.append(product)
 
+    # Add prodcuts to search history if user is authenticated
+    if (not request.user.is_anonymous) and products:
+        user = request.user
+
+        search_history = SearchHistory.objects.filter(user=user).first()
+        if search_history:
+            search_history.delete()
+
+        search_history = SearchHistory(user=user)
+        search_history.save()
+        for product in products:
+            search_history.products.add(product)   
+
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=FilterProductSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=FilterProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def filter_products(request):
@@ -141,7 +155,7 @@ def filter_products(request):
     content = ProductSerializer(Products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
-@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer}, request_body=SortProductSerializer)
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=SortProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def sort_products(request):

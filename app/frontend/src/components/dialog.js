@@ -55,6 +55,7 @@ const DialogActions = withStyles((theme) => ({
 export const CustomizedDialogs= ({vendor,productid}) =>  {
     const [open, setOpen] = React.useState(false);
     const [opensnack, setOpensnack] = React.useState(false);
+    const [opensnack2, setOpensnack2] = React.useState(false);
     const [value, setValue] = React.useState('');
 
     let [messageempty,setmessageempty]=React.useState(false);
@@ -66,9 +67,20 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
 
         setOpensnack(false);
     };
+    const snackhandleClose2 = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpensnack2(false);
+    };
     const snackhandleopen = () => {
 
         setOpensnack(true);
+
+    };
+    const snackhandleopen2 = () => {
+
+        setOpensnack2(true);
     };
 
 
@@ -140,7 +152,7 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
                                }).then(res => res.json())
                                    .then(json => {
                                        console.log(json);
-
+                                       {snackhandleopen2()}
 
                                    })
                                    .catch(err => console.log(err));
@@ -164,8 +176,14 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
         <div>
             <Snackbar open={opensnack} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={snackhandleClose} severity="warning">
-                    You have already started a chat with vendor for this particular product, please continue with conversation from
+                    You have already started a chat with vendor for this particular product. Please continue with conversation from
                     your messages page!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={opensnack2} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={snackhandleClose2} severity="success">
+                    Succesfully created chat for this product with designated vendor. Please continue messaging from messages page
+                    for later inquiries.
                 </Alert>
             </Snackbar>
             <Button size="large" variant="contained" onClick={handleClickOpen} style={{

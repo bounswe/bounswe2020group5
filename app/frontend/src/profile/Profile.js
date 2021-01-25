@@ -278,7 +278,6 @@ function Profile() {
             setUsernameChanged(true);
         }
 
-
         let mutableState = name
         mutableState[event.target.id] = event.target.value
         setName(mutableState)
@@ -326,7 +325,6 @@ function Profile() {
         componentDidMount()
         console.log(token)
         isMounted.current = true;
-
 
 
         if (token) {
@@ -386,6 +384,7 @@ function Profile() {
             history.push('/login')
         }
 
+
         return () => isMounted.current = false;
 
 
@@ -440,7 +439,7 @@ function Profile() {
                                                 component="nav"
                                                 className={classes.root}
                                             >
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button>
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button component={Link} to="/orders">
                                                     <ListItemIcon>
                                                         <LocalMallIcon/>
                                                     </ListItemIcon>
@@ -469,7 +468,7 @@ function Profile() {
                                                     </ListItemIcon>
                                                     <ListItemText primary="Assessments"/>
                                                 </ListItem>
-                                                <ListItem button component={Link} to="/profile/changepassword">
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/profile/changepassword">
                                                   <ListItemIcon>
                                                     <LockIcon/>
                                                   </ListItemIcon>
@@ -505,7 +504,7 @@ function Profile() {
                                                 component="nav"
                                                 className={classes.root}
                                             >
-                                                <ListItem button>
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/vendororders">
                                                     <ListItemIcon>
                                                         <LocalMallIcon/>
                                                     </ListItemIcon>
@@ -527,7 +526,7 @@ function Profile() {
                                                     </ListItemIcon>
                                                     <ListItemText primary="Add Product"/>
                                                 </ListItem>
-                                                <ListItem button component={Link} to="/profile/changepassword">
+                                                <ListItem button style={{marginTop: '1rem', marginBottom: '1rem'}} component={Link} to="/profile/changepassword">
                                                   <ListItemIcon>
                                                     <LockIcon/>
                                                   </ListItemIcon>
@@ -542,7 +541,6 @@ function Profile() {
                             </Grid>
                             <Grid item xs={7} style={{marginLeft: "2rem"}}>
                                 <Paper className={classes.paper2}>
-
                                     <div className={classes.grid2}>
                                         <InputBase
                                             style={{
@@ -566,9 +564,7 @@ function Profile() {
                                                 id="first_name"
                                                 label="Name"
                                                 variant="outlined"
-
                                                 defaultValue={name.first_name}
-
                                                 disabled={!edit}
                                                 onChange={onChange}
                                                 /*InputProps={{
@@ -590,9 +586,7 @@ function Profile() {
                                                 id="last_name"
                                                 label="Surname"
                                                 variant="outlined"
-
                                                 defaultValue={name.last_name}
-
                                                 disabled={!edit}
                                                 onChange={onChange}
                                             />
@@ -605,7 +599,6 @@ function Profile() {
                                                 id="username"
                                                 label="Username"
                                                 variant="outlined"
-
                                                 defaultValue={name.username}
 
                                                 disabled={!edit}
@@ -620,7 +613,6 @@ function Profile() {
                                                 id="email"
                                                 label="E-mail"
                                                 variant="outlined"
-
                                                 defaultValue={name.email}
                                                 disabled={true}
                                                 onChange={onChange}
@@ -787,14 +779,11 @@ function Profile() {
                                                             onClick={() => setEdit(false)}
                                                         >Cancel
                                                         </Button></div>
-
                                                 ) :
                                                 <Button
                                                     style={{
                                                         width: "20rem",
-
                                                         marginLeft: "10rem",
-
                                                         marginRight: "8rem",
                                                         backgroundColor: "#0B3954",
                                                     }}
