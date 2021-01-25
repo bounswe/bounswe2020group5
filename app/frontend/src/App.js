@@ -22,6 +22,7 @@ import Cart from "./cart/Cart";
 import Vendorproduct from "./vendorproduct/Vendorproduct";
 import Vendoreditproduct from "./vendorproduct/Vendoreditproduct";
 import order from "./orders/order";
+import vendororder from "./vendororder/vendororder";
 import Assessments from "./profile/Assessments";
 import SavedCards from "./savedCards/SavedCards";
 import Forgot from "./login/Forgot";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/search" component={search} />
           <Route path="/cart" exact component={Cart} />
           <Route path="/orders" exact component={order} />
+          <Route path="/vendororders" exact component={vendororder} />
           <Route path="/vendorproduct" exact component={Vendorproduct} />
           <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />
           <Route path="/signup/vendor" component={Vendor} />
