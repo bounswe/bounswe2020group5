@@ -101,6 +101,24 @@ export default function Notifications() {
                           {notifications[notification].text}
                         </Typography>
                       </Grid>
+                      {notifications[notification].order !== null && notifications[notification].product !== null ? (
+                        <Grid container>
+                          <Grid item xs={2}>
+                            <Link to={{pathname: `/product/${notifications[notification].product.id}`}}  style={{textDecoration: "none", color: "black"}}>
+                              <img style={{margin:"1rem", width: "8rem", height: "8rem"}} src={notifications[notification].product.image_url} alt={notifications[notification].product.id}/>
+                            </Link>
+                          </Grid>
+                          <Grid item xs={8} >
+                            <Typography style={{marginTop:"0.5rem", marginBottom:"1.5rem", fontWeight:"bold", fontSize:"20px"}} >{notifications[notification].product.name}</Typography>
+                            <Typography style={{marginTop:"0.5rem", marginBottom:"0.5rem"}} >{notifications[notification].product.description}</Typography>
+                          </Grid>
+                          <Grid item xs={2} style={{marginTop: "2rem"}}>
+                            <Link to={"/orders"}>
+                              <ArrowForwardIcon style={{fontSize:50, color:"#0B3954"}}/>
+                            </Link>
+                          </Grid>
+                        </Grid>
+                      ):(null)}
                       {notifications[notification].order !== null && notifications[notification].product === null ? (
                         <Grid item xs={2}>
                         <Link to={"/orders"} style={{ marginLeft:"5rem", textDecoration: "none", color: "black"}}>
@@ -109,7 +127,7 @@ export default function Notifications() {
                         </Grid>
                       ):(null)}
                     </Grid>
-                    {notifications[notification].product !== null ? (
+                    {notifications[notification].product !== null && notifications[notification].order === null? (
                       <Grid container>
                         <Grid item xs={2}>
                           <Link to={{pathname: `/product/${notifications[notification].product.id}`}}  style={{textDecoration: "none", color: "black"}}>
