@@ -83,7 +83,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
 
                 # check all alarms contains updated product to notify customers 
                 for alarm in alarms:
-                    if data['price'] < alarm.price:
+                    if (data['price'] < alarm.price) and (data['price'] < product.price):
                         new_price = data['price'] 
                         text = f'Price of {product.name} went down from {product.price} to {new_price}.'
                         notification_type = NotificationType.PRICE_ALARM
