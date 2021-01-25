@@ -9,7 +9,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('text', 'notificationType', 'user', 'createdAt', 'product', 'order')
+        fields = ('id', 'text', 'notificationType', 'user', 'createdAt', 'product', 'order', 'isSeen')
     
     def get_user(self, obj):
         return obj.user.username
@@ -32,3 +32,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             content = NotificationType.PRICE_ALARM.name
         
         return content
+
+class SetNotificationSeenSerializer(serializers.Serializer):
+    notification_id = serializers.IntegerField(required=True)
+

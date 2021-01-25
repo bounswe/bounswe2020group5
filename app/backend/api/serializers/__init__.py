@@ -81,3 +81,4 @@ from .orders import ShipmentSerializer
 from .orders import AddShipmentSerializer
 from .orders import ShipmentCargoNoSerializer
 from .orders import GetShipmentSerializer
+from .notifications import SetNotificationSeenSerializer
