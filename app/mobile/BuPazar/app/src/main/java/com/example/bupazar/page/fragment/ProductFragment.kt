@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +17,6 @@ import com.example.bupazar.model.*
 import com.example.bupazar.page.activity.message.ChatActivity
 import com.example.bupazar.service.RestApiService
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_message_main.*
 import kotlinx.android.synthetic.main.fragment_product.*
 
 
@@ -29,6 +30,7 @@ class ProductFragment : Fragment() {
     private var addedToCart: Boolean = false
     private var addedToFavoriteList: Boolean = false
     private var quantityAdded: Int = 1
+    private lateinit var picker1: NumberPicker
 
     private lateinit var rcView: RecyclerView
 
@@ -65,16 +67,17 @@ class ProductFragment : Fragment() {
                     .into(productImageView);
 
                 var vendorUsername = it.vendor
+                var productId = it.productId
                 product_vendor_text.setOnClickListener() {
-                    val apiService = RestApiService()
                     val chatCreateRequest = ChatCreateRequest(
+                        productId,
                         vendorUsername
                     )
                     apiService.chatCreate(chatCreateRequest) {
-                        if(it?.chatId != null) {
+                        if(it?.chat?.chatId != null) {
                             //                    createChats() // Uncomment it if you wanna update the chat list before changing the intent
                             var intent = Intent(this.activity, ChatActivity::class.java)
-                            intent.putExtra("chatId", it.chatId)
+                            intent.putExtra("chatId", it.chat.chatId)
                             startActivity(intent)
                         }
                     }
@@ -88,23 +91,22 @@ class ProductFragment : Fragment() {
             }
             else {
                 var productsInCart = it.cartProducts
-                if (productsInCart != null) {
-                    for (cartProduct in productsInCart.iterator()) {
-                        if (cartProduct.product.productId == productId) {
-                            addtocart_text.setText("REMOVE FROM CART")
-                            this.context?.let { it1 ->
-                                ContextCompat.getColor(
+                for (cartProduct in productsInCart.iterator()) {
+                    if (cartProduct.product.productId == productId) {
+                        addtocart_text.setText("REMOVE FROM CART")
+                        this.context?.let { it1 ->
+                            ContextCompat.getColor(
                                     it1,
                                     R.color.secondary_blue
-                                )
-                            }?.let { it2 ->
-                                addtocart.setBackgroundColor(
+                            )
+                        }?.let { it2 ->
+                            addtocart.setBackgroundColor(
                                     it2
-                                )
-                            }
-                            change_quantity_box.visibility = View.INVISIBLE
-                            addedToCart = true
+                            )
+
                         }
+                        change_quantity_box.visibility = View.INVISIBLE
+                        addedToCart = true
                     }
                 }
             }
@@ -132,11 +134,15 @@ class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rcView = view.findViewById(R.id.rvComments)
+        picker1 = view.findViewById(R.id.ratePicker)
+        picker1.maxValue = 5
+        picker1.minValue = 1
+
         val apiService = RestApiService()
 
         addToWishList.setOnClickListener {
             val productData = AddRemoveFavoriteListRequest(
-                productId = this.productId
+                    productId = this.productId
             )
             if (addedToFavoriteList) {
                 authToken?.let { it1 ->
@@ -157,18 +163,54 @@ class ProductFragment : Fragment() {
                 }
             }
         }
+        addCommentView.setOnClickListener (){
+            if (commentEditTextView.text.isEmpty()){
+                Toast.makeText(this.activity, "Please write a comment", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val apiService = RestApiService()
+                val commentInfo = AddComment(
+                        productId = this.productId,
+                        commentText = commentEditTextView.text.toString(),
+                        isAnonymous = false,
+                        rate = picker1.value
+                )
+                apiService.addComment(commentInfo){
+                    if(it?.success == null){
+                        Toast.makeText(this.activity, "Comment is not able to added. You have to purchase the product.", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(this.activity, "Comment is added.", Toast.LENGTH_SHORT).show()
+                        val commentRequest = CommentRequest(
+                                productId = this.productId
+                        )
+                        apiService.allComments(commentRequest) {
+                            if (it == null){
+
+                            }
+                            else {
+                                val comments: Array<CommentDetails> = it
+                                rcView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                rcView.adapter = CommentAdapter(comments)
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
         addtocart.setOnClickListener {
             if (addedToCart) {
                 val productData = AddToCartRequest(
-                    productId = this.productId,
-                    count = 0
+                        productId = this.productId,
+                        count = 0
                 )
                 authToken?.let { it1 ->
                     apiService.addToCart(it1, productData) {
                         this.context?.let { it1 -> ContextCompat.getColor(it1, R.color.black) }?.let { it2 ->
                             addtocart.setBackgroundColor(
-                                it2
+                                    it2
                             )
                         }
                         addtocart_text.setText("ADD TO CART")
@@ -180,19 +222,19 @@ class ProductFragment : Fragment() {
             }
             else {
                 val productData = AddToCartRequest(
-                    productId = this.productId,
-                    count = quantityAdded
+                        productId = this.productId,
+                        count = quantityAdded
                 )
                 authToken?.let { it1 ->
                     apiService.addToCart(it1, productData) {
                         this.context?.let { it1 ->
                             ContextCompat.getColor(
-                                it1,
-                                R.color.secondary_blue
+                                    it1,
+                                    R.color.secondary_blue
                             )
                         }?.let { it2 ->
                             addtocart.setBackgroundColor(
-                                it2
+                                    it2
                             )
                         }
                         addtocart_text.setText("REMOVE FROM CART")
@@ -212,6 +254,9 @@ class ProductFragment : Fragment() {
                 quantity_text.setText(quantityAdded.toString())
             }
         }
+
+
+
         val commentRequest = CommentRequest(
                 productId = this.productId
         )
@@ -221,7 +266,7 @@ class ProductFragment : Fragment() {
             }
             else {
                 val comments: Array<CommentDetails> = it
-                rcView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+                rcView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 rcView.adapter = CommentAdapter(comments)
             }
         }
@@ -238,3 +283,4 @@ class ProductFragment : Fragment() {
             }
     }
 }
+
