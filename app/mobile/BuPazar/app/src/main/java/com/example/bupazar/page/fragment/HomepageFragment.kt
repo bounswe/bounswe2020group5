@@ -8,6 +8,8 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.User
+import com.example.bupazar.model.FeaturedProductsRequest
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.HomepageProductAdapter
 import com.example.bupazar.model.ProductDetails
@@ -17,13 +19,7 @@ import kotlinx.android.synthetic.main.fragment_homepage.*
 class HomepageFragment : Fragment() {
 
     private var userData: LoginResponse? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userData = arguments?.getSerializable("USERDATA") as LoginResponse
-        }
-    }
+    private val numberOfProducts = 12  // the number of products wanted to be shown in trending-bestsellers-new arrivals page
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,6 +30,70 @@ class HomepageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val apiService = RestApiService()
+        var newestArrivals: Array<ProductDetails>? = null
+        var bestSellers: Array<ProductDetails>? = null
+        var trends: Array<ProductDetails>? = null
+        val featuredProductsRequest = FeaturedProductsRequest(
+            numberOfProducts = numberOfProducts
+        )
+
+        if (User.authToken!= null) {
+            recommended.visibility=View.VISIBLE
+        }
+
+        apiService.featuredProducts(featuredProductsRequest) {
+            if (it != null) {
+                newestArrivals = it.newestArrivals
+                bestSellers = it.bestSellers
+                trends= it.trends
+            }
+        }
+
+        newArrivals.setOnClickListener() {
+            val spesificProductsFragment = SpesificProductsFragment()
+            spesificProductsFragment.products = newestArrivals
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  spesificProductsFragment)
+                commit()
+            }
+        }
+
+        bestSellersProducts.setOnClickListener() {
+            val spesificProductsFragment = SpesificProductsFragment()
+            spesificProductsFragment.products = bestSellers
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  spesificProductsFragment)
+                commit()
+            }
+        }
+
+        trending.setOnClickListener() {
+            val spesificProductsFragment = SpesificProductsFragment()
+            spesificProductsFragment.products = trends
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  spesificProductsFragment)
+                commit()
+            }
+        }
+
+        recommended.setOnClickListener() {
+            User.authToken?.let { it1 ->
+                apiService.recommendedProducts(it1) {
+                    if (it == null) {
+
+                    } else {
+                        val products: Array<ProductDetails> = it
+                        val spesificProductsFragment = SpesificProductsFragment()
+                        spesificProductsFragment.products = products
+                        requireActivity().supportFragmentManager.beginTransaction().apply {
+                            replace(R.id.fl_wrapper,  spesificProductsFragment)
+                            commit()
+                        }
+                    }
+                }
+            }
+        }
+
         apiService.allProducts {
             if (it == null) {
 
@@ -45,7 +105,7 @@ class HomepageFragment : Fragment() {
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
                 productAdapter!!.onItemClick = { product ->
                         requireActivity().supportFragmentManager.beginTransaction().apply {
-                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(userData!!.authToken, product.productId!!))
+                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
                             commit()
                     }
                 }
