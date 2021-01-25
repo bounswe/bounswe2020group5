@@ -8,6 +8,7 @@ import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.page.activity.message.MessageMainActivity
 import com.example.bupazar.page.fragment.ProfilePageFragment
+import com.example.bupazar.page.fragment.VendorOrdersFragment
 import com.example.bupazar.page.fragment.register.PreviousOrdersFragment
 import kotlinx.android.synthetic.main.activity_vendor_homepage.*
 import kotlinx.android.synthetic.main.activity_vendor_homepage.accountPageUserEmail
@@ -41,6 +42,18 @@ class VendorHomepageActivity : AppCompatActivity() {
             activity_vendor_2.visibility = View.GONE
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.activity_vendor_1,  profilePage)
+                commit()
+            }
+        }
+
+        ordersLayout.setOnClickListener {
+            val vendorOrdersPage = VendorOrdersFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("authToken",User.authToken)
+            vendorOrdersPage.arguments = bundle
+            activity_vendor_2.visibility = View.GONE
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.activity_vendor_1,  vendorOrdersPage)
                 commit()
             }
         }

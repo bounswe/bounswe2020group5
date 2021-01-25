@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.Order
 import com.example.bupazar.model.PreviousOrdersAdapter
+import com.example.bupazar.model.VendorOrdersAdapter
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_previous_orders.*
 
 class VendorOrdersFragment : Fragment() {
 
-    private var userData: LoginResponse? = null
     private var authToken: String? = null
     private var orders: Array<Order>? = null
 
@@ -23,18 +24,24 @@ class VendorOrdersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userData = arguments?.getSerializable("USERDATA") as LoginResponse
-            authToken = "Token " + userData!!.authToken
+            authToken = arguments?.getSerializable("authToken") as String
+            authToken = "Token " + authToken
         }
         val apiService = RestApiService()
         apiService.getVendorOrders(authToken!!){
             orders = it
             if (orders != null && orders!!.size > 0) {
-                val previousOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
-                    PreviousOrdersAdapter(it1, it2) }
+                val vendorOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
+                    VendorOrdersAdapter(it1, it2) }
                 }
-                previous_orders_rview.adapter = previousOrdersAdapter
+                previous_orders_rview.adapter = vendorOrdersAdapter
                 previous_orders_rview.layoutManager = LinearLayoutManager(this.context)
+                //vendorOrdersAdapter!!.onItemClick = { product ->
+                    //requireActivity().supportFragmentManager.beginTransaction().apply {
+                        //replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
+                        //commit()
+                    //}
+                //}
             }
         }
     }
