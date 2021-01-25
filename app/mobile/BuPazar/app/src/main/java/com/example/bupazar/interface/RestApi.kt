@@ -119,4 +119,7 @@ interface RestApi {
     @GET("/api/orders/customer-orders/")
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
 
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/search/")
+    fun searchQuery(@Header("Authorization") authToken: String, @Body query: String): Call<Array<ProductDetails>?>
 }
