@@ -245,15 +245,15 @@
 
     <Button
         android:id="@+id/buttonShowAll"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/shoesBags"
+        android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/secondary_blue"
         android:text="@string/show_all"
-        android:background="@drawable/button_design"
         android:textAllCaps="false"
-        android:outlineAmbientShadowColor="@color/secondary_blue"
-        android:textColor="@color/primary_maroon"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 </RelativeLayout>
