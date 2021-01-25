@@ -40,6 +40,7 @@ export default function Order() {
             .then((response) => response.json())
             .then((data) => {
                 setPlist(data);
+                console.log(data);
             });
         return () => {
             console.log("cleanup");
