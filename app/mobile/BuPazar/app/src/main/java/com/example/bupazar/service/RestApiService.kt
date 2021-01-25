@@ -403,6 +403,21 @@ class RestApiService {
             }
         )
     }
+
+    fun getVendorOrders(authToken: String, onResult: (Array<Order>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getVendorOrders(authToken).enqueue(
+            object : Callback<Array<Order>?> {
+                override fun onFailure(call: Call<Array<Order>?>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Array<Order>?>, response: Response<Array<Order>?>) {
+                    val orders = response.body()
+                    onResult(orders)
+                }
+            }
+        )
+    }
   
     fun subCategoryProducts(subCategoryRequest: SubCategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
