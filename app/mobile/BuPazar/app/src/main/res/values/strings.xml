@@ -83,6 +83,7 @@
     <string name="please_enter_verification_number">Please enter verification number</string>
     <string name="my_wish_list">My Wish List</string>
     <string name="default_web_client_id">517640995797-en9ph1bng2bb99bo3k1v5p0b2cig69rb.apps.googleusercontent.com</string>
+    <string name="show_all">Show All</string>
 
 
     <string-array name="sports_images">
