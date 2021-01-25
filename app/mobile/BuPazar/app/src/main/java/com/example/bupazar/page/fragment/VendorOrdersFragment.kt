@@ -5,28 +5,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
+import com.example.bupazar.model.LoginResponse
+import com.example.bupazar.model.Order
+import com.example.bupazar.model.PreviousOrdersAdapter
+import com.example.bupazar.service.RestApiService
+import kotlinx.android.synthetic.main.fragment_previous_orders.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [VendorOrdersFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class VendorOrdersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var userData: LoginResponse? = null
+    private var authToken: String? = null
+    private var orders: Array<Order>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            userData = arguments?.getSerializable("USERDATA") as LoginResponse
+            authToken = "Token " + userData!!.authToken
+        }
+        val apiService = RestApiService()
+        apiService.getVendorOrders(authToken!!){
+            orders = it
+            if (orders != null && orders!!.size > 0) {
+                val previousOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
+                    PreviousOrdersAdapter(it1, it2) }
+                }
+                previous_orders_rview.adapter = previousOrdersAdapter
+                previous_orders_rview.layoutManager = LinearLayoutManager(this.context)
+            }
         }
     }
 
@@ -39,21 +48,10 @@ class VendorOrdersFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment VendorOrdersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             VendorOrdersFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

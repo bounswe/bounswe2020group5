@@ -44,16 +44,5 @@ class VendorHomepageActivity : AppCompatActivity() {
                 commit()
             }
         }
-
-        ordersLayout.setOnClickListener() {
-            val previousOrdersFragment = PreviousOrdersFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("USERDATA",userData)
-            previousOrdersFragment.arguments = bundle
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,  previousOrdersFragment)
-                commit()
-            }
-        }
     }
 }
