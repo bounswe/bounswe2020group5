@@ -18,8 +18,8 @@ class HomepageActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.homepage_activity)
+
         val userData = intent.getSerializableExtra("USERDATA") as? LoginResponse
 
         val bundle = Bundle()

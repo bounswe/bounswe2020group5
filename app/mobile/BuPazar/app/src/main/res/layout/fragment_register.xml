@@ -231,6 +231,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="32dp"
         android:backgroundTint="@color/secondary_blue"
+        android:background="@drawable/round"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

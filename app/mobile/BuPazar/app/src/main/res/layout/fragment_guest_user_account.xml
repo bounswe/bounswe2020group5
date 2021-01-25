@@ -24,7 +24,8 @@
         android:text="Login"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ben_text_view"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round"
     />
     <Button
         android:id="@+id/registerButton"
@@ -35,7 +36,8 @@
         android:text="Register"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/loginButton"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round"
         />
 
 

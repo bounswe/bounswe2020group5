@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuPazar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".page.activity.message.ChatActivity"></activity>
+        <activity android:name=".page.activity.login.VendorHomepageActivity"></activity>
+        <activity android:name=".page.activity.message.ChatActivity" />
         <activity android:name=".page.activity.message.MessageMainActivity" />
         <activity android:name=".page.activity.home.HomepageActivity" />
         <activity android:name=".core.BaseActivity" />
