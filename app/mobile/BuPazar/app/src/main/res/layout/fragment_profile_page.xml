@@ -238,34 +238,32 @@
         </LinearLayout>
 
     </RelativeLayout>
-
     <Button
         android:id="@+id/buttonEdit"
-        style="@style/ButtonPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileInfo"
-        android:layout_marginTop="20dp"
         android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/round"
         android:backgroundTint="@color/secondary_blue"
         android:text="@string/edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileInfo" />
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/buttonChangePassword"
-        style="@style/ButtonPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonEdit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/round"
         android:backgroundTint="@color/secondary_blue"
         android:text="@string/change_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
-
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>
