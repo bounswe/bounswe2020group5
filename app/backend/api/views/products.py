@@ -108,7 +108,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
                 old_discount = product.discount
                 product.discount = data['discount']
                 if old_discount < data['discount']:
-                        text = f'Discount of {product.name} is increased to {product.discount}.'
+                        text = f'Discount of {product.name} is increased to {product.discount}%.'
                         users_set = set()
                         favori_lists = FavoriteList.objects.filter(products = product)
                         for fl in favori_lists:
