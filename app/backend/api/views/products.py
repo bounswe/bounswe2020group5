@@ -63,7 +63,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         return Response(data={'success': 'Successfully deleted product'}, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthVendor, ], url_name='update_product')
     def update_product(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -112,7 +112,7 @@ export default function CartProduct(props) {
                 color: "#A93226",
               }}
             >
-              {props.product.price}
+              {(countclickamount)*props.product.price}
             </Typography>
             <Typography
               gutterBottom
@@ -120,7 +120,7 @@ export default function CartProduct(props) {
               style={{ margin: 8, color: "#229954" }}
             >
               $
-              {(parseFloat(props.product.price) *
+              {(countclickamount)*(parseFloat(props.product.price) *
                 (100 - props.product.discount)) /
                 100}
             </Typography>

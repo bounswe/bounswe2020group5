@@ -15,6 +15,10 @@ interface RestApi {
     fun userLogin(@Body userData: LoginRequest): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/google_login/")
+    fun googleLogin(@Body authTokenRequest: AuthTokenRequest): Call<LoginResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/auth/register/")
     fun userRegister(@Body userData: RegisterRequest): Call<Success>
 
@@ -31,16 +35,24 @@ interface RestApi {
     fun allProducts(): Call<Array<ProductDetails>?>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/products/subcategory/")
+    fun subCategoryProducts(@Body subCategoryRequest: SubCategoryRequest): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/category/")
+    fun CategoryProducts(@Body categoryRequest: CategoryRequest): Call<Array<ProductDetails>?>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/chats/send_message/")
     fun sendMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Success>
 
     @Headers("Content-Type: application/json")
     @POST("/api/chats/get_last_message/")
-    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<Message>
+    fun getLastMessage(@Header("Authorization") authToken: String, @Body chatRequest: ChatRequest): Call<GetLastMessageResponse>
 
     @Headers("Content-Type: application/json")
-    @POST("/api/chats/get_all_chats/")
-    fun getAllChats(@Header("Authorization") authToken: String): Call<Array<Chat>?>
+    @GET("/api/chats/get_all_chats/")
+    fun getAllChats(@Header("Authorization") authToken: String): Call<GetAllChatResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/api/chats/create_chat/")
@@ -93,4 +105,9 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/products/opts/add_comment/")
     fun addComment(@Header("Authorization") authToken: String, @Body commnentData: AddComment): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/orders/customer-orders/")
+    fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+
 }

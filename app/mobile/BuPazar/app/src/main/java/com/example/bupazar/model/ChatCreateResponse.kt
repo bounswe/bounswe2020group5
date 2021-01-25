@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class ChatCreateResponse(
-        @SerializedName("chat_id") val chatId: Int?,
+        @SerializedName("chat") val chat: Chat?,
         @SerializedName("success") val success: String?,
 )

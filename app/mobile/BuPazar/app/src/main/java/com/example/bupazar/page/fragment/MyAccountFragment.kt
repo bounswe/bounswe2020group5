@@ -11,6 +11,7 @@ import com.example.bupazar.R
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.login.LoginActivity
 import com.example.bupazar.page.activity.message.MessageMainActivity
+import com.example.bupazar.page.fragment.register.PreviousOrdersFragment
 import kotlinx.android.synthetic.main.fragment_my_account.*
 
 
@@ -42,6 +43,18 @@ class MyAccountFragment : Fragment() {
             var intent=Intent(this.activity, MessageMainActivity::class.java)
             startActivity(intent)
         }
+
+        ordersLayout.setOnClickListener() {
+            val previousOrdersFragment = PreviousOrdersFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("USERDATA",userData)
+            previousOrdersFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  previousOrdersFragment)
+                commit()
+            }
+        }
+
         personalInfoLayout.setOnClickListener {
             val profilePage = ProfilePageFragment()
             val bundle = Bundle()

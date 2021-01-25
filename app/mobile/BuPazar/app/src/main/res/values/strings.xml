@@ -92,6 +92,11 @@
     <string name="vendor">Vendor</string>
 
 
+    <string name="previous_orders">Previous Orders</string>
+    <string name="default_web_client_id">517640995797-en9ph1bng2bb99bo3k1v5p0b2cig69rb.apps.googleusercontent.com</string>
+    <string name="show_all">Show All</string>
+
+
 
     <string-array name="sports_images">
         <item>https://androidwave.com/media/images/img_baseball.jpg</item>

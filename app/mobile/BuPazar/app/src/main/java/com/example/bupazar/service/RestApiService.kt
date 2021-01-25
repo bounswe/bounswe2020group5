@@ -23,6 +23,21 @@ class RestApiService {
         )
     }
 
+    fun googleLogin(authTokenRequest: AuthTokenRequest, onResult: (LoginResponse?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.googleLogin(authTokenRequest).enqueue(
+                object : Callback<LoginResponse> {
+                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                        val user = response.body()
+                        onResult(user)
+                    }
+                }
+        )
+    }
+
     fun userRegister(userData: RegisterRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userRegister(userData).enqueue(
@@ -265,12 +280,12 @@ class RestApiService {
     fun getLastMessage(authToken : String, chatRequest : ChatRequest, onResult: (Message?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getLastMessage("Token $authToken", chatRequest).enqueue(
-            object : Callback<Message> {
-                override fun onFailure(call: Call<Message>, t: Throwable) {
+            object : Callback<GetLastMessageResponse> {
+                override fun onFailure(call: Call<GetLastMessageResponse>, t: Throwable) {
                     onResult(null)
                 }
-                override fun onResponse( call: Call<Message>, response: Response<Message>) {
-                    val message = response.body()
+                override fun onResponse( call: Call<GetLastMessageResponse>, response: Response<GetLastMessageResponse>) {
+                    val message = response.body()?.message
                     onResult(message)
                 }
             }
@@ -280,12 +295,12 @@ class RestApiService {
     fun getAllChats(onResult: (Array<Chat>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getAllChats("Token ${User.authToken}").enqueue(
-                object : Callback<Array<Chat>?> {
-                    override fun onFailure(call: Call<Array<Chat>?>, t: Throwable) {
+                object : Callback<GetAllChatResponse> {
+                    override fun onFailure(call: Call<GetAllChatResponse>, t: Throwable) {
                         onResult(null)
                     }
-                    override fun onResponse( call: Call<Array<Chat>?>, response: Response<Array<Chat>?>) {
-                        val allChats = response.body()
+                    override fun onResponse( call: Call<GetAllChatResponse>, response: Response<GetAllChatResponse>) {
+                        val allChats = response.body()?.chats
                         onResult(allChats)
                     }
                 }
@@ -324,6 +339,7 @@ class RestApiService {
             }
         )
     }
+
     fun addComment(commentData: AddComment, onResult: (Success?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addComment("Token ${User.authToken}", commentData).enqueue(
@@ -334,6 +350,53 @@ class RestApiService {
                     override fun onResponse(call: Call<Success>, response: Response<Success>) {
                         val success = response.body()
                         onResult(success)
+                    }
+              }
+        )
+    }
+
+    fun getPreviousOrders(authToken: String, onResult: (Array<Order>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getPreviousOrders(authToken).enqueue(
+            object : Callback<Array<Order>?> {
+                override fun onFailure(call: Call<Array<Order>?>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Array<Order>?>, response: Response<Array<Order>?>) {
+                    val orders = response.body()
+                    onResult(orders)
+                }
+            }
+        )
+    }
+  
+    fun subCategoryProducts(subCategoryRequest: SubCategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.subCategoryProducts(subCategoryRequest).enqueue(
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val all_products = response.body()
+                        onResult(all_products)
+                    }
+                }
+        )
+    }
+
+    fun CategoryProducts(categoryRequest: CategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.CategoryProducts(categoryRequest).enqueue(
+                object : Callback<Array<ProductDetails>?> {
+                    override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                        val all_products = response.body()
+                        onResult(all_products)
                     }
                 }
         )

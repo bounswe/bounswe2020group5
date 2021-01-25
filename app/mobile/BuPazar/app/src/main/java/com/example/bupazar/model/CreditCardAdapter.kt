@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.credit_card_item.view.*
-import kotlinx.android.synthetic.main.item_product.view.*
-
 
 class CreditCardAdapter(private val context: Context, private val creditCards: Array<CreditCard>) : RecyclerView.Adapter<CreditCardAdapter.ViewHolder>() {
 
