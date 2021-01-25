@@ -205,8 +205,8 @@ function Vendoreditproduct(props) {
             label: "Home&Kitchen",
         },
         {
-            value: "Personal Care",
-            label: "Personal Care",
+            value: "Personal",
+            label: "Personal",
         },
         {
             value: "Sports&Outdoors",
@@ -281,7 +281,7 @@ function Vendoreditproduct(props) {
                 value: "OfficeFurniture",
             },
         ],
-        "Personal Care": [
+        "Personal": [
             {
                 label: "Perfume",
                 value: "Perfume",

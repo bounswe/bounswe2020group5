@@ -106,7 +106,9 @@ export default function Navbar({notificationpage,messagespage}) {
 
   const classes = useStyles();
   let [unreadmessages,setunreadmessages]=React.useState(null)
-
+  let [notifications, setNotifications] = React.useState("");
+  var len;
+  let [unseen, setUnseen] = React.useState(0)
   let history = useHistory();
 
 
@@ -115,8 +117,6 @@ export default function Navbar({notificationpage,messagespage}) {
   useEffect(() => {
     const token = localStorage.getItem('token')
 
-    console.log(token)
-
 
     if (token) {
       setIsLogged(true)
@@ -124,21 +124,33 @@ export default function Navbar({notificationpage,messagespage}) {
       fetch(serverUrl + 'api/chats/get_unread_messages_number/', {
         method: 'GET',
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-
-
       }).then(res => res.json())
           .then(json => {
-
             if(JSON.parse(JSON.stringify(json)).error=="there is no chat the user is involved"){
               console.log(json)
             }else {
               setunreadmessages(json)
             }
+          }).catch(err => console.log(err));
 
 
-          })
+      fetch(serverUrl + 'api/notifications/my/', {
+        method: 'GET',
+        headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+      }).then(res => res.json())
+        .then(json => {
+          notifications = json;
+          len = Object.keys(JSON.parse(JSON.stringify(json))).length
+        }).then(() => {
+          var i;
+          for(i=0; i<len; i++){
+            setNotifications(notifications)
+            if(!notifications[i].isSeen){
+              setUnseen(unseen+1)
+            }
+          }
+        }).catch(err => console.log(err ));
 
-          .catch(err => console.log(err));
     }
 
     if (token) {
@@ -149,14 +161,8 @@ export default function Navbar({notificationpage,messagespage}) {
           .then(json => {
             setIsVendor(json.is_vendor);
             localStorage.setItem('isvendor',true)
-
-
-
-      })
-          .catch(err => console.log(err));
+      }).catch(err => console.log(err));
     }
-
-
   }, []);
 
 
@@ -164,9 +170,6 @@ export default function Navbar({notificationpage,messagespage}) {
   const text = {
     color: "black"
   };
-
-
-
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -242,7 +245,7 @@ export default function Navbar({notificationpage,messagespage}) {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
 
-   
+
       <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}
@@ -399,10 +402,7 @@ export default function Navbar({notificationpage,messagespage}) {
                 </Link>
                 <Link to={'/notifications'}>
                 <IconButton aria-label="show new notifications" color="inherit">
-                  <Badge badgeContent={null} color="primary">
-
-               
-
+                  <Badge badgeContent={notificationpage==true ? null:unseen} color="primary">
                     <NotificationsIcon style={{ color: '#7E7F9A' }} />
                   </Badge>
                 </IconButton>

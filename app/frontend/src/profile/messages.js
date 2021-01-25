@@ -95,11 +95,8 @@ function Messages() {
             method: 'GET',
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
 
-
         }).then(res => res.json())
             .then(json => {
-
-
 
                 if(JSON.parse(JSON.stringify(json)).error=='there is no chat the user is involved'){
                     setshowlist(false)
