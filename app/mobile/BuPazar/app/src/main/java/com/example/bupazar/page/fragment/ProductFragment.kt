@@ -181,7 +181,19 @@ class ProductFragment : Fragment() {
                     }
                     else{
                         Toast.makeText(this.activity, "Comment is added.", Toast.LENGTH_SHORT).show()
-                        //TODO: page reload
+                        val commentRequest = CommentRequest(
+                                productId = this.productId
+                        )
+                        apiService.allComments(commentRequest) {
+                            if (it == null){
+
+                            }
+                            else {
+                                val comments: Array<CommentDetails> = it
+                                rcView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                rcView.adapter = CommentAdapter(comments)
+                            }
+                        }
                     }
                 }
             }
