@@ -8,6 +8,7 @@ import SimpleGridList from "../components/SimpleGridList";
 import InputBase from "@material-ui/core/InputBase";
 import Footer from "../components/Footer";
 import {serverUrl} from "../common/ServerUrl";
+import Recommendation from "../recommendation/Recommendation";
 
 
 function Home() {
@@ -17,12 +18,11 @@ function Home() {
     let [bestsellers, setbestsellers] = React.useState("");
     let [newarrivals, setnewarrivals] = React.useState("");
     let [trending, settrending] = React.useState("");
+    let [token,setToken] = React.useState("");
 
     useEffect(() => {
-
+        setToken(localStorage.getItem('token'));
         let homepagearrays;
-
-
         homepagearrays = {
             "number_of_products": 5,
         }
@@ -52,6 +52,9 @@ function Home() {
                     <div>
                         <CategoryTab/>
                     </div>
+                    {token ? (
+                      <Recommendation/>
+                    ) : null}
                     <div style={{marginTop:'2rem',marginBottom:'1rem'}}>
                         <InputBase
                             style={{

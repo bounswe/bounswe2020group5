@@ -16,7 +16,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
-from bupazar.settings import PASSWORD_G,PASSWORD_F
+from bupazar.settings import PASSWORD_G, PASSWORD_F
 
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -28,6 +28,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 usr = get_user_model()
 
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     A simple ViewSet for viewing users.
@@ -35,18 +36,19 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'login': LoginSerializer,
         'logout': EmptySerializer,
-        'register': RegisterSerializer, 
+        'register': RegisterSerializer,
         'password_change': PasswordChangeSerializer,
-        'user_info' : EmptySerializer,
-        'profile_update': UpdateProfileSerializer, 
+        'user_info': EmptySerializer,
+        'profile_update': UpdateProfileSerializer,
         'register_activate': RegisterActivateSerializer,
-        'password_reset_request' : PasswordResetRequestEmailSerializer,
-        'password_reset_confirm' : PasswordResetConfirmSerializer,
+        'password_reset_request': PasswordResetRequestEmailSerializer,
+        'password_reset_confirm': PasswordResetConfirmSerializer,
         'google_login': GoogleSocialAuthSerializer,
         'facebook_login': FacebookSocialAuthSerializer,
     }
@@ -63,21 +65,24 @@ class AuthViewSet(viewsets.GenericViewSet):
         first_name = data['given_name']
         last_name = data['family_name']
         user = None
-        social_user = User.objects.filter(email = email)
-        social_user_document = SocialDocs.objects.filter(email=email,social_provider='google')
+        social_user = User.objects.filter(email=email)
+        social_user_document = SocialDocs.objects.filter(
+            email=email, social_provider='google')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_G)
-            print("user is ",user)
+            print("user is ", user)
         elif not social_user_document and social_user:
             return Response({'error': 'The user with this email is already registered.'},
-                        status=HTTP_400_BAD_REQUEST)
+                            status=HTTP_400_BAD_REQUEST)
         else:
-            social_user_document = SocialDocs(email=email,social_provider='google')
+            social_user_document = SocialDocs(
+                email=email, social_provider='google')
             social_user_document.save()
-            user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_G,is_customer=True,is_vendor=False,address="Address is not defined in Google") 
+            user = create_user_account(email=email, username=username, first_name=first_name, last_name=last_name,
+                                       password=PASSWORD_G, is_customer=True, is_vendor=False, address="Address is not defined in Google")
         if user == None:
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
@@ -87,34 +92,37 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated = serializer.validated_data
-        print("VALIDETED",validated)
-        print("ALL",SocialDocs.objects.all())
+        print("VALIDETED", validated)
+        print("ALL", SocialDocs.objects.all())
         data = dict(validated)['auth_token']
         email = data['email']
         first_name = data['name'].split()[0]
         last_name = data['name'].split()[1]
         username = first_name + "_" + last_name
         user = None
-        social_user = User.objects.filter(email = email)
-        social_user_document = SocialDocs.objects.filter(email=email,social_provider='facebook')
+        social_user = User.objects.filter(email=email)
+        social_user_document = SocialDocs.objects.filter(
+            email=email, social_provider='facebook')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_F)
-            print("user is ",user)
+            print("user is ", user)
         elif not social_user_document and social_user:
             print("sdasdasdasdasdas")
             return Response({'error': 'The user with this email is already registered.'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         else:
             try:
-                social_user_document = SocialDocs(email=email,social_provider='facebook')
+                social_user_document = SocialDocs(
+                    email=email, social_provider='facebook')
                 social_user_document.save()
-                print("social_user_document",social_user_document)
-                user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_F,is_customer=True,is_vendor=False,address="Address is not defined in Facebook") 
+                print("social_user_document", social_user_document)
+                user = create_user_account(email=email, username=username, first_name=first_name, last_name=last_name,
+                                           password=PASSWORD_F, is_customer=True, is_vendor=False, address="Address is not defined in Facebook")
             except Exception as e:
-                print("Exception is ",e)
+                print("Exception is ", e)
         if user == None:
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
@@ -125,23 +133,23 @@ class AuthViewSet(viewsets.GenericViewSet):
         password = request.data.get("password")
         if email is None or password is None:
             return Response({'error': 'Please provide both email and password'},
-                        status=HTTP_400_BAD_REQUEST)
+                            status=HTTP_400_BAD_REQUEST)
         user = authenticate(request, username=email, password=password)
- 
+
         if not user:
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
 
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def logout(self, request):
         request.user.auth_token.delete()
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
@@ -154,15 +162,16 @@ class AuthViewSet(viewsets.GenericViewSet):
         is_found = TempUser.objects.filter(email=validated['email'])
         if is_found:
             is_found.delete()
-        
+
         number = randint(100000, 999999)
 
-        template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
-        if send_email(template , validated['email']) == 5:
+        template = render_to_string('email_verification_template.html', {
+                                    'name': validated['username'], 'number': str(number)})
+        if send_email(template, validated['email']) == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
-        
-        user_info = create_temp_user_account(**validated,number=number)
-        return Response(data = {"success": "user_info is created"}, status=status.HTTP_201_CREATED)
+
+        user_info = create_temp_user_account(**validated, number=number)
+        return Response(data={"success": "user_info is created"}, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
@@ -190,7 +199,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})   
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def password_change(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -198,7 +207,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
         return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def profile_update(self, request):
@@ -226,7 +235,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     def user_info(self, request):
         data = UserSerializer(request.user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    
+
     @action(methods=['POST'], detail=False)
     def password_reset_request(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -239,18 +248,15 @@ class AuthViewSet(viewsets.GenericViewSet):
             token = PasswordResetTokenGenerator().make_token(user)
             current_site = get_current_site(
                 request=request).domain
-            relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
-            link = 'http://'+current_site +"/"+ relativeLink
-            template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
-            send_email(template,email)
+            token_parameters = "?uidb64="+uidb64+";token="+token
+            link = "http://100.25.223.242:3000/forgot" + "/" + token_parameters
+            template = render_to_string('email_password_reset_template.html', {
+                                        'name': user.username, 'link': link})
+            send_email(template, email)
             data = {
-                "uidb64" : uidb64,
-                "token" : token,
-                "current_site" : current_site,
-                "relativeLink" : relativeLink,
-                "template" : template
-            } 
-    
+                "success": "email is sent",
+            }
+
         return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
@@ -270,7 +276,7 @@ class AuthViewSet(viewsets.GenericViewSet):
                 return Response({'error': 'new password is the same as the older version. Please enter different password from the pervious one.'}, status=status.HTTP_400_BAD_REQUEST)
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
-            
+
             user.set_password(password)
             user.save()
             data = AuthUserSerializer(user).data
@@ -280,10 +286,10 @@ class AuthViewSet(viewsets.GenericViewSet):
             try:
                 if not PasswordResetTokenGenerator().check_token(user):
                     return Response({'error': 'user does not have this token'}, status=status.HTTP_400_BAD_REQUEST)
-                    
+
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
-                
+
         return Response(data=data, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):

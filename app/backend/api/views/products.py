@@ -1,15 +1,16 @@
 from rest_framework import viewsets, status
-from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase
+from ..models import Product, Vendor, Customer, Category, Document, ProductList, Comment, SubCategory, User, Purchase, ProductInCart, Cart, FavoriteList
 from ..serializers import ProductSerializer, AddProductSerializer, DeleteProductSerializer, SuccessSerializer, EmptySerializer
 from ..serializers import ProductListSerializer, CreateProductListSerializer, DeleteProductListSerializer, ProductListAddProductSerializer, ProductListRemoveProductSerializer, ResponseSerializer, ProductListResponseSerializer
 from ..serializers import CommentSerializer, ProductAddCommentSerializer, ProductAllCommentsSerializer, CategoryProductsSeriazlier, UpdateProductSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes
-from ..utils import create_product
+from ..utils import create_product, stock_end_notifications, stock_replenish_notifications
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, JSONParser
 from api.custom_permissions import IsAuthCustomer, IsAuthVendor
+from ..models import PriceAlarm, Notification, NotificationType
 
 class ProductOptViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
@@ -18,7 +19,8 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         'delete': DeleteProductSerializer,
         'update_product' : UpdateProductSerializer,
         'add_comment': ProductAddCommentSerializer,
-        'get_all_comments': ProductAllCommentsSerializer
+        'get_all_comments': ProductAllCommentsSerializer,
+        'get_user_comments': EmptySerializer
     }
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
@@ -77,13 +79,51 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             if 'name' in data:
                 product.name = data['name']
             if 'price' in data:
+                alarms = PriceAlarm.objects.filter(product=product)
+
+                # check all alarms contains updated product to notify customers 
+                for alarm in alarms:
+                    if data['price'] < alarm.price:
+                        new_price = data['price'] 
+                        text = f'Price of {product.name} went down from {product.price} to {new_price}.'
+                        notification_type = NotificationType.PRICE_ALARM
+                        notification = Notification(text= text, notificationType=notification_type.value , user=alarm.customer.user, product=product, order=None)
+                        notification.save()
+
                 product.price = data['price']
             if 'stock' in data:
-                product.stock = data['stock']
+                new_stock = data['stock']
+                if new_stock < 0:
+                    return Response(data={'error': 'Stock cannot be negative.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                if new_stock == 0 and product.stock != 0:
+                    stock_end_notifications(product)
+                elif new_stock > 0 and product.stock == 0:
+                    stock_replenish_notifications(product)
+
+                product.stock = new_stock
             if 'description' in data:
                 product.description = data['description']
             if 'discount' in data:
+                old_discount = product.discount
                 product.discount = data['discount']
+                if old_discount < data['discount']:
+                        text = f'Discount of {product.name} is increased to {product.discount}.'
+                        users_set = set()
+                        favori_lists = FavoriteList.objects.filter(products = product)
+                        for fl in favori_lists:
+                            users_set.add(fl.user)
+                        product_lists = ProductList.objects.filter(products = product)
+                        for pl in product_lists:
+                            users_set.add(pl.user)
+                        product_in_carts = ProductInCart.objects.filter(product = product)
+                        for pc in product_in_carts:        
+                            users_set.add(pc.cart.user)
+
+                        for usr in users_set:
+                            notification_type = NotificationType.NEW_DISCOUNT
+                            notification = Notification(text= text, notificationType=notification_type.value , user=usr.user, product=product, order=None)
+                            notification.save()
 
             product.save()
             return Response(data={'success': 'Successfully updated product'}, status=status.HTTP_200_OK)
@@ -123,7 +163,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         product.save()
         return Response(data={'success': 'Comment added, Rating is given'}, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: CommentSerializer(many=True)})
     @action(methods=['POST'], detail=False, queryset = "", permission_classes=[])
     def get_all_comments(self, request):
         product_id = request.data.get("product_id")
@@ -131,6 +171,15 @@ class ProductOptViewSet(viewsets.GenericViewSet):
         comment_contents = CommentSerializer(comments, many=True)
         return Response(data=comment_contents.data, status=status.HTTP_200_OK)
         
+    # Takes the requesting customer user and finds all comments given by that user
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: CommentSerializer(many=True)})
+    @action(methods=['POST'], detail=False, queryset = "", permission_classes=[IsAuthCustomer, ])
+    def get_user_comments(self, request):
+        customer = Customer.objects.get(user=request.user)
+        comments = Comment.objects.filter(customer=customer)
+        comment_contents = CommentSerializer(comments, many=True)
+        return Response(data=comment_contents.data, status=status.HTTP_200_OK)
+
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]

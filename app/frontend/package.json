@@ -14,12 +14,14 @@
     "@testing-library/react": "^11.1.1",
     "@testing-library/user-event": "^12.2.0",
     "cors": "^2.8.5",
+    "cryptr": "^6.0.2",
     "date-fns": "^2.16.1",
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
     "google-maps-react": "^2.0.6",
     "cryptr": "^6.0.2",
     "fs": "0.0.1-security",
+
     "material-ui-search-bar": "^1.0.0",
     "moment": "^2.29.1",
     "movocrypt": "^1.2.6",
@@ -30,6 +32,7 @@
     "react-native-geocoding": "^0.5.0",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.2.1",
+
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-search-field": "^1.1.0",

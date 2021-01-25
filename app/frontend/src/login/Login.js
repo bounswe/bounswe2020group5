@@ -209,7 +209,7 @@ function Login() {
             <Button
               color="primary"
               style={{ textTransform: "none" }}
-              to="/forgot"
+              to="/forgot/enter/email"
               component={Link}
             >
               <b>Forgot password?</b>
