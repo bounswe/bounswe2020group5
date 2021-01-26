@@ -53,16 +53,32 @@ class ProfilePageFragment : Fragment() {
             val editProfileInfoFragment = EditProfileInfoFragment()
             val bundle = Bundle()
             editProfileInfoFragment.arguments = bundle
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,  editProfileInfoFragment)
-                commit()
+            if(User.isVendor) {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.activity_vendor_1, editProfileInfoFragment)
+                    commit()
+                }
+            }
+            else {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fl_wrapper, editProfileInfoFragment)
+                    commit()
+                }
             }
         }
 
         buttonChangePassword.setOnClickListener(){
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,  ChangePasswordFragment())
-                commit()
+            if(User.isVendor) {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.activity_vendor_1, ChangePasswordFragment())
+                    commit()
+                }
+            }
+            else {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fl_wrapper, ChangePasswordFragment())
+                    commit()
+                }
             }
         }
     }
