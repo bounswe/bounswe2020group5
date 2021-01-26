@@ -79,20 +79,55 @@ class VendorOrderDetailFragment : Fragment() {
         }
 
         order_taken_button.setOnClickListener {
-
+            makeAllButtonsDefault()
+            order_status_image.setImageResource(R.drawable.ic_shopping_bag)
+            order_status_text.text = "Order is taken."
+            order_status_text.setTextColor(R.color.black)
+            order_taken_button.setBackgroundResource(R.color.secondary_blue)
+            order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
+            orderStatus = 1
         }
 
         order_preparing_button.setOnClickListener {
-
+            makeAllButtonsDefault()
+            order_status_image.setImageResource(R.drawable.ic_baseline_hourglass_top_24)
+            order_status_text.text = "Order is being prepared."
+            order_status_text.setTextColor(R.color.black)
+            order_preparing_button.setBackgroundResource(R.color.secondary_blue)
+            order_preparing_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
+            orderStatus = 2
         }
 
         order_shipping_button.setOnClickListener {
-
+            makeAllButtonsDefault()
+            order_status_image.setImageResource(R.drawable.ic_baseline_electric_rickshaw_24)
+            order_status_text.text = "Your order is being shipped."
+            order_status_text.setTextColor(R.color.black)
+            order_shipping_button.setBackgroundResource(R.color.secondary_blue)
+            order_shipping_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
+            orderStatus = 3
         }
 
         order_delivered_button.setOnClickListener {
-
+            makeAllButtonsDefault()
+            order_status_image.setImageResource(R.drawable.ic_baseline_check_24)
+            order_status_text.text = "Order delivered."
+            order_status_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.order_delivered_green))
+            order_delivered_button.setBackgroundResource(R.color.secondary_blue)
+            order_delivered_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
+            orderStatus = 4
         }
+    }
+
+    fun makeAllButtonsDefault() {
+        order_taken_button.setBackgroundResource(R.drawable.rectangle_border)
+        order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.secondary_blue))
+        order_preparing_button.setBackgroundResource(R.drawable.rectangle_border)
+        order_preparing_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.secondary_blue))
+        order_shipping_button.setBackgroundResource(R.drawable.rectangle_border)
+        order_shipping_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.secondary_blue))
+        order_delivered_button.setBackgroundResource(R.drawable.rectangle_border)
+        order_delivered_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.secondary_blue))
     }
 
     companion object {

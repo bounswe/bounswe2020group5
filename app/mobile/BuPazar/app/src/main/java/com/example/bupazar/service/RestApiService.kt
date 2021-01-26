@@ -450,4 +450,20 @@ class RestApiService {
                 }
         )
     }
+
+    // Change the status of an order, give authToken of a vendor and UpdateStatusRequest as parameter
+    fun updateOrderStatus(authToken: String, updateStatusRequest: UpdateStatusRequest, onResult: (Success?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.updateOrderStatus(authToken, updateStatusRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val success = response.body()
+                    onResult(success)
+                }
+            }
+        )
+    }
 }

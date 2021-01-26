@@ -122,4 +122,8 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/orders/vendor-orders/")
     fun getVendorOrders(@Header("Authorization") authToken: String): Call<Array<Purchase>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/update-status/")
+    fun updateOrderStatus(@Header("Authorization") authToken: String, @Body updateStatusRequest: UpdateStatusRequest): Call<Success>
 }

@@ -71,7 +71,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="7dp"
-                android:textColor="#1DA61E"
+                android:textColor="@color/order_delivered_green"
                 android:textSize="14dp"/>
 
             <ImageView
