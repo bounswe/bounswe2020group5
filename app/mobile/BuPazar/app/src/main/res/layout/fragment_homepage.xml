@@ -60,32 +60,33 @@
         android:layout_height="109dp"
         android:layout_below="@id/newArrivals"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="-16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/best" />
+        android:src="@drawable/best_seller" />
 
     <ImageView
         android:id="@+id/trending"
         android:layout_width="187dp"
         android:layout_height="109dp"
         android:layout_below="@id/newArrivals"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="-16dp"
+        android:layout_marginStart="-4dp"
         android:layout_marginEnd="8dp"
         android:layout_toEndOf="@id/bestSellersProducts"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/trends" />
+        android:src="@drawable/trends_new" />
 
     <ImageView
         android:id="@+id/recommended"
         android:layout_width="385dp"
-        android:layout_height="167dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/trending"
-        android:layout_marginTop="-1dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="-25dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/recommendeds"
+        android:src="@drawable/recom"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -93,6 +94,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/recommended"/>
+        android:layout_below="@id/recommended"
+        android:layout_marginTop="-15dp"
+        />
 
 </RelativeLayout>

@@ -25,6 +25,21 @@ class RestApiService {
         )
     }
 
+    fun userLogout(onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.userLogout("Token " + User.authToken).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
+
     fun googleLogin(authTokenRequest: AuthTokenRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.googleLogin(authTokenRequest).enqueue(
@@ -95,6 +110,22 @@ class RestApiService {
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val successResponse = response.body()
                     onResult(successResponse)
+                }
+            }
+        )
+    }
+
+    fun searchQuery(authToken: String, query: String, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.searchQuery(authToken, query).enqueue(
+            object : Callback<Array<ProductDetails>?> {
+                override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                    val all_products = response.body()
+                    onResult(all_products)
                 }
             }
         )
@@ -278,6 +309,22 @@ class RestApiService {
     }
 
 
+    fun myNotification(onResult: (Array<NotificationResponse>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.myNotification("Token ${User.authToken}").enqueue(
+                object : Callback<Array<NotificationResponse>?> {
+                    override fun onFailure(call: Call<Array<NotificationResponse>?>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Array<NotificationResponse>?>, response: Response<Array<NotificationResponse>?>) {
+                        val myNotification = response.body()
+                        onResult(myNotification)
+                    }
+                }
+        )
+    }
+
+
 
 
     fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
@@ -389,6 +436,8 @@ class RestApiService {
         )
     }
 
+
+
     fun getPreviousOrders(authToken: String, onResult: (Array<Order>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getPreviousOrders(authToken).enqueue(
@@ -453,7 +502,7 @@ class RestApiService {
                 }
         )
     }
-
+  
     /*
      Change the status of an order, give authToken of a vendor and UpdateStatusRequest as parameter
      */
@@ -467,6 +516,21 @@ class RestApiService {
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val success = response.body()
                     onResult(success)
+                }
+            }
+        )
+    }
+  
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.changePassword("Token ${User.authToken}", passwordChangeRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
                 }
             }
         )
