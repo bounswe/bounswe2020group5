@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    ButtonGroup,
     Divider,
     Grid,
     IconButton,
@@ -86,12 +85,12 @@ export default function Vendororderlist(props) {
     };
 
     const Cancelorupdateinfo=(id,status)=>{
-        if(status=='Vcancelled'){
+        if(status==='Vcancelled'){
             return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
                           className={classes.paperinner}>
                 ORDER CANCELLED BY VENDOR
             </Paper>
-        }else if(status=='Ccancelled'){
+        }else if(status==='Ccancelled'){
             return <Paper style={{backgroundColor: 'white', color: '#7A0010', fontWeight: 'bold'}}
                           className={classes.paperinner}>
                 ORDER CANCELLED BY CUSTOMER
@@ -110,8 +109,8 @@ export default function Vendororderlist(props) {
                         Order No: {props.vendororders.order}&nbsp;&nbsp;&nbsp;Purchase No: {props.vendororders.id}
                     </Paper>
                     </div>
-                    {!(props.vendororders.status=='Vcancelled'||props.vendororders.status=='Ccancelled'||
-                        props.vendororders.status=='Ship'||props.vendororders.status=='Delivered')?
+                    {!(props.vendororders.status==='Vcancelled'|| props.vendororders.status==='Ccancelled'||
+                        props.vendororders.status==='Ship'||props.vendororders.status==='Delivered')?
                         <IconButton style={{marginRight:"15rem"}}className={classes.iconbutton}
                         onClick={(event) => HandleCancel(props.vendororders.id, event)}>
                         <CancelIcon style={{marginRight:"0.5rem"}}/> Cancel Order
@@ -120,9 +119,7 @@ export default function Vendororderlist(props) {
                         <React.Fragment>
                             { <Box>{Cancelorupdateinfo(props.vendororders.id,props.vendororders.status)}</Box>}
                         </React.Fragment>
-
                     </div>
-
 
 
                 </Grid>

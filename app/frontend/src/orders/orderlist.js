@@ -71,11 +71,11 @@ export default function Orderlist(props) {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
-    const [stars, setStars] = React.useState(0);
     const [total, setTotal] = React.useState(0);
     const [canCancel, setCanCancel] = React.useState(false);
     const [dialogOpen, setDialog] = React.useState(false);
     const [openreturn, setOpenreturn] = React.useState(false);
+    let stars = [];
 
 
     const handleClickOpen = () => {
@@ -101,6 +101,7 @@ export default function Orderlist(props) {
             if (e.status === "OrderTaken" || e.status === "Preparing") {
                 setCanCancel(true);
             }
+            stars.push(0.0);
         });
         setTotal(temp.toFixed(2));
 
@@ -179,22 +180,24 @@ export default function Orderlist(props) {
     }
 
 
-    const rateVendor = (pid, stars) => {
-        setStars(stars);
-        fetch(serverUrl + 'api/orders/add-vendor-rating/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify({'purchase_id': pid, 'rating_score': stars}),
-        }).then(res => res.json())
-            .then(json => {
-                if (json.success) {
-                    setMessage(json.success);
-                    setOpen1(true);
-                } else {
-                    setMessage("Vendor rating failed.");
-                    setOpen2(true);
-                }
-            })
+    const rateVendor = (pid, index, newValue) => {
+        if (newValue){ //sending same value results in request error
+            stars[index] = newValue;
+            fetch(serverUrl + 'api/orders/add-vendor-rating/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify({'purchase_id': pid, 'rating_score': newValue}),
+            }).then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        setMessage(json.success);
+                        setOpen1(true);
+                    } else {
+                        setMessage("Vendor rating failed.");
+                        setOpen2(true);
+                    }
+                })
+        };
     };
 
 
@@ -236,7 +239,7 @@ export default function Orderlist(props) {
                                 <DialogContent>
                                     <DialogContentText id="alert-dialog-description">
                                         When you cancel an order, all of the products that haven't shipped yet will be
-                                        cancelled. If you want to cancel a purchase that is already shipped or delivered, you should follow the return procedure. Do you want to continue?
+                                        cancelled. If you want to cancel a purchase that is already shipped or delivered, you should follow the return procedure.
                                     </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
@@ -389,11 +392,11 @@ export default function Orderlist(props) {
                                                 <Rating
                                                     style={{marginTop: "0.5rem"}}
                                                     id="temp_rating"
-                                                    name="temp_rating"
-                                                    value={stars}
+                                                    name= "vendor_rating"
+                                                    value={stars[index]}
                                                     max={10}
                                                     onChange={(event, newValue) => {
-                                                        rateVendor(e.id, newValue);
+                                                        rateVendor(e.id, index, newValue);
                                                     }}
                                                 />
                                                 <Snackbar open={open1} autoHideDuration={6000} onClose={snackbarClose}>
@@ -415,7 +418,6 @@ export default function Orderlist(props) {
                                             <div style={{marginLeft: "0.5rem", marginRight: "0.5rem"}}>
                                                 <Typography style={{color:'red'}}>Ship Information </Typography>
                                                 <HandleShip purchase={e.id} />
-
                                             </div>
                                         </Paper>
                                     ) : null}

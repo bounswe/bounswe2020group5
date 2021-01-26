@@ -37,7 +37,7 @@ export default function Assessments() {
     //get all reviews the customer posted before
     useEffect(() => {
         //if guest or vendor, dont give access
-        if (!token || vendor=="true" ) {
+        if (!token || vendor==="true" ) {
             alert('Please login to see this page')
             history.push('/login')
         }

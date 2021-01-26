@@ -445,24 +445,19 @@ function Profile() {
                                                     </ListItemIcon>
                                                     <ListItemText primary="Orders"/>
                                                 </ListItem>
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button
-                                                          component={Link} to="/profile/lists">
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button component={Link} to="/profile/lists">
                                                     <ListItemIcon>
                                                         <ListIcon/>
                                                     </ListItemIcon>
-                                                    <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
-                                                                  primary="Lists"/>
+                                                    <ListItemText primary="Lists"/>
                                                 </ListItem>
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button 
-                                                    component={Link} to="/profile/savedcards" >
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button component={Link} to="/profile/savedcards" >
                                                     <ListItemIcon>
                                                         <PaymentIcon/>
                                                     </ListItemIcon>
-                                                    <ListItemText style={{marginTop: '1rem', marginBottom: '1rem'}}
-                                                                  primary="Saved Credit Cards"/>
+                                                    <ListItemText primary="Saved Credit Cards"/>
                                                 </ListItem>
-                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button
-                                                     component={Link} to="/profile/assessments">
+                                                <ListItem style={{marginTop: '1rem', marginBottom: '1rem'}} button component={Link} to="/profile/assessments">
                                                     <ListItemIcon>
                                                         <StarBorderIcon/>
                                                     </ListItemIcon>

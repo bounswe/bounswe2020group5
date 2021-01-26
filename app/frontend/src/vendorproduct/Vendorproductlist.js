@@ -1,10 +1,8 @@
 import {
     Box,
     Button,
-    ButtonGroup,
     Divider,
     Grid,
-    IconButton,
     makeStyles,
     Paper,
     Typography,
@@ -12,8 +10,6 @@ import {
 import React, { useState } from "react";
 import { Rating } from "@material-ui/lab";
 import {Link} from "react-router-dom";
-import GridListTile from "@material-ui/core/GridListTile";
-
 
 const useStyles = makeStyles((theme) => ({
     root: {

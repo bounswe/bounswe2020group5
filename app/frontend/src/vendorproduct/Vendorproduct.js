@@ -1,4 +1,4 @@
-import {Box, makeStyles, Paper} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import React from "react";
 import {serverUrl} from "../common/ServerUrl";
 import {useState, useEffect} from "react";
@@ -9,33 +9,12 @@ import {Link} from "react-router-dom";
 import Vendorproductlist from "./Vendorproductlist";
 import ProductTypes from "./VendorProductTypes";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: "100%",
-        backgroundColor: theme.palette.background.paper,
-    },
-    nested: {
-        paddingLeft: theme.spacing(4),
-    },
-    paper: {
-        marginTop: theme.spacing(10),
-        marginBottom: theme.spacing(10),
-        paddingTop: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        alignItems: "center",
-        flexDirection: "column",
-        display: "flex",
-    },
-}));
 
 export default function Vendorproduct() {
     const [plist, setPlist] = useState([]);
     const [typelist, setTypelist] = useState([]);
 
     useEffect(() => {
-        console.log("effect");
-        console.log(plist);
-        console.log(localStorage.getItem("token"))
         fetch(serverUrl + "api/products/vendor-products/", {
             headers: {
                 'Authorization': `Token ${localStorage.getItem("token")}`,
@@ -44,7 +23,6 @@ export default function Vendorproduct() {
             .then((response) => response.json())
             .then((data) => {
                 setPlist(data);
-                console.log(data);
                 gatherTypes(data);
             });
         return () => {
@@ -63,7 +41,6 @@ export default function Vendorproduct() {
     }
 
     const renderProducts = () => {
-        console.log(plist);
         return plist.map((e, i) => {
             return (
                 <Vendorproductlist
@@ -73,7 +50,6 @@ export default function Vendorproduct() {
         });
     };
 
-    const classes = useStyles();
     return (
         <div>
             <div>
