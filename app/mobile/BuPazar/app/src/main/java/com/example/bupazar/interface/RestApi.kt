@@ -16,6 +16,10 @@ interface RestApi {
     fun userLogin(@Body userData: LoginRequest): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/auth/logout/")
+    fun userLogout(@Header("Authorization") authToken: String): Call<Success>
+
+    @Headers("Content-Type: application/json")
     @POST("/api/auth/google_login/")
     fun googleLogin(@Body authTokenRequest: AuthTokenRequest): Call<LoginResponse>
 
@@ -118,5 +122,9 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/orders/customer-orders/")
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/password_change/")
+    fun changePassword(@Header("Authorization") authToken: String, @Body passwordChangeRequest: PasswordChangeRequest): Call<Success>
 
 }
