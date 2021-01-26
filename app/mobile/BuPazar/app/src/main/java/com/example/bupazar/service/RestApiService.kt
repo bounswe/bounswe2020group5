@@ -452,6 +452,24 @@ class RestApiService {
             }
         )
     }
+
+    /*
+     Get all the orders given to a vendor, give auth token as parameter
+     */
+    fun getVendorOrders(authToken: String, onResult: (Array<Purchase>?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getVendorOrders(authToken).enqueue(
+            object : Callback<Array<Purchase>?> {
+                override fun onFailure(call: Call<Array<Purchase>?>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Array<Purchase>?>, response: Response<Array<Purchase>?>) {
+                    val orders = response.body()
+                    onResult(orders)
+                }
+            }
+        )
+    }
   
     fun subCategoryProducts(subCategoryRequest: SubCategoryRequest, onResult: (Array<ProductDetails>?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
@@ -484,7 +502,25 @@ class RestApiService {
                 }
         )
     }
-
+  
+    /*
+     Change the status of an order, give authToken of a vendor and UpdateStatusRequest as parameter
+     */
+    fun updateOrderStatus(authToken: String, updateStatusRequest: UpdateStatusRequest, onResult: (Success?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.updateOrderStatus(authToken, updateStatusRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val success = response.body()
+                    onResult(success)
+                }
+            }
+        )
+    }
+  
     fun changePassword(passwordChangeRequest: PasswordChangeRequest, onResult: (Success?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.changePassword("Token ${User.authToken}", passwordChangeRequest).enqueue(

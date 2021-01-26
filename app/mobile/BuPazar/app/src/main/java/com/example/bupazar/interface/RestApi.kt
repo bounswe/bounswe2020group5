@@ -128,11 +128,17 @@ interface RestApi {
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
 
     @Headers("Content-Type: application/json")
+    @GET("/api/orders/vendor-orders/")
+    fun getVendorOrders(@Header("Authorization") authToken: String): Call<Array<Purchase>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/update-status/")
+    fun updateOrderStatus(@Header("Authorization") authToken: String, @Body updateStatusRequest: UpdateStatusRequest): Call<Success>
+
     @POST("/api/auth/password_change/")
     fun changePassword(@Header("Authorization") authToken: String, @Body passwordChangeRequest: PasswordChangeRequest): Call<Success>
 
     @Headers("Content-Type: application/json")
     @POST("/api/products/search/")
     fun searchQuery(@Header("Authorization") authToken: String, @Body query: String): Call<Array<ProductDetails>?>
-
 }
