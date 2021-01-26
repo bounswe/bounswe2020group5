@@ -1,13 +1,17 @@
 package com.example.bupazar.service
 
 import com.example.bupazar.User
-import com.example.bupazar.User.Companion.authToken
 import com.example.bupazar.`interface`.RestApi
 import com.example.bupazar.model.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import retrofit2.http.Header
+import retrofit2.http.Part
 
 class RestApiService {
     fun userLogin(userData: LoginRequest, onResult: (LoginResponse?) -> Unit){
@@ -433,6 +437,30 @@ class RestApiService {
                         onResult(all_products)
                     }
                 }
+        )
+    }
+
+    fun addProduct(name : String, price: String, stock: String, description: String, subcategoryName: String, brand: String, image_file: MultipartBody.Part, onResult: (ResponseBody?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+
+        var TEXT_TYPE = "text/plain".toMediaTypeOrNull()
+        val discount = "0"
+        retrofit.addProduct("Token ${User.authToken}", name.toRequestBody(TEXT_TYPE), price.toRequestBody(TEXT_TYPE), stock.toRequestBody(TEXT_TYPE),
+            description.toRequestBody(TEXT_TYPE),
+            subcategoryName.toRequestBody(TEXT_TYPE),
+            brand.toRequestBody(TEXT_TYPE),
+            discount.toRequestBody(TEXT_TYPE),
+            image_file
+        ).enqueue(
+            object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    onResult(response.body())
+                }
+            }
         )
     }
 }
