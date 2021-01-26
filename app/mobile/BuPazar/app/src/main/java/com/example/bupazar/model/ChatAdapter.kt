@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bupazar.R
+import com.example.bupazar.User
 import kotlinx.android.synthetic.main.item_chat.view.*
 
 class ChatAdapter(private val context: Context, private val chats: Array<Chat>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
@@ -30,7 +31,10 @@ class ChatAdapter(private val context: Context, private val chats: Array<Chat>) 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(chat: Chat, position: Int) {
-            itemView.txtChatUsername.text = chat.vendorUsername
+            if (User.isVendor)
+                itemView.txtChatUsername.text = chat.customerUsername
+            else
+                itemView.txtChatUsername.text = chat.vendorUsername
             if (position % 2 == 1) {
                 itemView.txtChatUsername.setBackgroundResource(R.drawable.my_chat_bubble2)
             }
