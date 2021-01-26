@@ -9,20 +9,27 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.Purchase
+import com.example.bupazar.model.UpdateStatusRequest
+import com.example.bupazar.service.RestApiService
+import kotlinx.android.synthetic.main.activity_vendor_homepage.*
 import kotlinx.android.synthetic.main.fragment_vendor_order_detail.*
 import kotlinx.android.synthetic.main.order_item.view.*
 import kotlinx.android.synthetic.main.order_photo_item.view.*
 
 class VendorOrderDetailFragment : Fragment() {
 
-    private var order: Purchase? = null
-    private var orderStatus: Int = 0
+    private var order: Purchase? = null // Hold the order details
+    private var orderStatus: Int = 0 // A variable to store the order status in order to prevent going back (e.g changing delivered status to order taken)
+    private var authToken: String? = null // Auth token of the logged in user
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             order = arguments?.getSerializable("order") as Purchase
+            authToken = arguments?.getSerializable("authToken") as String // It will be given Token <authToken>, no need to add Token again
         }
 
     }
@@ -39,6 +46,9 @@ class VendorOrderDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val apiService = RestApiService()
+
+        // Set the fields in the xml to populate the view
         if (order != null) {
             order_id_text.text = "Order ID: #" + order!!.id.toString()
             order_price_text.text = "Price: " + "%.2f".format(order!!.amount!! * order!!.unit_price!!) + " $"
@@ -86,6 +96,11 @@ class VendorOrderDetailFragment : Fragment() {
             order_taken_button.setBackgroundResource(R.color.secondary_blue)
             order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
             orderStatus = 1
+
+            // Make the API request to change status
+            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Order Taken")
+            apiService.updateOrderStatus(authToken!!, updateStatusRequest) {
+            }
         }
 
         order_preparing_button.setOnClickListener {
@@ -96,6 +111,11 @@ class VendorOrderDetailFragment : Fragment() {
             order_preparing_button.setBackgroundResource(R.color.secondary_blue)
             order_preparing_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
             orderStatus = 2
+
+            // Make the API request to change status
+            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Preparing")
+            apiService.updateOrderStatus(authToken!!, updateStatusRequest) {
+            }
         }
 
         order_shipping_button.setOnClickListener {
@@ -106,6 +126,11 @@ class VendorOrderDetailFragment : Fragment() {
             order_shipping_button.setBackgroundResource(R.color.secondary_blue)
             order_shipping_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
             orderStatus = 3
+
+            // Make the API request to change status
+            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Shipping")
+            apiService.updateOrderStatus(authToken!!, updateStatusRequest) {
+            }
         }
 
         order_delivered_button.setOnClickListener {
@@ -116,9 +141,26 @@ class VendorOrderDetailFragment : Fragment() {
             order_delivered_button.setBackgroundResource(R.color.secondary_blue)
             order_delivered_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
             orderStatus = 4
+
+            // Make the API request to change status
+            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Delivered")
+            apiService.updateOrderStatus(authToken!!, updateStatusRequest) {
+            }
+        }
+
+        back_button.setOnClickListener {
+            val vendorOrdersPage = VendorOrdersFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("authToken", User.authToken)
+            vendorOrdersPage.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.activity_vendor_1,  vendorOrdersPage)
+                commit()
+            }
         }
     }
 
+    // Before highlighting to another button, make all of them white with border with text color secondary blue
     fun makeAllButtonsDefault() {
         order_taken_button.setBackgroundResource(R.drawable.rectangle_border)
         order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.secondary_blue))

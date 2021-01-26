@@ -51,7 +51,7 @@ class VendorHomepageActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putSerializable("authToken",User.authToken)
             vendorOrdersPage.arguments = bundle
-            activity_vendor_2.visibility = View.GONE
+            activity_vendor_2.visibility = View.INVISIBLE
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.activity_vendor_1,  vendorOrdersPage)
                 commit()
