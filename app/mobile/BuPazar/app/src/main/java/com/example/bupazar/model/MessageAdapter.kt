@@ -31,11 +31,19 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(message.whoseMessage == "customer") {
-            VIEW_TYPE_MY_MESSAGE
+        if(User.isVendor == false) {
+            return if (message.whoseMessage == "customer") {
+                VIEW_TYPE_MY_MESSAGE
+            } else {
+                VIEW_TYPE_OTHER_MESSAGE
+            }
         }
         else {
-            VIEW_TYPE_OTHER_MESSAGE
+            return if (message.whoseMessage != "customer") {
+                VIEW_TYPE_MY_MESSAGE
+            } else {
+                VIEW_TYPE_OTHER_MESSAGE
+            }
         }
     }
 
