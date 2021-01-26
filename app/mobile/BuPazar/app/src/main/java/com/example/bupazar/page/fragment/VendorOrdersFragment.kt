@@ -19,15 +19,17 @@ import kotlinx.android.synthetic.main.fragment_vendor_order_detail.*
 
 class VendorOrdersFragment : Fragment() {
 
-    private var authToken: String? = null
-    private var orders: Array<Purchase>? = null
+    private var authToken: String? = null // Vendor auth token
+    private var orders: Array<Purchase>? = null // Hold the purchases
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             authToken = arguments?.getSerializable("authToken") as String
-            authToken = "Token " + authToken
+            authToken = "Token " + authToken // API requires tokens to be in the format Token <authToken>
         }
+
+        // Fetch the orders made to the vendor
         val apiService = RestApiService()
         apiService.getVendorOrders(authToken!!){
             orders = it
@@ -35,8 +37,11 @@ class VendorOrdersFragment : Fragment() {
                 val vendorOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
                     VendorOrdersAdapter(it1, it2) }
                 }
+                // Fill the orders recyclerview
                 previous_orders_rview.adapter = vendorOrdersAdapter
                 previous_orders_rview.layoutManager = LinearLayoutManager(this.context)
+
+                // Implement on click functionality for the order, go to order detail page for the corresponding
                 vendorOrdersAdapter!!.onItemClick = { order ->
                     val vendorOrderDetailFragment = VendorOrderDetailFragment()
                     val bundle = Bundle()
@@ -63,6 +68,7 @@ class VendorOrdersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // If the top left back button is pressed, go back to the main vendor homepage activity
         back_button.setOnClickListener {
             //requireActivity().activity_vendor_2.visibility = View.VISIBLE
             var intent= Intent(requireContext(), VendorHomepageActivity::class.java)

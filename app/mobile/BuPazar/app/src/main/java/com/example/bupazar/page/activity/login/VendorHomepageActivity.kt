@@ -46,6 +46,9 @@ class VendorHomepageActivity : AppCompatActivity() {
             }
         }
 
+        /*
+        If the orders layout is pressed by the user, go to orders fragment.
+         */
         ordersLayout.setOnClickListener {
             val vendorOrdersPage = VendorOrdersFragment()
             val bundle = Bundle()

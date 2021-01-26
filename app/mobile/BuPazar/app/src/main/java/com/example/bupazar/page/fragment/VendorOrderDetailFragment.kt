@@ -54,6 +54,9 @@ class VendorOrderDetailFragment : Fragment() {
             order_price_text.text = "Price: " + "%.2f".format(order!!.amount!! * order!!.unit_price!!) + " $"
             Glide.with(requireContext()).load(order!!.product!!.imageUrl).into(product_image)
 
+            /*
+            Given the order status, highlight the according button and change the status shown above the product image.
+             */
             when (order!!.status) {
                 "ordertaken" -> {
                     order_status_image.setImageResource(R.drawable.ic_shopping_bag)
@@ -88,6 +91,10 @@ class VendorOrderDetailFragment : Fragment() {
             }
         }
 
+        /*
+        On click listener functionality for the update status buttons. For all of them highlight the button, change the status shown above,
+        and make an API request to update the status at backend.
+         */
         order_taken_button.setOnClickListener {
             makeAllButtonsDefault()
             order_status_image.setImageResource(R.drawable.ic_shopping_bag)
@@ -148,6 +155,7 @@ class VendorOrderDetailFragment : Fragment() {
             }
         }
 
+        // If the top left back button is pressed, go back to vendor orders page
         back_button.setOnClickListener {
             val vendorOrdersPage = VendorOrdersFragment()
             val bundle = Bundle()

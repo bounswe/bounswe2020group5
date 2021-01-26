@@ -404,6 +404,9 @@ class RestApiService {
         )
     }
 
+    /*
+     Get all the orders given to a vendor, give auth token as parameter
+     */
     fun getVendorOrders(authToken: String, onResult: (Array<Purchase>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getVendorOrders(authToken).enqueue(
@@ -451,7 +454,9 @@ class RestApiService {
         )
     }
 
-    // Change the status of an order, give authToken of a vendor and UpdateStatusRequest as parameter
+    /*
+     Change the status of an order, give authToken of a vendor and UpdateStatusRequest as parameter
+     */
     fun updateOrderStatus(authToken: String, updateStatusRequest: UpdateStatusRequest, onResult: (Success?) -> Unit) {
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.updateOrderStatus(authToken, updateStatusRequest).enqueue(
