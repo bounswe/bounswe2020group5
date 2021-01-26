@@ -25,6 +25,21 @@ class RestApiService {
         )
     }
 
+    fun userLogout(onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.userLogout("Token " + User.authToken).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
+        )
+    }
+
     fun googleLogin(authTokenRequest: AuthTokenRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.googleLogin(authTokenRequest).enqueue(
@@ -467,6 +482,21 @@ class RestApiService {
                         onResult(all_products)
                     }
                 }
+        )
+    }
+
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest, onResult: (Success?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.changePassword("Token ${User.authToken}", passwordChangeRequest).enqueue(
+            object : Callback<Success> {
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    val user = response.body()
+                    onResult(user)
+                }
+            }
         )
     }
 }
