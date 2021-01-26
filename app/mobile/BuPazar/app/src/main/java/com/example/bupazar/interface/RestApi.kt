@@ -121,5 +121,5 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @GET("/api/orders/vendor-orders/")
-    fun getVendorOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+    fun getVendorOrders(@Header("Authorization") authToken: String): Call<Array<Purchase>?>
 }

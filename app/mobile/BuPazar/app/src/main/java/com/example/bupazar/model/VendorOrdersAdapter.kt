@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.order_item.view.*
 import java.util.*
 
 
-class VendorOrdersAdapter(private val context: Context, private val orders: Array<Order>) : RecyclerView.Adapter<VendorOrdersAdapter.ViewHolder>() {
+class VendorOrdersAdapter(private val context: Context, private val orders: Array<Purchase>) : RecyclerView.Adapter<VendorOrdersAdapter.ViewHolder>() {
 
-    var onItemClick: ((ProductDetails) -> Unit)? = null
+    var onItemClick: ((Purchase) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.order_item, parent, false)
@@ -34,39 +34,36 @@ class VendorOrdersAdapter(private val context: Context, private val orders: Arra
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("ResourceAsColor", "WrongConstant")
-        fun bind(order: Order) {
+        fun bind(order: Purchase) {
             var totalPrice = 0f
             var orderStatus = 3
             val photoURLs = mutableListOf<String>()
             var i = 0
 
-            if (order.purchases != null) {
-                for (purchase in order.purchases) {
-                    photoURLs.add(purchase.product!!.imageUrl!!)
-                    i += 1
-                    var currentOrderStatus = 4
-                    totalPrice += purchase.amount!! * purchase.unit_price!!
-                    purchase.status = purchase.status!!.toLowerCase(Locale.ROOT)
-                    when {
-                        purchase.status!! == "ordertaken" -> {
-                            currentOrderStatus = 0
-                        }
-                        purchase.status!! == "preparing" -> {
-                            currentOrderStatus = 1
-                        }
-                        purchase.status!! == "ship" -> {
-                            currentOrderStatus = 2
-                        }
-                        purchase.status!! == "delivered" -> {
-                            currentOrderStatus = 3
-                        }
+            if (order != null) {
+                photoURLs.add(order.product!!.imageUrl!!)
+                var currentOrderStatus = 4
+                totalPrice += order.amount!! * order.unit_price!!
+                order.status = order.status!!.toLowerCase(Locale.ROOT)
+                when {
+                    order.status!! == "ordertaken" -> {
+                        currentOrderStatus = 0
                     }
-                    if (currentOrderStatus < orderStatus) {
-                        orderStatus = currentOrderStatus
+                    order.status!! == "preparing" -> {
+                        currentOrderStatus = 1
+                    }
+                    order.status!! == "ship" -> {
+                        currentOrderStatus = 2
+                    }
+                    order.status!! == "delivered" -> {
+                        currentOrderStatus = 3
                     }
                 }
+                if (currentOrderStatus < orderStatus) {
+                    orderStatus = currentOrderStatus
+                }
             }
-            itemView.order_id_text.text = "Order ID: #" + order.order_id.toString()
+            itemView.order_id_text.text = "Order ID: #" + order.id.toString()
             itemView.order_price_text.text = "Price: " + "%.2f".format(totalPrice) + " $"
 
             when (orderStatus) {
@@ -98,6 +95,12 @@ class VendorOrdersAdapter(private val context: Context, private val orders: Arra
                 val orderPhotosAdapter = OrderPhotosAdapter(context, photoURLsArray)
                 orderPhotosRview.adapter = orderPhotosAdapter
                 orderPhotosRview.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+            }
+        }
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(orders[adapterPosition])
             }
         }
     }
