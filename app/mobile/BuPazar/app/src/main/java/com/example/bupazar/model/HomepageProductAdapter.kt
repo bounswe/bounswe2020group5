@@ -29,8 +29,14 @@ class HomepageProductAdapter(private val context: Context, private val products:
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-
+                if (charSearch.isEmpty() || charSearch == "") {
+                    productFilterList.clear()
+                    for (product in products) {
+                        productFilterList.add(product)
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = productFilterList
+                    return filterResults
                 } else {
                     val resultList = ArrayList<ProductDetails>()
                     for (product in products) {

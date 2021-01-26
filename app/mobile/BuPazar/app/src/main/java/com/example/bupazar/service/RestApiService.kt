@@ -100,6 +100,22 @@ class RestApiService {
         )
     }
 
+    fun searchQuery(authToken: String, query: String, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.searchQuery(authToken, query).enqueue(
+            object : Callback<Array<ProductDetails>?> {
+                override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                    val all_products = response.body()
+                    onResult(all_products)
+                }
+            }
+        )
+    }
+
     fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userVerificate(userData).enqueue(
