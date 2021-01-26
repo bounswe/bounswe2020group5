@@ -1,5 +1,6 @@
 package com.example.bupazar.page.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.PasswordChangeRequest
+import com.example.bupazar.page.activity.login.VendorHomepageActivity
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_change_password.*
 
@@ -51,10 +54,15 @@ class ChangePasswordFragment : Fragment() {
                             Toast.makeText(this.activity,"Current or new password is wrong.", Toast.LENGTH_SHORT).show()
                         } else{
                             Toast.makeText(this.activity,"Password is successfully changed", Toast.LENGTH_SHORT).show()
-
-                            requireActivity().supportFragmentManager.beginTransaction().apply {
-                                replace(R.id.fl_wrapper, ProfilePageFragment())
-                                commit()
+                            if(User.isVendor) {
+                                var intent = Intent(activity, VendorHomepageActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else {
+                                requireActivity().supportFragmentManager.beginTransaction().apply {
+                                    replace(R.id.fl_wrapper, ProfilePageFragment())
+                                    commit()
+                                }
                             }
                         }
                     }
