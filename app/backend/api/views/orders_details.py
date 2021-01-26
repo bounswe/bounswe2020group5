@@ -5,8 +5,11 @@ from ..custom_permissions import IsAuthCustomer, IsAuthVendor
 from ..serializers import CancelOrderSerializer, CancelPurchaseSerializer, SuccessSerializer, PurchaseSerializer, UpdateStatusSerializer
 from ..serializers import CustomerPurchasedSerializer, MessageResponseSerializer, CustomerOrderSerializer
 from ..serializers import AddVendorRatingSerializer, VendorRatingSerializer, VendorRatingInProductPageSerializer, VendorRatingResponseSerializer
-from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating
+from ..serializers import ShipmentSerializer, AddShipmentSerializer, ShipmentCargoNoSerializer, GetShipmentSerializer
+from ..models import Product, Order, Purchase, Customer, Vendor, VendorRating, Notification, NotificationType, User, Shipment
+from ..utils import stock_end_notifications, stock_replenish_notifications
 from rest_framework.response import Response
+import string, random
 
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: PurchaseSerializer(many=True)})
 @api_view(['GET'])
@@ -35,14 +38,24 @@ def vendor_cancel_purchase(request):
     elif purchase.status == 'Delivered':
         return Response(data={'error': 'Purchase is already delivered by customer'}, status=status.HTTP_400_BAD_REQUEST)
     elif purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
-            purchase.status = 'Vcancelled'
-            purchase.save()
-            product_id = purchase.product_id
-            product_amount = purchase.amount
-            product = Product.objects.get(id=product_id)
-            product.stock += product_amount
-            product.number_of_sales -= product_amount
-            product.save()
+        purchase.status = 'Vcancelled'
+        purchase.save()
+        product_id = purchase.product_id
+        product_amount = purchase.amount
+        product = Product.objects.get(id=product_id)
+        stock_before = product.stock
+        product.stock += product_amount
+        if stock_before == 0 and product.stock > 0:
+            stock_replenish_notifications(product)
+        product.number_of_sales -= product_amount
+        product.save()
+        # Create a notification to customer when an order is cancelled by the vendor
+        order = Order.objects.get(id=purchase.order_id)
+        text = f'The {product.name} in your order {order.id} is cancelled by the vendor.'
+        notification_type = NotificationType.ORDER_STATUS_CHANGED
+        user = User.objects.get(id=purchase.customer_id)
+        cancel_notification = Notification(text=text, notificationType=notification_type.value, user=user, product=product, order=order)
+        cancel_notification.save()
 
     return Response(data={'success': 'Purchase is successfully canceled.'}, status=status.HTTP_200_OK)
         
@@ -58,14 +71,17 @@ def customer_cancel_order(request):
 
     for purchase in purchases:
         if purchase.status == 'OrderTaken' or purchase.status == 'Preparing':
-              purchase.status = 'Ccancelled'
-              purchase.save()
-              product_id = purchase.product_id
-              product_amount = purchase.amount
-              product = Product.objects.get(id=product_id)
-              product.stock += product_amount
-              product.number_of_sales -= product_amount
-              product.save()
+            purchase.status = 'Ccancelled'
+            purchase.save()
+            product_id = purchase.product_id
+            product_amount = purchase.amount
+            product = Product.objects.get(id=product_id)
+            stock_before = product.stock
+            product.stock += product_amount
+            if stock_before == 0 and product.stock > 0:
+                stock_replenish_notifications(product)
+            product.number_of_sales -= product_amount
+            product.save()
         else:
             continue
     
@@ -77,6 +93,7 @@ def customer_cancel_order(request):
 def get_customer_orders(request):
     customer = Customer.objects.get(user=request.user)
     my_orders = Order.objects.filter(customer=customer)
+    my_orders = my_orders.order_by('-date')
     order_list = []
     for order in my_orders:
         content = {}
@@ -101,6 +118,21 @@ def vendor_update_status(request):
     if purchase.status != new_status:
         purchase.status = new_status
         purchase.save()
+        # Create a new notification for the customer when the status of an order is changed by the vendor.
+        text = ""
+        order = Order.objects.get(id=purchase.order_id)
+        if new_status == 'OrderTaken':
+            text = "Your order is taken by the vendor."
+        elif new_status == 'Preparing':
+            text = f'The {purchase.product.name} in your order {order.id} is in preparation phase.'
+        elif new_status == 'Ship':
+            text = f'The {purchase.product.name} in your order {order.id} is shipped by the vendor.'
+        elif new_status == 'Delivered':
+            text = f'The {purchase.product.name} in your order {order.id} is delivered. Have a nice day.'
+        notification_type = NotificationType.ORDER_STATUS_CHANGED
+        user = User.objects.get(id=purchase.customer_id)
+        status_change_notification = Notification(text=text, notificationType=notification_type.value, user=user, product=purchase.product, order=order)
+        status_change_notification.save()
     return Response(data={'success': 'Order status is successfully updated.'}, status=status.HTTP_200_OK)
 
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: MessageResponseSerializer}, request_body=CustomerPurchasedSerializer)
@@ -179,3 +211,31 @@ def avg_vendor_rating_profile_page(request):
             number_of_rates += 1
     avg_score = round(total_rating / number_of_rates, 1)
     return Response(data={'score': avg_score}, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ShipmentCargoNoSerializer}, request_body=AddShipmentSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthVendor])
+def add_shipment(request):
+    serializer = AddShipmentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    cargo_company = serializer.validated_data['cargo_company']
+    purchase = Purchase.objects.get(id=purchase_id)
+    if purchase.status == "Preparing":
+        cargo_no = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        shipment = Shipment(purchase=purchase, cargo_no=cargo_no, cargo_company=cargo_company)
+        shipment.save()
+        return Response(data={'cargo_no': cargo_no}, status=status.HTTP_201_CREATED)
+    else:
+        return Response(data={'error': 'Unable to ship this order.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ShipmentSerializer}, request_body=GetShipmentSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def get_shipment(request):
+    serializer = GetShipmentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    shipment = Shipment.objects.get(purchase_id=purchase_id)
+    shipment_contents = ShipmentSerializer(shipment)
+    return Response(data=shipment_contents.data, status=status.HTTP_200_OK)

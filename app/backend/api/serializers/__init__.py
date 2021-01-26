@@ -77,3 +77,8 @@ from .notifications import NotificationSerializer
 from .alarm import SetPriceAlarmSerializer
 from .alarm import DeletePriceAlarmSerializer
 from .alarm import PriceAlarmSerializer
+from .orders import ShipmentSerializer
+from .orders import AddShipmentSerializer
+from .orders import ShipmentCargoNoSerializer
+from .orders import GetShipmentSerializer
+from .notifications import SetNotificationSeenSerializer

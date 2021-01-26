@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from ..custom_permissions import IsAuthCustomer
 from rest_framework.response import Response
-from ..serializers import SuccessSerializer, SetPriceAlarmSerializer, DeletePriceAlarmSerializer, PriceAlarmSerializer
-from ..models import Customer, Product, PriceAlarm
+from ..serializers import SuccessSerializer, SetPriceAlarmSerializer, DeletePriceAlarmSerializer, PriceAlarmSerializer, NotificationSerializer
+from ..models import Customer, Product, PriceAlarm, Notification
 
 """
 Sets alarm for a certain price in terms of product for customers
@@ -20,15 +20,15 @@ def set_price_alarm(request):
     price = serializer.validated_data['price']
 
     customer = Customer.objects.get(user=user)
-    product = Product.object.get(id=product_id)
+    product = Product.objects.get(id=product_id)
 
     alarm = PriceAlarm.objects.filter(customer=customer, product=product).first()
     if alarm:
         alarm.price = price
     else:
         alarm = PriceAlarm(customer=customer, product=product, price=price)
-        alarm.save()
     
+    alarm.save()
     return Response(data={'success': 'Alarm is successfully set.'}, status=status.HTTP_200_OK)
 
 """
@@ -38,13 +38,13 @@ Deletes price alarm in terms of product for customers
 @api_view(['POST'])
 @permission_classes([IsAuthCustomer])
 def delete_price_alarm(request):
-    serializer = SetPriceAlarmSerializer(data=request.data)
+    serializer = DeletePriceAlarmSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = request.user
     product_id = serializer.validated_data['product_id']
     
     customer = Customer.objects.get(user=user)
-    product = Product.object.get(id=product_id)
+    product = Product.objects.get(id=product_id)
 
     alarm = PriceAlarm.objects.filter(customer=customer, product=product).first()
     if alarm:

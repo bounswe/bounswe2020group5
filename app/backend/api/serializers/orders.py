@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Customer, CreditCard, Purchase, VendorRating
+from ..models import Customer, CreditCard, Purchase, VendorRating, Shipment
 from ..serializers import ProductSerializer
 
 # CreditCard Serializer
@@ -64,3 +64,23 @@ class VendorRatingInProductPageSerializer(serializers.Serializer):
 
 class VendorRatingResponseSerializer(serializers.Serializer):
     score = serializers.IntegerField()
+
+#Shipment Serializer
+class ShipmentSerializer(serializers.ModelSerializer):
+    purchase = serializers.SerializerMethodField('get_purchase')
+    class Meta:
+        model = Shipment
+        fields = ('id', 'purchase', 'date', 'cargo_no', 'cargo_company')
+    
+    def get_purchase(self, obj):
+        return PurchaseSerializer(obj.purchase).data
+
+class AddShipmentSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+    cargo_company = serializers.CharField(required=True)
+
+class GetShipmentSerializer(serializers.Serializer):
+    purchase_id = serializers.IntegerField(required=True)
+
+class ShipmentCargoNoSerializer(serializers.Serializer):
+    cargo_no = serializers.CharField(required=True)

@@ -31,6 +31,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 usr = get_user_model()
 
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     A simple ViewSet for viewing users.
@@ -38,18 +39,19 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
     serializer_classes = {
         'login': LoginSerializer,
         'logout': EmptySerializer,
-        'register': RegisterSerializer, 
+        'register': RegisterSerializer,
         'password_change': PasswordChangeSerializer,
-        'user_info' : EmptySerializer,
-        'profile_update': UpdateProfileSerializer, 
+        'user_info': EmptySerializer,
+        'profile_update': UpdateProfileSerializer,
         'register_activate': RegisterActivateSerializer,
-        'password_reset_request' : PasswordResetRequestEmailSerializer,
-        'password_reset_confirm' : PasswordResetConfirmSerializer,
+        'password_reset_request': PasswordResetRequestEmailSerializer,
+        'password_reset_confirm': PasswordResetConfirmSerializer,
         'google_login': GoogleSocialAuthSerializer,
         'facebook_login': FacebookSocialAuthSerializer,
     }
@@ -66,20 +68,23 @@ class AuthViewSet(viewsets.GenericViewSet):
         first_name = data['given_name']
         last_name = data['family_name']
         user = None
-        social_user = User.objects.filter(email = email)
-        social_user_document = SocialDocs.objects.filter(email=email,social_provider='google')
+        social_user = User.objects.filter(email=email)
+        social_user_document = SocialDocs.objects.filter(
+            email=email, social_provider='google')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_G)
         elif not social_user_document and social_user:
             return Response({'error': 'The user with this email is already registered.'},
-                        status=HTTP_400_BAD_REQUEST)
+                            status=HTTP_400_BAD_REQUEST)
         else:
-            social_user_document = SocialDocs(email=email,social_provider='google')
+            social_user_document = SocialDocs(
+                email=email, social_provider='google')
             social_user_document.save()
-            user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_G,is_customer=True,is_vendor=False,address="Address is not defined in Google") 
+            user = create_user_account(email=email, username=username, first_name=first_name, last_name=last_name,
+                                       password=PASSWORD_G, is_customer=True, is_vendor=False, address="Address is not defined in Google")
         if user == None:
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
@@ -95,23 +100,25 @@ class AuthViewSet(viewsets.GenericViewSet):
         last_name = data['name'].split()[1]
         username = first_name + "_" + last_name
         user = None
-        social_user = User.objects.filter(email = email)
-        social_user_document = SocialDocs.objects.filter(email=email,social_provider='facebook')
+        social_user = User.objects.filter(email=email)
+        social_user_document = SocialDocs.objects.filter(
+            email=email, social_provider='facebook')
         if social_user and social_user_document:
             user = authenticate(request, username=email, password=PASSWORD_F)
         elif not social_user_document and social_user:
             return Response({'error': 'The user with this email is already registered.'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         else:
             try:
-                social_user_document = SocialDocs(email=email,social_provider='facebook')
+                social_user_document = SocialDocs(
+                    email=email, social_provider='facebook')
                 social_user_document.save()
                 user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_F,is_customer=True,is_vendor=False,address="Address is not defined in Facebook") 
             except Exception as e:
-                print("Exception is ",e)
+                print("Exception is ", e)
         if user == None:
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
@@ -156,7 +163,7 @@ class AuthViewSet(viewsets.GenericViewSet):
                     fi = LoginFailInfos(email=email,fail_times=1, user=usr_to_update)
                     fi.save()
             return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
+                            status=HTTP_404_NOT_FOUND)
 
         now = datetime.datetime.now().strftime(date_format)
         last_change_time = ""
@@ -178,14 +185,14 @@ class AuthViewSet(viewsets.GenericViewSet):
             send_mail("Change your password", template , "bupazar451@gmail.com", [str(user.email)])
         data = AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST', ], detail=False, permission_classes=[IsAuthenticated, ])
     def logout(self, request):
         request.user.auth_token.delete()
         data = {'success': 'Successfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
     @action(methods=['POST', ], detail=False)
     def register(self, request):
@@ -198,15 +205,16 @@ class AuthViewSet(viewsets.GenericViewSet):
         is_found = TempUser.objects.filter(email=validated['email'])
         if is_found:
             is_found.delete()
-        
+
         number = randint(100000, 999999)
 
-        template = render_to_string('email_verification_template.html', {'name': validated['username'], 'number': str(number)})
-        if send_email(template , validated['email']) == 5:
+        template = render_to_string('email_verification_template.html', {
+                                    'name': validated['username'], 'number': str(number)})
+        if send_email(template, validated['email']) == 5:
             return Response(data={'error': 'The parameters are in wrong format or typed inaccurate'}, status=HTTP_400_BAD_REQUEST)
-        
-        user_info = create_temp_user_account(**validated,number=number)
-        return Response(data = {"success": "user_info is created"}, status=status.HTTP_201_CREATED)
+
+        user_info = create_temp_user_account(**validated, number=number)
+        return Response(data={"success": "user_info is created"}, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: AuthUserSerializer})
     @action(methods=['POST', ], detail=False)
@@ -242,7 +250,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})   
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def password_change(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -255,7 +263,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         except:
             pass
         return Response(data={'success': 'Successfully changed password'}, status=status.HTTP_200_OK)
-    
+
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def profile_update(self, request):
@@ -336,7 +344,7 @@ class AuthViewSet(viewsets.GenericViewSet):
                 return Response({'error': 'new password is the same as the older version. Please enter different password from the pervious one.'}, status=status.HTTP_400_BAD_REQUEST)
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
-            
+
             user.set_password(password)
             user.save()
 
@@ -359,12 +367,10 @@ class AuthViewSet(viewsets.GenericViewSet):
             try:
                 if not PasswordResetTokenGenerator().check_token(user):
                     return Response({'error': 'user does not have this token'}, status=status.HTTP_400_BAD_REQUEST)
-                    
+
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-                
+
         return Response(data=data, status=status.HTTP_200_OK)
 
     def get_serializer_class(self):

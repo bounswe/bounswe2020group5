@@ -27,3 +27,10 @@ class Purchase(models.Model):
 class VendorRating(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     rating_score = models.IntegerField()
+
+# Shipment Model
+class Shipment(models.Model):
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    cargo_no = models.CharField(max_length=12)
+    cargo_company = models.CharField(max_length=100)
