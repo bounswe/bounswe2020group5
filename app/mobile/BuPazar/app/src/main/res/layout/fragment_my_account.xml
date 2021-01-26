@@ -232,7 +232,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
-            android:text="View and edit your name, surname, user name, address and password"
+            android:text="View and edit your account information"
             android:textColor="@color/black"
             android:layout_toEndOf="@id/personalInfoImage"
             android:layout_below="@id/personalInfoText" />
@@ -248,11 +248,61 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/helpLayout"
+        android:id="@+id/notification_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/personalInfoLayout"
         android:background="@drawable/transparent_rectangle_border">
+
+        <ImageView
+            android:id="@+id/notification_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_baseline_help_24" />
+
+        <TextView
+            android:id="@+id/notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@+id/notification_image"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/notification_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="12dp"
+            android:text="New announcements"
+            android:textColor="@color/black"
+            android:layout_toEndOf="@id/notification_image"
+            android:layout_below="@id/notification_text" />
+
+        <ImageView
+            android:id="@+id/rightArrow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/helpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notification_layout"
+        android:background="@drawable/rectangle_border">
 
         <ImageView
             android:id="@+id/helpImage"
@@ -302,7 +352,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/helpLayout"
-        android:background="@drawable/rectangle_border">
+        android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
             android:id="@+id/logoutImage"

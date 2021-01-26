@@ -278,6 +278,22 @@ class RestApiService {
     }
 
 
+    fun myNotification(onResult: (Array<NotificationResponse>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.myNotification("Token ${User.authToken}").enqueue(
+                object : Callback<Array<NotificationResponse>?> {
+                    override fun onFailure(call: Call<Array<NotificationResponse>?>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Array<NotificationResponse>?>, response: Response<Array<NotificationResponse>?>) {
+                        val myNotification = response.body()
+                        onResult(myNotification)
+                    }
+                }
+        )
+    }
+
+
 
 
     fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
@@ -388,6 +404,8 @@ class RestApiService {
               }
         )
     }
+
+
 
     fun getPreviousOrders(authToken: String, onResult: (Array<Order>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)

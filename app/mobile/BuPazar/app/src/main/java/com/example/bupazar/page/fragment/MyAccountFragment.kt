@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.bupazar.R
+import com.example.bupazar.User
 import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.page.activity.login.LoginActivity
 import com.example.bupazar.page.activity.message.MessageMainActivity
@@ -54,6 +55,13 @@ class MyAccountFragment : Fragment() {
                 replace(R.id.fl_wrapper,  previousOrdersFragment)
                 commit()
             }
+        }
+        notification_layout.setOnClickListener(){
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,  NotificationFragment.newInstance(User.authToken))
+                commit()
+            }
+
         }
 
         personalInfoLayout.setOnClickListener {
