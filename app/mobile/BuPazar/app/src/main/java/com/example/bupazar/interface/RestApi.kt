@@ -106,6 +106,10 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/products/opts/get_all_comments/")
     fun allComments(@Body commentRequest: CommentRequest): Call<Array<CommentDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/notifications/my/")
+    fun myNotification(@Header("Authorization") authToken: String): Call<Array<NotificationResponse>?>
   
     @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
