@@ -59,10 +59,28 @@
                 android:layout_marginTop="4dp"/>
 
             <TextView
-                android:id="@+id/order_price_text"
+                android:id="@+id/order_productname_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/order_id_text"
+                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Product: Samsung Galaxy Tab A"/>
+
+            <TextView
+                android:id="@+id/order_customerid_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_productname_text"
+                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Customer ID: #53"/>
+
+            <TextView
+                android:id="@+id/order_price_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_customerid_text"
                 android:layout_marginTop="0dp"
                 android:layout_alignStart="@id/order_id_text"
                 android:text="Price: 144.44 $"

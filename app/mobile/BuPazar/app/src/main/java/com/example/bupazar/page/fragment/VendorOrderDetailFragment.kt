@@ -52,6 +52,8 @@ class VendorOrderDetailFragment : Fragment() {
         if (order != null) {
             order_id_text.text = "Order ID: #" + order!!.id.toString()
             order_price_text.text = "Price: " + "%.2f".format(order!!.amount!! * order!!.unit_price!!) + " $"
+            order_productname_text.text = "Product: " + order!!.product!!.name
+            order_customerid_text.text = "Customer ID: #" + order!!.customer.toString()
             Glide.with(requireContext()).load(order!!.product!!.imageUrl).into(product_image)
 
             /*
