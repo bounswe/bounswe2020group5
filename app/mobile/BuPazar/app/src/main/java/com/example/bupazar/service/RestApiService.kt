@@ -115,6 +115,22 @@ class RestApiService {
         )
     }
 
+    fun searchQuery(authToken: String, query: String, onResult: (Array<ProductDetails>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.searchQuery(authToken, query).enqueue(
+            object : Callback<Array<ProductDetails>?> {
+                override fun onFailure(call: Call<Array<ProductDetails>?>, t: Throwable) {
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<Array<ProductDetails>?>, response: Response<Array<ProductDetails>?>) {
+                    val all_products = response.body()
+                    onResult(all_products)
+                }
+            }
+        )
+    }
+
     fun userVerificate(userData: VerificationRequest, onResult: (LoginResponse?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.userVerificate(userData).enqueue(
@@ -293,6 +309,22 @@ class RestApiService {
     }
 
 
+    fun myNotification(onResult: (Array<NotificationResponse>?) -> Unit) {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.myNotification("Token ${User.authToken}").enqueue(
+                object : Callback<Array<NotificationResponse>?> {
+                    override fun onFailure(call: Call<Array<NotificationResponse>?>, t: Throwable) {
+                        onResult(null)
+                    }
+                    override fun onResponse(call: Call<Array<NotificationResponse>?>, response: Response<Array<NotificationResponse>?>) {
+                        val myNotification = response.body()
+                        onResult(myNotification)
+                    }
+                }
+        )
+    }
+
+
 
 
     fun forgotPassword(userMail: ForgotPasswordRequest, onResult: (ForgotPasswordRequest?) -> Unit){
@@ -403,6 +435,8 @@ class RestApiService {
               }
         )
     }
+
+
 
     fun getPreviousOrders(authToken: String, onResult: (Array<Order>?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)

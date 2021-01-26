@@ -115,11 +115,14 @@ class HomepageFragment : Fragment() {
                         return false
                     }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        productAdapter.filter.filter(newText)
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        productAdapter.filter.filter(query)
+                        if (User.authToken != null && query != null) {
+                            apiService.searchQuery(authToken = User.authToken!!, query) {
+                            }
+                        }
                         return false
                     }
-
                 })
             }
         }
@@ -132,5 +135,6 @@ class HomepageFragment : Fragment() {
                     arguments = Bundle().apply {
                     }
                 }
+
     }
 }
