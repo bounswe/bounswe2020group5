@@ -284,7 +284,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = UserSerializer(request.user).data
         return Response(data=data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_500_INTERNAL_SERVER_ERROR: ErrorSerializer})
     @action(methods=['POST'], detail=False)
     def password_reset_request(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -297,18 +297,26 @@ class AuthViewSet(viewsets.GenericViewSet):
             token = PasswordResetTokenGenerator().make_token(user)
             current_site = get_current_site(
                 request=request).domain
-            relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
-            link = 'http://'+current_site +"/"+ relativeLink
-            template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
-            send_email(template,email)
+            token_parameters = "?uidb64="+uidb64+";token="+token
+            link = "http://100.25.223.242:3000/forgot" + "/" + token_parameters
+            template = render_to_string('email_password_reset_template.html', {
+                                        'name': user.username, 'link': link})
+            index = 0
+            while index < 5:
+                try:
+                    send_mail("Change your password", template , "bupazar451@gmail.com", [email])
+                    break
+                except:
+                    index+=1
+            if index==5:
+                data = {
+                    "error": "email is not sent due to internal system error.",
+                }
+                return Response(data=data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             data = {
-                "uidb64" : uidb64,
-                "token" : token,
-                "current_site" : current_site,
-                "relativeLink" : relativeLink,
-                "template" : template
-            } 
-    
+                "success": "email is sent",
+            }
+
         return Response(data=data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: AuthUserSerializer})

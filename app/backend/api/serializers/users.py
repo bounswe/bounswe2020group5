@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from ..models.users import User
+from ..models.social_documents import SocialDocs
 from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
@@ -149,8 +150,11 @@ class PasswordResetRequestEmailSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         user = usr.objects.filter(email=value)
+        social_user = SocialDocs.objects.filter(email=value)
         if not user:
             raise serializers.ValidationError("Email is not registered")
+        if social_user:
+            raise serializers.ValidationError("The with this email is reqistered via google so s/he cannot have a password to change")
         return BaseUserManager.normalize_email(value)
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
