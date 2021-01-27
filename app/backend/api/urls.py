@@ -63,4 +63,5 @@ urlpatterns = [
     path('alarms/set-price-alarm/', set_price_alarm),
     path('alarms/delete-price-alarm/', delete_price_alarm),
     path('alarms/my-price-alarms/', my_price_alarms),
+    path('users/vendor/details', get_vendor_details),
 ]

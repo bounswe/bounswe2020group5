@@ -11,6 +11,7 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 import facebook
 from bupazar.settings import G_CLIENT_ID
+from .products import ProductSerializer
 
 usr = get_user_model()
 
@@ -176,3 +177,15 @@ class SuccessSerializer(serializers.Serializer):
 
 class ErrorSerializer(serializers.Serializer):
     error = serializers.CharField(max_length=200)
+
+class VendorInfoRequestSerializer(serializers.Serializer):
+    vendor_username = serializers.CharField(max_length=255, required=True)
+
+class VendorInfoResponseSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=500)
+    rating = serializers.FloatField()
+    products = serializers.ListField(child = ProductSerializer())
