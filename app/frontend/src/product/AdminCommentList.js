@@ -46,8 +46,8 @@ export const AdminCommentList = ({ commentList }) => {
     try {
       const token = res.success;
       if (token) {
-        // console.log(token)
-        //setLogged(true);
+        alert("Admin action is successful.");
+        window.location.reload()
       } else {
         setAlertMessage("Some error has occured");
         console.log(res);
