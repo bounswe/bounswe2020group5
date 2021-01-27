@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 import json
 from ..serializers import AuthUserSerializer
-from ..models import Category, SubCategory, Vendor, Product
+from ..models import Category, SubCategory, Vendor, Product, Customer
 from django.contrib.auth import get_user_model
 from ..views import set_price_alarm
 
@@ -32,6 +32,7 @@ class SetPriceAlarmTest(TestCase):
                                         subcategory=subcategory, vendor=vendor, brand='TestBrand', discount=discount)
         customer_user = get_user_model().objects.create_user(username='ismets', email='ismets@hotmail.com', password='Sifre123',
                                     first_name='Ismet', last_name='Sari', is_customer=True, address='Sirinevler')
+        customer = Customer.objects.create(user=customer_user)
         
         product_id = product.id
 

@@ -8,6 +8,7 @@ from ..models import Category, SubCategory, Vendor, Product, Customer, PriceAlar
 from django.contrib.auth import get_user_model
 from ..views import my_price_alarms
 
+customer = None
 customer_user = None
 price_alarm = None
 price = 200
@@ -20,7 +21,7 @@ Unit test for getting price alarms of authenticated customers.
 """
 class MyPriceAlarmTest(TestCase):
     def setUp(self):
-        global price, stock, discount, price_below, customer_user, price_alarm
+        global price, stock, discount, price_below, customer_user, price_alarm, customer
 
         self.client = APIClient()
         category = Category.objects.create(name='category_test')
@@ -36,9 +37,9 @@ class MyPriceAlarmTest(TestCase):
         price_alarm = PriceAlarm.objects.create(customer=customer, product=product, price=price_below)
 
     def test_my_price_alarms(self):
-        global customer_user, price_alarm
+        global customer_user, price_alarm, customer
 
-        price_alarms = PriceAlarmSerializer(price_alarm, many=True)
+        price_alarms = PriceAlarmSerializer(PriceAlarm.objects.filter(customer = customer), many=True)
         content = AuthUserSerializer(customer_user).data
         auth_token = content['auth_token']
 

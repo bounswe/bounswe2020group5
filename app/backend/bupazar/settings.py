@@ -117,6 +117,11 @@ DATABASES = {
         'NAME': 'bupazarDB',
         'CLIENT': {
            'host': HOST,
+        },
+        'TEST': {
+            'NAME': 'testBupazarDB',
+            'USER': 'bupazarAdmin',
+            'PASSWORD': 'bupazar1234'
         }
     }
 }
