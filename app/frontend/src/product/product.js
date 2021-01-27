@@ -22,6 +22,7 @@ import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
 import {serverUrl} from "../common/ServerUrl";
 import CommentList from "./CommentList";
+import AdminCommentList from "./AdminCommentList";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -80,7 +81,11 @@ const Product = (props) => {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
+
+    const [admin, setAdmin] = React.useState(false);
+
     let [defaultalarmprice, setdefaultalarmprice] = React.useState();
+
 
     let [state, setState] = useState({
         name: '',
@@ -173,6 +178,19 @@ const Product = (props) => {
         }).catch((err) => {
             console.log(err);
         })
+
+        fetch(serverUrl + 'api/admin/is_admin/', {
+            method: 'GET',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'}
+        })
+        .then(res => res.json())
+        .then(json => {
+            setAdmin(json.is_it_admin)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        
     }, []);
 
     const handlecountplus = () => {
@@ -709,7 +727,7 @@ const Product = (props) => {
 
                     <Paper className={classes.paper}>
                         COMMENT SECTION ({state.comments.length})
-                        <CommentList commentList={state.comments}/>
+                        {!admin ? <CommentList commentList={state.comments}/> : <AdminCommentList commentList={state.comments}/>}
                     </Paper>
                     <div>
                         <Footer/>
