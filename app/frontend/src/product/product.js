@@ -81,8 +81,10 @@ const Product = (props) => {
     const vendor = localStorage.getItem('is_vendor')
     const [mylists, setMylists] = React.useState([]);
     const [open1, setOpen1] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
+    let[stock,setstock]=React.useState();
 
     const [admin, setAdmin] = React.useState(false);
 
@@ -161,6 +163,8 @@ const Product = (props) => {
                 state.description = json.description;
                 state.imgsrc = json.image_url;
                 state.rating = json.rating;
+                setstock(json.stock)
+
             }),
             fetch(serverUrl + 'api/products/opts/get_all_comments/', {
             method: 'POST',
@@ -268,6 +272,7 @@ const Product = (props) => {
         }
         setOpen1(false);
         setOpen2(false);
+        setOpen3(false);
     };
 
     const handleClose = () => {
@@ -354,11 +359,13 @@ const Product = (props) => {
     };
 
     function addtocart() {
+        if(!(stock<countclickamount)){
         fetch(serverUrl + 'api/cart/edit/', {
             method: 'POST',
             body: JSON.stringify({product_id: id, count: countclickamount}),
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
         }).then(res => res.json()).then(json => {
+
             if (json.ok) {
                 setMessage(json.message);
                 setOpen1(true);
@@ -367,7 +374,11 @@ const Product = (props) => {
                 setOpen2(true);
             }
         }).catch(err => console.log(err));
-    }
+        }else{
+            setMessage("The amount you want to buy exceeds the stock number.");
+                setOpen3(true);
+                }
+                }
 
     function handleOnButtonClick() {
 
@@ -747,6 +758,11 @@ const Product = (props) => {
                                                 </Alert>
                                             </Snackbar>
                                             <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="error">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+                                            <Snackbar open={open3} autoHideDuration={6000} onClose={snackbarClose}>
                                                 <Alert onClose={snackbarClose} severity="error">
                                                     {message}
                                                 </Alert>
