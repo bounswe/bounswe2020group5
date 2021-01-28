@@ -20,6 +20,7 @@ import Typography from "@material-ui/core/Typography";
 import FaceIcon from '@material-ui/icons/Face';
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import Badge from "@material-ui/core/Badge";
+import Divider from "@material-ui/core/Divider";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,8 +76,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Vendorpublic() {
-
+function Vendorpublic(props) {
+    const {vendorname}=props.match.params;
     const classes = useStyles();
     let [loadPage, setLoadPage] = React.useState(false);
     let [vendorrating, setVR] = React.useState();
@@ -104,7 +105,7 @@ function Vendorpublic() {
         const token = localStorage.getItem('token')
         console.log(token)
         let data;
-        data={vendor_username:'UGURDUNDAR'}
+        data={vendor_username: vendorname}
 
         if (token) {
             fetch(serverUrl + 'api/users/vendor/details', {
@@ -200,27 +201,34 @@ function Vendorpublic() {
                             </Grid>
                             <Grid item xs={9} >
                                 <Paper className={classes.paper2}>
-                                   <div style={{display:'flex',flexDirection:'row'}}>
+                                    <div>
+                                   <div style={{marginLeft: "7rem",marginBottom: "3rem",display:'flex',flexDirection:'row'}}>
                                    <IconButton>
                                        <Badge>
                                            <FaceIcon
-                                               style={{marginLeft: "15rem",marginBottom: "3rem",fontSize: "2rem", color: "#525b60"}}/>
+                                               style={{fontSize: "8rem",color:'#7E7F9A',
+                                               height:'4rem',width:'4rem'}}/>
                                        </Badge>
 
                                     </IconButton>
 
+
                                         <InputBase
                                             style={{
-                                                color: "red",
-                                                fontSize: 30,
-                                                fontWeight: "500",
-                                                marginLeft: "3rem",
-                                                marginBottom: "3rem"
+                                                color: '#0B3954',
+                                                fontSize: 40,
+                                                fontWeight: "bold",
+                                                marginLeft:'8rem'
+
                                             }}
                                             defaultValue={name.username.toUpperCase()}
                                             disabled={true}
                                         />
-                                    </div>
+                                      <div style={{marginTop: "1.5rem",display:'inline'}}> {vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", }} variant="contained" disabled>{vendorrating}</Button>):
+                                           vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954" }} variant="contained" disabled>{vendorrating}</Button>):
+                                               (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white"}} variant="contained" disabled>{vendorrating}</Button>)}
+                                      </div>
+                                   </div></div>
 
                                     <div style={{marginLeft: "8rem"}}>
                                         <Grid container spacing={3}>
@@ -337,8 +345,9 @@ function Vendorpublic() {
                                             </Grid>*/}
                                         </Grid>
                                     </div>
-                                    <Typography gutterBottom variant="h4" style={{marginTop:'5rem',marginLeft:'13.5rem',color:'black'}}className={classes.griflist}>
-                                        CHECK OUT VENDOR PRODUCTS
+                                    <Typography gutterBottom variant="h4" style={{marginTop:'5rem',marginLeft:'14.5rem',
+                                        fontWeight:'bold'}}className={classes.griflist}>
+                                        <span style={{color:'#EB9486'}}>CHECK OUT VENDOR PRODUCTS</span>
                                     </Typography>
                                     <Grid className={classes.griflist}>
                                         <React.Fragment>

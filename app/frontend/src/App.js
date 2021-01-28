@@ -50,7 +50,7 @@ function App() {
           <Route path="/search" component={search} />
           <Route path="/cart" exact component={Cart} />
           <Route path="/orders" exact component={order} />
-          <Route path="/vendorview" exact component={Vendorpublic} />
+          <Route path="/vendorview/:vendorname" exact component={Vendorpublic} />
           <Route path="/vendororders" exact component={vendororder} />
           <Route path="/vendorproduct" exact component={Vendorproduct} />
           <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />

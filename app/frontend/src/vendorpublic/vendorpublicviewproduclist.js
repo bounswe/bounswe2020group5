@@ -49,7 +49,7 @@ export default function Vendorpublicproductlist(props) {
             <Grid container spacing={4}>
                 <Grid justify="center" item container xs={3}>
 
-                    <Link to={{pathname: `product/${props.product.id}`}}>
+                    <Link to={"/product/"+props.product.id}>
                         <img
                             style={{ height: 150, width:150 }}
                             src={props.product.image_url}

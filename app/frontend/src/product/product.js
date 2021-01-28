@@ -35,6 +35,8 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {Link} from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -606,11 +608,12 @@ const Product = (props) => {
                                             gutterBottom>
                                             Vendor:
                                         </Typography>
+                                        <Link to={"/vendorview/"+state.vendor.toLowerCase()}>
                                         <Typography style={{marginLeft: "1rem", marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
                                                     color="textSecondary">
                                             {state.vendor}
-                                        </Typography>
+                                        </Typography></Link>
                                         {state.vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
                                             state.vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
                                                     (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>)}
