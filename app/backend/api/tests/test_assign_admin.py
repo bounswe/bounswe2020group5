@@ -4,16 +4,29 @@ from django.urls import reverse
 from rest_framework import status
 import json
 from ..serializers import AuthUserSerializer
-from ..models import Admin
+from ..models import Admin, User
 
 class AssignAdminTest(TestCase):
 
+
+    def setUp(self):
+
+        self.client = APIClient()
+        a = Admin.objects.create(email="bupazar451@gmail.com",username="admin")
+        a.save()
+        ua = User.objects.create(email="bupazar451@gmail.com",username="admin",first_name="admin",last_name="adminl",is_customer=False)
+        ua.save()
+        u = User.objects.create(email="sarismet2825@gmail.com",username="sarismet2825",first_name="ismet",last_name="sari",is_customer=False)
+        u.save()
+
+
     def test_assign_admin(self):
-        admin_user = Admin.objects.get(email="bupazar451@gmail.com")
-        content = AuthUserSerializer(admin_user).data
+        asa = Admin.objects.get(email="bupazar451@gmail.com")
+        admin_u = User.objects.get(email=asa.email)
+        content = AuthUserSerializer(admin_u).data
         auth_token = content['auth_token']
         body = {
-            "username": "sariismet2825@gmail.com"
+            "username": "sarismet2825"
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {auth_token}')
         response = self.client.post("/api/admin/assign_admin/",body)

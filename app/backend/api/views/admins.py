@@ -3,7 +3,7 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from ..models import Admin, Comment, User
+from ..models import Admin, Comment, User, SocialDocs
 from api.custom_permissions import IsAuthAdmin
 from ..serializers import AdminSerializer, IsAdminResponseSerializer, AssignSerializer, CommentIdSerializer, EmptySerializer, SuccessSerializer, ErrorSerializer
 from rest_framework import serializers
@@ -59,7 +59,7 @@ class AdminViewSet(viewsets.GenericViewSet):
         return Response(data={"success":"admin is assigned"}, status=status.HTTP_201_CREATED)
 
     #this endpoint delete a comment
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthAdmin, ])
     def delete_comment(self, request):
         comment_id = request.data.get("comment_id")
@@ -70,10 +70,10 @@ class AdminViewSet(viewsets.GenericViewSet):
         if not is_found:#if it is not found we return an error.
             return Response(data={'error': 'Comment is not found with that id'}, status=status.HTTP_400_BAD_REQUEST)
         is_found.delete()#deleting the comment
-        return Response(data={"success":"comment is deleted"}, status=status.HTTP_201_CREATED)
+        return Response(data={"success":"comment is deleted"}, status=status.HTTP_200_OK)
 
     #this endpoint delete a user by finding the user with a comment id
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthAdmin, ])
     def delete_user_by_comment_id(self, request):
         comment_id = request.data.get("comment_id")
@@ -85,13 +85,16 @@ class AdminViewSet(viewsets.GenericViewSet):
         except:
             return Response(data={'error': 'Comment is not found with that id'}, status=status.HTTP_400_BAD_REQUEST)
         #getting the owner of the comment
-        user_with_that_commnet_id = comment.customer
+        user_with_that_commnet_id = comment.customer.user
+        social_docs = SocialDocs.objects.filter(email=user_with_that_commnet_id.email)
+        if social_docs:
+            social_docs.delete()
         #deleting
         user_with_that_commnet_id.delete()
-        return Response(data={"success":"customer user is deleted"}, status=status.HTTP_201_CREATED)
+        return Response(data={"success":"customer user is deleted"}, status=status.HTTP_200_OK)
         
     #this endpoint delete a user with just his or her id
-    @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
+    @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: SuccessSerializer, status.HTTP_400_BAD_REQUEST: ErrorSerializer})
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthAdmin, ])
     def delete_user_by_username(self, request):
         username = request.data.get("username")
@@ -104,7 +107,7 @@ class AdminViewSet(viewsets.GenericViewSet):
             return Response(data={'error': 'the user not found with that id'}, status=status.HTTP_400_BAD_REQUEST)
         # deleting the user
         user.delete()
-        return Response(data={"success":"customer user is assigned"}, status=status.HTTP_201_CREATED) 
+        return Response(data={"success":"customer user is assigned"}, status=status.HTTP_200_OK) 
         
     def get_serializer_class(self):
         if self.action in self.serializer_classes.keys():

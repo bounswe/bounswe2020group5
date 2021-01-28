@@ -4,23 +4,29 @@ from django.urls import reverse
 from rest_framework import status
 import json
 from ..serializers import AuthUserSerializer
-from ..models import Admin
+from ..models import Admin, User
 from django.contrib.auth import get_user_model
 
 customer_user = None
 
 class IsAdminTest(TestCase):
 
-    def test_id_admin(self):
-        
-        admin_user = Admin.objects.get(email="bupazar451@gmail.com")
+    def setUp(self):
 
-        content = AuthUserSerializer(admin_user).data
+        self.client = APIClient()
+        admin = Admin(email="bupazar451@gmail.com",username="admin")
+        admin.save()
+        User.objects.create(email="bupazar451@gmail.com",username="admin",first_name="admin",last_name="adminl",is_customer=False)
+        
+    def test_is_admin(self):
+        
+        usr = User.objects.get(email="bupazar451@gmail.com")
+        content = AuthUserSerializer(usr).data
         auth_token = content['auth_token']
 
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {auth_token}')
-        response = self.client.post(reverse('credit-cards/opts-add'), body, 'json')
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data['success'], 'Credit card is successfully added')
+        response = self.client.get("/api/admin/is_admin/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['is_it_admin'], True)
 
 
