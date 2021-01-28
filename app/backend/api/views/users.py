@@ -82,6 +82,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             social_user_document.save()
             user = create_user_account(email=email, username=username, first_name=first_name, last_name=last_name,
                                        password=PASSWORD_G, is_customer=True, is_vendor=False, address="Address is not defined in Google")
+            customer = Customer(user=user)
+            customer.save()
         if user == None:
             return Response({'error': 'Invalid Credentials'},
                             status=HTTP_404_NOT_FOUND)
@@ -148,11 +150,10 @@ class AuthViewSet(viewsets.GenericViewSet):
                         user = User.objects.get(email=email)
                         uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
                         token = PasswordResetTokenGenerator().make_token(user)
-                        current_site = get_current_site(
-                            request=request).domain
-                        relativeLink = "api/auth/password_reset_confirm/?uidb64="+uidb64+";token="+token
-                        link = 'http://'+current_site +"/"+ relativeLink
-                        template = render_to_string('email_password_reset_template.html', {'name': user.username, 'link': link})
+                        token_parameters = "?uidb64="+uidb64+";token="+token
+                        link = "http://100.25.223.242:3000/forgot" + "/" + token_parameters
+                        template = render_to_string('email_password_reset_template.html', {
+                                        'name': user.username, 'link': link})
                         send_mail("Change your password", template , "bupazar451@gmail.com", [email])
                         fail_infos.delete()
                         return Response({'error': 'you are banned check your email'}, status=HTTP_404_NOT_FOUND)

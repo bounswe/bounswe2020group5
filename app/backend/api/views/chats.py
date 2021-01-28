@@ -71,7 +71,7 @@ class ChatViewSet(viewsets.GenericViewSet):
         usr = User.objects.get(id=request.user.id)
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=status.HTTP_202_ACCEPTED)
         to_whom = ""
         whose_message = ""
         if usr.is_customer:
@@ -98,10 +98,10 @@ class ChatViewSet(viewsets.GenericViewSet):
         usr = User.objects.get(id=request.user.id)
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=status.HTTP_202_ACCEPTED)
         message = Message.objects.filter(chat_id=chat_id)
         if not message:
-            return Response(data={"alert":"Chat exists but there is no message in it"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"alert":"Chat exists but there is no message in it"}, status=status.HTTP_202_ACCEPTED)
         message_contents = MessageSerializer(message, many=True)
         data = {
             "success":"True",
@@ -159,7 +159,7 @@ class ChatViewSet(viewsets.GenericViewSet):
         usr = User.objects.get(id=request.user.id)
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"error":"there is no such chat with that id or the user is not allowed get the chat history"}, status=status.HTTP_202_ACCEPTED)
         message = chat.message_set.all()
         message_contents = MessageSerializer(message, many=True)
         data = {
@@ -209,10 +209,10 @@ class ChatViewSet(viewsets.GenericViewSet):
         chat_id = request.data.get("chat_id")
         usr = User.objects.get(id=request.user.id)
         if not usr.is_customer:
-            return Response(data={"error":"Only customers can delete a chat"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"error":"Only customers can delete a chat"}, status=status.HTTP_202_ACCEPTED)
         chat = is_found_a_chat(chat_id, usr)
         if chat == None:
-            return Response(data={"error":"The chat does not exists or there is no such chat the user is allowed to delete"}, status=HTTP_202_ACCEPTED)
+            return Response(data={"error":"The chat does not exists or there is no such chat the user is allowed to delete"}, status=status.HTTP_202_ACCEPTED)
         try:
             chat.delete()
         except:
