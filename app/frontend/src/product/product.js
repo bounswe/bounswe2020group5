@@ -132,10 +132,14 @@ const Product = (props) => {
                     .then(json => {
                         console.log(json)
                         for (let j = 0; j < json.length; j++) {
-
-                            if (""+json[j].product.id === id)
+                            console.log(json[j].product.id.toString())
+                            console.log(id.toString())
+                             if(json[j].product.id.toString() === id.toString())
                                 setalarmclick(true);
+                             console.log('cccccc')
+                            if(json[j].product.id.toString() === id.toString()){
                                 setdefaultalarmprice(json[j].price)
+                                console.log('ffffffff')}
                         }
                     })
             ]).catch((err) => {
@@ -192,6 +196,7 @@ const Product = (props) => {
         .catch((err) => {
             console.log(err);
         });
+        console.log(defaultalarmprice)
         
     }, []);
 
@@ -337,6 +342,7 @@ const Product = (props) => {
     };
 
     function onChange(event) {
+        setdefaultalarmprice(null)
         var mutableState = state
         mutableState[event.target.id] = event.target.value
         setState(mutableState)
@@ -344,6 +350,7 @@ const Product = (props) => {
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
+
     };
 
     function addtocart() {
@@ -398,6 +405,34 @@ const Product = (props) => {
         }
     }
 
+    const currencies = [
+        {
+            value: 'USD',
+            label: '$',
+        },
+        {
+            value: 'EUR',
+            label: '€',
+        },
+        {
+            value: 'TRY',
+            label: '₺',
+        },
+        {
+            value: 'JPY',
+            label: '¥',
+        },
+        {
+            value:'KRW',
+            label:'₩'
+        }
+    ];
+    let [currency, setCurrency] = React.useState('USD');
+
+    const handleChangecurrency = (event) => {
+        setCurrency(event.target.value);
+
+    };
 
     return (
         <div>
@@ -415,9 +450,12 @@ const Product = (props) => {
             {loadPage1 ? (
                 <div>
                     <Paper className={classes.paper}>
+
                         <Grid xs item container>
+
                             <Grid xs item container justify="center">
                                 <Grid container justify="center">
+
                                     <ButtonBase className={classes.image}>
                                         <img className={classes.img} alt="complex" src={state.imgsrc}/>
                                     </ButtonBase>
@@ -483,9 +521,8 @@ const Product = (props) => {
                                                 horizontal: 'left',
                                             }}
                                         >
-
                                             <MenuItem style={{height:'3rem',width:'20rem'}}>
-                                                <Input id="alarmprice" defaultValue={defaultalarmprice}
+                                                <TextField id="alarmprice" value={defaultalarmprice}
                                                        placeholder="Alarm Price" onChange={onChange}/>
 
                                                 {!(alarmclick)? <Button aria-label="add"
@@ -530,7 +567,7 @@ const Product = (props) => {
                                         </Typography>
                                         <Divider/>
                                         {state.discount > 0 ? (
-                                            <div>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
                                                 <Grid container direction="row" alignItems="center">
                                                     <Grid item>
                                                         <div>
@@ -540,7 +577,7 @@ const Product = (props) => {
                                                                 display: 'inline-block'
                                                             }} variant="body2"
                                                                         gutterBottom>
-                                                                Price: $
+                                                                Price:&nbsp;
                                                             </Typography>
                                                             <Typography style={{
                                                                 marginTop: "4rem",
@@ -548,7 +585,12 @@ const Product = (props) => {
                                                                 display: 'inline-block'
                                                             }}
                                                                         variant="body2" color="textSecondary">
-                                                                {state.price}
+                                                                {currency=='USD' ? '$ '+state.price:''}
+                                                                {currency=='TRY' ? '₺ '+(state.price*7.37).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+(state.price*1117.47).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+(104.31*state.price).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+(state.price*0.83).toFixed(2):''}
+
                                                             </Typography>
                                                         </div>
                                                         <div>
@@ -558,7 +600,7 @@ const Product = (props) => {
                                                                 color: "red"
                                                             }} variant="body2"
                                                                         gutterBottom>
-                                                                Discounted Price: $
+                                                                Discounted Price:&nbsp;
                                                             </Typography>
                                                             <Typography style={{
                                                                 marginBottom: "2rem",
@@ -566,7 +608,12 @@ const Product = (props) => {
                                                                 color: "red"
                                                             }}
                                                                         variant="body2" color="textSecondary">
-                                                                {(state.price - state.price * state.discount / 100).toFixed(2)}
+                                                                {currency=='USD' ? '$ '+(state.price - state.price * state.discount / 100).toFixed(2):''}
+                                                                {currency=='TRY' ? '₺ '+((state.price - state.price * state.discount / 100)*7.37).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+((state.price - state.price * state.discount / 100)*1117.47).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+((state.price - state.price * state.discount / 100)*104.31).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+((state.price - state.price * state.discount / 100)*0.83).toFixed(2):''}
+
                                                             </Typography>
                                                         </div>
 
@@ -575,17 +622,33 @@ const Product = (props) => {
                                                         <img style={{width: "4rem", height: "4rem"}}
                                                              src="/img/discount.png" alt="discount icon"/>
                                                     </Grid>
+                                                    <TextField
+                                                        style={{ width:'7.5rem', marginTop: "2rem",marginLeft:'10rem'}}
+                                                        id="outlined-select-currency"
+                                                        select
+                                                        label="Select Currency"
+                                                        value={currency}
+                                                        onChange={handleChangecurrency}
+                                                        variant="outlined"
+                                                    >
+                                                        {currencies.map((option) => (
+                                                            <MenuItem key={option.value} value={option.value}>
+                                                                {option.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
                                                 </Grid>
+
                                             </div>
                                         ) : (
-                                            <div>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
                                                 <Typography style={{
                                                     marginTop: "4rem",
                                                     marginBottom: "2rem",
                                                     display: 'inline-block'
                                                 }} variant="body2"
                                                             gutterBottom>
-                                                    Price: $
+                                                    Price: &nbsp;
                                                 </Typography>
                                                 <Typography style={{
                                                     marginTop: "4rem",
@@ -593,8 +656,28 @@ const Product = (props) => {
                                                     display: 'inline-block'
                                                 }}
                                                             variant="body2" color="textSecondary">
-                                                    {state.price}
+                                                    {currency=='USD' ? '$ '+state.price:''}
+                                                    {currency=='TRY' ? '₺ '+(state.price*7.37).toFixed(2):''}
+                                                    {currency=='KRW' ? '₩ '+(state.price*1117.47).toFixed(2):''}
+                                                    {currency=='JPY' ? '¥ '+(104.31*state.price).toFixed(2):''}
+                                                    {currency=='EUR' ? '€ '+(state.price*0.83).toFixed(2):''}
+
                                                 </Typography>
+                                                <TextField
+                                                    style={{ width:'7.5rem', marginTop: "2.5rem",marginLeft:'16rem'}}
+                                                    id="outlined-select-currency"
+                                                    select
+                                                    label="Select Currency"
+                                                    value={currency}
+                                                    onChange={handleChangecurrency}
+                                                    variant="outlined"
+                                                >
+                                                    {currencies.map((option) => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
                                             </div>)
                                         }
                                         <Divider/>
