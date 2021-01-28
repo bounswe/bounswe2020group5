@@ -64,6 +64,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Product = (props) => {
+    const { exchangeRates,currencies } = require('exchange-rates-api');
+    const example = async () => {
+       let amounts= await exchangeRates().latest()
+            .base(currencies.USD)
+            .symbols([currencies.EUR, currencies.TRY,currencies.KRW,currencies.JPY])
+            .fetch();
+       setusdtry(amounts.TRY)
+       setusdwon(amounts.KRW)
+       setusdyen(amounts.JPY)
+       setusdeu(amounts.EUR)
+
+    };
     const {id} = props.match.params;
     const classes = useStyles();
     const [loadPage1, setLoadPage1] = React.useState(false);
@@ -85,7 +97,10 @@ const Product = (props) => {
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
     let[stock,setstock]=React.useState();
-
+    let[usdtry,setusdtry]=React.useState();
+    let[usdwon,setusdwon]=React.useState();
+    let[usdyen,setusdyen]=React.useState();
+    let[usdeu,setusdeu]=React.useState();
     const [admin, setAdmin] = React.useState(false);
 
     let [defaultalarmprice, setdefaultalarmprice] = React.useState();
@@ -104,6 +119,8 @@ const Product = (props) => {
     });
 
     useEffect(() => {
+        example();
+
 
         if (token && vendor==="false") {
             Promise.all([
@@ -416,7 +433,7 @@ const Product = (props) => {
         }
     }
 
-    const currencies = [
+    const currencieslist = [
         {
             value: 'USD',
             label: '$',
@@ -569,7 +586,7 @@ const Product = (props) => {
                                             }}
                                             variant="body2"
                                             gutterBottom>
-                                            Brand:
+                                            Brand:&nbsp;
                                         </Typography>
                                         <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
@@ -597,10 +614,10 @@ const Product = (props) => {
                                                             }}
                                                                         variant="body2" color="textSecondary">
                                                                 {currency=='USD' ? '$ '+state.price:''}
-                                                                {currency=='TRY' ? '₺ '+(state.price*7.37).toFixed(2):''}
-                                                                {currency=='KRW' ? '₩ '+(state.price*1117.47).toFixed(2):''}
-                                                                {currency=='JPY' ? '¥ '+(104.31*state.price).toFixed(2):''}
-                                                                {currency=='EUR' ? '€ '+(state.price*0.83).toFixed(2):''}
+                                                                {currency=='TRY' ? '₺ '+(state.price*usdtry).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+(state.price*usdwon).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+(usdyen*state.price).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+(state.price*usdeu).toFixed(2):''}
 
                                                             </Typography>
                                                         </div>
@@ -620,10 +637,10 @@ const Product = (props) => {
                                                             }}
                                                                         variant="body2" color="textSecondary">
                                                                 {currency=='USD' ? '$ '+(state.price - state.price * state.discount / 100).toFixed(2):''}
-                                                                {currency=='TRY' ? '₺ '+((state.price - state.price * state.discount / 100)*7.37).toFixed(2):''}
-                                                                {currency=='KRW' ? '₩ '+((state.price - state.price * state.discount / 100)*1117.47).toFixed(2):''}
-                                                                {currency=='JPY' ? '¥ '+((state.price - state.price * state.discount / 100)*104.31).toFixed(2):''}
-                                                                {currency=='EUR' ? '€ '+((state.price - state.price * state.discount / 100)*0.83).toFixed(2):''}
+                                                                {currency=='TRY' ? '₺ '+((state.price - state.price * state.discount / 100)*usdtry).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+((state.price - state.price * state.discount / 100)*usdwon).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+((state.price - state.price * state.discount / 100)*usdyen).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+((state.price - state.price * state.discount / 100)*usdeu).toFixed(2):''}
 
                                                             </Typography>
                                                         </div>
@@ -642,7 +659,7 @@ const Product = (props) => {
                                                         onChange={handleChangecurrency}
                                                         variant="outlined"
                                                     >
-                                                        {currencies.map((option) => (
+                                                        {currencieslist.map((option) => (
                                                             <MenuItem key={option.value} value={option.value}>
                                                                 {option.label}
                                                             </MenuItem>
@@ -668,10 +685,10 @@ const Product = (props) => {
                                                 }}
                                                             variant="body2" color="textSecondary">
                                                     {currency=='USD' ? '$ '+state.price:''}
-                                                    {currency=='TRY' ? '₺ '+(state.price*7.37).toFixed(2):''}
-                                                    {currency=='KRW' ? '₩ '+(state.price*1117.47).toFixed(2):''}
-                                                    {currency=='JPY' ? '¥ '+(104.31*state.price).toFixed(2):''}
-                                                    {currency=='EUR' ? '€ '+(state.price*0.83).toFixed(2):''}
+                                                    {currency=='TRY' ? '₺ '+(state.price*usdtry).toFixed(2):''}
+                                                    {currency=='KRW' ? '₩ '+(state.price*usdwon).toFixed(2):''}
+                                                    {currency=='JPY' ? '¥ '+(usdyen*state.price).toFixed(2):''}
+                                                    {currency=='EUR' ? '€ '+(state.price*usdeu).toFixed(2):''}
 
                                                 </Typography>
                                                 <TextField
@@ -683,7 +700,7 @@ const Product = (props) => {
                                                     onChange={handleChangecurrency}
                                                     variant="outlined"
                                                 >
-                                                    {currencies.map((option) => (
+                                                    {currencieslist.map((option) => (
                                                         <MenuItem key={option.value} value={option.value}>
                                                             {option.label}
                                                         </MenuItem>
