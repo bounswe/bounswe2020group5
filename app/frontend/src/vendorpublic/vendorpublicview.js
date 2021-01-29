@@ -102,12 +102,10 @@ function Vendorpublic(props) {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        console.log(token)
         let data;
         data={vendor_username: vendorname}
 
-        if (token) {
+
             fetch(serverUrl + 'api/users/vendor/details', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -159,12 +157,6 @@ function Vendorpublic(props) {
             })
                 .catch(err => console.log(err));
 
-
-
-        } else {
-            alert('Please login to see profile page')
-            history.push('/login')
-        }
 
 
 
