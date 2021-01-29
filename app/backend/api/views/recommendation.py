@@ -30,15 +30,15 @@ def recommend_products(request):
     # recommends products for authenticated customer
     if (not request.user.is_anonymous) and (request.user.is_customer):
         
-        products = set()
+        products = list()
 
         user = request.user
         search_history = SearchHistory.objects.filter(user=user).first()
         if search_history:
             for product in search_history.products.all():
-                products.add(product)
+                products.append(product)
 
-        query = set()
+        query = list()
         customer = Customer.objects.get(user=user)
 
         # check cart of customer for recommendation
@@ -46,24 +46,27 @@ def recommend_products(request):
         if cart:
             objects = ProductInCart.objects.filter(cart=cart)
             for obj in objects:
-                query.add(obj.product)
+                query.append(obj.product)
         
         # check favorite list of customer for recommendation
         favorite_list = FavoriteList.objects.filter(user=customer).first()
         if favorite_list:
             for product in favorite_list.products.all():
-                query.add(product)
+                if product not in query:
+                    query.add(product)
         
         # check lists of customer for recommendation
         product_lists = ProductList.objects.filter(user=customer)
         for product_list in product_lists:
             for product in product_list.products.all():
-                query.add(product)
+                if product not in query:
+                    query.append(product)
 
         # check purchases of customer for recommendation
         purchases = Purchase.objects.filter(customer=customer)
         for purchase in purchases:
-            query.add(purchase.product)
+            if purchase.product not in query:
+                query.append(purchase.product)
 
         Q_filter = Q()
         for product in query:
@@ -85,7 +88,8 @@ def recommend_products(request):
         if bool(Q_global):
             products_filter = Product.objects.filter(Q_global)
             for product in products_filter:
-                products.add(product)
+                if product not in products:
+                    products.append(product)
 
         for product in query:
             if product in products:
@@ -95,7 +99,8 @@ def recommend_products(request):
             diff = number_of_products - len(products)
             products_difference = Product.objects.order_by('-number_of_sales')[:diff]
             for product in products_difference:
-                products.add(product)
+                if product not in products:
+                    products.append(product)
         
-        content = ProductSerializer(list(products)[:number_of_products], many=True)
+        content = ProductSerializer(products[:number_of_products], many=True)
         return Response(data=content.data, status=status.HTTP_200_OK)
