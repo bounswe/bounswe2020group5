@@ -226,7 +226,7 @@ function Payment() {
   function handleOnClick() {
     const token = localStorage.getItem('token')
     const data = {
-      address : address,
+      address : add.address_1 + "/" + add.address_2 + "/" + add.address_3 + "/" + add.address_4 + "/" + add.address_5,
     }
 
     let newVal = (validate(add, val));
@@ -254,7 +254,7 @@ function Payment() {
           console.log(json)
           const success = json.success
           if (success) {
-            alert('Your profile is updated!')
+            alert('Your address is updated!')
             setEdit(false);
           }
           else {
@@ -303,9 +303,7 @@ function Payment() {
                       variant="outlined"
                       autoComplete="shipping address-line1"
                       disabled={!edit}
-                      defaultValue={JSON.parse(JSON.stringify(add.address_1)) !== '' ?
-                        (JSON.parse(JSON.stringify(add.address_1))) : (' ')
-                      }
+                      defaultValue={add.address_1 }
                       onChange={onChange}
                     />
                   </Grid>
@@ -323,9 +321,7 @@ function Payment() {
                       autoComplete="shipping address-level2"
                       disabled={!edit}
                       onChange={onChange}
-                      defaultValue={JSON.parse(JSON.stringify(add.address_2)) !== '' ?
-                        (JSON.parse(JSON.stringify(add.address_2))) : (' ')
-                      }
+                      defaultValue={add.address_2}
                     />
                   </Grid>
                   <Grid item xs={10} sm={5}>
@@ -339,9 +335,7 @@ function Payment() {
                                label="State/Province/Region"
                                fullWidth
                                onChange={onChange}
-                               defaultValue={JSON.parse(JSON.stringify(add.address_3)) !== '' ?
-                                 (JSON.parse(JSON.stringify(add.address_3))) : (' ')
-                               } />
+                               defaultValue={add.address_3} />
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <TextField
@@ -357,9 +351,7 @@ function Payment() {
                       autoComplete="shipping postal-code"
                       disabled={!edit}
                       onChange={onChange}
-                      defaultValue={JSON.parse(JSON.stringify(add.address_4)) !== '' ?
-                        (JSON.parse(JSON.stringify(add.address_4))) : (' ')
-                      }
+                      defaultValue={add.address_4}
                     />
                   </Grid>
                   <Grid item xs={10} sm={5}>
@@ -376,9 +368,7 @@ function Payment() {
                       autoComplete="shipping country"
                       disabled={!edit}
                       onChange={onChange}
-                      defaultValue={JSON.parse(JSON.stringify(add.address_5)) !== '' ?
-                        (JSON.parse(JSON.stringify(add.address_5))) : (' ')
-                      }
+                      defaultValue={add.address_5}
                     />
                   </Grid>
                 </Grid>
@@ -632,13 +622,23 @@ function Payment() {
         .then(json => {
           setVendor(json.is_vendor)
           setAddress(json.address)
-          setAdd({
-            address_1: json.address.split("/")[0],
-            address_2: json.address.split("/")[1],
-            address_3: json.address.split("/")[2],
-            address_4: json.address.split("/")[3],
-            address_5: json.address.split("/")[4]
-          })
+          {json.address.split('/').length > 2 ?
+              setAdd({
+                address_1: JSON.parse(JSON.stringify(json.address.split("/")[0])),
+                address_2: JSON.parse(JSON.stringify(json.address.split("/")[1])),
+                address_3: JSON.parse(JSON.stringify(json.address.split("/")[2])),
+                address_4: JSON.parse(JSON.stringify(json.address.split("/")[3])),
+                address_5: JSON.parse(JSON.stringify(json.address.split("/")[4])),
+
+              })
+              :
+              setAdd({
+                address_1: ' ',
+                address_2: ' ',
+                address_3: ' ',
+                address_4: ' ',
+                address_5: ' ',
+              })}
         }).then(() => {
         setLoadPage(true)
       })
