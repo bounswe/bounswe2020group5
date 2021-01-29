@@ -687,7 +687,21 @@ function Payment() {
 
   const handleNext = () => {
     if(activeStep === 0){
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+      fetch(serverUrl + "api/cart/get", {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const len = data.products_in_cart.length;
+          if (len > 0) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          } else {
+            alert("Please buy products to proceed.")
+          }
+        });
     }
     if(activeStep === 1){
       if(address === ''){
