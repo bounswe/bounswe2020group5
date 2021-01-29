@@ -119,7 +119,7 @@ const Product = (props) => {
     });
 
     useEffect(() => {
-        example();
+
 
 
         if (token && vendor==="false") {
@@ -202,7 +202,8 @@ const Product = (props) => {
         ]).then(() => {
             setLoadPage1(true);
             //json response
-        }).catch((err) => {
+        }).then(() => {example();})
+            .catch((err) => {
             console.log(err);
         })
 
