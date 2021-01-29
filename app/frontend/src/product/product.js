@@ -35,6 +35,8 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {Link} from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +64,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Product = (props) => {
+    const { exchangeRates,currencies } = require('exchange-rates-api');
+    const example = async () => {
+       let amounts= await exchangeRates().latest()
+            .base(currencies.USD)
+            .symbols([currencies.EUR, currencies.TRY,currencies.KRW,currencies.JPY])
+            .fetch();
+       setusdtry(amounts.TRY)
+       setusdwon(amounts.KRW)
+       setusdyen(amounts.JPY)
+       setusdeu(amounts.EUR)
+
+    };
     const {id} = props.match.params;
     const classes = useStyles();
     const [loadPage1, setLoadPage1] = React.useState(false);
@@ -79,9 +93,14 @@ const Product = (props) => {
     const vendor = localStorage.getItem('is_vendor')
     const [mylists, setMylists] = React.useState([]);
     const [open1, setOpen1] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [message, setMessage] = React.useState("");
-
+    let[stock,setstock]=React.useState();
+    let[usdtry,setusdtry]=React.useState();
+    let[usdwon,setusdwon]=React.useState();
+    let[usdyen,setusdyen]=React.useState();
+    let[usdeu,setusdeu]=React.useState();
     const [admin, setAdmin] = React.useState(false);
 
     let [defaultalarmprice, setdefaultalarmprice] = React.useState();
@@ -100,6 +119,8 @@ const Product = (props) => {
     });
 
     useEffect(() => {
+
+
 
         if (token && vendor==="false") {
             Promise.all([
@@ -130,10 +151,14 @@ const Product = (props) => {
                     .then(json => {
                         console.log(json)
                         for (let j = 0; j < json.length; j++) {
-
-                            if (""+json[j].product.id === id)
+                            console.log(json[j].product.id.toString())
+                            console.log(id.toString())
+                             if(json[j].product.id.toString() === id.toString())
                                 setalarmclick(true);
+                             console.log('cccccc')
+                            if(json[j].product.id.toString() === id.toString()){
                                 setdefaultalarmprice(json[j].price)
+                                console.log('ffffffff')}
                         }
                     })
             ]).catch((err) => {
@@ -155,6 +180,8 @@ const Product = (props) => {
                 state.description = json.description;
                 state.imgsrc = json.image_url;
                 state.rating = json.rating;
+                setstock(json.stock)
+
             }),
             fetch(serverUrl + 'api/products/opts/get_all_comments/', {
             method: 'POST',
@@ -175,7 +202,8 @@ const Product = (props) => {
         ]).then(() => {
             setLoadPage1(true);
             //json response
-        }).catch((err) => {
+        }).then(() => {example();})
+            .catch((err) => {
             console.log(err);
         })
 
@@ -190,6 +218,7 @@ const Product = (props) => {
         .catch((err) => {
             console.log(err);
         });
+        console.log(defaultalarmprice)
         
     }, []);
 
@@ -261,6 +290,7 @@ const Product = (props) => {
         }
         setOpen1(false);
         setOpen2(false);
+        setOpen3(false);
     };
 
     const handleClose = () => {
@@ -335,6 +365,7 @@ const Product = (props) => {
     };
 
     function onChange(event) {
+        setdefaultalarmprice(null)
         var mutableState = state
         mutableState[event.target.id] = event.target.value
         setState(mutableState)
@@ -342,14 +373,17 @@ const Product = (props) => {
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
+
     };
 
     function addtocart() {
+        if(!(stock<countclickamount)){
         fetch(serverUrl + 'api/cart/edit/', {
             method: 'POST',
             body: JSON.stringify({product_id: id, count: countclickamount}),
             headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
         }).then(res => res.json()).then(json => {
+
             if (json.ok) {
                 setMessage(json.message);
                 setOpen1(true);
@@ -358,7 +392,11 @@ const Product = (props) => {
                 setOpen2(true);
             }
         }).catch(err => console.log(err));
-    }
+        }else{
+            setMessage("The amount you want to buy exceeds the stock number.");
+                setOpen3(true);
+                }
+                }
 
     function handleOnButtonClick() {
 
@@ -396,6 +434,34 @@ const Product = (props) => {
         }
     }
 
+    const currencieslist = [
+        {
+            value: 'USD',
+            label: '$',
+        },
+        {
+            value: 'EUR',
+            label: '€',
+        },
+        {
+            value: 'TRY',
+            label: '₺',
+        },
+        {
+            value: 'JPY',
+            label: '¥',
+        },
+        {
+            value:'KRW',
+            label:'₩'
+        }
+    ];
+    let [currency, setCurrency] = React.useState('USD');
+
+    const handleChangecurrency = (event) => {
+        setCurrency(event.target.value);
+
+    };
 
     return (
         <div>
@@ -413,9 +479,12 @@ const Product = (props) => {
             {loadPage1 ? (
                 <div>
                     <Paper className={classes.paper}>
+
                         <Grid xs item container>
+
                             <Grid xs item container justify="center">
                                 <Grid container justify="center">
+
                                     <ButtonBase className={classes.image}>
                                         <img className={classes.img} alt="complex" src={state.imgsrc}/>
                                     </ButtonBase>
@@ -481,9 +550,8 @@ const Product = (props) => {
                                                 horizontal: 'left',
                                             }}
                                         >
-
                                             <MenuItem style={{height:'3rem',width:'20rem'}}>
-                                                <Input id="alarmprice" defaultValue={defaultalarmprice}
+                                                <TextField id="alarmprice" value={defaultalarmprice}
                                                        placeholder="Alarm Price" onChange={onChange}/>
 
                                                 {!(alarmclick)? <Button aria-label="add"
@@ -519,7 +587,7 @@ const Product = (props) => {
                                             }}
                                             variant="body2"
                                             gutterBottom>
-                                            Brand:
+                                            Brand:&nbsp;
                                         </Typography>
                                         <Typography style={{marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
@@ -528,7 +596,7 @@ const Product = (props) => {
                                         </Typography>
                                         <Divider/>
                                         {state.discount > 0 ? (
-                                            <div>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
                                                 <Grid container direction="row" alignItems="center">
                                                     <Grid item>
                                                         <div>
@@ -538,7 +606,7 @@ const Product = (props) => {
                                                                 display: 'inline-block'
                                                             }} variant="body2"
                                                                         gutterBottom>
-                                                                Price: $
+                                                                Price:&nbsp;
                                                             </Typography>
                                                             <Typography style={{
                                                                 marginTop: "4rem",
@@ -546,7 +614,12 @@ const Product = (props) => {
                                                                 display: 'inline-block'
                                                             }}
                                                                         variant="body2" color="textSecondary">
-                                                                {state.price}
+                                                                {currency=='USD' ? '$ '+state.price:''}
+                                                                {currency=='TRY' ? '₺ '+(state.price*usdtry).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+(state.price*usdwon).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+(usdyen*state.price).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+(state.price*usdeu).toFixed(2):''}
+
                                                             </Typography>
                                                         </div>
                                                         <div>
@@ -556,7 +629,7 @@ const Product = (props) => {
                                                                 color: "red"
                                                             }} variant="body2"
                                                                         gutterBottom>
-                                                                Discounted Price: $
+                                                                Discounted Price:&nbsp;
                                                             </Typography>
                                                             <Typography style={{
                                                                 marginBottom: "2rem",
@@ -564,7 +637,12 @@ const Product = (props) => {
                                                                 color: "red"
                                                             }}
                                                                         variant="body2" color="textSecondary">
-                                                                {(state.price - state.price * state.discount / 100).toFixed(2)}
+                                                                {currency=='USD' ? '$ '+(state.price - state.price * state.discount / 100).toFixed(2):''}
+                                                                {currency=='TRY' ? '₺ '+((state.price - state.price * state.discount / 100)*usdtry).toFixed(2):''}
+                                                                {currency=='KRW' ? '₩ '+((state.price - state.price * state.discount / 100)*usdwon).toFixed(2):''}
+                                                                {currency=='JPY' ? '¥ '+((state.price - state.price * state.discount / 100)*usdyen).toFixed(2):''}
+                                                                {currency=='EUR' ? '€ '+((state.price - state.price * state.discount / 100)*usdeu).toFixed(2):''}
+
                                                             </Typography>
                                                         </div>
 
@@ -573,17 +651,33 @@ const Product = (props) => {
                                                         <img style={{width: "4rem", height: "4rem"}}
                                                              src="/img/discount.png" alt="discount icon"/>
                                                     </Grid>
+                                                    <TextField
+                                                        style={{ width:'7.5rem', marginTop: "2rem",marginLeft:'10rem'}}
+                                                        id="outlined-select-currency"
+                                                        select
+                                                        label="Select Currency"
+                                                        value={currency}
+                                                        onChange={handleChangecurrency}
+                                                        variant="outlined"
+                                                    >
+                                                        {currencieslist.map((option) => (
+                                                            <MenuItem key={option.value} value={option.value}>
+                                                                {option.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
                                                 </Grid>
+
                                             </div>
                                         ) : (
-                                            <div>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
                                                 <Typography style={{
                                                     marginTop: "4rem",
                                                     marginBottom: "2rem",
                                                     display: 'inline-block'
                                                 }} variant="body2"
                                                             gutterBottom>
-                                                    Price: $
+                                                    Price: &nbsp;
                                                 </Typography>
                                                 <Typography style={{
                                                     marginTop: "4rem",
@@ -591,8 +685,28 @@ const Product = (props) => {
                                                     display: 'inline-block'
                                                 }}
                                                             variant="body2" color="textSecondary">
-                                                    {state.price}
+                                                    {currency=='USD' ? '$ '+state.price:''}
+                                                    {currency=='TRY' ? '₺ '+(state.price*usdtry).toFixed(2):''}
+                                                    {currency=='KRW' ? '₩ '+(state.price*usdwon).toFixed(2):''}
+                                                    {currency=='JPY' ? '¥ '+(usdyen*state.price).toFixed(2):''}
+                                                    {currency=='EUR' ? '€ '+(state.price*usdeu).toFixed(2):''}
+
                                                 </Typography>
+                                                <TextField
+                                                    style={{ width:'7.5rem', marginTop: "2.5rem",marginLeft:'16rem'}}
+                                                    id="outlined-select-currency"
+                                                    select
+                                                    label="Select Currency"
+                                                    value={currency}
+                                                    onChange={handleChangecurrency}
+                                                    variant="outlined"
+                                                >
+                                                    {currencieslist.map((option) => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
                                             </div>)
                                         }
                                         <Divider/>
@@ -606,11 +720,12 @@ const Product = (props) => {
                                             gutterBottom>
                                             Vendor:
                                         </Typography>
+                                        <Link to={"/vendorview/"+state.vendor.toLowerCase()}>
                                         <Typography style={{marginLeft: "1rem", marginBottom: "2rem", display: 'inline-block'}}
                                                     variant="body2"
                                                     color="textSecondary">
                                             {state.vendor}
-                                        </Typography>
+                                        </Typography></Link>
                                         {state.vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
                                             state.vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>):
                                                     (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white",marginLeft:"2rem", display: 'inline-block'}} variant="contained" disabled>{state.vendorrating}</Button>)}
@@ -661,6 +776,11 @@ const Product = (props) => {
                                                 </Alert>
                                             </Snackbar>
                                             <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
+                                                <Alert onClose={snackbarClose} severity="error">
+                                                    {message}
+                                                </Alert>
+                                            </Snackbar>
+                                            <Snackbar open={open3} autoHideDuration={6000} onClose={snackbarClose}>
                                                 <Alert onClose={snackbarClose} severity="error">
                                                     {message}
                                                 </Alert>

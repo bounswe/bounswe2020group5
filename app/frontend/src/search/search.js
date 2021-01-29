@@ -464,7 +464,7 @@ export default function ComplexGrid() {
 
         }
         if( Number.isInteger(parseInt(priceleast))&& Number.isInteger(parseInt(pricemost))&&
-            ((parseInt(priceleast)<parseInt(pricemost))||(parseInt(priceleast)<parseInt(pricemost)))){
+            (((parseInt(priceleast)==0&&parseInt(pricemost))==0)||(parseInt(priceleast)<parseInt(pricemost)))){
             setpricedata(true)
 
         }else{

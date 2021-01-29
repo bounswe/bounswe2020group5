@@ -28,6 +28,8 @@ import SavedCards from "./savedCards/SavedCards";
 import Notifications from "./notifications/Notifications";
 import Forgot from "./login/Forgot";
 import ForgotChange from "./login/ForgotChange";
+import Vendorpublic from "./vendorpublic/vendorpublicview";
+
 
 function App() {
   return (
@@ -48,6 +50,7 @@ function App() {
           <Route path="/search" component={search} />
           <Route path="/cart" exact component={Cart} />
           <Route path="/orders" exact component={order} />
+          <Route path="/vendorview/:vendorname" exact component={Vendorpublic} />
           <Route path="/vendororders" exact component={vendororder} />
           <Route path="/vendorproduct" exact component={Vendorproduct} />
           <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />
