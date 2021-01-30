@@ -30,6 +30,7 @@ import {
 import Cart from "../cart/Cart";
 import Checkbox from "@material-ui/core/Checkbox";
 import validate from "./ValidateAddress";
+import UserAgreement from "../agreements/UserAgreement";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,7 +101,18 @@ const useStyles = makeStyles((theme) => ({
   },
   selectcard:{
     width:"20rem",
-  }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pape: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 
@@ -601,7 +613,7 @@ function Payment() {
                     </div>
                   </div>
                 ): null}
-
+              <UserAgreement/>
               </Paper>
             </Grid>
           </Grid>);
@@ -712,6 +724,7 @@ function Payment() {
       }
     }
     else if(activeStep === 2){
+
       if(value === ''){
         alert("Select one of the options")
       }
@@ -721,21 +734,29 @@ function Payment() {
         }
         else{
           const token = localStorage.getItem('token')
+          const checked = localStorage.getItem('checked')
+          console.log(checked + "1111")
+          if(checked === "1" || checked === null){
+            alert("Please accept user agreement policy.")
+          }
+        else{
+            fetch(serverUrl + 'api/orders/make_purchase/', {
+              method: 'POST',
+              headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            }).then(res => res.json())
+              .then(json => {
+                if(json.success){
+                  alert("Payment is completed")
+                  localStorage.removeItem('checked')
+                  history.push("/")
+                }
+                else{
+                  alert(json.error)
+                }
+              })
+              .catch(err => console.log(err));
+          }
 
-          fetch(serverUrl + 'api/orders/make_purchase/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-          }).then(res => res.json())
-            .then(json => {
-              if(json.success){
-                alert("Payment is completed")
-                history.push("/")
-              }
-              else{
-                alert(json.error)
-              }
-            })
-            .catch(err => console.log(err));
         }
       }
       else if(value === "new"){
@@ -814,40 +835,49 @@ function Payment() {
               cvc_security_number: cvc,
             }
 
-            fetch(serverUrl + 'api/orders/make_purchase/', {
-              method: 'POST',
-              headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            }).then(res => res.json())
-              .then(json => {
-                if(json.success){
-                  fetch(serverUrl + 'api/credit-cards/opts/add/', {
-                    method: 'POST',
-                    headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
-                  }).then(res => res.json())
-                    .then(json => {
-                      if(json.success){
-                        alert("Payment is completed and credit card is added to system")
-                        history.push("/")
-                      }
-                      else{
-                        alert("Payment is completed but credit card \n could not be saved.")
-                        history.push("/")
-                      }
-                    })
-                    .catch(err => console.log(err));
-                }
-                else{
-                  alert(json.error)
-                }
-              })
-              .catch(err => console.log(err));
+            const checked = localStorage.getItem('checked')
+            if(checked === "1" || checked === null){
+              alert("Please accept user agreement policy.")
+            }
+          else{
+              fetch(serverUrl + 'api/orders/make_purchase/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+              }).then(res => res.json())
+                .then(json => {
+                  if(json.success){
+                    fetch(serverUrl + 'api/credit-cards/opts/add/', {
+                      method: 'POST',
+                      headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                      body: JSON.stringify(data)
+                    }).then(res => res.json())
+                      .then(json => {
+                        if(json.success){
+                          alert("Payment is completed and credit card is added to system")
+                          localStorage.removeItem('checked')
+                          history.push("/")
+                        }
+                        else{
+                          alert("Payment is completed but credit card \n could not be saved.")
+                          history.push("/")
+                        }
+                      })
+                      .catch(err => console.log(err));
+                  }
+                  else{
+                    alert(json.error)
+                  }
+                })
+                .catch(err => console.log(err));
+            }
+
           }
       }
     }
   };
 
   const handleBack = () => {
+    setEdit(false);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
