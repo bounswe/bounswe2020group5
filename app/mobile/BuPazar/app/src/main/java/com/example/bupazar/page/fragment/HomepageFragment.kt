@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
@@ -35,24 +34,22 @@ class HomepageFragment : Fragment() {
         var bestSellers: Array<ProductDetails>? = null
         var trends: Array<ProductDetails>? = null
         val featuredProductsRequest = FeaturedProductsRequest(
-            numberOfProducts = numberOfProducts
+                numberOfProducts = numberOfProducts
         )
 
         if (User.authToken!= null) {
             recommended.visibility=View.VISIBLE
         }
 
-
+        apiService.featuredProducts(featuredProductsRequest) {
+            if (it != null) {
+                newestArrivals = it.newestArrivals
+                bestSellers = it.bestSellers
+                trends= it.trends
+            }
+        }
 
         newArrivals.setOnClickListener() {
-            apiService.featuredProducts(featuredProductsRequest) {
-                if (it != null) {
-                    newestArrivals = it.newestArrivals
-                }
-                else {
-                    Toast.makeText(this.activity, "There are no available products.\n", Toast.LENGTH_SHORT).show()
-                }
-            }
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = newestArrivals
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -62,14 +59,6 @@ class HomepageFragment : Fragment() {
         }
 
         bestSellersProducts.setOnClickListener() {
-            apiService.featuredProducts(featuredProductsRequest) {
-                if (it != null) {
-                    bestSellers = it.bestSellers
-                }
-                else {
-                    Toast.makeText(this.activity, "There are no available products.\n", Toast.LENGTH_SHORT).show()
-                }
-            }
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = bestSellers
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -79,14 +68,6 @@ class HomepageFragment : Fragment() {
         }
 
         trending.setOnClickListener() {
-            apiService.featuredProducts(featuredProductsRequest) {
-                if (it != null) {
-                    trends= it.trends
-                }
-                else {
-                    Toast.makeText(this.activity, "There are no available products.\n", Toast.LENGTH_SHORT).show()
-                }
-            }
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = trends
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -99,7 +80,7 @@ class HomepageFragment : Fragment() {
             User.authToken?.let { it1 ->
                 apiService.recommendedProducts(it1) {
                     if (it == null) {
-                        Toast.makeText(this.activity, "There are no available products.\n", Toast.LENGTH_SHORT).show()
+
                     } else {
                         val products: Array<ProductDetails> = it
                         val spesificProductsFragment = SpesificProductsFragment()
@@ -123,9 +104,9 @@ class HomepageFragment : Fragment() {
                 rvProducts.adapter = productAdapter
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
                 productAdapter!!.onItemClick = { product ->
-                        requireActivity().supportFragmentManager.beginTransaction().apply {
-                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
-                            commit()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
+                        commit()
                     }
                 }
 
