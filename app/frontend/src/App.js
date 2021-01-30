@@ -28,6 +28,9 @@ import SavedCards from "./savedCards/SavedCards";
 import Notifications from "./notifications/Notifications";
 import Forgot from "./login/Forgot";
 import ForgotChange from "./login/ForgotChange";
+
+import UserAgreement from "./agreements/UserAgreement";
+
 import Vendorpublic from "./vendorpublic/vendorpublicview";
 
 
@@ -71,6 +74,7 @@ function App() {
           <Route path="/notifications" exact component={Notifications} />
           <Route path="/forgot/enter/email" exact component={Forgot} />
           <Route path="/forgot" component={ForgotChange} />
+          <Route path="/useragreement" component={UserAgreement} />
           <Route component={NoMatch} />
         </Switch>
       </div>
