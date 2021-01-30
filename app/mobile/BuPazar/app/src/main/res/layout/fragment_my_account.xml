@@ -148,60 +148,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/addressesLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/messagesLayout"
-        android:background="@drawable/transparent_rectangle_border">
-
-        <ImageView
-            android:id="@+id/addressesImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_address" />
-
-        <TextView
-            android:id="@+id/addressesText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Addresses"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_toEndOf="@+id/addressesImage"
-            android:layout_alignParentTop="true"/>
-
-        <TextView
-            android:id="@+id/addressesSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="12dp"
-            android:text="View and edit saved addresses"
-            android:textColor="@color/black"
-            android:layout_toEndOf="@id/addressesImage"
-            android:layout_below="@id/addressesText" />
-
-        <ImageView
-            android:id="@+id/rightArrow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/personalInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addressesLayout"
+        android:layout_below="@id/messagesLayout"
         android:background="@drawable/rectangle_border">
 
         <ImageView
@@ -298,60 +248,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/helpLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/notification_layout"
-        android:background="@drawable/rectangle_border">
-
-        <ImageView
-            android:id="@+id/helpImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_baseline_help_24" />
-
-        <TextView
-            android:id="@+id/helpText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Help"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_toEndOf="@+id/helpImage"
-            android:layout_alignParentTop="true"/>
-
-        <TextView
-            android:id="@+id/helpSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="12dp"
-            android:text="Frequently asked questions"
-            android:textColor="@color/black"
-            android:layout_toEndOf="@id/helpImage"
-            android:layout_below="@id/helpText" />
-
-        <ImageView
-            android:id="@+id/rightArrow5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/logoutLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/helpLayout"
+        android:layout_below="@id/notification_layout"
         android:background="@drawable/transparent_rectangle_border">
 
         <ImageView
