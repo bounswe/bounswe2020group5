@@ -12,16 +12,20 @@
 ***
 ## How to Start Development Server?
 * `cd /path/to/backend/`
-* `python manage.py makemigrations`
 * `python manage.py migrate`
 * `python manage.py runserver`
  
- Now that the server’s running, visit http://127.0.0.1:8000/ with your Web browser. 
+ Now that the server’s running, visit http://127.0.0.1:8000/api/swagger with your Web browser to check api endpoints. 
+***
+## How to Run Unit Tests?
+* `cd /path/to/backend/`
+* `python manage.py test <Test>`
+    + Example: `python manage.py test api.tests.FilterProductTest`
+
+**Note:** You can find tests in `/path/to/backend/api/tests` folder.
+***
+## API Documentation
+* Api documentation can be found [here](http://18.195.107.160:8000/api/swagger).
 ***
 ## Database
 * We use MongoDB Atlas as cloud database service.
-***
-## References
-* [The Right Way to Use Virtual Environments](https://medium.com/@jtpaasch/the-right-way-to-use-virtual-environments-1bc255a0cba7)
-* [Is it bad to have my virtualenv directory inside my git repository?](https://stackoverflow.com/questions/6590688/is-it-bad-to-have-my-virtualenv-directory-inside-my-git-repository/12657803#12657803)
-* [gitignore](https://github.com/github/gitignore/blob/master/Python.gitignore)
