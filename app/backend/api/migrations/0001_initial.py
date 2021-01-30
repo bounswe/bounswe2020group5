@@ -211,14 +211,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='VendorRating',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating_score', models.IntegerField()),
-                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Vendor')),
-            ],
-        ),
-        migrations.CreateModel(
             name='SearchHistory',
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
@@ -284,5 +276,14 @@ class Migration(migrations.Migration):
             options={
                 'unique_together': {('cart', 'product')},
             },
+        ),
+        migrations.CreateModel(
+            name='VendorRating',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('rating_score', models.IntegerField()),
+                ('purchase', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Purchase')),
+                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Vendor')),
+            ],
         ),
     ]

@@ -163,7 +163,7 @@ def add_vendor_rating(request):
     purchase = Purchase.objects.get(id=purchase_id)
     # Allow customer to give rating to a vendor if the order is delivered
     if purchase.status == 'Delivered':
-        vendor_rating = VendorRating(vendor=purchase.vendor, rating_score=rating_score)
+        vendor_rating = VendorRating(purchase=purchase, vendor=purchase.vendor, rating_score=rating_score)
         vendor_rating.save()
         return Response(data={'success': 'Vendor rating is successfully given.'}, status=status.HTTP_201_CREATED)
     else:
@@ -212,6 +212,8 @@ def avg_vendor_rating_profile_page(request):
     avg_score = round(total_rating / number_of_rates, 1)
     return Response(data={'score': avg_score}, status=status.HTTP_200_OK)
 
+# This function allows a vendor to add shipment when an order is in preparing status
+# Using the provided purchase id and the cargo company name, it creates a new Shipment
 @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: ShipmentCargoNoSerializer}, request_body=AddShipmentSerializer)
 @api_view(['POST'])
 @permission_classes([IsAuthVendor])
@@ -229,6 +231,7 @@ def add_shipment(request):
     else:
         return Response(data={'error': 'Unable to ship this order.'}, status=status.HTTP_400_BAD_REQUEST)
 
+# This function allows a customer to see the orders that are already shipped by the vendor
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ShipmentSerializer}, request_body=GetShipmentSerializer)
 @api_view(['POST'])
 @permission_classes([IsAuthCustomer])
@@ -239,3 +242,15 @@ def get_shipment(request):
     shipment = Shipment.objects.get(purchase_id=purchase_id)
     shipment_contents = ShipmentSerializer(shipment)
     return Response(data=shipment_contents.data, status=status.HTTP_200_OK)
+
+# This function allows a customer to return the VendorRating that they give
+@swagger_auto_schema(method='post', responses={status.HTTP_200_OK: VendorRatingSerializer}, request_body=GetShipmentSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthCustomer])
+def get_vendor_rating(request):
+    serializer = GetShipmentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    purchase_id = serializer.validated_data['purchase_id']
+    vendor_rating = VendorRating.objects.get(purchase_id=purchase_id)
+    vendor_contents = VendorRatingSerializer(vendor_rating)
+    return Response(data=vendor_contents.data, status=status.HTTP_200_OK)

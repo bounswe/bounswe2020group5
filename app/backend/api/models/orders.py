@@ -25,6 +25,7 @@ class Purchase(models.Model):
 
 # Vendor Rating Model
 class VendorRating(models.Model):
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     rating_score = models.IntegerField()
 
