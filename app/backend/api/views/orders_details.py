@@ -251,6 +251,10 @@ def get_vendor_rating(request):
     serializer = GetShipmentSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     purchase_id = serializer.validated_data['purchase_id']
+    purchase = Purchase.objects.get(id=purchase_id)
+    vendor_ratings = VendorRating.objects.filter(purchase_id=purchase_id)
+    if len(vendor_ratings) == 0:
+        return Response(data={'purchase': purchase_id, 'vendor': purchase.vendor_id, 'rating_score': 0}, status=status.HTTP_200_OK)
     vendor_rating = VendorRating.objects.get(purchase_id=purchase_id)
     vendor_contents = VendorRatingSerializer(vendor_rating)
     return Response(data=vendor_contents.data, status=status.HTTP_200_OK)
