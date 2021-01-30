@@ -252,6 +252,12 @@ function Signup(props) {
         is_vendor: false,
       };
 
+      if(props.type){
+        localStorage.setItem("is_vendor",true)
+      }else{
+        localStorage.setItem("is_vendor",false)
+      }
+
       if (props.type) {
         data.address = state.address_1+"/"+state.address_2+"/"+state.address_3+"/"+state.address_4+"/"+state.address_5;
         data.is_customer = false;

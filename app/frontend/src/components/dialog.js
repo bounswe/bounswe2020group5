@@ -64,15 +64,10 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
         if (reason === 'clickaway') {
             return;
         }
-
+        setOpensnack2(false);
         setOpensnack(false);
     };
-    const snackhandleClose2 = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpensnack2(false);
-    };
+
     const snackhandleopen = () => {
 
         setOpensnack(true);
@@ -174,14 +169,14 @@ export const CustomizedDialogs= ({vendor,productid}) =>  {
 
     return (
         <div>
-            <Snackbar open={opensnack} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar open={opensnack} autoHideDuration={6000} onClose={snackhandleClose}>
                 <Alert onClose={snackhandleClose} severity="warning">
                     You have already started a chat with vendor for this particular product. Please continue with conversation from
                     your messages page!
                 </Alert>
             </Snackbar>
-            <Snackbar open={opensnack2} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={snackhandleClose2} severity="success">
+            <Snackbar open={opensnack2} autoHideDuration={6000} onClose={snackhandleClose}>
+                <Alert onClose={snackhandleClose} severity="success">
                     Succesfully created chat for this product with designated vendor. Please continue messaging from messages page
                     for later inquiries.
                 </Alert>
