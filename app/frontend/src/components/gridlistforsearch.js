@@ -55,7 +55,7 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
         let data;
         data={vendor_username:localStorage.getItem('searchkey')}
 
-            fetch(serverUrl + 'api/users/vendor/details', {
+            fetch(serverUrl + 'api/users/vendor/details/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)

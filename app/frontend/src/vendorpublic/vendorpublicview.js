@@ -106,7 +106,7 @@ function Vendorpublic(props) {
         data={vendor_username: vendorname}
 
 
-            fetch(serverUrl + 'api/users/vendor/details', {
+            fetch(serverUrl + 'api/users/vendor/details/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -216,9 +216,9 @@ function Vendorpublic(props) {
                                             defaultValue={name.username.toUpperCase()}
                                             disabled={true}
                                         />
-                                      <div style={{marginTop: "1.5rem",display:'inline'}}> {vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", }} variant="contained" disabled>{vendorrating}</Button>):
-                                           vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954" }} variant="contained" disabled>{vendorrating}</Button>):
-                                               (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white"}} variant="contained" disabled>{vendorrating}</Button>)}
+                                      <div style={{marginTop: "1.5rem",display:'inline'}}> {vendorrating>8 ? (<Button style={{background:"#40a119", fontSize:"1rem", color:"white", }} variant="contained" disabled>{vendorrating.toFixed(1)}</Button>):
+                                           vendorrating>5 ? (<Button style={{background:"#f3de8a", fontSize:"1rem", color:"#0b3954" }} variant="contained" disabled>{vendorrating.toFixed(1)}</Button>):
+                                               (<Button style={{background:"#a71325",  fontSize:"1rem", color:"white"}} variant="contained" disabled>{vendorrating.toFixed(1)}</Button>)}
                                       </div>
                                    </div></div>
 
