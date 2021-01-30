@@ -101,6 +101,7 @@ const Product = (props) => {
     let[usdwon,setusdwon]=React.useState();
     let[usdyen,setusdyen]=React.useState();
     let[usdeu,setusdeu]=React.useState();
+    let[initialarm,setinitialalarm]=React.useState();
     const [admin, setAdmin] = React.useState(false);
 
     let [defaultalarmprice, setdefaultalarmprice] = React.useState();
@@ -157,6 +158,7 @@ const Product = (props) => {
                                 setalarmclick(true);
                              console.log('cccccc')
                             if(json[j].product.id.toString() === id.toString()){
+                                setinitialalarm(json[j].price)
                                 setdefaultalarmprice(json[j].price)
                                 console.log('ffffffff')}
                         }
@@ -336,17 +338,27 @@ const Product = (props) => {
 
     const Alarmsetted = () => {
         handleClose();
-        fetch(serverUrl + 'api/alarms/set-price-alarm/', {
-            method: 'POST',
-            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
-            body: JSON.stringify({'product_id': id,'price':parseInt(state.alarmprice)})
-        }).then(res => res.json())
-            .then(json => {
-                alert("Alarm is successfully setted according to the given value. ")
-                console.log(json)
-            }).then(()=>setalarmclick(true)).catch((err) => {
-            console.log(err);
-        }, [])
+        if(parseInt(state.alarmprice)) {
+
+
+            console.log(parseInt(state.alarmprice))
+            fetch(serverUrl + 'api/alarms/set-price-alarm/', {
+                method: 'POST',
+                headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+                body: JSON.stringify({'product_id': id, 'price': parseInt(state.alarmprice)})
+            }).then(res => res.json())
+                .then(json => {
+                    alert("Alarm is successfully setted according to the given value. ")
+                    console.log(json)
+                    setdefaultalarmprice(parseInt(state.alarmprice))
+                }).then(() => setalarmclick(true)).catch((err) => {
+                console.log(err);
+            }, [])
+        }else{
+            handleClose();
+            alert("Please set alarm as a number. ")
+            setdefaultalarmprice(initialarm)
+        }
     };
     const Alarmdelete= () => {
        handleClose();
@@ -551,6 +563,7 @@ const Product = (props) => {
                                             }}
                                         >
                                             <MenuItem style={{height:'3rem',width:'20rem'}}>
+                                                $&nbsp;
                                                 <TextField id="alarmprice" value={defaultalarmprice}
                                                        placeholder="Alarm Price" onChange={onChange}/>
 

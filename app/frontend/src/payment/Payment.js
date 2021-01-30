@@ -645,11 +645,11 @@ function Payment() {
               })
               :
               setAdd({
-                address_1: ' ',
-                address_2: ' ',
-                address_3: ' ',
-                address_4: ' ',
-                address_5: ' ',
+                address_1: '',
+                address_2: '',
+                address_3: '',
+                address_4: '',
+                address_5: '',
               })}
         }).then(() => {
         setLoadPage(true)
@@ -716,7 +716,7 @@ function Payment() {
         });
     }
     if(activeStep === 1){
-      if(address === ''){
+      if(address === ''&&(add.address_1+add.address_2+add.address_3+add.address_4+add.address_5)===""){
         alert("Shipping address can not be empty. \n Please enter a shipping address.")
       }
       else{
