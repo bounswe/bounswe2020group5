@@ -12,6 +12,10 @@ import operator
 from datamuse import datamuse
 from django.core.exceptions import ObjectDoesNotExist
 
+"""
+Takes query in request body,
+Returns similar products using porter stemmer and Datamuse API which returns meaning related to searched query. 
+"""
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=ProductSearchSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -84,6 +88,9 @@ def search_products(request):
     content = ProductSerializer(products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
+"""
+Filters given products based on brand, vendor username, price range, rating and discount rate.
+"""
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=FilterProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -155,6 +162,9 @@ def filter_products(request):
     content = ProductSerializer(Products, many=True)
     return Response(data=content.data, status=status.HTTP_200_OK)
 
+"""
+Sorts products based on best sellers, newest arrivals, price, rating and number of comments both ascending and descending orders.
+"""
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: ProductSerializer(many=True)}, request_body=SortProductSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])

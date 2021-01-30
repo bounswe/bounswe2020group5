@@ -12,8 +12,12 @@ import datetime
 
 """
 Recommends products for both guest and customer users,
-Based on search history, cart, product lists and purchases for authenticated customer,
-Supports semantically similar products with datamuse API   
+Recommends similar products based on search history, cart, product lists and purchases for authenticated customer.
+
+Algorithm:
+    - Firstly checks last searched products of customer,
+    - Checks cart, favorite list, lists and purchases of customer,
+    - Returns similar products based on checked features. 
 """
 @swagger_auto_schema(method='get', responses={status.HTTP_200_OK: ProductSerializer(many=True)})
 @api_view(['GET'])

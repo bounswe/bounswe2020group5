@@ -6,6 +6,10 @@ from rest_framework import viewsets, status
 from ..serializers import VendorInfoRequestSerializer, VendorInfoResponseSerializer, ProductSerializer
 from ..models import User, Product, Vendor, VendorRating
 
+"""
+Takes vendor username,
+Returns vendor' email, username, first name, last name, address, rating and products.
+"""
 @swagger_auto_schema(method='post', responses={status.HTTP_200_OK: VendorInfoResponseSerializer}, request_body=VendorInfoRequestSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
