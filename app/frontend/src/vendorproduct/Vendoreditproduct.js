@@ -128,6 +128,8 @@ function Vendoreditproduct(props) {
             errors.desc = "Required";
         } else if (values.desc.length < 10) {
             errors.desc = "Description is too short";
+        } else if (values.desc.length > 499) {
+            errors.desc = "Description is too long. Maximum limit is 500 characters.";
         }
 
         if (!values.category) {

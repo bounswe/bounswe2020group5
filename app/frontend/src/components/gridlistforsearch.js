@@ -61,22 +61,13 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
                 body: JSON.stringify(data)
             }).then(res => res.json())
                 .then(json => {
-
                     {
-
                         if(!(json.error==false)){
-                            console.log('llllll')
                             console.log(json.error)
                             setvendorgobutton(true)
-
                        }
                     }
-
                 }).catch(err => setvendorgobutton(false));
-
-            console.log(vendorgobutton)
-        console.log('hhhhhhhhh')
-
 
     }, []);
 

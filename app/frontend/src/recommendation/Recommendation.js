@@ -15,7 +15,8 @@ function Recommendation() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if(token){
+    const vendor = localStorage.getItem('is_vendor')
+    if(token && vendor!=="true"){
       fetch(serverUrl + 'api/products/recommend/', {
         method: 'GET',
         headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},

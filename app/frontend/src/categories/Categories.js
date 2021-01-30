@@ -243,11 +243,11 @@ export default function Categories() {
       .then(json => {
         error=json.error
 
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])}
         else{
-          if(datastar.length!=0) {
-            if(allProducts.length!=0){
+          if(datastar.length!==0) {
+            if(allProducts.length!==0){
               setAllProducts(json)
             }}
         }
@@ -282,11 +282,11 @@ export default function Categories() {
       .then(json => {
         error=json.error
 
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])}
         else{
-          if(datadiscount.length!=0) {
-            if(allProducts.length!=0){
+          if(datadiscount.length!==0) {
+            if(allProducts.length!==0){
               setAllProducts(json)
             }}
         }
@@ -311,7 +311,7 @@ export default function Categories() {
       brandkeys=0
     }
 
-    if (brandkeys==0){
+    if (brandkeys===0){
       setbranddata(false);
       brandkeys=[];
       setbranddata(true);
@@ -334,10 +334,10 @@ export default function Categories() {
     }).then(res => res.json())
       .then(json => {
         error=json.error
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])
         }else{
-          if(brandkeys.length!=0) {
+          if(brandkeys.length!==0) {
             setAllProducts(json)
 
           }
@@ -375,39 +375,39 @@ export default function Categories() {
     setvendordata(true);
     setbranddata(true);
 
-    if(brandkeys==0){
+    if(brandkeys===0){
       applyallbrand=false
     }else{
       applyallbrand=true
     }
-    if(vendorkeys==0){
+    if(vendorkeys===0){
       applyallvendor=false
     }else{
       applyallvendor=true
     }
 
-    if(priceleast==pricemost){
+    if(priceleast===pricemost){
       applyallprice=false
     }else{
       applyallprice=true
     }
 
 
-    if(applyallbrand==true){
+    if(applyallbrand===true){
       filterdata.push(    {
         "filter_by":"brand",
         "data":brandkeys,
       })
     }
 
-    if(applyallvendor==true){
+    if(applyallvendor===true){
       filterdata.push(    {
         "filter_by":"vendor",
         "data":vendorkeys,
       })
     }
 
-    if(applyallprice==true){
+    if(applyallprice===true){
       filterdata.push(    {
         "filter_by":"price_range",
         "data":{
@@ -442,11 +442,11 @@ export default function Categories() {
       .then(json => {
         error=json.error
 
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])
         }else{
-          if(dataall.length!=0) {
-            if(allProducts.length!=0){
+          if(dataall.length!==0) {
+            if(allProducts.length!==0){
               setAllProducts(json)
             }}
         }
@@ -498,11 +498,11 @@ export default function Categories() {
       .then(json => {
         error=json.error
 
-        if(error=='No products found'){
+        if(error==='No products found'){
           setAllProducts([])}
         else{
-          if(datasort.length!=0) {
-            if(allProducts.length!=0){
+          if(datasort.length!==0) {
+            if(allProducts.length!==0){
               setAllProducts(json)
             }}
         }

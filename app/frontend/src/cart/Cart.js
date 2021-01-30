@@ -26,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Cart() {
   const [plist, setPlist] = useState([]);
   useEffect(() => {
-    console.log("effect");
-    console.log(plist);
-    console.log(localStorage.getItem("token"))
     fetch(serverUrl + "api/cart/get", {
       headers: {
         'Authorization': `Token ${localStorage.getItem("token")}`,
@@ -37,7 +34,6 @@ export default function Cart() {
       .then((response) => response.json())
       .then((data) => {
         setPlist(data.products_in_cart);
-        console.log(data.products_in_cart);
       });
     return () => {
       console.log("cleanup");
@@ -45,7 +41,6 @@ export default function Cart() {
   }, []);
 
   const renderProducts = () => {
-    console.log(plist);
     return plist.map((e, i) => {
       return (
         <CartProduct

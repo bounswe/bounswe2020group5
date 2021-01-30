@@ -259,7 +259,7 @@ function Signup(props) {
       }
 
       if (props.type) {
-        data.address = state.address_1+"/"+state.address_2+"/"+state.address_3+"/"+state.address_4+"/"+state.address_5;
+        data.address = state.address_1.replace("/", " ")+"/"+state.address_2.replace("/", " ")+"/"+state.address_3.replace("/", " ")+"/"+state.address_4.replace("/", " ")+"/"+state.address_5.replace("/", " ");
         data.is_customer = false;
         data.is_vendor = true;
       }

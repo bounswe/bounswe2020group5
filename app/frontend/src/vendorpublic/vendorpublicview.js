@@ -114,7 +114,6 @@ function Vendorpublic(props) {
                 .then(json => {
 
                     {
-                        console.log(json)
                         setName({
                         first_name: json.first_name,
                         last_name:  json.last_name,
