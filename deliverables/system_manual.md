@@ -30,8 +30,12 @@ docker-compose up -d --build
 ## To run backend
 ```
 - cd bounswe2020group5/app/backend/
+- Type virtualenv venv to create virtual environment venv.
+- In order to activate virtual environment venv,
+    + In Linux and macOS, type source venv/Scripts/activate
+    + In Windows, type venv\Scripts\activate
+- Install required python packages via typing pip3 install -r requirements.txt
 - python3 bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='
-- pip3 install -r requirements.txt
 - python3 manage.py makemigrations
 - python3 manage.py migrate
 - python3 manage.py runserver
