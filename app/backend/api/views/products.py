@@ -132,7 +132,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             return Response(data={'error': 'Product does not belong to requested vendor'}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ], url_name='add_comment')
     def add_comment(self, request):
         product_id = request.data.get("product_id")
         try:    
