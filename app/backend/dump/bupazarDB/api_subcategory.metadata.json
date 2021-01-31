@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.api_subcategory"},{"v":{"$numberInt":"2"},"unique":true,"key":{"id":{"$numberInt":"1"}},"name":"__primary_key__","ns":"bupazarDB.api_subcategory"}],"uuid":"0cf7504b8e52460bbd7d2cece6767ec3","collectionName":"api_subcategory"}

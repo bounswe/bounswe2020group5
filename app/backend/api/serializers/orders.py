@@ -53,7 +53,7 @@ class CustomerOrderSerializer(serializers.Serializer):
 class VendorRatingSerializer(serializers.ModelSerializer):    
     class Meta:
         model = VendorRating
-        fields = ('id', 'vendor', 'rating_score')
+        fields = ('purchase', 'vendor', 'rating_score')
 
 class AddVendorRatingSerializer(serializers.Serializer):
     purchase_id = serializers.IntegerField(required=True)

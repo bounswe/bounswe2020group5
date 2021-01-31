@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.api_loginfailinfos"},{"v":{"$numberInt":"2"},"key":{"user_id":{"$numberInt":"1"}},"name":"api_loginfailinfos_user_id_53186488","ns":"bupazarDB.api_loginfailinfos"}],"uuid":"abd0e0fec2b946b7bfb0ca6c0d930599","collectionName":"api_loginfailinfos"}

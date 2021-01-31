@@ -16,6 +16,7 @@ class AddCreditCardTest(TestCase):
         self.client = APIClient()
         customer_user = get_user_model().objects.create_user(username='test_customer', email='testcustomer@test.com', password='Sifre123',
                                     first_name='Customer', last_name='Test', is_customer=True, address='Istanbul')
+        customer = Customer.objects.create(user=customer_user)
 
     def test_update_status(self):
         global customer_user

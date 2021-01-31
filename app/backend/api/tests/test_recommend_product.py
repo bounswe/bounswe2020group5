@@ -8,6 +8,7 @@ from ..views.recommendation import recommend_products
 from ..views.products_details import get_homepage_products
 from django.contrib.auth import get_user_model
 from ..serializers import AuthUserSerializer, ProductSerializer
+from ..models import Customer
 
 customer = None
 query = 'Notebook'
@@ -24,6 +25,7 @@ class RecommendProductTest(TestCase):
         self.client = APIClient()
         customer = get_user_model().objects.create_user(username='yusufy', email='yusufy@hotmail.com', password='Sifre123',
                                     first_name='Yusuf', last_name='Yuksel', is_customer=True, address='Kucukcekmece')
+        customer_user = Customer.objects.create(user=customer)
 
     def test_recommend_product(self):
         global customer, number_of_products, query

@@ -9,7 +9,7 @@ from ..models import Category, SubCategory, Vendor, Product, Purchase, Customer,
 from django.contrib.auth import get_user_model
 
 vendor_user = None
-order_id = None
+purchase_id = None
 price = 250
 discount = 15
 stock = 50
@@ -17,7 +17,7 @@ amount = 1
 
 class UpdateStatusTest(TestCase):
     def setUp(self):
-        global price, discount, stock, amount, vendor_user, order_id
+        global price, discount, stock, amount, vendor_user, purchase_id
 
         self.client = APIClient()
         category = Category.objects.create(name='category_test')
@@ -34,16 +34,16 @@ class UpdateStatusTest(TestCase):
         unit_price = price*(1-discount/100)
         purchase = Purchase.objects.create(customer=customer, vendor=vendor, product=product, amount=amount, 
                                             unit_price=unit_price, order=order, status='OrderTaken')
-        order_id = order.id
+        purchase_id = purchase.id
 
     def test_update_status(self):
-        global vendor_user, order_id
+        global vendor_user, purchase_id
 
         content = AuthUserSerializer(vendor_user).data
         auth_token = content['auth_token']
 
         body = {
-            'order_id' : order_id,
+            'purchase_id' : purchase_id,
             'status' :  'Preparing'
         }
 

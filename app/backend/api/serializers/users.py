@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from ..models.users import User
+from ..models.social_documents import SocialDocs
 from ..models.temp_users import TempUser
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
@@ -10,6 +11,7 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 import facebook
 from bupazar.settings import G_CLIENT_ID
+from .products import ProductSerializer
 
 usr = get_user_model()
 
@@ -149,8 +151,11 @@ class PasswordResetRequestEmailSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         user = usr.objects.filter(email=value)
+        social_user = SocialDocs.objects.filter(email=value)
         if not user:
             raise serializers.ValidationError("Email is not registered")
+        if social_user:
+            raise serializers.ValidationError("The with this email is reqistered via google so s/he cannot have a password to change")
         return BaseUserManager.normalize_email(value)
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
@@ -172,3 +177,15 @@ class SuccessSerializer(serializers.Serializer):
 
 class ErrorSerializer(serializers.Serializer):
     error = serializers.CharField(max_length=200)
+
+class VendorInfoRequestSerializer(serializers.Serializer):
+    vendor_username = serializers.CharField(max_length=255, required=True)
+
+class VendorInfoResponseSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=500)
+    rating = serializers.FloatField()
+    products = serializers.ListField(child = ProductSerializer())

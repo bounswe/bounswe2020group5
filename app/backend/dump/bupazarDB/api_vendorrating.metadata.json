@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"c1f8132c359d44919ad849b3e0064db8","collectionName":"api_vendorrating"}

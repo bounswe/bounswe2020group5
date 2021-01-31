@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.socialaccount_socialapp"},{"v":{"$numberInt":"2"},"unique":true,"key":{"id":{"$numberInt":"1"}},"name":"__primary_key__","ns":"bupazarDB.socialaccount_socialapp"}],"uuid":"5629ba2db734476d88d9bbca47f71ee3","collectionName":"socialaccount_socialapp"}

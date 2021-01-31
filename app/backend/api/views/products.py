@@ -83,7 +83,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
 
                 # check all alarms contains updated product to notify customers 
                 for alarm in alarms:
-                    if data['price'] < alarm.price:
+                    if (data['price'] < alarm.price) and (data['price'] < product.price):
                         new_price = data['price'] 
                         text = f'Price of {product.name} went down from {product.price} to {new_price}.'
                         notification_type = NotificationType.PRICE_ALARM
@@ -108,7 +108,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
                 old_discount = product.discount
                 product.discount = data['discount']
                 if old_discount < data['discount']:
-                        text = f'Discount of {product.name} is increased to {product.discount}.'
+                        text = f'Discount of {product.name} is increased to {product.discount}%.'
                         users_set = set()
                         favori_lists = FavoriteList.objects.filter(products = product)
                         for fl in favori_lists:
@@ -132,7 +132,7 @@ class ProductOptViewSet(viewsets.GenericViewSet):
             return Response(data={'error': 'Product does not belong to requested vendor'}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(method='post', responses={status.HTTP_201_CREATED: SuccessSerializer})
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ])
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthCustomer, ], url_name='add_comment')
     def add_comment(self, request):
         product_id = request.data.get("product_id")
         try:    

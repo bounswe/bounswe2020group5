@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.api_banneduser"},{"v":{"$numberInt":"2"},"key":{"user_id":{"$numberInt":"1"}},"name":"api_banneduser_user_id_31937351","ns":"bupazarDB.api_banneduser"}],"uuid":"7e0660cc684244ddb040c35a411330d6","collectionName":"api_banneduser"}

@@ -37,3 +37,5 @@ from .alarm import delete_price_alarm
 from .alarm import my_price_alarms
 from .orders_details import add_shipment
 from .orders_details import get_shipment
+from .vendor_details import get_vendor_details
+from .orders_details import get_vendor_rating

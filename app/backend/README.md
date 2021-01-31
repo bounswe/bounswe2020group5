@@ -12,16 +12,34 @@
 ***
 ## How to Start Development Server?
 * `cd /path/to/backend/`
-* `python manage.py makemigrations`
+* `python bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='`
 * `python manage.py migrate`
 * `python manage.py runserver`
  
- Now that the server’s running, visit http://127.0.0.1:8000/ with your Web browser. 
+ Now that the server’s running, visit http://127.0.0.1:8000/api/swagger with your Web browser to check api endpoints. In this way, API uses hosted database in MongoDB Atlas.
+***
+## How to Install MongoDB Dependencies to Use Dumped Database?
+* Install MongoDB Database Tools [here](https://www.mongodb.com/try/download/database-tools).
+* Install MongoDB Community Server [here](https://www.mongodb.com/try/download/community).
+***
+## How to Start Development Server using Dumped Database?
+* Create a folder `/path/to/MongoDB/data` to restore database.
+* Type `mongod --port 27017 --dbpath /path/to/MongoDB/data` 
+* `cd /path/to/backend/`
+* Type  `mongorestore -d localBupazarDB dump/bupazarDB` to restore database.
+* `python bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='`
+* `python manage.py migrate`
+* `python manage.py runserver --settings=bupazar.dev_settings`
+***
+## How to Run Unit Tests?
+* `cd /path/to/backend/`
+* `python manage.py test <Test>`
+    + Example: `python manage.py test api.tests.FilterProductTest`
+
+**Note:** You can find tests in `/path/to/backend/api/tests` folder.
+***
+## API Documentation
+* Api documentation can be found [here](http://18.195.107.160:8000/api/swagger).
 ***
 ## Database
 * We use MongoDB Atlas as cloud database service.
-***
-## References
-* [The Right Way to Use Virtual Environments](https://medium.com/@jtpaasch/the-right-way-to-use-virtual-environments-1bc255a0cba7)
-* [Is it bad to have my virtualenv directory inside my git repository?](https://stackoverflow.com/questions/6590688/is-it-bad-to-have-my-virtualenv-directory-inside-my-git-repository/12657803#12657803)
-* [gitignore](https://github.com/github/gitignore/blob/master/Python.gitignore)
