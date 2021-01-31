@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to show to the user when her/his order is successful.
+ */
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
@@ -31,6 +35,11 @@ class SuccessfulOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /*
+        * Go to home page button on click listener implementation.
+        * When clicked, user will be redirected to the home page.
+         */
         go_to_home_page_button.setOnClickListener {
             val homePage = HomepageFragment()
             val bundle = Bundle()

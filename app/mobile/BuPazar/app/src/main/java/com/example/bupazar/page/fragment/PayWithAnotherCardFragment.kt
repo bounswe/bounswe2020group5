@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to let the user choose one of the existing cards or add a new one.
+*/
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
@@ -28,6 +32,9 @@ class PayWithAnotherCardFragment : Fragment() {
         authToken = userData?.authToken
         authToken = "Token " + authToken
 
+        /*
+        * Fetch the credit cards the user had previously added.
+         */
         val apiService = RestApiService()
         apiService.getCreditCards(authToken!!){
             creditCards = it
@@ -36,8 +43,15 @@ class PayWithAnotherCardFragment : Fragment() {
                 val creditCardAdapter = this.context?.let { it1 -> creditCards?.let { it2 ->
                     CreditCardAdapter(it1, it2) }
                 }
+                /*
+                Set the adapter to show credit cards in a recyclerview.
+                 */
                 credit_cards.adapter = creditCardAdapter
                 credit_cards.layoutManager = LinearLayoutManager(this.context)
+                /*
+                * Set the on click listener for the recyclerview so that if a user chooses a card, it will be chosen as the new credit card.
+                * User will be redirected back to the order page, where he/she can complete order with the chosen credit card.
+                 */
                 creditCardAdapter!!.onItemClick = { creditCard ->
                     chosenCreditCard = creditCard
                     val orderFragment = OrderFragment()
@@ -68,10 +82,18 @@ class PayWithAnotherCardFragment : Fragment() {
 
         val apiService = RestApiService()
 
+        /*
+        * Add new card on click listener implementation.
+        * User needs to have had entered the required information to be able to add a new card.
+         */
         add_new_card_button.setOnClickListener {
             val newCreditCard = AddCreditCardRequest(name = card_name_text.text.toString(), cardOwner = card_owner_text.text.toString(),
                 cardNumber = card_number_text.text.toString(), expirationDate = expiration_text.text.toString(), cvc = cvc_text.text.toString())
 
+            /*
+            * Make the API request to add that new card.
+            * User will be redirected back to the order page, where he/she can complete order with the newly added credit card.
+             */
             apiService.addCreditCard(authToken!!, newCreditCard) {
                 apiService.getCreditCards(authToken!!) {
                     chosenCreditCard = it?.get(it.size - 1) ?: CreditCard(-1, card_name_text.text.toString(), customer = -1, cardOwner = card_owner_text.text.toString(),
@@ -92,6 +114,9 @@ class PayWithAnotherCardFragment : Fragment() {
             }
         }
 
+        /*
+        * Same method used in onCreate above.
+         */
         apiService.getCreditCards(authToken!!){
             val creditCards = it
             val creditCardAdapter = this.context?.let { it1 -> creditCards?.let { it2 ->

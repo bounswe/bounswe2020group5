@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* An adapter class to show the previous orders in a recyclerview in the customer previous orders page.
+ */
 package com.example.bupazar.model
 
 import android.annotation.SuppressLint
@@ -20,6 +24,9 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
         return ViewHolder(view)
     }
 
+    /*
+    * Call the bind method for the item given in the position argument.
+    */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val order = previousOrders[position]
         holder.bind(order)
@@ -29,13 +36,16 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
         return previousOrders.size
     }
 
+    /*
+    * Bind products to recyclerview items.
+    */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("ResourceAsColor", "WrongConstant")
         fun bind(order: Order) {
-            var totalPrice = 0f
+            var totalPrice = 0f /* sum on top of this var */
             var orderStatus = 3
-            val photoURLs = mutableListOf<String>()
+            val photoURLs = mutableListOf<String>() /* hold the image urls of the products of the given order */
             var i = 0
 
             if (order.purchases != null) {
@@ -45,6 +55,9 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
                     var currentOrderStatus = 4
                     totalPrice += purchase.amount!! * purchase.unit_price!!
                     purchase.status = purchase.status!!.toLowerCase(Locale.ROOT)
+                    /*
+                    * Set the order status global variable based on the fetched status.
+                    */
                     when {
                         purchase.status!! == "ordertaken" -> {
                             currentOrderStatus = 0
@@ -67,6 +80,9 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
             itemView.order_id_text.text = "Order ID: #" + order.order_id.toString()
             itemView.order_price_text.text = "Price: " + "%.2f".format(totalPrice) + " $"
 
+            /*
+            * Update the order status parts of the itemview based on the fetched status.
+            */
             when (orderStatus) {
                 0 -> {
                     itemView.order_status_image.setImageResource(R.drawable.ic_shopping_bag)
@@ -88,10 +104,9 @@ class PreviousOrdersAdapter(private val context: Context, private val previousOr
                 }
             }
 
+            /* Set the adapter to show product images in an horizontal rview */
             val orderPhotosRview = itemView.order_item_photos_rview
-
             val photoURLsArray: Array<String> = photoURLs.toTypedArray()
-
             if (photoURLsArray.isNotEmpty()) {
                 val orderPhotosAdapter = OrderPhotosAdapter(context, photoURLsArray)
                 orderPhotosRview.adapter = orderPhotosAdapter
