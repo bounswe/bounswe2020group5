@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to handle vendor order details page, the page where the vendors go by clicking on an order in the vendor orders page.
+ */
 package com.example.bupazar.page.fragment
 
 import android.annotation.SuppressLint
@@ -66,7 +70,7 @@ class VendorOrderDetailFragment : Fragment() {
                     order_status_text.setTextColor(R.color.black)
                     order_taken_button.setBackgroundResource(R.color.secondary_blue)
                     order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-                    orderStatus = 1
+                    orderStatus = 0
                 }
                 "preparing" -> {
                     order_status_image.setImageResource(R.drawable.ic_baseline_hourglass_top_24)
@@ -74,7 +78,7 @@ class VendorOrderDetailFragment : Fragment() {
                     order_status_text.setTextColor(R.color.black)
                     order_preparing_button.setBackgroundResource(R.color.secondary_blue)
                     order_preparing_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-                    orderStatus = 2
+                    orderStatus = 1
                 }
                 "ship" -> {
                     order_status_image.setImageResource(R.drawable.ic_baseline_electric_rickshaw_24)
@@ -82,13 +86,13 @@ class VendorOrderDetailFragment : Fragment() {
                     order_status_text.setTextColor(R.color.black)
                     order_shipping_button.setBackgroundResource(R.color.secondary_blue)
                     order_shipping_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-                    orderStatus = 3
+                    orderStatus = 2
                 }
                 "delivered" -> {
                     order_status_text.text = "Order delivered."
                     order_delivered_button.setBackgroundResource(R.color.secondary_blue)
                     order_delivered_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-                    orderStatus = 4
+                    orderStatus = 3
                 }
             }
         }
@@ -104,7 +108,7 @@ class VendorOrderDetailFragment : Fragment() {
             order_status_text.setTextColor(R.color.black)
             order_taken_button.setBackgroundResource(R.color.secondary_blue)
             order_taken_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-            orderStatus = 1
+            orderStatus = 0
 
             // Make the API request to change status
             var updateStatusRequest = UpdateStatusRequest(order!!.id, "Order Taken")
@@ -119,7 +123,7 @@ class VendorOrderDetailFragment : Fragment() {
             order_status_text.setTextColor(R.color.black)
             order_preparing_button.setBackgroundResource(R.color.secondary_blue)
             order_preparing_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-            orderStatus = 2
+            orderStatus = 1
 
             // Make the API request to change status
             var updateStatusRequest = UpdateStatusRequest(order!!.id, "Preparing")
@@ -134,10 +138,10 @@ class VendorOrderDetailFragment : Fragment() {
             order_status_text.setTextColor(R.color.black)
             order_shipping_button.setBackgroundResource(R.color.secondary_blue)
             order_shipping_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-            orderStatus = 3
+            orderStatus = 2
 
             // Make the API request to change status
-            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Shipping")
+            var updateStatusRequest = UpdateStatusRequest(order!!.id, "Ship")
             apiService.updateOrderStatus(authToken!!, updateStatusRequest) {
             }
         }
@@ -149,7 +153,7 @@ class VendorOrderDetailFragment : Fragment() {
             order_status_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.order_delivered_green))
             order_delivered_button.setBackgroundResource(R.color.secondary_blue)
             order_delivered_button_text.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorTextWhite))
-            orderStatus = 4
+            orderStatus = 3
 
             // Make the API request to change status
             var updateStatusRequest = UpdateStatusRequest(order!!.id, "Delivered")

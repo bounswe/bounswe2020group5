@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* An adapter class to show the credit cards in a recyclerview in the pay with another card page.
+ */
 package com.example.bupazar.model
 
 import android.content.Context
@@ -17,6 +21,9 @@ class CreditCardAdapter(private val context: Context, private val creditCards: A
         return ViewHolder(view)
     }
 
+    /*
+    * Call the bind method for the item given in the position argument.
+     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val creditCard = creditCards[position]
         holder.bind(creditCard)
@@ -26,6 +33,9 @@ class CreditCardAdapter(private val context: Context, private val creditCards: A
         return creditCards.size
     }
 
+    /*
+    * Bind products to recyclerview items.
+     */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(creditCard: CreditCard) {
             itemView.card_name_text.text = creditCard.name
@@ -34,6 +44,9 @@ class CreditCardAdapter(private val context: Context, private val creditCards: A
             itemView.cvc_text.text = creditCard.cvc
         }
 
+        /*
+        * Set the on click listener to choose the credit card clicked by the user.
+         */
         init {
             itemView.setOnClickListener {
                 onItemClick?.invoke(creditCards[adapterPosition])

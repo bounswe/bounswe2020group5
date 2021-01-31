@@ -25,7 +25,7 @@ class NotificationAdapter(private val context: Context, val notifications: Array
     }
 
     override fun onBindViewHolder(libraryViewHolder: NotificationViewHolder, position: Int) =
-            libraryViewHolder.bindItem(notifications[position].notificationText,notifications[position].product.imageUrl,notifications[position].product.name, notifications[position].product.description)
+            libraryViewHolder.bindItem(notifications[position].notificationText, notifications[position].product?.imageUrl, notifications[position].product?.name, notifications[position].product?.description)
 
     override fun getItemCount(): Int = notifications.size
 
@@ -35,7 +35,7 @@ class NotificationAdapter(private val context: Context, val notifications: Array
         private val productName : TextView = view.findViewById(R.id.product_name)
         private val productDescription : TextView = view.findViewById(R.id.product_description)
 
-        fun bindItem(notifText: String, image: String, name: String, description: String){
+        fun bindItem(notifText: String, image: String?, name: String?, description: String?){
             notificationText.text = notifText
             productName.text = name
             productDescription.text = description

@@ -1,3 +1,8 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to handle user orders page.
+ */
+
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
@@ -33,6 +38,9 @@ class OrderFragment : Fragment() {
         requireActivity().bottom_navigation.visibility = View.INVISIBLE
         val apiService = RestApiService()
 
+        /*
+        * Fetch the credit cards, and show the first card on the page
+         */
         apiService.getCreditCards(authToken!!) {
             creditCards = it
             if (chosenCreditCard != null) {
@@ -59,6 +67,9 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val apiService = RestApiService()
 
+        /*
+        * Fetch the credit cards, and show the first card on the page
+        */
         apiService.getCreditCards(authToken!!) {
             creditCards = it
             if (chosenCreditCard != null) {
@@ -75,6 +86,10 @@ class OrderFragment : Fragment() {
         installment_price.text = "$" + price
         total_price_text.text = "$" + price
 
+       /*
+       * Place order button set on click listener implementation.
+       * Checks if the gdpr is agreed, then redirects user to successful order page if success is returned by the API.
+        */
        place_order_button.setOnClickListener {
             if (gdpr_checkbox.isChecked && !card_name_text.text.equals("Please add credit card!") && one_installment_checkbox.isChecked) {
                 apiService.makePurchase(authToken!!) {
@@ -99,6 +114,10 @@ class OrderFragment : Fragment() {
             }
         }
 
+        /*
+        * Pay with another card on click listener implementation.
+        * Redirects the user to the payWithAnotherCardFragment, where the user can choose one of the existing cards or add a new one.
+         */
         pay_with_another_card.setOnClickListener {
             val payWithAnotherCardFragment = PayWithAnotherCardFragment()
             val bundle = Bundle()

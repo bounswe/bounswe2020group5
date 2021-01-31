@@ -200,6 +200,10 @@ class ProductFragment : Fragment() {
 
         }
 
+        /*
+        * Add to cart button on click listener implementation.
+        * When pressed by the user, this product will be added to the cart, for the chosen number of quantity.
+         */
         addtocart.setOnClickListener {
             if (addedToCart) {
                 val productData = AddToCartRequest(
@@ -244,10 +248,18 @@ class ProductFragment : Fragment() {
                 }
             }
         }
+
+        /*
+        * Increase quantity button on click listener implementation.
+        * Increase quantity by one, increase the global variable and show the increased quantity to user.
+         */
         increase_quantity_button.setOnClickListener {
             quantityAdded += 1
             quantity_text.setText(quantityAdded.toString())
         }
+        /*
+        * Same implementation as above.
+         */
         decrease_quantity_button.setOnClickListener {
             if (quantityAdded > 1) {
                 quantityAdded -= 1
