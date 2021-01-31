@@ -12,11 +12,21 @@ import retrofit2.Call
 import retrofit2.http.*
 import java.util.*
 
+
+/*
+* Every method of an interface represents one possible API call. 
+* It must have a HTTP annotation (GET, POST, etc.) to specify the request type and the relative URL.
+* The return value wraps the response in a Call object with the type of the expected result.
+*/
 interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("/api/auth/login/")
     fun userLogin(@Body userData: LoginRequest): Call<LoginResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/auth/logout/")
+    fun userLogout(@Header("Authorization") authToken: String): Call<Success>
 
     @Headers("Content-Type: application/json")
     @POST("/api/auth/google_login/")
@@ -109,6 +119,10 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/api/products/opts/get_all_comments/")
     fun allComments(@Body commentRequest: CommentRequest): Call<Array<CommentDetails>?>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/notifications/my/")
+    fun myNotification(@Header("Authorization") authToken: String): Call<Array<NotificationResponse>?>
   
     @Headers("Content-Type: application/json")
     @POST("/api/auth/password_reset_request/")
@@ -133,4 +147,19 @@ interface RestApi {
                    @Part("brand") brand: RequestBody,
                    @Part("discount") discount: RequestBody,
                    @Part image_file: MultipartBody.Part) : Call<ResponseBody>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/orders/vendor-orders/")
+    fun getVendorOrders(@Header("Authorization") authToken: String): Call<Array<Purchase>?>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/orders/update-status/")
+    fun updateOrderStatus(@Header("Authorization") authToken: String, @Body updateStatusRequest: UpdateStatusRequest): Call<Success>
+
+    @POST("/api/auth/password_change/")
+    fun changePassword(@Header("Authorization") authToken: String, @Body passwordChangeRequest: PasswordChangeRequest): Call<Success>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/products/search/")
+    fun searchQuery(@Header("Authorization") authToken: String, @Body query: String): Call<Array<ProductDetails>?>
 }

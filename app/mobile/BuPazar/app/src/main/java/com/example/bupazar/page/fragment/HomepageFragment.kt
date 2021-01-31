@@ -34,7 +34,7 @@ class HomepageFragment : Fragment() {
         var bestSellers: Array<ProductDetails>? = null
         var trends: Array<ProductDetails>? = null
         val featuredProductsRequest = FeaturedProductsRequest(
-            numberOfProducts = numberOfProducts
+                numberOfProducts = numberOfProducts
         )
 
         if (User.authToken!= null) {
@@ -104,9 +104,9 @@ class HomepageFragment : Fragment() {
                 rvProducts.adapter = productAdapter
                 rvProducts.layoutManager = GridLayoutManager(this.context, 2)
                 productAdapter!!.onItemClick = { product ->
-                        requireActivity().supportFragmentManager.beginTransaction().apply {
-                           replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
-                            commit()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fl_wrapper,  ProductFragment.newInstance(User.authToken, product.productId!!))
+                        commit()
                     }
                 }
 
@@ -115,11 +115,14 @@ class HomepageFragment : Fragment() {
                         return false
                     }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        productAdapter.filter.filter(newText)
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        productAdapter.filter.filter(query)
+                        if (User.authToken != null && query != null) {
+                            apiService.searchQuery(authToken = User.authToken!!, query) {
+                            }
+                        }
                         return false
                     }
-
                 })
             }
         }
@@ -132,5 +135,6 @@ class HomepageFragment : Fragment() {
                     arguments = Bundle().apply {
                     }
                 }
+
     }
 }

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".page.fragment.VendorOrderDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_button">
+
+        <ImageView
+            android:id="@+id/back_button_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            app:tint="@color/secondary_blue"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save &amp; Go Back to Orders"
+            android:layout_alignTop="@id/back_button_image"
+            android:layout_toEndOf="@id/back_button_image"
+            android:textColor="@color/secondary_blue"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/back_button"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rectangle_border"
+        android:id="@+id/address_box">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/order_header_bar">
+
+            <TextView
+                android:id="@+id/order_id_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:text="Order ID: #23"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/secondary_blue"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/order_productname_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_id_text"
+                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Product: Samsung Galaxy Tab A"/>
+
+            <TextView
+                android:id="@+id/order_customerid_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_productname_text"
+                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Customer ID: #53"/>
+
+            <TextView
+                android:id="@+id/order_price_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_customerid_text"
+                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/order_id_text"
+                android:text="Price: 144.44 $"
+                android:layout_marginBottom="4dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/order_header_bar"
+            android:id="@+id/order_items_bar"
+            android:background="@drawable/rectangle_border">
+
+            <ImageView
+                android:id="@+id/order_status_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_baseline_check_24"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/order_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/order_status_image"
+                android:text="Order Delivered"
+                android:layout_marginStart="2dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="7dp"
+                android:textColor="@color/order_delivered_green"
+                android:textSize="14dp"/>
+
+            <ImageView
+                android:id="@+id/product_image"
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/order_status_text"
+                android:layout_centerInParent="true"
+                android:padding="2dp"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_taken_button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/address_box"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rectangle_border"
+        android:layout_marginTop="36dp">
+
+        <TextView
+            android:id="@+id/order_taken_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Taken"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/secondary_blue"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_preparing_button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_alignTop="@id/order_taken_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rectangle_border">
+
+        <TextView
+            android:id="@+id/order_preparing_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Preparing"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/secondary_blue"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_shipping_button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/order_taken_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rectangle_border"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/order_shipping_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shipping"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/secondary_blue"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_delivered_button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_alignTop="@id/order_shipping_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rectangle_border">
+
+        <TextView
+            android:id="@+id/order_delivered_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Delivered"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/secondary_blue"/>
+    </RelativeLayout>
+
+</RelativeLayout>
