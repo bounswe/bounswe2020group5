@@ -35,6 +35,7 @@ class VendorOrdersFragment : Fragment() {
             orders = it
             if (orders != null && orders!!.size > 0) {
                 val vendorOrdersAdapter = this.context?.let { it1 -> orders?.let { it2 ->
+                    it2.reverse()
                     VendorOrdersAdapter(it1, it2) }
                 }
                 // Fill the orders recyclerview
