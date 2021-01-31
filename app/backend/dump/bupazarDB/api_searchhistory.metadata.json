@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.api_searchhistory"}],"uuid":"75704b93a07b435fb8ad23b0b465004d","collectionName":"api_searchhistory"}

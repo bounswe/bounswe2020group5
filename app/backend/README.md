@@ -12,10 +12,24 @@
 ***
 ## How to Start Development Server?
 * `cd /path/to/backend/`
+* `python bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='`
 * `python manage.py migrate`
 * `python manage.py runserver`
  
- Now that the server’s running, visit http://127.0.0.1:8000/api/swagger with your Web browser to check api endpoints. 
+ Now that the server’s running, visit http://127.0.0.1:8000/api/swagger with your Web browser to check api endpoints. In this way, API uses hosted database in MongoDB Atlas.
+***
+## How to Install MongoDB Dependencies to Use Dumped Database?
+* Install MongoDB Database Tools [here](https://www.mongodb.com/try/download/database-tools).
+* Install MongoDB Community Server [here](https://www.mongodb.com/try/download/community).
+***
+## How to Start Development Server using Dumped Database?
+* Create a folder `/path/to/MongoDB/data` to restore database.
+* Type `mongod --port 27017 --dbpath /path/to/MongoDB/data` 
+* `cd /path/to/backend/`
+* Type  `mongorestore -d localBupazarDB dump/bupazarDB` to restore database.
+* `python bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='`
+* `python manage.py migrate`
+* `python manage.py runserver --settings=bupazar.dev_settings`
 ***
 ## How to Run Unit Tests?
 * `cd /path/to/backend/`

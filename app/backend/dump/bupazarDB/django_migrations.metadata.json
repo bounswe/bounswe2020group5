@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"bupazarDB.django_migrations"},{"v":{"$numberInt":"2"},"unique":true,"key":{"id":{"$numberInt":"1"}},"name":"__primary_key__","ns":"bupazarDB.django_migrations"}],"uuid":"ab4fcaf1e8ef435b818b466f76de93b4","collectionName":"django_migrations"}
