@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.bupazar.R
+import com.example.bupazar.User
 import kotlinx.android.synthetic.main.my_message.view.*
 import kotlinx.android.synthetic.main.other_message.view.*
 
@@ -30,11 +31,19 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(message.isCustomerMessage!!) {
-            VIEW_TYPE_MY_MESSAGE
+        if(User.isVendor == false) {
+            return if (message.whoseMessage == "customer") {
+                VIEW_TYPE_MY_MESSAGE
+            } else {
+                VIEW_TYPE_OTHER_MESSAGE
+            }
         }
         else {
-            VIEW_TYPE_OTHER_MESSAGE
+            return if (message.whoseMessage != "customer") {
+                VIEW_TYPE_MY_MESSAGE
+            } else {
+                VIEW_TYPE_OTHER_MESSAGE
+            }
         }
     }
 
@@ -49,7 +58,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages.get(position)
 
-        holder?.bind(message)
+        holder.bind(message)
     }
 
     inner class MyMessageViewHolder (view: View) : MessageViewHolder(view) {
@@ -58,19 +67,20 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
 
         override fun bind(message: Message) {
             messageText.text = message.content
-//            timeText.text = DateUtils.fromMillisToTimeString(message.time)
+            timeText.text = message.dateSent?.takeLast(9)?.take(5)
         }
     }
 
     inner class OtherMessageViewHolder (view: View) : MessageViewHolder(view) {
+        private var otherUsernameText: TextView = view.txtOtherUser
         private var messageText: TextView = view.txtOtherMessage
-        private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.content
-//            userText.text = message.user
-//            timeText.text = DateUtils.fromMillisToTimeString(message.time)
+            timeText.text = message.dateSent?.takeLast(9)?.take(5)
+            otherUsernameText.text = "Vendor"
+
         }
     }
 }

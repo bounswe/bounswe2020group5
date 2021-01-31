@@ -55,7 +55,7 @@
             app:srcCompat="@drawable/ic_magazine" />
 
         <TextView
-            android:id="@+id/electronicstext"
+            android:id="@+id/smartPhoneText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -96,7 +96,7 @@
             app:srcCompat="@drawable/ic_saxophone" />
 
         <TextView
-            android:id="@+id/fashionText"
+            android:id="@+id/whiteAppliancesText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -137,7 +137,7 @@
             app:srcCompat="@drawable/ic_painting" />
 
         <TextView
-            android:id="@+id/personalCareText"
+            android:id="@+id/pcTabletText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -160,5 +160,19 @@
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonShowAll"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/art"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/secondary_blue"
+        android:text="@string/show_all"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>

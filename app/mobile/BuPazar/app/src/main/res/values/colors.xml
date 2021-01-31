@@ -7,7 +7,7 @@
     <color name="tertiary_yellow">#F3DE8A</color>
     <color name="quaternary_pink">#EB9486</color>
     <color name="quinary_purple">#7E7F9A</color>
-
+    <color name="green">#29a348</color>
     <color name="colorTextDefault">#131313</color>
     <color name="colorTextLabelDefault">#353535</color>
     <color name="colorTextHintDefault">#434343</color>
@@ -17,6 +17,8 @@
     <color name="text">#151517</color>
     <color name="subtext">#5f5f5f</color>
     <color name="colordevider">#64dad8d8</color>
+    <color name="order_delivered_green">#1DA61E</color>
 
     <color name="colorTextWhite">#F3F3F3</color>
+    <color name="GoogleTextColor">#444444</color>
 </resources>

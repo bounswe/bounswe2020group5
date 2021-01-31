@@ -3,6 +3,8 @@
     package="com.example.bupazar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -11,8 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuPazar"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".page.activity.message.ChatActivity"></activity>
+        <activity android:name=".page.activity.login.AddProduct"></activity>
+        <activity android:name=".page.activity.login.VendorHomepageActivity" />
+        <activity android:name=".page.activity.message.ChatActivity" />
         <activity android:name=".page.activity.message.MessageMainActivity" />
         <activity android:name=".page.activity.home.HomepageActivity" />
         <activity android:name=".core.BaseActivity" />

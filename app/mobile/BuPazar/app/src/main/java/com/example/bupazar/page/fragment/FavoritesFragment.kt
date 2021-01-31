@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user add product to his/her wish list.
+*/
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
@@ -24,14 +28,11 @@ class FavoritesFragment : Fragment() {
             userData = arguments?.getSerializable("USERDATA") as LoginResponse
         }
         authToken = userData?.authToken
-        authToken = "Token " + authToken
+        authToken = "Token $authToken"
 
         val apiService = RestApiService()
-        apiService.getFavoriteList(){
-            if (it == null) {
-
-            }
-            else {
+        apiService.getFavoriteList {
+            if (it != null) {
                 productsInFavoriteList = it.favoriteListProducts
                 val favoriteListProductAdapter = this.context?.let { productsInFavoriteList?.let { it1 -> FavoriteListProductAdapter(it, favoriteListProducts = it1) } }
                 wishListProducts.adapter = favoriteListProductAdapter
@@ -63,7 +64,7 @@ class FavoritesFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             FavoritesFragment().apply {
                 arguments = Bundle().apply {
                 }

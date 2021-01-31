@@ -1,5 +1,10 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user edit his/her personal info.
+*/
 package com.example.bupazar.page.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +15,7 @@ import android.widget.Toast
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.EditPersonalInfoRequest
+import com.example.bupazar.page.activity.login.VendorHomepageActivity
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_edit_profile_info.*
 
@@ -77,9 +83,15 @@ class EditProfileInfoFragment : Fragment() {
                             User.lastName = editUserInfo.userLastName!!
                             User.address = editUserInfo.userAddress!!
 
-                        requireActivity().supportFragmentManager.beginTransaction().apply {
-                            replace(R.id.fl_wrapper, ProfilePageFragment())
-                            commit()
+                        if(User.isVendor) {
+                            var intent = Intent(activity, VendorHomepageActivity::class.java)
+                            startActivity(intent)
+                        }
+                        else {
+                            requireActivity().supportFragmentManager.beginTransaction().apply {
+                                replace(R.id.fl_wrapper, ProfilePageFragment())
+                                commit()
+                            }
                         }
                     }
                 }

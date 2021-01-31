@@ -9,14 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.ChatRequest
-import com.example.bupazar.model.Message
 import com.example.bupazar.model.MessageAdapter
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 import kotlin.concurrent.timerTask
 
-private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
 
@@ -38,10 +36,12 @@ class ChatActivity : AppCompatActivity() {
                     chatId.toString(),
                     txtMessage.text.toString()
                 )
-                RestApiService().sendMessage(User.authToken, chatRequest){
-                    resetInput()
-                    if (it?.success == null) {
-                        Toast.makeText(applicationContext,"Response was not successful", Toast.LENGTH_SHORT).show()
+                User.authToken?.let { it1 ->
+                    RestApiService().sendMessage(it1, chatRequest){
+                        resetInput()
+                        if (it?.success == null) {
+                            Toast.makeText(applicationContext,"Response was not successful", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } else {
@@ -71,14 +71,16 @@ class ChatActivity : AppCompatActivity() {
             chatId.toString(),
             null
         )
-        RestApiService().getLastMessage(User.authToken, chatIdRequest) {
-            if (it?.messageId != null && (it.messageId!=lastMessageId)) {
-                runOnUiThread {
-                    adapter.addMessage(it)
-                    // scroll the RecyclerView to the last added element
-                    messageList.scrollToPosition(adapter.itemCount - 1);
+        User.authToken?.let { it ->
+            RestApiService().getLastMessage(it, chatIdRequest) {
+                if (it?.messageId != null && (it.messageId!=lastMessageId)) {
+                    runOnUiThread {
+                        adapter.addMessage(it)
+                        // scroll the RecyclerView to the last added element
+                        messageList.scrollToPosition(adapter.itemCount - 1)
+                    }
+                    lastMessageId = it.messageId!!
                 }
-                lastMessageId = it.messageId!!
             }
         }
     }
