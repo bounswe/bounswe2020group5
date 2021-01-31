@@ -5,10 +5,19 @@ import com.example.bupazar.model.ProductDetails
 import com.example.bupazar.model.RegisterRequest
 
 import com.example.bupazar.model.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.*
 
+
+/*
+* Every method of an interface represents one possible API call. 
+* It must have a HTTP annotation (GET, POST, etc.) to specify the request type and the relative URL.
+* The return value wraps the response in a Call object with the type of the expected result.
+*/
 interface RestApi {
 
     @Headers("Content-Type: application/json")
@@ -126,6 +135,18 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/api/orders/customer-orders/")
     fun getPreviousOrders(@Header("Authorization") authToken: String): Call<Array<Order>?>
+
+    @Multipart
+    @POST("/api/products/opts/add/")
+    fun addProduct(@Header("Authorization") authToken: String,
+                   @Part("name") name: RequestBody,
+                   @Part("price") price: RequestBody,
+                   @Part("stock") stock: RequestBody,
+                   @Part("description") description: RequestBody,
+                   @Part("subcategory_name") subcategoryName: RequestBody,
+                   @Part("brand") brand: RequestBody,
+                   @Part("discount") discount: RequestBody,
+                   @Part image_file: MultipartBody.Part) : Call<ResponseBody>
 
     @Headers("Content-Type: application/json")
     @GET("/api/orders/vendor-orders/")

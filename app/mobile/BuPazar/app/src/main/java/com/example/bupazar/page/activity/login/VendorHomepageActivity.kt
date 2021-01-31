@@ -37,6 +37,11 @@ class VendorHomepageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        addProductLayout.setOnClickListener() {
+            var intent= Intent(this, AddProduct::class.java)
+            startActivity(intent)
+        }
+
         personalInfoLayout.setOnClickListener {
             val profilePage = ProfilePageFragment()
             activity_vendor_2.visibility = View.GONE
