@@ -162,7 +162,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/buttonShowAll"
+        android:id="@+id/buttonShowAllHobbies"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/art"
