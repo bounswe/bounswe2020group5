@@ -23,7 +23,7 @@ cd bounswe2020group5/app
 docker-compose up -d --build
 ```
 
-## This command run both frontend and backend on your machine. To see the frontend just type http://localhost:3000/.
+##### This command run both frontend and backend on your machine. To see the frontend just type http://localhost:3000/.
 
 ### 3. If you want to run the app separetely without docker you need to follow these steps.
 
