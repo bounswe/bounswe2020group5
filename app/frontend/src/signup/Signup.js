@@ -623,41 +623,6 @@ function Signup(props) {
             </Button>
           </div>
         </div>
-        <div>
-          <div style={{ textAlign: "center", margin: "8px" }}>
-            <Typography variant="body1" gutterBottom>
-              - or -
-            </Typography>
-          </div>
-          <div className="button-div2">
-            <div className={classes.loginButtonRoot}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={
-                  <img src="/img/google-icon.svg" alt="facebook icon" />
-                }
-                style={{ textTransform: "none" }}
-              >
-                Continue with Google
-              </Button>
-            </div>
-          </div>
-          <div className="button-div2">
-            <div className={classes.loginButtonRoot}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={
-                  <img src="/img/facebook-icon.svg" alt="google icon" />
-                }
-                style={{ textTransform: "none" }}
-              >
-                Continue with Facebook
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
