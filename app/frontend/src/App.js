@@ -10,9 +10,9 @@ import { Vendor } from "./signup/Vendor";
 import product from "./product/product";
 import AddProduct from "./product/AddProduct";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline } from "@material-ui/core";
 import messages from "./profile/messages";
-import search from "./search/search"
+import search from "./search/search";
 import Payment from "./payment/Payment";
 import Categories from "./categories/Categories";
 import ListPage from "./list/ListPage";
@@ -28,11 +28,9 @@ import SavedCards from "./savedCards/SavedCards";
 import Notifications from "./notifications/Notifications";
 import Forgot from "./login/Forgot";
 import ForgotChange from "./login/ForgotChange";
-
 import UserAgreement from "./agreements/UserAgreement";
-
 import Vendorpublic from "./vendorpublic/vendorpublicview";
-
+import Terms from "./agreements/Terms";
 
 function App() {
   return (
@@ -53,10 +51,17 @@ function App() {
           <Route path="/search" component={search} />
           <Route path="/cart" exact component={Cart} />
           <Route path="/orders" exact component={order} />
-          <Route path="/vendorview/:vendorname" exact component={Vendorpublic} />
+          <Route
+            path="/vendorview/:vendorname"
+            exact
+            component={Vendorpublic}
+          />
           <Route path="/vendororders" exact component={vendororder} />
           <Route path="/vendorproduct" exact component={Vendorproduct} />
-          <Route path="/vendorproduct/vendoreditproduct" component={Vendoreditproduct} />
+          <Route
+            path="/vendorproduct/vendoreditproduct"
+            component={Vendoreditproduct}
+          />
           <Route path="/signup/vendor" component={Vendor} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/payment" exact component={Payment} />
@@ -75,6 +80,7 @@ function App() {
           <Route path="/forgot/enter/email" exact component={Forgot} />
           <Route path="/forgot" component={ForgotChange} />
           <Route path="/useragreement" component={UserAgreement} />
+          <Route path="/terms" component={Terms} />
           <Route component={NoMatch} />
         </Switch>
       </div>
