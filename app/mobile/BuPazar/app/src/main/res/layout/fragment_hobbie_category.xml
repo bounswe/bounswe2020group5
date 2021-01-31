@@ -162,10 +162,10 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/buttonShowAllHobbies"
+        android:id="@+id/buttonShowAll"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/officeFurniture"
+        android:layout_below="@+id/art"
         android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
         android:background="@drawable/round"
