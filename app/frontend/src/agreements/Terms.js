@@ -43,304 +43,344 @@ function Terms() {
         >
           <Fade in={open}>
             <div className={classes.pape}>
-              <h2 id="transition-modal-title">USER LISENCE AGREEMENT</h2>
-              <p id="transition-modal-description">
-                <span>
-                  {" "}
-                  By using BUPAZAR, you agree to these conditions. Please read
-                  them carefully.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}> PRIVACY</span>
-                  <br></br>
-                  <br></br>
-                  Please review our Privacy Notice, which also governs your use
-                  of BUPAZAR, to understand our practices.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    ELECTRONIC COMMUNICATIONS
-                  </span>
-                  <br></br>
-                  <br></br>
-                  When you use BUPAZAR, or send e-mails, text messages, and
-                  other communications from your desktop or mobile device to us,
-                  you may be communicating with us electronically. You consent
-                  to receive communications from us electronically, such as
-                  e-mails, texts, mobile push notices, or notices and messages
-                  on this site and you can retain copies of these communications
-                  for your records. You agree that all agreements, notices,
-                  disclosures, and other communications that we provide to you
-                  electronically satisfy any legal requirement that such
-                  communications be in writing.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}> PATENTS </span>
-                  <br></br>
-                  <br></br>
-                  One or more patents owned by BUPAZAR and features and services
-                  accessible via the BUPAZAR website.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    LICENSE AND ACCESS{" "}
-                  </span>
-                  <br></br>
-                  <br></br>
-                  Subject to your compliance with these Conditions of Use and
-                  any Service Terms, and your payment of any applicable fees,
-                  BUPAZAR or its content providers grant you a limited,
-                  non-exclusive, non-transferable, non-sublicensable license to
-                  access and make personal and non-commercial use of the
-                  BUPAZAR. This license does not include any resale or
-                  commercial use of any BUPAZAR, or its contents; any collection
-                  and use of any product listings, descriptions, or prices; any
-                  derivative use of any BUPAZAR or its contents; any
-                  downloading, copying, or other use of account information for
-                  the benefit of any third party; or any use of data mining,
-                  robots, or similar data gathering and extraction tools. All
-                  rights not expressly granted to you in these Conditions of Use
-                  or any Service Terms are reserved and retained by BUPAZAR or
-                  its licensors, suppliers, publishers, rightsholders, or other
-                  content providers. No part of BUPAZAR, may be reproduced,
-                  duplicated, copied, sold, resold, visited, or otherwise
-                  exploited for any commercial purpose without express written
-                  consent of BUPAZAR. You may not frame or utilize framing
-                  techniques to enclose any trademark, logo, or other
-                  proprietary information (including images, text, page layout,
-                  or form) of BUPAZAR without express written consent. You may
-                  not use any meta tags or any other "hidden text" utilizing
-                  BUPAZAR's name or trademarks without the express written
-                  consent of BUPAZAR.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    REVIEWS, COMMENTS, COMMUNICATIONS, AND OTHER CONTENT
-                  </span>
-                  <br></br>
-                  <br></br>
-                  You may post reviews, comments, photos, videos, and other
-                  content; send e-cards and other communications; and submit
-                  suggestions, ideas, comments, questions, or other information,
-                  so long as the content is not illegal, obscene, threatening,
-                  defamatory, invasive of privacy, infringing of intellectual
-                  property rights (including publicity rights), or otherwise
-                  injurious to third parties or objectionable, and does not
-                  consist of or contain software viruses, political campaigning,
-                  commercial solicitation, chain letters, mass mailings, or any
-                  form of "spam" or unsolicited commercial electronic messages.
-                  You may not use a false e-mail address, impersonate any person
-                  or entity, or otherwise mislead as to the origin of a card or
-                  other content. BUPAZAR reserves the right (but not the
-                  obligation) to remove or edit such content, but does not
-                  regularly review posted content.
-                  <br></br>
-                  If you do post content or submit material, and unless we
-                  indicate otherwise, you grant BUPAZAR a nonexclusive,
-                  royalty-free, perpetual, irrevocable, and fully sublicensable
-                  right to use, reproduce, modify, adapt, publish, perform,
-                  translate, create derivative works from, distribute, and
-                  display such content throughout the world in any media. You
-                  grant BUPAZAR and sublicensees the right to use the name that
-                  you submit in connection with such content, if they choose.
-                  You represent and warrant that you own or otherwise control
-                  all of the rights to the content that you post; that the
-                  content is accurate; that use of the content you supply does
-                  not violate this policy and will not cause injury to any
-                  person or entity; and that you will indemnify BUPAZAR for all
-                  claims resulting from content you supply. BUPAZAR has the
-                  right but not the obligation to monitor and edit or remove any
-                  activity or content. BUPAZAR takes no responsibility and
-                  assumes no liability for any content posted by you or any
-                  third party.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    INTELLECTUAL PROPERTY COMPLAINTS{" "}
-                  </span>
-                  <br></br>
-                  <br></br>
-                  BUPAZAR respects the intellectual property of others. If you
-                  believe that your intellectual property rights are being
-                  infringed, please follow our Notice and Procedure for Making
-                  Claims of Copyright Infringement.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>RISK OF LOSS </span>
-                  <br></br>
-                  <br></br>
-                  All purchases of physical items from BUPAZAR are made pursuant
-                  to a shipment contract. This means that the risk of loss and
-                  title for such items pass to you upon our delivery to the
-                  carrier.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    RETURNS, REFUNDS AND TITLE
-                  </span>
-                  <br></br>
-                  <br></br>
-                  BUPAZAR does not take title to returned items until the item
-                  arrives at our fulfillment center. At our discretion, a refund
-                  may be issued without requiring a return. In this situation,
-                  BUPAZAR does not take title to the refunded item. For more
-                  information about our returns and refunds, please see our
-                  Returns Center .<br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    PRODUCT DESCRIPTIONS
-                  </span>
-                  <br></br>
-                  <br></br>
-                  BUPAZAR attempts to be as accurate as possible. However,
-                  BUPAZAR does not warrant that product descriptions or other
-                  content of BUPAZAR is accurate, complete, reliable, current,
-                  or error-free. If a product offered by BUPAZAR itself is not
-                  as described, your sole remedy is to return it in unused
-                  condition.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>PRICING</span>
-                  <br></br>
-                  <br></br>
-                  "List Price" means the suggested retail price of a product as
-                  provided by a manufacturer, supplier, or seller. We regularly
-                  check List Prices against prices recently found on BUPAZAR and
-                  other retailers. Certain products may have a "Was Price"
-                  displayed, which is determined using recent price history of
-                  the product on BUPAZAR. <br></br>
-                  With respect to items sold by BUPAZAR, we cannot confirm the
-                  price of an item until you order. Despite our best efforts, a
-                  small number of the items in our catalog may be mispriced. If
-                  the correct price of an item sold by BUPAZAR is higher than
-                  our stated price, we will, at our discretion, either contact
-                  you for instructions before shipping or cancel your order and
-                  notify you of such cancellation. Other merchants may follow
-                  different policies in the event of a mispriced item. <br></br>
-                  We generally do not charge your credit card until after your
-                  order has entered the shipping process or, for digital
-                  products, until we make the digital product available to you.{" "}
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>APP PERMISSIONS</span>
-                  <br></br>
-                  <br></br>
-                  When you use apps created by BUPAZAR, such as the BUPAZAR App
-                  , you may grant certain permissions to us for your device.
-                  Most mobile devices provide you with information about these
-                  permissions. To learn more about these permissions, click here
-                  .<br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>OTHER BUSINESSES</span>
-                  <br></br>
-                  <br></br>
-                  Parties other than BUPAZAR operate stores, provide services or
-                  software, or sell product lines through the BUPAZAR. In
-                  addition, we provide links to the sites of affiliated
-                  companies and certain other businesses. If you purchase any of
-                  the products or services offered by these businesses or
-                  individuals, you are purchasing directly from those third
-                  parties, not from BUPAZAR. We are not responsible for
-                  examining or evaluating, and we do not warrant, the offerings
-                  of any of these businesses or individuals (including the
-                  content of their Web sites). BUPAZAR does not assume any
-                  responsibility or liability for the actions, product, and
-                  content of all these and any other third parties. You should
-                  carefully review their privacy statements and other conditions
-                  of use.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY
-                  </span>
-                  <br></br>
-                  <br></br>
-                  ALL INFORMATION, CONTENT, MATERIALS, PRODUCTS (INCLUDING
-                  SOFTWARE) AND OTHER SERVICES INCLUDED ON OR OTHERWISE MADE
-                  AVAILABLE TO YOU THROUGH THE BUPAZAR SERVICES ARE PROVIDED BY
-                  BUPAZAR ON AN "AS IS" AND "AS AVAILABLE" BASIS, UNLESS
-                  OTHERWISE SPECIFIED IN WRITING. BUPAZAR MAKES NO
-                  REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED,
-                  AS TO THE OPERATION OF THE BUPAZAR SERVICES, OR THE
-                  INFORMATION, CONTENT, MATERIALS, PRODUCTS (INCLUDING SOFTWARE)
-                  OR OTHER SERVICES INCLUDED ON OR OTHERWISE MADE AVAILABLE TO
-                  YOU THROUGH THE BUPAZAR SERVICES, UNLESS OTHERWISE SPECIFIED
-                  IN WRITING. YOU EXPRESSLY AGREE THAT YOUR USE OF THE BUPAZAR
-                  SERVICES IS AT YOUR SOLE RISK. <br></br>
-                  TO THE FULL EXTENT PERMISSIBLE BY LAW, BUPAZAR DISCLAIMS ALL
-                  WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
-                  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-                  PARTICULAR PURPOSE. BUPAZAR DOES NOT WARRANT THAT THE BUPAZAR
-                  SERVICES, INFORMATION, CONTENT, MATERIALS, PRODUCTS (INCLUDING
-                  SOFTWARE) OR OTHER SERVICES INCLUDED ON OR OTHERWISE MADE
-                  AVAILABLE TO YOU THROUGH THE BUPAZAR SERVICES, BUPAZAR'S
-                  SERVERS OR ELECTRONIC COMMUNICATIONS SENT FROM BUPAZAR ARE
-                  FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS. TO THE FULL
-                  EXTENT PERMISSIBLE BY LAW, BUPAZAR WILL NOT BE LIABLE FOR ANY
-                  DAMAGES OF ANY KIND ARISING FROM THE USE OF ANY BUPAZAR
-                  SERVICE, OR FROM ANY INFORMATION, CONTENT, MATERIALS, PRODUCTS
-                  (INCLUDING SOFTWARE) OR OTHER SERVICES INCLUDED ON OR
-                  OTHERWISE MADE AVAILABLE TO YOU THROUGH ANY BUPAZAR SERVICE,
-                  INCLUDING, BUT NOT LIMITED TO DIRECT, INDIRECT, INCIDENTAL,
-                  PUNITIVE, AND CONSEQUENTIAL DAMAGES, UNLESS OTHERWISE
-                  SPECIFIED IN WRITING. <br></br>
-                  There is no judge or jury in arbitration, and court review of
-                  an arbitration award is limited. However, an arbitrator can
-                  award on an individual basis the same damages and relief as a
-                  court (including injunctive and declaratory relief or
-                  statutory damages), and must follow the terms of these
-                  Conditions of Use as a court would. <br></br>
-                  To begin an arbitration proceeding, you must send a letter
-                  requesting arbitration and describing your claim to our
-                  registered agent Corporation Service Company, 300 Deschutes
-                  Way SW, Suite 208 MC-CSC1, Tumwater, WA 98501. The arbitration
-                  will be conducted by the American Arbitration Association
-                  (AAA) under its rules, including the AAA's Supplementary
-                  Procedures for Consumer-Related Disputes. The AAA's rules are
-                  available at www.adr.org or by calling 1-800-778-7879. Payment
-                  of all filing, administration and arbitrator fees will be
-                  governed by the AAA's rules. We will reimburse those fees for
-                  claims totaling less than $10,000 unless the arbitrator
-                  determines the claims are frivolous. Likewise, BUPAZAR will
-                  not seek attorneys' fees and costs in arbitration unless the
-                  arbitrator determines the claims are frivolous. You may choose
-                  to have the arbitration conducted by telephone, based on
-                  written submissions, or in person in the county where you live
-                  or at another mutually agreed location. <br></br>
-                  We each agree that any dispute resolution proceedings will be
-                  conducted only on an individual basis and not in a class,
-                  consolidated or representative action. If for any reason a
-                  claim proceeds in court rather than in arbitration we each
-                  waive any right to a jury trial. We also both agree that you
-                  or we may bring suit in court to enjoin infringement or other
-                  misuse of intellectual property rights.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>APPLICABLE LAW</span>
-                  <br></br>
-                  <br></br>
-                  By using BUPAZAR, you agree that the Federal Arbitration Act,
-                  applicable federal law, and the laws of the state of
-                  Washington, without regard to principles of conflict of laws,
-                  will govern these Conditions of Use and any dispute of any
-                  sort that might arise between you and BUPAZAR.
-                  <br></br>
-                  <br></br>
-                  <span style={{ fontWeight: "bold" }}>
-                    SITE POLICIES, MODIFICATION, AND SEVERABILITY
-                  </span>
-                  <br></br>
-                  <br></br>
-                  Please review our other policies, such as our pricing policy,
-                  posted on this site. These policies also govern your use of
-                  BUPAZAR Services. We reserve the right to make changes to our
-                  site, policies, Service Terms, and these Conditions of Use at
-                  any time. If any of these conditions shall be deemed invalid,
-                  void, or for any reason unenforceable, that condition shall be
-                  deemed severable and shall not affect the validity and
-                  enforceability of any remaining condition.
-                </span>
+              <h2>
+                <strong>Terms and Conditions</strong>
+              </h2>
+
+              <p>Welcome to bupazar!</p>
+
+              <p>
+                These terms and conditions outline the rules and regulations for
+                the use of bupazar's Website, located at bupazar.com.
+              </p>
+
+              <p>
+                By accessing this website we assume you accept these terms and
+                conditions. Do not continue to use bupazar if you do not agree
+                to take all of the terms and conditions stated on this page.
+              </p>
+
+              <p>
+                The following terminology applies to these Terms and Conditions,
+                Privacy Statement and Disclaimer Notice and all Agreements:
+                "Client", "You" and "Your" refers to you, the person log on this
+                website and compliant to the Company’s terms and conditions.
+                "The Company", "Ourselves", "We", "Our" and "Us", refers to our
+                Company. "Party", "Parties", or "Us", refers to both the Client
+                and ourselves. All terms refer to the offer, acceptance and
+                consideration of payment necessary to undertake the process of
+                our assistance to the Client in the most appropriate manner for
+                the express purpose of meeting the Client’s needs in respect of
+                provision of the Company’s stated services, in accordance with
+                and subject to, prevailing law of Netherlands. Any use of the
+                above terminology or other words in the singular, plural,
+                capitalization and/or he/she or they, are taken as
+                interchangeable and therefore as referring to same.
+              </p>
+
+              <h3>
+                <strong>Cookies</strong>
+              </h3>
+
+              <p>
+                We employ the use of cookies. By accessing bupazar, you agreed
+                to use cookies in agreement with the bupazar's Privacy Policy.{" "}
+              </p>
+
+              <p>
+                Most interactive websites use cookies to let us retrieve the
+                user’s details for each visit. Cookies are used by our website
+                to enable the functionality of certain areas to make it easier
+                for people visiting our website. Some of our
+                affiliate/advertising partners may also use cookies.
+              </p>
+
+              <h3>
+                <strong>License</strong>
+              </h3>
+
+              <p>
+                Unless otherwise stated, bupazar and/or its licensors own the
+                intellectual property rights for all material on bupazar. All
+                intellectual property rights are reserved. You may access this
+                from bupazar for your own personal use subjected to restrictions
+                set in these terms and conditions.
+              </p>
+
+              <p>You must not:</p>
+              <ul>
+                <li>Republish material from bupazar</li>
+                <li>Sell, rent or sub-license material from bupazar</li>
+                <li>Reproduce, duplicate or copy material from bupazar</li>
+                <li>Redistribute content from bupazar</li>
+              </ul>
+
+              <p>
+                This Agreement shall begin on the date hereof. Our Terms and
+                Conditions were created with the help of the{" "}
+                <a href="https://www.termsandconditionsgenerator.com">
+                  Terms And Conditions Generator
+                </a>{" "}
+                and the{" "}
+                <a href="https://www.generateprivacypolicy.com">
+                  Privacy Policy Generator
+                </a>
+                .
+              </p>
+
+              <p>
+                Parts of this website offer an opportunity for users to post and
+                exchange opinions and information in certain areas of the
+                website. bupazar does not filter, edit, publish or review
+                Comments prior to their presence on the website. Comments do not
+                reflect the views and opinions of bupazar,its agents and/or
+                affiliates. Comments reflect the views and opinions of the
+                person who post their views and opinions. To the extent
+                permitted by applicable laws, bupazar shall not be liable for
+                the Comments or for any liability, damages or expenses caused
+                and/or suffered as a result of any use of and/or posting of
+                and/or appearance of the Comments on this website.
+              </p>
+
+              <p>
+                bupazar reserves the right to monitor all Comments and to remove
+                any Comments which can be considered inappropriate, offensive or
+                causes breach of these Terms and Conditions.
+              </p>
+
+              <p>You warrant and represent that:</p>
+
+              <ul>
+                <li>
+                  You are entitled to post the Comments on our website and have
+                  all necessary licenses and consents to do so;
+                </li>
+                <li>
+                  The Comments do not invade any intellectual property right,
+                  including without limitation copyright, patent or trademark of
+                  any third party;
+                </li>
+                <li>
+                  The Comments do not contain any defamatory, libelous,
+                  offensive, indecent or otherwise unlawful material which is an
+                  invasion of privacy
+                </li>
+                <li>
+                  The Comments will not be used to solicit or promote business
+                  or custom or present commercial activities or unlawful
+                  activity.
+                </li>
+              </ul>
+
+              <p>
+                You hereby grant bupazar a non-exclusive license to use,
+                reproduce, edit and authorize others to use, reproduce and edit
+                any of your Comments in any and all forms, formats or media.
+              </p>
+
+              <h3>
+                <strong>Hyperlinking to our Content</strong>
+              </h3>
+
+              <p>
+                The following organizations may link to our Website without
+                prior written approval:
+              </p>
+
+              <ul>
+                <li>Government agencies;</li>
+                <li>Search engines;</li>
+                <li>News organizations;</li>
+                <li>
+                  Online directory distributors may link to our Website in the
+                  same manner as they hyperlink to the Websites of other listed
+                  businesses; and
+                </li>
+                <li>
+                  System wide Accredited Businesses except soliciting non-profit
+                  organizations, charity shopping malls, and charity fundraising
+                  groups which may not hyperlink to our Web site.
+                </li>
+              </ul>
+
+              <p>
+                These organizations may link to our home page, to publications
+                or to other Website information so long as the link: (a) is not
+                in any way deceptive; (b) does not falsely imply sponsorship,
+                endorsement or approval of the linking party and its products
+                and/or services; and (c) fits within the context of the linking
+                party’s site.
+              </p>
+
+              <p>
+                We may consider and approve other link requests from the
+                following types of organizations:
+              </p>
+
+              <ul>
+                <li>
+                  commonly-known consumer and/or business information sources;
+                </li>
+                <li>dot.com community sites;</li>
+                <li>associations or other groups representing charities;</li>
+                <li>online directory distributors;</li>
+                <li>internet portals;</li>
+                <li>accounting, law and consulting firms; and</li>
+                <li>educational institutions and trade associations.</li>
+              </ul>
+
+              <p>
+                We will approve link requests from these organizations if we
+                decide that: (a) the link would not make us look unfavorably to
+                ourselves or to our accredited businesses; (b) the organization
+                does not have any negative records with us; (c) the benefit to
+                us from the visibility of the hyperlink compensates the absence
+                of bupazar; and (d) the link is in the context of general
+                resource information.
+              </p>
+
+              <p>
+                These organizations may link to our home page so long as the
+                link: (a) is not in any way deceptive; (b) does not falsely
+                imply sponsorship, endorsement or approval of the linking party
+                and its products or services; and (c) fits within the context of
+                the linking party’s site.
+              </p>
+
+              <p>
+                If you are one of the organizations listed in paragraph 2 above
+                and are interested in linking to our website, you must inform us
+                by sending an e-mail to bupazar. Please include your name, your
+                organization name, contact information as well as the URL of
+                your site, a list of any URLs from which you intend to link to
+                our Website, and a list of the URLs on our site to which you
+                would like to link. Wait 2-3 weeks for a response.
+              </p>
+
+              <p>
+                Approved organizations may hyperlink to our Website as follows:
+              </p>
+
+              <ul>
+                <li>By use of our corporate name; or</li>
+                <li>
+                  By use of the uniform resource locator being linked to; or
+                </li>
+                <li>
+                  By use of any other description of our Website being linked to
+                  that makes sense within the context and format of content on
+                  the linking party’s site.
+                </li>
+              </ul>
+
+              <p>
+                No use of bupazar's logo or other artwork will be allowed for
+                linking absent a trademark license agreement.
+              </p>
+
+              <h3>
+                <strong>iFrames</strong>
+              </h3>
+
+              <p>
+                Without prior approval and written permission, you may not
+                create frames around our Webpages that alter in any way the
+                visual presentation or appearance of our Website.
+              </p>
+
+              <h3>
+                <strong>Content Liability</strong>
+              </h3>
+
+              <p>
+                We shall not be hold responsible for any content that appears on
+                your Website. You agree to protect and defend us against all
+                claims that is rising on your Website. No link(s) should appear
+                on any Website that may be interpreted as libelous, obscene or
+                criminal, or which infringes, otherwise violates, or advocates
+                the infringement or other violation of, any third party rights.
+              </p>
+
+              <h3>
+                <strong>Your Privacy</strong>
+              </h3>
+
+              <p>Please read Privacy Policy</p>
+
+              <h3>
+                <strong>Reservation of Rights</strong>
+              </h3>
+
+              <p>
+                We reserve the right to request that you remove all links or any
+                particular link to our Website. You approve to immediately
+                remove all links to our Website upon request. We also reserve
+                the right to amen these terms and conditions and it’s linking
+                policy at any time. By continuously linking to our Website, you
+                agree to be bound to and follow these linking terms and
+                conditions.
+              </p>
+
+              <h3>
+                <strong>Removal of links from our website</strong>
+              </h3>
+
+              <p>
+                If you find any link on our Website that is offensive for any
+                reason, you are free to contact and inform us any moment. We
+                will consider requests to remove links but we are not obligated
+                to or so or to respond to you directly.
+              </p>
+
+              <p>
+                We do not ensure that the information on this website is
+                correct, we do not warrant its completeness or accuracy; nor do
+                we promise to ensure that the website remains available or that
+                the material on the website is kept up to date.
+              </p>
+
+              <h3>
+                <strong>Disclaimer</strong>
+              </h3>
+
+              <p>
+                To the maximum extent permitted by applicable law, we exclude
+                all representations, warranties and conditions relating to our
+                website and the use of this website. Nothing in this disclaimer
+                will:
+              </p>
+
+              <ul>
+                <li>
+                  limit or exclude our or your liability for death or personal
+                  injury;
+                </li>
+                <li>
+                  limit or exclude our or your liability for fraud or fraudulent
+                  misrepresentation;
+                </li>
+                <li>
+                  limit any of our or your liabilities in any way that is not
+                  permitted under applicable law; or
+                </li>
+                <li>
+                  exclude any of our or your liabilities that may not be
+                  excluded under applicable law.
+                </li>
+              </ul>
+
+              <p>
+                The limitations and prohibitions of liability set in this
+                Section and elsewhere in this disclaimer: (a) are subject to the
+                preceding paragraph; and (b) govern all liabilities arising
+                under the disclaimer, including liabilities arising in contract,
+                in tort and for breach of statutory duty.
+              </p>
+
+              <p>
+                As long as the website and the information and services on the
+                website are provided free of charge, we will not be liable for
+                any loss or damage of any nature.
               </p>
             </div>
           </Fade>
