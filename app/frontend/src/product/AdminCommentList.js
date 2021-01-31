@@ -133,7 +133,7 @@ export const AdminCommentList = ({ commentList }) => {
                 startIcon={<BlockIcon />}
                 onClick={() => handleBan(comment.id)}
               >
-                Ban User
+                Delete Account Ban
               </Button>
               {alertMessage && (
                 <Alert className={classes.alert} severity="error">

@@ -12,6 +12,7 @@ import React, {useState} from "react";
 import CancelIcon from '@material-ui/icons/Cancel';
 import {serverUrl} from "../common/ServerUrl";
 import Statusupdate from "../components/vendorstatusupdate";
+import {Link} from "react-router-dom";
 
 
 
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Vendororderlist(props) {
     const classes = useStyles();
     const token = localStorage.getItem('token')
-
+    
     const HandleCancel = (purchaseid, event) => {
         fetch(serverUrl + 'api/orders/vendor-cancel/', {
             method: 'POST',
@@ -126,11 +127,14 @@ export default function Vendororderlist(props) {
                         <Paper className={classes.paperinner}>
                             <Grid container spacing={4}>
                                 <Grid justify="center" item container xs={3}>
+                                    <Link to={{pathname: `/product/${props.vendororders.product.id}`}}
+                                          style={{textDecoration: "none", color: "black"}}>
                                     <img
                                         style={{maxHeight: 200, maxWidth: 330}}
                                         src={props.vendororders.product.image_url}
                                         alt="product image"
                                     />
+                                    </Link>
                                 </Grid>
                                 <Grid
                                     item

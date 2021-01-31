@@ -13,8 +13,6 @@ import React, { useState } from "react";
 import { Rating } from "@material-ui/lab";
 import {Link} from "react-router-dom";
 
-
-
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -40,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Vendorpublicproductlist(props) {
     const classes = useStyles();
-    console.log(props.product)
-
-
 
     return (
         <Paper className={classes.paper}>
@@ -147,8 +142,6 @@ export default function Vendorpublicproductlist(props) {
                         </Button>
 
                     </Box>
-
-
 
                 </Grid>
             </Grid>

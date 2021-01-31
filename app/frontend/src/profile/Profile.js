@@ -207,25 +207,26 @@ function Profile() {
             }
         }
         if (valCheck) {
+            let temp_address = name.address_1.replace("/", " ") + "/" + name.address_2.replace("/", " ")  + "/" + name.address_3.replace("/", " ")  + "/" + name.address_4.replace("/", " ")  + "/" + name.address_5.replace("/", " ");
             if (!usernameChanged && !emailChanged) {
                 data = {
                     first_name: name.first_name,
                     last_name: name.last_name,
-                    address: name.address_1 + "/" + name.address_2 + "/" + name.address_3 + "/" + name.address_4 + "/" + name.address_5,
+                    address: temp_address,
                 }
             } else if (usernameChanged && !emailChanged) {
                 data = {
                     username: name.username,
                     first_name: name.first_name,
                     last_name: name.last_name,
-                    address: name.address_1 + "/" + name.address_2 + "/" + name.address_3 + "/" + name.address_4 + "/" + name.address_5,
+                    address: temp_address,
                 }
             } else if (!usernameChanged && emailChanged) {
                 data = {
                     email: name.email,
                     first_name: name.first_name,
                     last_name: name.last_name,
-                    address: name.address_1 + "/" + name.address_2 + "/" + name.address_3 + "/" + name.address_4 + "/" + name.address_5,
+                    address: temp_address,
                 }
             } else {
                 data = {
@@ -233,7 +234,7 @@ function Profile() {
                     username: name.username,
                     first_name: name.first_name,
                     last_name: name.last_name,
-                    address: name.address_1 + "/" + name.address_2 + "/" + name.address_3 + "/" + name.address_4 + "/" + name.address_5,
+                    address: temp_address,
                 }
             }
 

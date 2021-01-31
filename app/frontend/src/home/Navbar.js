@@ -390,11 +390,9 @@ export default function Navbar({notificationpage, messagespage}) {
                             }}
                             inputProps={{'aria-label': 'search'}}
                             onKeyPress={(ev) => {
-                                console.log(`Pressed keyCode ${ev.key}`);
                                 if (ev.key === 'Enter') {
                                     localStorage.setItem('searchkey', value)
                                     window.location.replace('/search')
-
                                 }
                             }}
                         />

@@ -55,28 +55,19 @@ export const TitlebarGridList= ({tileData, categoryPage}) =>  {
         let data;
         data={vendor_username:localStorage.getItem('searchkey')}
 
-            fetch(serverUrl + 'api/users/vendor/details', {
+            fetch(serverUrl + 'api/users/vendor/details/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             }).then(res => res.json())
                 .then(json => {
-
                     {
-
                         if(!(json.error==false)){
-                            console.log('llllll')
                             console.log(json.error)
                             setvendorgobutton(true)
-
                        }
                     }
-
                 }).catch(err => setvendorgobutton(false));
-
-            console.log(vendorgobutton)
-        console.log('hhhhhhhhh')
-
 
     }, []);
 

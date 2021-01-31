@@ -238,7 +238,7 @@ function Payment() {
   function handleOnClick() {
     const token = localStorage.getItem('token')
     const data = {
-      address : add.address_1 + "/" + add.address_2 + "/" + add.address_3 + "/" + add.address_4 + "/" + add.address_5,
+      address : add.address_1.replace("/", " ") + "/" + add.address_2.replace("/", " ") + "/" + add.address_3.replace("/", " ") + "/" + add.address_4.replace("/", " ") + "/" + add.address_5.replace("/", " "),
     }
 
     let newVal = (validate(add, val));
@@ -714,6 +714,12 @@ function Payment() {
             alert("Please buy products to proceed.")
           }
         });
+      if(address==""){
+      add.address_1=''
+      add.address_2=''
+      add.address_3=''
+      add.address_4=''
+      add.address_5=''}
     }
     if(activeStep === 1){
       if(address === ''&&(add.address_1+add.address_2+add.address_3+add.address_4+add.address_5)===""){

@@ -12,8 +12,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import {serverUrl} from "../common/ServerUrl";
 import {Link} from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -38,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         flexDirection: "column",
         minHeight: 16,
-
     },
     paperinner: {
         padding: theme.spacing(2),
@@ -46,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         flexDirection: "column",
         minHeight: 16,
-
     },
     box: {
         display: "flex",
@@ -67,16 +63,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Orderlist(props) {
     const classes = useStyles();
-    const token = localStorage.getItem('token')
-    const [open1, setOpen1] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
-    const [message, setMessage] = React.useState("");
+    const token = localStorage.getItem('token');
     const [total, setTotal] = React.useState(0);
     const [canCancel, setCanCancel] = React.useState(false);
     const [dialogOpen, setDialog] = React.useState(false);
     const [openreturn, setOpenreturn] = React.useState(false);
-    let stars = [];
-
 
     const handleClickOpen = () => {
         setDialog(true);
@@ -101,19 +92,64 @@ export default function Orderlist(props) {
             if (e.status === "OrderTaken" || e.status === "Preparing") {
                 setCanCancel(true);
             }
-            stars.push(0.0);
+
         });
         setTotal(temp.toFixed(2));
 
     }, []);
 
-    const snackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
+    //fetches the rating given to vendor of the delivered purchase
+    //if rating is not given before, it is clickable
+    //if rating is given before, it is read-only
+    const GetRating = (purchase) =>{
+
+        let[star,setStar]=React.useState(0);
+
+        //get rating. returns 0 if not done before
+        fetch(serverUrl + 'api/orders/get-vendor-rating/', {
+            method: 'POST',
+            headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({'purchase_id': purchase.pid.id}),
+        }).then(res => res.json())
+            .then(json => {
+                setStar(json.rating_score);
+            })
+
+        //return clickable rating component
+        if (star===0){
+            return (
+                <div>
+                    <Typography>Please give a rating to <Typography
+                        style={{fontWeight: 'bold'}}> {purchase.pid.product.vendor}</Typography></Typography>
+                    <Rating
+                        style={{marginTop: "0.5rem"}}
+                        id={purchase.pid.id}
+                        name={purchase.pid.id}
+                        value={star}
+                        max={10}
+                        onChange={(event, newValue) => {
+                            rateVendor(event, purchase.pid.id, newValue);
+                        }}
+                    />
+                </div>
+            );
+        } else { //read-only rating component
+            return (
+                <div>
+                    <Typography>You already gave rating to </Typography><Typography
+                        style={{fontWeight: 'bold'}}> {purchase.pid.product.vendor}</Typography>
+                    <Rating
+                        style={{marginTop: "0.5rem"}}
+                        id={purchase.pid.id}
+                        name={purchase.pid.id}
+                        value={star}
+                        max={10}
+                        readOnly
+                        />
+                </div>
+            );
         }
-        setOpen1(false);
-        setOpen2(false);
-    };
+    }
 
     const HandleCancel = (order, event) => {
         setDialog(false);
@@ -155,6 +191,7 @@ export default function Orderlist(props) {
             </Typography>
         );
     }
+
     const HandleDeliver = (purchase) =>{
 
         let[date,setdate]=React.useState()
@@ -179,10 +216,10 @@ export default function Orderlist(props) {
         );
     }
 
-
-    const rateVendor = (pid, index, newValue) => {
-        if (newValue){ //sending same value results in request error
-            stars[index] = newValue;
+    //sends the post request for giving rating to a vendor
+    //refreshes the page after alert
+    const rateVendor = (event, pid, newValue) => {
+        if (newValue){
             fetch(serverUrl + 'api/orders/add-vendor-rating/', {
                 method: 'POST',
                 headers: {'Authorization': 'Token ' + token, 'Content-Type': 'application/json'},
@@ -190,16 +227,12 @@ export default function Orderlist(props) {
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        setMessage(json.success);
-                        setOpen1(true);
-                    } else {
-                        setMessage("Vendor rating failed.");
-                        setOpen2(true);
-                    }
+                        alert(json.success);
+                        window.location.reload();
+                    } else alert("Vendor rating failed.");
                 })
-        };
+        }
     };
-
 
     const Cancelinfo = () => {
         if (props.orders.purchases[0].status === 'Vcancelled') {
@@ -383,32 +416,11 @@ export default function Orderlist(props) {
                                             </DialogActions>
                                         </Dialog>
                                     </div>}
-                                    {e.status === "Delivered" ? (
+                                    {e.status === "Delivered" ?  (
                                         <Paper variant="outlined" style={{borderColor: "#7A0010"}}
                                                className={classes.paperinner}>
                                             <div style={{marginLeft: "0.5rem", marginRight: "0.5rem"}}>
-                                                <Typography>Please give a rating to <Typography
-                                                    style={{fontWeight: 'bold'}}> {e.product.vendor}</Typography></Typography>
-                                                <Rating
-                                                    style={{marginTop: "0.5rem"}}
-                                                    id="temp_rating"
-                                                    name= "vendor_rating"
-                                                    value={stars[index]}
-                                                    max={10}
-                                                    onChange={(event, newValue) => {
-                                                        rateVendor(e.id, index, newValue);
-                                                    }}
-                                                />
-                                                <Snackbar open={open1} autoHideDuration={6000} onClose={snackbarClose}>
-                                                    <Alert onClose={snackbarClose} severity="success">
-                                                        {message}
-                                                    </Alert>
-                                                </Snackbar>
-                                                <Snackbar open={open2} autoHideDuration={6000} onClose={snackbarClose}>
-                                                    <Alert onClose={snackbarClose} severity="error">
-                                                        {message}
-                                                    </Alert>
-                                                </Snackbar>
+                                                <GetRating pid={e} />
                                             </div>
                                         </Paper>
                                     ) : null}
