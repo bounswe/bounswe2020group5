@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* An adapter class to show the previous orders given to the vendor in a recyclerview in the vendor orders page.
+*/
 package com.example.bupazar.model
 
 import android.annotation.SuppressLint
@@ -22,6 +26,9 @@ class VendorOrdersAdapter(private val context: Context, private val orders: Arra
         return ViewHolder(view)
     }
 
+    /*
+    * Call the bind method for the item given in the position argument.
+    */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val order = orders[position]
         holder.bind(order)
@@ -31,6 +38,9 @@ class VendorOrdersAdapter(private val context: Context, private val orders: Arra
         return orders.size
     }
 
+    /*
+    * Bind products to recyclerview items.
+    */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("ResourceAsColor", "WrongConstant")

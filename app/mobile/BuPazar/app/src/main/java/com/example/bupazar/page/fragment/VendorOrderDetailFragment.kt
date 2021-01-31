@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to handle vendor order details page, the page where the vendors go by clicking on an order in the vendor orders page.
+ */
 package com.example.bupazar.page.fragment
 
 import android.annotation.SuppressLint

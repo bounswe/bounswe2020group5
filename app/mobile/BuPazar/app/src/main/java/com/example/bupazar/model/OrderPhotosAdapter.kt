@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* An adapter class to show the photos of the orders in a horizontal recycler view in the customer orders page.
+ */
 package com.example.bupazar.model
 
 import android.content.Context
@@ -17,6 +21,9 @@ class OrderPhotosAdapter(private val context: Context, private val orderPhotos: 
         return ViewHolder(view)
     }
 
+    /*
+    * Call the bind method for the item given in the position argument.
+     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photoURL = orderPhotos[position]
         holder.bind(photoURL)
@@ -26,9 +33,12 @@ class OrderPhotosAdapter(private val context: Context, private val orderPhotos: 
         return orderPhotos.size
     }
 
+    /*
+    * Bind products to recyclerview items.
+     */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(photoURL: String) {
-            Glide.with(context).load(photoURL).into(itemView.product_photo)
+            Glide.with(context).load(photoURL).into(itemView.product_photo) /* Fetch the image using Glide library. */
         }
     }
 }

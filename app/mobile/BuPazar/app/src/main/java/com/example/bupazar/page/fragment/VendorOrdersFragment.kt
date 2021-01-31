@@ -1,3 +1,7 @@
+/*
+* Created by Yasar Selcuk Caliskan
+* Fragment class to show the vendors what are orders are given to them.
+ */
 package com.example.bupazar.page.fragment
 
 import android.content.Intent

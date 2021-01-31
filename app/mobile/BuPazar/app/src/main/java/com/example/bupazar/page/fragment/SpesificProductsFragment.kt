@@ -41,6 +41,9 @@ class SpesificProductsFragment : Fragment() {
                 }
             }
 
+            /*
+            * Configure search bar functionality
+            */
             searchBarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false

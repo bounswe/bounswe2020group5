@@ -37,10 +37,16 @@ class HomepageFragment : Fragment() {
                 numberOfProducts = numberOfProducts
         )
 
+        /*
+        If there is a user token i.e not a guest user, then show recommended
+         */
         if (User.authToken!= null) {
             recommended.visibility=View.VISIBLE
         }
 
+        /*
+        Fetch the featured products
+         */
         apiService.featuredProducts(featuredProductsRequest) {
             if (it != null) {
                 newestArrivals = it.newestArrivals
@@ -49,6 +55,9 @@ class HomepageFragment : Fragment() {
             }
         }
 
+        /*
+        Set on click listener for new arrivals
+         */
         newArrivals.setOnClickListener() {
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = newestArrivals
@@ -58,6 +67,9 @@ class HomepageFragment : Fragment() {
             }
         }
 
+        /*
+        Set on click listener for best sellers
+         */
         bestSellersProducts.setOnClickListener() {
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = bestSellers
@@ -67,6 +79,9 @@ class HomepageFragment : Fragment() {
             }
         }
 
+        /*
+        Set on click listener for trending
+         */
         trending.setOnClickListener() {
             val spesificProductsFragment = SpesificProductsFragment()
             spesificProductsFragment.products = trends
@@ -76,6 +91,9 @@ class HomepageFragment : Fragment() {
             }
         }
 
+        /*
+        Set on click listener for recommended
+         */
         recommended.setOnClickListener() {
             User.authToken?.let { it1 ->
                 apiService.recommendedProducts(it1) {
@@ -110,6 +128,10 @@ class HomepageFragment : Fragment() {
                     }
                 }
 
+
+                /*
+                Configure search bar functionality
+                 */
                 searchBarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return false
