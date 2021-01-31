@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.core.mail import send_mail
-from ..models import User, TempUser, SocialDocs, PasswordChangedDate, LoginFailInfos, BannedUser
+from ..models import User, TempUser, SocialDocs, PasswordChangedDate, LoginFailInfos, BannedUser, Customer
 from ..serializers import UserSerializer, AuthUserSerializer, PasswordResetConfirmSerializer, ErrorSerializer
 from ..serializers import LoginSerializer, EmptySerializer, RegisterSerializer, PasswordChangeSerializer, GoogleSocialAuthSerializer, FacebookSocialAuthSerializer
 from ..serializers import UpdateProfileSerializer, SuccessSerializer, RegisterActivateSerializer, PasswordResetRequestEmailSerializer
@@ -64,7 +64,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         validated = serializer.validated_data
         data = dict(validated)['auth_token']
         email = data['email']
-        username = data['given_name'] + "_" + data['family_name']
+        username = data['given_name'] + "_" + data['family_name'] + "_" + email
         first_name = data['given_name']
         last_name = data['family_name']
         user = None
@@ -100,7 +100,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         email = data['email']
         first_name = data['name'].split()[0]
         last_name = data['name'].split()[1]
-        username = first_name + "_" + last_name
+        username = first_name + "_" + last_name + "_" + email
         user = None
         social_user = User.objects.filter(email=email)
         social_user_document = SocialDocs.objects.filter(
@@ -116,6 +116,8 @@ class AuthViewSet(viewsets.GenericViewSet):
                     email=email, social_provider='facebook')
                 social_user_document.save()
                 user = create_user_account(email=email,username=username,first_name=first_name,last_name=last_name,password=PASSWORD_F,is_customer=True,is_vendor=False,address="Address is not defined in Facebook") 
+                customer = Customer(user=user)
+                customer.save()
             except Exception as e:
                 print("Exception is ", e)
         if user == None:
