@@ -10,7 +10,7 @@ data class NotificationResponse(
     @SerializedName("notificationType") val type: String?,
     @SerializedName("user") val user: String?,
     @SerializedName("createdAt") val date: String?,
-    @SerializedName("product") val product: ProductDetails,
+    @SerializedName("product") val product: ProductDetails?,
     @SerializedName("order") val order: Int?,
     @SerializedName("isSeen") val is_seen: Boolean?,
 ) : Serializable
