@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  backend:
+    container_name: django_app_cont
+    build: ./backend
+    ports:
+      - 8000:8000
+
+  frontend:
+    container_name: frontend_app_cont
+    depends_on:
+      - backend
+    build: ./frontend
+    ports:
+      - 3000:3000

@@ -21,7 +21,7 @@ ADD . /bupazarapp
 
 WORKDIR /bupazarapp
 
-RUN python bupazar_config.py $KEY
+RUN python bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='
 
 RUN python manage.py makemigrations
 
