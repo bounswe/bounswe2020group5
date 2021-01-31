@@ -17,10 +17,7 @@ import com.example.bupazar.User
 import com.example.bupazar.model.Purchase
 import com.example.bupazar.model.UpdateStatusRequest
 import com.example.bupazar.service.RestApiService
-import kotlinx.android.synthetic.main.activity_vendor_homepage.*
 import kotlinx.android.synthetic.main.fragment_vendor_order_detail.*
-import kotlinx.android.synthetic.main.order_item.view.*
-import kotlinx.android.synthetic.main.order_photo_item.view.*
 
 class VendorOrderDetailFragment : Fragment() {
 

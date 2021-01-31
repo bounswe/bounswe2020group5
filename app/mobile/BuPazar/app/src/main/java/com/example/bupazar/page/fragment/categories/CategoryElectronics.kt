@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in electronics.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -9,12 +13,9 @@ import com.example.bupazar.R
 import com.example.bupazar.model.*
 import kotlinx.android.synthetic.main.fragment_electronics_category.*
 import kotlinx.android.synthetic.main.fragment_electronics_category.buttonShowAll
-import kotlinx.android.synthetic.main.fragment_home_category.*
 
 /**
  * A simple CategoryElectronics [Fragment] subclass.
- * Use the [CategoryElectronics.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategoryElectronics : Fragment() {
 
@@ -30,7 +31,7 @@ class CategoryElectronics : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonShowAll.setOnClickListener() {
+        buttonShowAll.setOnClickListener {
             val categoryRequest = CategoryRequest(
                     CategoryName = "Electronics"
             )
@@ -42,7 +43,7 @@ class CategoryElectronics : Fragment() {
             }
         }
 
-        pctablet.setOnClickListener() {
+        pctablet.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "PC&Tablet"
             )
@@ -55,7 +56,7 @@ class CategoryElectronics : Fragment() {
 
         }
 
-        smartPhone.setOnClickListener() {
+        smartPhone.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Smartphone"
             )
@@ -68,7 +69,7 @@ class CategoryElectronics : Fragment() {
 
         }
 
-        whiteAppliances.setOnClickListener() {
+        whiteAppliances.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "WhiteAppliances"
             )
@@ -81,7 +82,7 @@ class CategoryElectronics : Fragment() {
 
         }
 
-        photoCamera.setOnClickListener() {
+        photoCamera.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Photo&Camera"
             )
@@ -93,7 +94,7 @@ class CategoryElectronics : Fragment() {
             }
         }
 
-        gameConsoles.setOnClickListener() {
+        gameConsoles.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Game&GameConsole"
             )

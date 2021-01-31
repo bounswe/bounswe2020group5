@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in hobbies.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -8,14 +12,10 @@ import android.view.ViewGroup
 import com.example.bupazar.R
 import com.example.bupazar.model.CategoryRequest
 import com.example.bupazar.model.SubCategoryRequest
-import kotlinx.android.synthetic.main.fragment_fashion_category.*
 import kotlinx.android.synthetic.main.fragment_hobbie_category.*
-import kotlinx.android.synthetic.main.fragment_sports_category.*
 
 /**
  * A simple CategoryHobbie [Fragment] subclass.
- * Use the [CategoryHobbie.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategoryHobbie : Fragment() {
 
@@ -30,7 +30,7 @@ class CategoryHobbie : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonShowAllHobbies.setOnClickListener() {
+        buttonShowAllHobbies.setOnClickListener {
             val categoryRequest = CategoryRequest(
                     CategoryName = "Hobbies"
             )
@@ -42,7 +42,7 @@ class CategoryHobbie : Fragment() {
             }
         }
 
-        bookMagazine.setOnClickListener() {
+        bookMagazine.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Book&Magazine"
             )
@@ -54,7 +54,7 @@ class CategoryHobbie : Fragment() {
             }
         }
 
-        musicalInstrument.setOnClickListener() {
+        musicalInstrument.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "MusicalInstrument"
             )
@@ -66,7 +66,7 @@ class CategoryHobbie : Fragment() {
             }
         }
 
-        art.setOnClickListener() {
+        art.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Art"
             )

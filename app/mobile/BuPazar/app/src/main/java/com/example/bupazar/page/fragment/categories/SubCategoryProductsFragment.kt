@@ -1,7 +1,10 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review the products of a specific subcategory.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -52,12 +52,12 @@ class MyAccountFragment : Fragment() {
             }
         }
 
-        messagesLayout.setOnClickListener() {
-            var intent=Intent(this.activity, MessageMainActivity::class.java)
+        messagesLayout.setOnClickListener {
+            val intent=Intent(this.activity, MessageMainActivity::class.java)
             startActivity(intent)
         }
 
-        ordersLayout.setOnClickListener() {
+        ordersLayout.setOnClickListener {
             val previousOrdersFragment = PreviousOrdersFragment()
             val bundle = Bundle()
             bundle.putSerializable("USERDATA",userData)
@@ -67,7 +67,7 @@ class MyAccountFragment : Fragment() {
                 commit()
             }
         }
-        notification_layout.setOnClickListener(){
+        notification_layout.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper,  NotificationFragment.newInstance(User.authToken))
                 commit()

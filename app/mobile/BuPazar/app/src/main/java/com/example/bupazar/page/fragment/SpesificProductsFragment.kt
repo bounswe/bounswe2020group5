@@ -1,3 +1,8 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user review the products in the specific (sub)category, trends,
+* best sellers or in new arrivals.
+*/
 package com.example.bupazar.page.fragment
 
 import android.os.Bundle
@@ -12,8 +17,6 @@ import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.HomepageProductAdapter
 import com.example.bupazar.model.ProductDetails
-import kotlinx.android.synthetic.main.fragment_homepage.*
-import kotlinx.android.synthetic.main.fragment_spesific_products.*
 import kotlinx.android.synthetic.main.fragment_spesific_products.rvProducts
 import kotlinx.android.synthetic.main.fragment_spesific_products.searchBarSearchView
 
@@ -30,7 +33,7 @@ class SpesificProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!products!!.isEmpty()) {
+        if (products!!.isNotEmpty()) {
             val productAdapter = this.context?.let { HomepageProductAdapter(this.requireContext(), products!!) }
             rvProducts.adapter = productAdapter
             rvProducts.layoutManager = GridLayoutManager(this.context, 2)

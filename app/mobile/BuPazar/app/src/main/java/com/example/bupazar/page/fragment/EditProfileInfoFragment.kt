@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user edit his/her personal info.
+*/
 package com.example.bupazar.page.fragment
 
 import android.content.Intent

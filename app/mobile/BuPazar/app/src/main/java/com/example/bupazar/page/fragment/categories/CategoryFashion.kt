@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in fashion.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -11,13 +15,10 @@ import com.example.bupazar.model.SubCategoryRequest
 import kotlinx.android.synthetic.main.fragment_fashion_category.*
 import kotlinx.android.synthetic.main.fragment_fashion_category.buttonShowAll
 import kotlinx.android.synthetic.main.fragment_fashion_category.categoriesText
-import kotlinx.android.synthetic.main.fragment_home_category.*
 
 
 /**
  * A simple CategoryFashion [Fragment] subclass.
- * Use the [CategoryFashion.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategoryFashion : Fragment() {
 
@@ -32,7 +33,7 @@ class CategoryFashion : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonShowAll.setOnClickListener() {
+        buttonShowAll.setOnClickListener {
             val categoryRequest = CategoryRequest(
                     CategoryName = "Fashion"
             )
@@ -44,7 +45,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        womanClothing.setOnClickListener() {
+        womanClothing.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "WomanClothing"
             )
@@ -56,7 +57,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        categoriesText.setOnClickListener() {
+        categoriesText.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "WomanClothing"
             )
@@ -68,7 +69,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        accessory.setOnClickListener() {
+        accessory.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Accessory"
             )
@@ -80,7 +81,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        sportsWear.setOnClickListener() {
+        sportsWear.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Sportswear"
             )
@@ -92,7 +93,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        manClothing.setOnClickListener() {
+        manClothing.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "ManClothing"
             )
@@ -104,7 +105,7 @@ class CategoryFashion : Fragment() {
             }
         }
 
-        shoesBags.setOnClickListener() {
+        shoesBags.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Shoes&Bags"
             )
