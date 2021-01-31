@@ -28,18 +28,20 @@ docker-compose up -d --build
 ### 3. If you want to run the app separetely without docker you need to follow these steps.
 
 ## To run backend
-
+```
 - cd bounswe2020group5/app/backend/
 - python3 bupazar_config.py 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='
 - pip3 install -r requirements.txt
 - python3 manage.py makemigrations
 - python3 manage.py migrate
 - python manage.py runserver
+```
 
 ## To run frontend
-
+```
 - cd bounswe2020group5/app/frontend/
 - npm install
 - cd src/login
 - node secrets.js 'tM6caMoe7fGqdZejfdLjHSyFmgCCb71sQ2XT1yV3n30='
 - npm start
+```
