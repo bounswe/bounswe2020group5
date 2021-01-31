@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in sports.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -12,8 +16,6 @@ import kotlinx.android.synthetic.main.fragment_sports_category.*
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CategorySports.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategorySports : Fragment() {
 
@@ -28,7 +30,7 @@ class CategorySports : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonShowAll.setOnClickListener() {
+        buttonShowAll.setOnClickListener {
             val categoryRequest = CategoryRequest(
                     CategoryName = "Sports&Outdoors"
             )
@@ -40,7 +42,7 @@ class CategorySports : Fragment() {
             }
         }
 
-        sportClothing.setOnClickListener() {
+        sportClothing.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "SportClothing"
             )
@@ -52,7 +54,7 @@ class CategorySports : Fragment() {
             }
         }
 
-        fitness.setOnClickListener() {
+        fitness.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Fitness"
             )

@@ -1,3 +1,8 @@
+/*
+* Created by Sertay Akpinar
+* A data class which keeps the returned information from the update personal info endpoint
+* such as new arrivals, best sellers and trending products
+ */
 package com.example.bupazar.model
 
 import com.google.gson.annotations.SerializedName

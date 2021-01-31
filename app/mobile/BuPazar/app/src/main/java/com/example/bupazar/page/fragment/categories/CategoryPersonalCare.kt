@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in personal care.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -10,12 +14,9 @@ import com.example.bupazar.model.CategoryRequest
 import com.example.bupazar.model.SubCategoryRequest
 import kotlinx.android.synthetic.main.fragment_personal_care_category.*
 import kotlinx.android.synthetic.main.fragment_personal_care_category.buttonShowAll
-import kotlinx.android.synthetic.main.fragment_sports_category.*
 
 /**
  * A simple CategoryPersonalCare [Fragment] subclass.
- * Use the [CategoryPersonalCare.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategoryPersonalCare : Fragment() {
 
@@ -30,7 +31,7 @@ class CategoryPersonalCare : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonShowAll.setOnClickListener() {
+        buttonShowAll.setOnClickListener {
             val categoryRequest = CategoryRequest(
                     CategoryName = "Personal"
             )
@@ -42,7 +43,7 @@ class CategoryPersonalCare : Fragment() {
             }
         }
 
-        perfume.setOnClickListener() {
+        perfume.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Perfume"
             )
@@ -54,7 +55,7 @@ class CategoryPersonalCare : Fragment() {
             }
         }
 
-        makeup.setOnClickListener() {
+        makeup.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Makeup"
             )
@@ -66,7 +67,7 @@ class CategoryPersonalCare : Fragment() {
             }
         }
 
-        skinCare.setOnClickListener() {
+        skinCare.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "SkinCare"
             )
@@ -78,7 +79,7 @@ class CategoryPersonalCare : Fragment() {
             }
         }
 
-        oralCare.setOnClickListener() {
+        oralCare.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "OralCare"
             )
@@ -90,7 +91,7 @@ class CategoryPersonalCare : Fragment() {
             }
         }
 
-        hairCare.setOnClickListener() {
+        hairCare.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "HairCare"
             )

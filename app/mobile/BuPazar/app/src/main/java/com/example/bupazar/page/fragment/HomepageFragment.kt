@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.FeaturedProductsRequest
-import com.example.bupazar.model.LoginResponse
 import com.example.bupazar.model.HomepageProductAdapter
 import com.example.bupazar.model.ProductDetails
 import com.example.bupazar.service.RestApiService
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_homepage.*
 
 class HomepageFragment : Fragment() {
 
-    private var userData: LoginResponse? = null
     private val numberOfProducts = 12  // the number of products wanted to be shown in trending-bestsellers-new arrivals page
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.cart_product_item.view.*
-import kotlinx.android.synthetic.main.fragment_product.view.*
-import kotlinx.android.synthetic.main.item_product.view.*
 import kotlinx.android.synthetic.main.item_product.view.product_image
 import kotlinx.android.synthetic.main.item_product.view.product_name
 import kotlinx.android.synthetic.main.item_product.view.product_price

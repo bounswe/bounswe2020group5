@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review subcategories in home.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle
@@ -10,13 +14,10 @@ import com.example.bupazar.model.CategoryRequest
 import com.example.bupazar.model.SubCategoryRequest
 import kotlinx.android.synthetic.main.fragment_home_category.*
 import kotlinx.android.synthetic.main.fragment_home_category.buttonShowAll
-import kotlinx.android.synthetic.main.fragment_sports_category.*
 
 
 /**
  * A simple CategoryHome [Fragment] subclass.
- * Use the [CategoryHome.newInstance] factory method to
- * create an instance of this fragment.
  */
 class CategoryHome : Fragment() {
     override fun onCreateView(
@@ -42,7 +43,7 @@ class CategoryHome : Fragment() {
             }
         }
 
-        kitchenware.setOnClickListener() {
+        kitchenware.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Kitchenware"
             )
@@ -54,7 +55,7 @@ class CategoryHome : Fragment() {
             }
         }
 
-        beds.setOnClickListener() {
+        beds.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Beds"
             )
@@ -66,7 +67,7 @@ class CategoryHome : Fragment() {
             }
         }
 
-        decoration.setOnClickListener() {
+        decoration.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "Decoration"
             )
@@ -78,7 +79,7 @@ class CategoryHome : Fragment() {
             }
         }
 
-        officeFurniture.setOnClickListener() {
+        officeFurniture.setOnClickListener {
             val subCategoryRequest = SubCategoryRequest(
                     SubCategoryName = "OfficeFurniture"
             )

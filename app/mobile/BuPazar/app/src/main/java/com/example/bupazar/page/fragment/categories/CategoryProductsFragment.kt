@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* Fragment class to let the user to review the products of a specific category.
+*/
 package com.example.bupazar.page.fragment.categories
 
 import android.os.Bundle

@@ -5,18 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
 import com.example.bupazar.User
 import com.example.bupazar.model.*
 import com.example.bupazar.service.RestApiService
 import kotlinx.android.synthetic.main.fragment_cart.*
-import kotlinx.android.synthetic.main.fragment_homepage.*
-import kotlinx.android.synthetic.main.fragment_product.*
-import kotlinx.android.synthetic.main.homepage_activity.*
-
 private const val ARG_AUTH_TOKEN = "authToken"
 
 class CartFragment : Fragment() {
@@ -36,10 +30,7 @@ class CartFragment : Fragment() {
 
         val apiService = RestApiService()
         apiService.getCart(authToken!!){
-            if (it == null) {
-
-            }
-            else {
+            if (it != null) {
                 productsInCart = it.cartProducts
                 numberOfProductsText.text = "My Cart (" + productsInCart!!.size + " Products)"
 

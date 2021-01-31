@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* A data class which keeps the request info for update personal info endpoint.
+ */
 package com.example.bupazar.model
 
 import com.google.gson.annotations.SerializedName

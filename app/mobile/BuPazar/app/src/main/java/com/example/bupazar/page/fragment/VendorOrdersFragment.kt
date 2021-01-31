@@ -12,12 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bupazar.R
-import com.example.bupazar.User
 import com.example.bupazar.model.*
 import com.example.bupazar.page.activity.login.VendorHomepageActivity
-import com.example.bupazar.page.activity.message.MessageMainActivity
 import com.example.bupazar.service.RestApiService
-import kotlinx.android.synthetic.main.activity_vendor_homepage.*
 import kotlinx.android.synthetic.main.fragment_previous_orders.*
 import kotlinx.android.synthetic.main.fragment_vendor_order_detail.*
 
@@ -76,14 +73,14 @@ class VendorOrdersFragment : Fragment() {
         // If the top left back button is pressed, go back to the main vendor homepage activity
         back_button.setOnClickListener {
             //requireActivity().activity_vendor_2.visibility = View.VISIBLE
-            var intent= Intent(requireContext(), VendorHomepageActivity::class.java)
+            val intent= Intent(requireContext(), VendorHomepageActivity::class.java)
             startActivity(intent)
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             VendorOrdersFragment().apply {
                 arguments = Bundle().apply {
                 }

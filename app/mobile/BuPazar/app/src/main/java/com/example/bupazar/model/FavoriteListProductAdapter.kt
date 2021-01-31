@@ -1,3 +1,7 @@
+/*
+* Created by Sertay Akpinar
+* An adapter class to show the products added to the wish list in a recyclerview in the favorites page.
+ */
 package com.example.bupazar.model
 
 import android.content.Context
@@ -8,11 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bupazar.R
 import kotlinx.android.synthetic.main.favorite_list_product_item.view.*
-import kotlinx.android.synthetic.main.fragment_product.view.*
-import kotlinx.android.synthetic.main.item_product.view.*
 import kotlinx.android.synthetic.main.item_product.view.product_image
 import kotlinx.android.synthetic.main.item_product.view.product_name
-import kotlinx.android.synthetic.main.item_product.view.product_price
 
 
 class FavoriteListProductAdapter(private val context: Context, private val favoriteListProducts: Array<FavoriteListProduct>) : RecyclerView.Adapter<FavoriteListProductAdapter.ViewHolder>() {
