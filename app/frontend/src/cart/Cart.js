@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Cart() {
   const [plist, setPlist] = useState([]);
   useEffect(() => {
-    fetch(serverUrl + "api/cart/get", {
+    fetch(serverUrl + "api/cart/get/", {
       headers: {
         'Authorization': `Token ${localStorage.getItem("token")}`,
       },
