@@ -32,7 +32,7 @@ requests==2.25.1
 rsa==4.6
 six==1.15.0
 uritemplate==3.0.1
-urllib3==1.26.2
+urllib3==1.26.5
 facebook-sdk==3.1.0
 django-unixdatetimefield==1.2.0
 fernet==1.0.1
